@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSharpLearn</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <!-- Nav Landing -->
+    <nav>
+        <div class="px-6 container mx-auto flex items-center justify-between py-5">
+            <a href="" class="w-32"><img src="/frontend/img/logo.png" alt=""></a>
+            <div class="hidden md:inline space-x-6 font-semibold">
+                <a class="hover:text-red-500" href="">Beranda</a>
+                <a class="hover:text-red-500" href="">Materi</a>
+                <a class="hover:text-red-500" href="">Informasi</a>
+                
+            </div>
+            <button class=" hidden md:inline bg-red-500 text-white px-4 py-2 rounded-3xl">Login</button>
+            <img src="/frontend/img/icon-hamburger.svg" class="hamburger md:hidden">
+        </div>
+        <!-- Nav Mobile -->
+    <div class="md:hidden">
+        <div class="menu absolute top-16 container hidden flex-col bg-white shadow-md inset-x-0 mx-auto px-6 py-5 ">
+            <a class="hover:text-red-500" href="">Beranda</a>
+            <a class="hover:text-red-500" href="">Materi</a>
+            <a class="hover:text-red-500" href="">Informasi</a>
+            <button class="bg-red-500 text-white px-4 py-2 rounded-3xl">Login</button>
+        </div>
+    </div>
+    </nav>
+
+    <!-- Tampilan Utama -->
+     <section class="px-6 container mx-auto md:flex md:justify-between items-center my-6 space-x-6">
+        <div class="md:w-3/6 text-center md:text-left">
+            <h4 class="text-xl font-bold">Media Pembelajaran</h4>
+            <h3 class="text-5xl font-bold mb-5">CSharp Learn</h3>
+            <p class="text-gray-500 mb-5 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, deserunt!</p>
+            <button class="bg-red-500 text-white px-4 py-2 rounded-3xl">Mulai Belajar</button>
+        </div>
+        <img src="/frontend/img/hero.jpg" class="md:w-3/6" alt="">
+     </section>
+
+     <footer class="bg-black text-center py-4">
+        <div class="flex justify-center mt-3 space-x-4">
+            <a href="#" class="text-white text-2xl"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="text-white text-2xl"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-white text-2xl"><i class="fab fa-google-plus"></i></a>
+            <a href="#" class="text-white text-2xl"><i class="fab fa-github"></i></a>
+            <a href="#" class="text-white text-2xl"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="mt-8 border-t border-gray-700 pt-4">
+            <p class="text-gray-400">Copyright ©2025 <a href="#" class="text-blue-500">CSharpLearn</a></p>
+            <div class="mt-3 space-x-3">
+                <a href="#" class="text-gray-400 hover:text-white">Beranda</a>
+                <a href="#" class="text-gray-400 hover:text-white">Materi</a>
+                <a href="#" class="text-gray-400 hover:text-white">Informasi</a>
+            </div>
+        </div>
+    </footer>
+    <script src="/frontend/Landing/JsLanding/main.js"></script>
+</body>
+</html>
