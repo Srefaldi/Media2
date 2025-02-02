@@ -6,11 +6,13 @@ import {
     updateUsers,
     delateUsers
 } from "../../controller/LOGIN/Users.js"
+import { verifyUser, adminOnly } from "../../middleware/Login/AuthUser.js";
+
 const router = express.Router();
 
-router.get('/users', getUsers);
-router.get('/users/:id', getUsersById);
-router.post('/users', createUsers);
-router.patch('/users/:id', updateUsers);
-router.delete('/users/:id', delateUsers);
+router.get('/users', verifyUser ,adminOnly,getUsers);
+router.get('/users/:id', verifyUser ,adminOnly,getUsersById);
+router.post('/users', verifyUser ,adminOnly,createUsers);
+router.patch('/users/:id', verifyUser ,adminOnly,updateUsers);
+router.delete('/users/:id', verifyUser ,adminOnly,delateUsers);
 export default router;
