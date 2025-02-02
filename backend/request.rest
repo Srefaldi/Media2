@@ -1,0 +1,62 @@
+# Create User
+POST http://localhost:5000/users
+Content-Type: application/json
+
+
+{
+    "name": "Chim",
+    "email": "chim@gmail.com",
+    "password": "123456",
+    "confPassword": "123456",
+    "role": "user"
+}
+
+
+###
+# Get all user
+GET http://localhost:5000/users
+
+
+###
+# GET SINGLE USER
+GET http://localhost:5000/users/97340949-2eee-43fe-836e-3f142f17875f
+
+###
+# Update
+PATCH  http://localhost:5000/users/97340949-2eee-43fe-836e-3f142f17875f
+Content-Type: application/json
+
+
+{
+    "name": "FALDI UPDATE",
+    "email": "update@gmail.com",
+    "password": "",
+    "confPassword": "",
+    "role": "admin"
+}
+
+
+###
+# Delate
+DELETE http://localhost:5000/users/2a60f550-bf95-4453-8ab9-455e57c78361
+
+
+
+### 
+# Login USer
+
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "chim@gmail.com",
+    "password": "123456"
+}
+
+
+###
+GET http://localhost:5000/me
+Content-Type: application/json
+
+###
+DELETE http://localhost:5000/logout
