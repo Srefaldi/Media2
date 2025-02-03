@@ -51,7 +51,9 @@ function Landing() {
             <a className="text-black hover:text-red-500" href="#">Informasi</a>
           </div>
           <button className="hidden md:inline bg-red-500 text-white px-4 py-2 rounded-3xl">
-  <Link to="/login">Login</Link> </button>
+          <Link to="/login" className="text-white no-underline">Login</Link>
+        </button>
+
           <img src={iconHamburger} className="hamburger md:hidden" alt="Menu" />
         </div>
 
@@ -61,7 +63,9 @@ function Landing() {
           <a className="text-black hover:text-red-500" href="#">Materi</a>
           <a className="text-black hover:text-red-500" href="#">Informasi</a>
           <button className="hidden md:inline bg-red-500 text-white px-4 py-2 rounded-3xl">
-  <Link to="/login">Login</Link> </button>
+          <Link to="/login" className="text-white no-underline">Login</Link>
+        </button>
+
         </div>
       </nav>
 
