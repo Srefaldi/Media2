@@ -19,11 +19,11 @@ const Home = () => {
       <div className="grid grid-cols-2 gap-4">
         {/* Tombol Lanjut Materi */}
         <button
-          className="bg-green-500 text-white py-6 text-lg font-semibold rounded-2xl shadow-md hover:bg-green-600"
-          onClick={() => navigate("/materi")}
-        >
-          Lanjut Materi
-        </button>
+  className="bg-green-500 text-white py-6 text-lg font-semibold rounded-2xl shadow-md hover:bg-green-600"
+  onClick={() => navigate("/materi")}
+>
+  Materi
+</button>
 
         {/* Tombol Compiler */}
         <button

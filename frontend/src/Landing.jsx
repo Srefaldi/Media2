@@ -58,11 +58,12 @@ function Landing() {
         </div>
 
         {/* Nav Mobile */}
-        <div className="menu absolute top-16 container hidden flex-col bg-white shadow-md inset-x-0 mx-auto px-6 py-5">
+        <div className="menu absolute container hidden flex-col bg-white shadow-md inset-x-0 mx-auto px-6 py-5">
+
           <a className="text-black hover:text-red-500" href="#">Beranda</a>
           <a className="text-black hover:text-red-500" href="#">Materi</a>
           <a className="text-black hover:text-red-500" href="#">Informasi</a>
-          <button className="hidden md:inline bg-red-500 text-white px-4 py-2 rounded-3xl">
+          <button className="block w-full bg-red-500 text-white px-4 py-2 rounded-3xl mt-4">
           <Link to="/login" className="text-white no-underline">Login</Link>
         </button>
 
