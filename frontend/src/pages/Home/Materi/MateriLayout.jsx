@@ -1,9 +1,9 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import MateriSidebar from "./MateriSidebar";
-
 const MateriLayout = () => {
   return (
+    
     <div className="flex relative">
       {/* Sidebar */}
       <MateriSidebar />
