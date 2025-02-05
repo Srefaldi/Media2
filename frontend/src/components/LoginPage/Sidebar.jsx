@@ -24,11 +24,14 @@ const Sidebar = () => {
               <IoHome /> Dashboard
             </NavLink>
           </li>
-          <li>
-            <NavLink to={"/products"}>
-              <IoPricetag /> Products
-            </NavLink>
-          </li>
+          {/* Tampilkan menu Products hanya jika pengguna adalah admin */}
+          {user && user.role === "admin" && (
+            <li>
+              <NavLink to={"/products"}>
+                <IoPricetag /> Products
+              </NavLink>
+            </li>
+          )}
         </ul>
         {user && user.role === "admin" && (
           <div>

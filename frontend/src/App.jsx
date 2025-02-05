@@ -8,9 +8,10 @@ import AddUser from "./pages/LoginPage/AddUser";
 import EditUser from "./pages/LoginPage/EditUser";
 import AddProduct from "./pages/LoginPage/AddProduct";
 import EditProduct from "./pages/LoginPage/EditProduct";
-import LandingPage from "./Landing";
+import LandingPage from "./pages/Landing/Landing";
 import CompilerPage from "./pages/Home/Complier/ComplierPage";
-
+import Informasi from "./pages/Landing/Informasi";
+import DaftarMateri from "./pages/Landing/DaftarMateri";
 // Import Route Materi
 import MateriRoutes from "./MateriRoute";
 
@@ -31,6 +32,9 @@ function App() {
 
         {/* Semua route materi menggunakan MateriRoutes */}
         <Route path="/materi/*" element={<MateriRoutes />} />
+
+        <Route path="/informasi" element={<Informasi />} />
+        <Route path="/daftar-materi" element={<DaftarMateri />} />
       </Routes>
     </BrowserRouter>
   );

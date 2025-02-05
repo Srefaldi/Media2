@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import logo from "../../assets/img/logo-navbar.png";
+import logo from "../../assets/img/logo-nav.png"; 
 import { useDispatch, useSelector } from "react-redux";
 import { LogOut, reset } from "../../features/authSlice";
 
@@ -17,14 +17,16 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav
+      <nav style={{ backgroundColor: '#001F3F' }}
         className="navbar is-fixed-top has-shadow"
         role="navigation"
         aria-label="main navigation"
       >
         <div className="navbar-brand">
           <NavLink to="/dashboard" className="navbar-item">
-            <img src={logo} width="112" height="28" alt="logo" />
+          <a href="/" className="w-25">
+            <img src={logo} alt="Logo" className="h-30 w-30" /> 
+          </a>
           </NavLink>
 
           <a

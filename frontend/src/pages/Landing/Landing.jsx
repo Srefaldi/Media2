@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
-import './App.css'; 
-import logo from './assets/img/logo.png'; 
-import iconHamburger from './assets/img/icon-hamburger.svg'; 
-import iconClose from './assets/img/icon-close.svg'; 
-import heroImage from './assets/img/hero.jpg'; 
+import logo from '../../assets/img/logo-nav.png'; 
+import iconHamburger from '../../assets/img/icon-hamburger.svg'; 
+import iconClose from '../../assets/img/icon-close.svg'; 
+import heroImage from '../../assets/img/hero.jpg'; 
 import { Link } from 'react-router-dom';
 
 function Landing() {
@@ -40,20 +39,50 @@ function Landing() {
   return (
     <div className="landing-page" style={{ backgroundColor: 'white' }}> 
       {/* Navbar */}
-      <nav>
-        <div className="px-6 container mx-auto flex items-center justify-between py-5 landing-navbar">
-          <a href="#" className="w-32">
-            <img src={logo} alt="Logo" />
+      <nav className="h-22 overflow-hidden" style={{ backgroundColor: '#001F3F' }} >
+        <div className="px-6 container mx-auto flex items-center justify-between landing-navbar">
+          <a href="/" className="w-25">
+            <img src={logo} alt="Logo" className="h-18 w-auto" /> 
           </a>
           <div className="hidden md:inline space-x-6 font-semibold">
-            <a className="text-black hover:text-red-500" href="#">Beranda</a>
-            <a className="text-black hover:text-red-500" href="#">Materi</a>
-            <a className="text-black hover:text-red-500" href="#">Informasi</a>
-          </div>
-          <button className="hidden md:inline bg-red-500 text-white px-4 py-2 rounded-3xl">
-          <Link to="/login" className="text-white no-underline">Login</Link>
-        </button>
-
+              <a
+                href="/"
+                style={{ color: 'white' }}
+                onMouseOver={(e) => (e.currentTarget.style.color = 'black')}
+                onMouseOut={(e) => (e.currentTarget.style.color = 'white')}
+              >
+                Beranda
+              </a>
+              <a
+                href="/daftar-materi"
+                style={{ color: 'white' }}
+                onMouseOver={(e) => (e.currentTarget.style.color = 'black')}
+                onMouseOut={(e) => (e.currentTarget.style.color = 'white')}
+              >
+                Materi
+              </a>
+              <a
+                href="/informasi"
+                style={{ color: 'white' }}
+                onMouseOver={(e) => (e.currentTarget.style.color = 'black')}
+                onMouseOut={(e) => (e.currentTarget.style.color = 'white')}
+              >
+                Informasi
+              </a>
+            </div>
+          <button
+                  className="hidden md:inline px-4 py-2 rounded-3xl font-semibold"
+                  style={{ backgroundColor: 'white' }}
+                >
+                  <Link
+                    to="/login"
+                    style={{ color: '#001F3F', textDecoration: 'none' }} 
+                    onMouseOver={(e) => (e.currentTarget.style.color = 'black')} 
+                    onMouseOut={(e) => (e.currentTarget.style.color = '#001F3F')} 
+                  >
+                    Login
+                  </Link>
+                </button>
           <img src={iconHamburger} className="hamburger md:hidden" alt="Menu" />
         </div>
 
@@ -63,7 +92,7 @@ function Landing() {
           <a className="text-black hover:text-red-500" href="#">Beranda</a>
           <a className="text-black hover:text-red-500" href="#">Materi</a>
           <a className="text-black hover:text-red-500" href="#">Informasi</a>
-          <button className="block w-full bg-red-500 text-white px-4 py-2 rounded-3xl mt-4">
+          <button className="block w-full text-white px-4 py-2 rounded-3xl mt-4" style={{ backgroundColor: '#001F3F' }}>
           <Link to="/login" className="text-white no-underline">Login</Link>
         </button>
 
@@ -71,18 +100,18 @@ function Landing() {
       </nav>
 
       {/* Tampilan Utama */}
-      <section className="px-6 container mx-auto md:flex md:justify-between items-center my-6 space-x-6 landing-main">
+      <section className="px-6 container mx-auto md:flex md:justify-between items-center my-6 space-x-6 landing-main h-115">
         <div className="md:w-3/6 text-center md:text-left">
           <h4 className="text-black text-xl font-bold">Media Pembelajaran</h4>
           <h3 className="text-black text-5xl font-bold mb-5">CSharp Learn</h3>
           <p className="text-gray-500 mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, deserunt!</p>
-          <button className="bg-red-500 text-white px-4 py-2 rounded-3xl">Mulai Belajar</button>
+          <button style={{ backgroundColor: '#001F3F' }} className="text-white px-4 py-2 rounded-3xl">Mulai Belajar</button>
         </div>
         <img src={heroImage} className="md:w-3/6" alt="Hero Image" />
       </section>
 
       {/* Footer */}
-      <footer className="bg-black text-center py-4 landing-footer">
+      <footer style={{ backgroundColor: '#001F3F' }} className="text-center py-4 landing-footer">
         <div className="flex justify-center mt-3 space-x-4">
           <a href="#" className="text-white text-2xl"><i className="fab fa-facebook"></i></a>
  <a href="#" className="text-white text-2xl"><i className="fab fa-twitter"></i></a>
