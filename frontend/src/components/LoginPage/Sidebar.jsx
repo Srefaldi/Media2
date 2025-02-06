@@ -28,25 +28,22 @@ const Sidebar = () => {
           {user && user.role === "admin" && (
             <li>
               <NavLink to={"/products"}>
-                <IoPricetag /> Products
+                <IoPricetag /> Data Evaluasi
               </NavLink>
             </li>
           )}
         </ul>
         {user && user.role === "admin" && (
           <div>
-            <p className="menu-label">Admin</p>
             <ul className="menu-list">
               <li>
                 <NavLink to={"/users"}>
-                  <IoPerson /> Users
+                  <IoPerson /> Data User
                 </NavLink>
               </li>
             </ul>
           </div>
         )}
-
-        <p className="menu-label">Settings</p>
         <ul className="menu-list">
           <li>
             <button onClick={logout} className="button is-white">

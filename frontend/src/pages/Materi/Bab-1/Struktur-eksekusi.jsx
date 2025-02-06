@@ -1,15 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const InstalasiSetup = () => {
+const StrukturEksekusi = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate("/materi/bab1/pengenalan");
+    navigate("/materi/bab1/struktur-kode");
   };
 
   const handleNext = () => {
-    navigate("/materi/bab1/struktur-kode");
+    navigate("/materi/bab1/sintaks-print");
   };
 
   return (
@@ -40,4 +40,4 @@ const InstalasiSetup = () => {
   );
 };
 
-export default InstalasiSetup;
+export default StrukturEksekusi;

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import alur from "./img-bab1/alur.png";
+import logoc from "./img-bab1/logo.png";
 
 const PengenalanCSharp = () => {
   const [isPendahuluanOpen, setPendahuluanOpen] = useState(false);
@@ -18,17 +21,25 @@ const PengenalanCSharp = () => {
     setKontenOpen(!isKontenOpen);
   };
 
-  const toggleSubMateri = () => {
-    setSubMateriOpen(!isSubMateriOpen);
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate("/dashboard");
+  };
+
+  const handleNext = () => {
+    navigate("/materi/bab1/instalasi");
   };
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">BAB 1 - PENDAHULUAN</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">
+        BAB 1 - PENDAHULUAN
+      </h1>
 
       <div>
         <h3
-          className="text-bold cursor-pointer flex items-center"
+          className="font-bold cursor-pointer flex items-center"
           onClick={togglePendahuluan}
         >
           PENDAHULUAN MATERI
@@ -48,10 +59,10 @@ const PengenalanCSharp = () => {
 
       <div>
         <h3
-          className="text-bold cursor-pointer flex items-center"
+          className="font-bold cursor-pointer flex items-center"
           onClick={toggleTujuan}
         >
-          Tujuan Pembelajaran
+          TUJUAN PEMBELAJARAN
           <span className="ml-2">{isTujuanOpen ? "▲" : "▼"}</span>
         </h3>
         {isTujuanOpen && (
@@ -75,7 +86,7 @@ const PengenalanCSharp = () => {
 
       <div>
         <h3
-          className="text-bold cursor-pointer flex items-center"
+          className="font-bold cursor-pointer flex items-center"
           onClick={toggleKonten}
         >
           KONTEN MATERI
@@ -95,7 +106,8 @@ const PengenalanCSharp = () => {
       </div>
 
       <div>
-        <h2 className="text-bold">1.1 Pengenalan C#</h2>
+        <h2 className="font-bold text-2xl">1.1 Pengenalan C#</h2>
+
         <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
           C# (“See-Sharp”) adalah bahasa pemrograman modern yang dikembangkan
           oleh Microsoft sebagai bagian dari inisiatif .NET mereka. Bahasa ini
@@ -106,6 +118,72 @@ const PengenalanCSharp = () => {
           dikompilasi dan sangat kuat, fleksibel, serta mendukung pemrograman
           berorientasi objek.
         </p>
+        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          <div className="flex justify-center">
+            <img src={logoc} alt="Gambar 1.1 Logo C#" className="w-60 h-auto" />
+          </div>
+
+          <p className="font-bold text-center">Gambar 1.1 Logo C#</p>
+        </p>
+        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          Seperti halnya bahasa pemrograman yang lain, C# bisa digunakan untuk
+          membangun berbagai macam jenis aplikasi, seperti aplikasi berbasis
+          windows (desktop), aplikasi berbasis web, serta aplikasi berbasis web
+          services.
+        </p>
+        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          C# dikembangkan sebagai respons terhadap kebutuhan akan bahasa
+          pemrograman yang kuat namun sederhana untuk mengembangkan aplikasi
+          pada platform Microsoft. Bahasa ini dipengaruhi oleh beberapa bahasa
+          pemrograman lain seperti C++, Java, dan Delphi, mengambil elemen
+          terbaik dari masing-masing bahasa untuk menciptakan bahasa yang
+          efisien dan mudah digunakan.
+        </p>
+        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          Pada tahun 2002, versi pertama C# diperkenalkan sebagai bagian dari
+          .NET Framework 1.0. Sejak saat itu, C# telah mengalami beberapa
+          pembaruan dan perbaikan yang signifikan. Pada tahun 2003, C# diakui
+          sebagai standar oleh ECMA (European Computer Manufacturers
+          Association) dan ISO (International Organization for Standardization),
+          yang membantu dalam penyebaran bahasa ini secara global.
+        </p>
+        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          Program C# tidak seperti program C dan C++ yang di-compile menjadi
+          binary yang bisa dieksekusi langsung oleh prosesor. Program C#
+          di-compile menjadi CIL (Common Intermediate Language). Komunitas
+          Visual Studio hanya mengubah program Bahasa C# menjadi MIL, yang
+          merupakan singkatan dari Microsoft Intermediate Language. Kode MIL ini
+          kemudian diubah menjadi bahasa mesin oleh sistem eksekusi virtual yang
+          dikenal sebagai Common Language Runtime.
+        </p>
+        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          <div className="flex justify-center">
+            <img
+              src={alur}
+              alt="Gambar 1.2 Alur eksekusi Common Language Runtime"
+              className="w-100 h-auto"
+            />
+          </div>
+
+          <p className="font-bold text-center">
+            Gambar 1.2 Alur eksekusi Common Language Runtime
+          </p>
+        </p>
+      </div>
+      {/* Tombol Navigasi */}
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={handleBack}
+          className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+        >
+          Kembali
+        </button>
+        <button
+          onClick={handleNext}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
