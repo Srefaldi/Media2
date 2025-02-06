@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"; // Tambahkan useDispatch di sini
+import { useNavigate } from "react-router-dom";
+import { IoLogOut } from "react-icons/io5";
 import logo from "../../../assets/img/logo-nav.png";
 import md5 from "crypto-js/md5";
+import { LogOut, reset } from "../../../features/authSlice";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch(); // Inisialisasi useDispatch
+  const navigate = useNavigate();
 
   const userEmail = user?.email ? user.email.trim().toLowerCase() : "";
   const avatarUrl = userEmail
@@ -14,6 +19,12 @@ const Navbar = () => {
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const logout = () => {
+    dispatch(LogOut());
+    dispatch(reset());
+    navigate("/login");
   };
 
   return (
@@ -54,10 +65,10 @@ const Navbar = () => {
               >
                 <img
                   src={avatarUrl}
-                  alt="User"
+                  alt="User "
                   className="w-6 h-6 rounded-full mr-2"
                 />
-                {user ? user.name : "User"}
+                {user ? user.name : "User "}
                 <svg
                   className="w-3 h-3 ml-1"
                   aria-hidden="true"
@@ -87,12 +98,12 @@ const Navbar = () => {
                     </li>
                   </ul>
                   <div className="py-1">
-                    <a
-                      href="#"
-                      className="block px-3 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                    <button
+                      onClick={logout}
+                      className="block px-3 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white flex items-center"
                     >
-                      Sign out
-                    </a>
+                      <IoLogOut className="mr-1" /> Log out
+                    </button>
                   </div>
                 </div>
               )}
