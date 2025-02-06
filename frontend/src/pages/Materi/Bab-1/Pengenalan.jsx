@@ -7,29 +7,12 @@ const PengenalanCSharp = () => {
   const [isPendahuluanOpen, setPendahuluanOpen] = useState(false);
   const [isTujuanOpen, setTujuanOpen] = useState(false);
   const [isKontenOpen, setKontenOpen] = useState(false);
-  const [isSubMateriOpen, setSubMateriOpen] = useState(false);
 
-  const togglePendahuluan = () => {
-    setPendahuluanOpen(!isPendahuluanOpen);
-  };
-
-  const toggleTujuan = () => {
-    setTujuanOpen(!isTujuanOpen);
-  };
-
-  const toggleKonten = () => {
-    setKontenOpen(!isKontenOpen);
-  };
+  const togglePendahuluan = () => setPendahuluanOpen(!isPendahuluanOpen);
+  const toggleTujuan = () => setTujuanOpen(!isTujuanOpen);
+  const toggleKonten = () => setKontenOpen(!isKontenOpen);
 
   const navigate = useNavigate();
-
-  const handleBack = () => {
-    navigate("/dashboard");
-  };
-
-  const handleNext = () => {
-    navigate("/materi/bab1/instalasi");
-  };
 
   return (
     <div>
@@ -46,14 +29,16 @@ const PengenalanCSharp = () => {
           <span className="ml-2">{isPendahuluanOpen ? "▲" : "▼"}</span>
         </h3>
         {isPendahuluanOpen && (
-          <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
-            Pada bab ini, kita akan mempelajari pendahuluan bahasa pemrograman
-            C#. Bahasa ini memiliki kesamaan dan perbedaan dengan bahasa
-            pemrograman lain, yang memberikan ciri khas tersendiri. Setelah
-            mempelajari materi ini, diharapkan pembaca dapat menulis kode
-            program sesuai ketentuan dan menghindari kesalahan umum dalam
-            pemrograman.
-          </p>
+          <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+            <p>
+              Pada bab ini, kita akan mempelajari pendahuluan bahasa pemrograman
+              C#. Bahasa ini memiliki kesamaan dan perbedaan dengan bahasa
+              pemrograman lain, yang memberikan ciri khas tersendiri. Setelah
+              mempelajari materi ini, diharapkan pembaca dapat menulis kode
+              program sesuai ketentuan dan menghindari kesalahan umum dalam
+              pemrograman.
+            </p>
+          </div>
         )}
       </div>
 
@@ -108,78 +93,88 @@ const PengenalanCSharp = () => {
       <div>
         <h2 className="font-bold text-2xl">1.1 Pengenalan C#</h2>
 
-        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
-          C# (“See-Sharp”) adalah bahasa pemrograman modern yang dikembangkan
-          oleh Microsoft sebagai bagian dari inisiatif .NET mereka. Bahasa ini
-          pertama kali dirilis pada tahun 2000 dan dirancang di bawah
-          kepemimpinan Anders Hejlsberg, seorang tokoh terkemuka dalam
-          pengembangan bahasa pemrograman, yang juga dikenal sebagai pengembang
-          Borland Turbo C++ dan Borland Delphi. C# merupakan bahasa yang
-          dikompilasi dan sangat kuat, fleksibel, serta mendukung pemrograman
-          berorientasi objek.
-        </p>
-        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
-          <div className="flex justify-center">
-            <img src={logoc} alt="Gambar 1.1 Logo C#" className="w-60 h-auto" />
-          </div>
-
-          <p className="font-bold text-center">Gambar 1.1 Logo C#</p>
-        </p>
-        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
-          Seperti halnya bahasa pemrograman yang lain, C# bisa digunakan untuk
-          membangun berbagai macam jenis aplikasi, seperti aplikasi berbasis
-          windows (desktop), aplikasi berbasis web, serta aplikasi berbasis web
-          services.
-        </p>
-        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
-          C# dikembangkan sebagai respons terhadap kebutuhan akan bahasa
-          pemrograman yang kuat namun sederhana untuk mengembangkan aplikasi
-          pada platform Microsoft. Bahasa ini dipengaruhi oleh beberapa bahasa
-          pemrograman lain seperti C++, Java, dan Delphi, mengambil elemen
-          terbaik dari masing-masing bahasa untuk menciptakan bahasa yang
-          efisien dan mudah digunakan.
-        </p>
-        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
-          Pada tahun 2002, versi pertama C# diperkenalkan sebagai bagian dari
-          .NET Framework 1.0. Sejak saat itu, C# telah mengalami beberapa
-          pembaruan dan perbaikan yang signifikan. Pada tahun 2003, C# diakui
-          sebagai standar oleh ECMA (European Computer Manufacturers
-          Association) dan ISO (International Organization for Standardization),
-          yang membantu dalam penyebaran bahasa ini secara global.
-        </p>
-        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
-          Program C# tidak seperti program C dan C++ yang di-compile menjadi
-          binary yang bisa dieksekusi langsung oleh prosesor. Program C#
-          di-compile menjadi CIL (Common Intermediate Language). Komunitas
-          Visual Studio hanya mengubah program Bahasa C# menjadi MIL, yang
-          merupakan singkatan dari Microsoft Intermediate Language. Kode MIL ini
-          kemudian diubah menjadi bahasa mesin oleh sistem eksekusi virtual yang
-          dikenal sebagai Common Language Runtime.
-        </p>
-        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
-          <div className="flex justify-center">
-            <img
-              src={alur}
-              alt="Gambar 1.2 Alur eksekusi Common Language Runtime"
-              className="w-100 h-auto"
-            />
-          </div>
-
-          <p className="font-bold text-center">
-            Gambar 1.2 Alur eksekusi Common Language Runtime
+        <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          <p>
+            C# (“See-Sharp”) adalah bahasa pemrograman modern yang dikembangkan
+            oleh Microsoft sebagai bagian dari inisiatif .NET mereka. Bahasa ini
+            pertama kali dirilis pada tahun 2000 dan dirancang di bawah
+            kepemimpinan Anders Hejlsberg, seorang tokoh terkemuka dalam
+            pengembangan bahasa pemrograman, yang juga dikenal sebagai
+            pengembang Borland Turbo C++ dan Borland Delphi. C# merupakan bahasa
+            yang dikompilasi dan sangat kuat, fleksibel, serta mendukung
+            pemrograman berorientasi objek.
           </p>
+        </div>
+
+        <div className="flex justify-center p-4">
+          <img src={logoc} alt="Gambar 1.1 Logo C#" className="w-60 h-auto" />
+        </div>
+        <p className="font-bold text-center">Gambar 1.1 Logo C#</p>
+
+        <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          <p>
+            Seperti halnya bahasa pemrograman yang lain, C# bisa digunakan untuk
+            membangun berbagai macam jenis aplikasi, seperti aplikasi berbasis
+            windows (desktop) dan aplikasi berbasis web serta aplikasi berbasis
+            web services. <br />
+          </p>
+        </div>
+        <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          <p>
+            C# dikembangkan sebagai respons terhadap kebutuhan akan bahasa
+            pemrograman yang kuat namun sederhana untuk mengembangkan aplikasi
+            pada platform Microsoft. Bahasa ini dipengaruhi oleh beberapa bahasa
+            pemrograman lain seperti C++, Java, dan Delphi, mengambil elemen
+            terbaik dari masing-masing bahasa untuk menciptakan bahasa yang
+            efisien dan mudah digunakan. Pada tahun 2002, versi pertama C#
+            diperkenalkan sebagai bagian dari .NET Framework 1.0. Sejak saat
+            itu, C# telah mengalami beberapa pembaruan dan perbaikan yang
+            signifikan.
+          </p>
+        </div>
+        <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          <p>
+            Pada tahun 2003, C# diakui sebagai standar oleh ECMA (European
+            Computer Manufacturers Association) dan ISO (International
+            Organization for Standardization), yang membantu dalam penyebaran
+            bahasa ini secara global.
+          </p>
+        </div>
+        <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          <p>
+            Program C# tidak seperti program C dan C++ yang di-compile menjadi
+            binary yang bisa dieksekusi langsung oleh prosesor. Program C#
+            di-compile menjadi CIL (Common Intermediate Language). Komunitas
+            Visual Studio hanya mengubah program Bahasa C# menjadi MIL, yang
+            merupakan singkatan dari Microsoft Intermediate Language. Kode MIL
+            ini kemudian diubah menjadi bahasa mesin oleh sistem eksekusi
+            virtual yang dikenal sebagai Common Language Runtime. Seperti Gambar
+            dibawah ini.
+          </p>
+        </div>
+
+        <div className="flex justify-center p-4">
+          <img
+            src={alur}
+            alt="Gambar 1.2 Alur eksekusi Common Language Runtime"
+            className="w-100 h-auto"
+          />
+        </div>
+        <p className="font-bold text-center">
+          Gambar 1.2 Alur eksekusi Common Language Runtime
         </p>
       </div>
+
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
-          onClick={handleBack}
+          onClick={() => navigate("/dashboard")}
           className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
         >
           Kembali
         </button>
         <button
-          onClick={handleNext}
+          onClick={() => navigate("/materi/bab1/instalasi")}
           className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
         >
           Next
