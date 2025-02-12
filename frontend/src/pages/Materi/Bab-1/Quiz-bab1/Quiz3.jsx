@@ -8,20 +8,20 @@ const Quiz = ({ onComplete }) => {
   const handleSubmit = () => {
     if (functionName === "Main" && methodName === "Console") {
       onComplete();
-      alert("Jawaban Anda benar!"); // Feedback untuk jawaban benar
+      alert("Jawaban Anda benar!"); 
     } else {
-      alert("Jawaban Anda salah, coba lagi!"); // Feedback untuk jawaban salah
+      alert("Jawaban Anda salah, coba lagi!"); 
     }
   };
 
   const handleReset = () => {
     setFunctionName("");
     setMethodName("");
-    setShowCompiler(false); // Reset juga menutup iframe
+    setShowCompiler(false); 
   };
 
   const handleTryCode = () => {
-    setShowCompiler((prev) => !prev); // Toggle nilai showCompiler
+    setShowCompiler((prev) => !prev); 
   };
 
   return (

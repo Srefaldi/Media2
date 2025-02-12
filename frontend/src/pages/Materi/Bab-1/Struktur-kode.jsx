@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Quiz from "./Quiz-bab1/Quiz3"; // Pastikan path ini sesuai dengan lokasi file Quiz.js
+import Quiz from "./Quiz-bab1/Quiz3"; 
 
 const StrukturKode = () => {
   const navigate = useNavigate();

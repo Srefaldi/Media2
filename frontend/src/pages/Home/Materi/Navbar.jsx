@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux"; // Tambahkan useDispatch di sini
+import { useSelector, useDispatch } from "react-redux"; 
 import { useNavigate } from "react-router-dom";
 import { IoLogOut } from "react-icons/io5";
 import logo from "../../../assets/img/logo-nav.png";
@@ -9,7 +9,7 @@ import { LogOut, reset } from "../../../features/authSlice";
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch(); // Inisialisasi useDispatch
+  const dispatch = useDispatch(); 
   const navigate = useNavigate();
 
   const userEmail = user?.email ? user.email.trim().toLowerCase() : "";
