@@ -8,20 +8,20 @@ const Quiz = ({ onComplete }) => {
   const handleSubmit = () => {
     if (functionName === "Main" && methodName === "Console") {
       onComplete();
-      alert("Jawaban Anda benar!"); 
+      alert("Jawaban Anda benar!");
     } else {
-      alert("Jawaban Anda salah, coba lagi!"); 
+      alert("Jawaban Anda salah, coba lagi!");
     }
   };
 
   const handleReset = () => {
     setFunctionName("");
     setMethodName("");
-    setShowCompiler(false); 
+    setShowCompiler(false);
   };
 
   const handleTryCode = () => {
-    setShowCompiler((prev) => !prev); 
+    setShowCompiler((prev) => !prev);
   };
 
   return (
@@ -72,7 +72,7 @@ const Quiz = ({ onComplete }) => {
           onClick={handleSubmit}
           className="bg-green-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-green-600"
         >
-          Submit Answer »
+          Cek Answer »
         </button>
 
         {/* Tombol Reset */}
@@ -80,7 +80,7 @@ const Quiz = ({ onComplete }) => {
           onClick={handleReset}
           className="bg-gray-500 text-white px-4 py-2 mt-4 ml-2 rounded-lg hover:bg-gray-600"
         >
-          Reset Jawaban
+          Hapus Jawaban
         </button>
 
         {/* Tombol Coba Kode di Compiler */}
