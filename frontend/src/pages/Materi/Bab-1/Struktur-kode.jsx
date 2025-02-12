@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+
 const StrukturKode = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate("/materi/bab1/struktur-kode");
+    navigate("/materi/bab1/instalasi");
   };
 
   const handleNext = () => {
@@ -24,7 +25,7 @@ const StrukturKode = () => {
 
         <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
           Sebelum memulai pembelajaran pemrograman kita perlu mengetahui
-          struktur dasar dari kode bahasa pemrograman C#.Kita dapat melihat
+          struktur dasar dari kode bahasa pemrograman C#. Kita dapat melihat
           struktur kode bahasa pemrograman C# yang paling dasar dengan contoh
           kode di bawah ini.
           <br />
@@ -41,33 +42,34 @@ const StrukturKode = () => {
 
         <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
           Penjelasan Kode:
-          <ul className="list-disc pl-6">
-            <li>
-              <strong>using System;</strong> - Digunakan untuk mengimpor
-              namespace System, sehingga kita dapat menggunakan kelas seperti
-              Console tanpa menuliskan System.Console.
-            </li>
-            <li>
-              <strong>namespace CsharpLearn</strong> - Namespace berfungsi untuk
-              mengelompokkan kode agar terorganisir dan menghindari konflik
-              nama.
-            </li>
-            <li>
-              <strong>class Program</strong> - Adalah kerangka utama yang berisi
-              data dan metode program.
-            </li>
-            <li>
-              <strong>static void Main(string[ ] args)</strong> - Titik awal
-              eksekusi program. Parameter <em>args</em> digunakan untuk menerima
-              argumen dari command line.
-            </li>
-            <li>
-              <strong>Console.WriteLine</strong> - Pernyataan untuk menampilkan
-              teks ke layar.
-            </li>
-          </ul>
         </p>
+
+        <ul className="list-disc pl-6 bg-white p-4 rounded-lg shadow-md">
+          <li>
+            <strong>using System;</strong> - Digunakan untuk mengimpor namespace
+            System, sehingga kita dapat menggunakan kelas seperti Console tanpa
+            menuliskan System.Console.
+          </li>
+          <li>
+            <strong>namespace CsharpLearn</strong> - Namespace berfungsi untuk
+            mengelompokkan kode agar terorganisir dan menghindari konflik nama.
+          </li>
+          <li>
+            <strong>class Program</strong> - Adalah kerangka utama yang berisi
+            data dan metode program.
+          </li>
+          <li>
+            <strong>static void Main(string[ ] args)</strong> - Titik awal
+            eksekusi program. Parameter <em>args</em> digunakan untuk menerima
+            argumen dari command line.
+          </li>
+          <li>
+            <strong>Console.WriteLine</strong> - Pernyataan untuk menampilkan
+            teks ke layar.
+          </li>
+        </ul>
       </div>
+
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button

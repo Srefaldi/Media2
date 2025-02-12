@@ -5,13 +5,9 @@ import styled from "styled-components";
 
 const ScrollableList = styled.ul`
   overflow-y: auto; /* Pastikan overflow-y diatur ke auto */
-
-  /* Sembunyikan scrollbar di WebKit (Chrome, Safari) */
   &::-webkit-scrollbar {
     display: none; /* Sembunyikan scrollbar */
   }
-
-  /* Untuk Firefox, Anda bisa menggunakan ini */
   scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
 `;
 
@@ -190,22 +186,15 @@ const daftarBab = [
   },
 ];
 
-const MateriSidebar = () => {
+const MateriSidebar = ({ completedLessons }) => {
   const [openBab, setOpenBab] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const toggleDropdown = (babId) => {
     setOpenBab(openBab === babId ? null : babId);
   };
 
   return (
-    <div
-      className={classNames(
-        "bg-[#101828] text-white p-4 w-64 overflow-y-auto transition-transform duration-300 ease-in-out",
-        { "-translate-x-full": !sidebarOpen }
-      )}
-      style={{ height: "auto", minHeight: "100vh" }}
-    >
+    <div className="bg-[#001F3F] text-white p-4 w-64 overflow-y-auto">
       <h2 className="text-center text-xl font-bold mb-4">DAFTAR MATERI</h2>
       <ul className="space-y-2">
         {daftarBab.map((bab) => (
@@ -227,7 +216,16 @@ const MateriSidebar = () => {
                 <li key={index}>
                   <Link
                     to={sub.path}
-                    className="text-white block p-2 hover:bg-gray-600 rounded"
+                    className={`text-white block p-2 hover:bg-gray-600 rounded ${
+                      completedLessons.includes(sub.path)
+                        ? ""
+                        : "opacity-50 cursor-not-allowed"
+                    }`}
+                    onClick={(e) => {
+                      if (!completedLessons.includes(sub.path)) {
+                        e.preventDefault();
+                      }
+                    }}
                   >
                     {sub.label}
                   </Link>
@@ -240,7 +238,7 @@ const MateriSidebar = () => {
       <div className="mt-6">
         <Link
           to="/dashboard"
-          className="block text-center bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600 transition"
+          className="block text-center bg-[#074173] text-white py-2 px-4 rounded-full hover:bg-blue-600 transition"
         >
           Kembali ke Dashboard
         </Link>

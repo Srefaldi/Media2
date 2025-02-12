@@ -2,17 +2,34 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import alur from "./img-bab1/alur.png";
 import logoc from "./img-bab1/logo.png";
+import { useOutletContext } from "react-router-dom";
 
 const PengenalanCSharp = () => {
+  const { handleLessonComplete } = useOutletContext();
   const [isPendahuluanOpen, setPendahuluanOpen] = useState(false);
   const [isTujuanOpen, setTujuanOpen] = useState(false);
   const [isKontenOpen, setKontenOpen] = useState(false);
+  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [quizAnswer, setQuizAnswer] = useState("");
+  const [quizFeedback, setQuizFeedback] = useState("");
 
   const togglePendahuluan = () => setPendahuluanOpen(!isPendahuluanOpen);
   const toggleTujuan = () => setTujuanOpen(!isTujuanOpen);
   const toggleKonten = () => setKontenOpen(!isKontenOpen);
 
   const navigate = useNavigate();
+
+  const handleQuizSubmit = (e) => {
+    e.preventDefault();
+    // Validasi jawaban
+    if (quizAnswer.toLowerCase() === "c#") {
+      setQuizCompleted(true);
+      setQuizFeedback("Jawaban benar! Anda dapat melanjutkan.");
+      handleLessonComplete("/materi/bab1/pengenalan"); // Memanggil fungsi untuk menandai materi selesai
+    } else {
+      setQuizFeedback("Jawaban salah, coba lagi!");
+    }
+  };
 
   return (
     <div>
@@ -165,21 +182,49 @@ const PengenalanCSharp = () => {
         </p>
       </div>
 
+      {/* Kuis */}
+      {!quizCompleted && (
+        <div className="mt-6 p-4 bg-gray-100 rounded-lg shadow-md">
+          <h2 className="font-bold text-xl">Kuis</h2>
+          <form onSubmit={handleQuizSubmit}>
+            <label className="block mb-2">
+              Apa bahasa pemrograman yang sedang dipelajari?
+              <input
+                type="text"
+                value={quizAnswer}
+                onChange={(e) => setQuizAnswer(e.target.value)}
+                className="border p-2 w-full mt-2"
+                required
+              />
+            </label>
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            >
+              Kirim
+            </button>
+          </form>
+          {quizFeedback && <p className="mt-2 text-red-500">{quizFeedback}</p>}
+        </div>
+      )}
+
       {/* Tombol Navigasi */}
-      <div className="flex justify-between mt-6">
-        <button
-          onClick={() => navigate("/dashboard")}
-          className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-        >
-          Kembali
-        </button>
-        <button
-          onClick={() => navigate("/materi/bab1/instalasi")}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-        >
-          Next
-        </button>
-      </div>
+      {quizCompleted && (
+        <div className="flex justify-between mt-6">
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+          >
+            Kembali
+          </button>
+          <button
+            onClick={() => navigate("/materi/bab1/instalasi")}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="bg-[#101828] text-center py-4">
+    <footer className="bg-[#001F3F] text-center py-4">
       <div className="flex justify-center mt-3 space-x-4">
         <a href="#" className="text-white text-2xl">
           <i className="fab fa-facebook"></i>
