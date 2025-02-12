@@ -238,7 +238,7 @@ const MateriSidebar = ({ completedLessons }) => {
       <div className="mt-6">
         <Link
           to="/dashboard"
-          className="block text-center bg-[#074173] text-white py-2 px-4 rounded-full hover:bg-blue-600 transition"
+          className="block text-center bg-[#526D82] text-white py-2 px-4 rounded-full hover:bg-blue-600 transition"
         >
           Kembali ke Dashboard
         </Link>

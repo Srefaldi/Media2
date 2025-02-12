@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Quiz from "./Quiz-bab1/Quiz3"; // Pastikan path ini sesuai dengan lokasi file Quiz.js
 
 const StrukturKode = () => {
   const navigate = useNavigate();
+  const [quizCompleted, setQuizCompleted] = useState(false);
 
   const handleBack = () => {
     navigate("/materi/bab1/instalasi");
@@ -10,6 +12,10 @@ const StrukturKode = () => {
 
   const handleNext = () => {
     navigate("/materi/bab1/struktur-eksekusi");
+  };
+
+  const handleQuizComplete = () => {
+    setQuizCompleted(true);
   };
 
   return (
@@ -29,14 +35,15 @@ const StrukturKode = () => {
           struktur kode bahasa pemrograman C# yang paling dasar dengan contoh
           kode di bawah ini.
           <br />
-          Cobalah code pada complier :
+          Cobalah kode pada compiler:
         </p>
 
-        <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto">
+        <pre className="bg-gray-100 p-4 rounded-lg overflow-x -auto">
           <iframe
             width="100%"
             height="475"
             src="https://dotnetfiddle.net/Widget/DuCLpB"
+            frameBorder="0"
           ></iframe>
         </pre>
 
@@ -59,7 +66,7 @@ const StrukturKode = () => {
             data dan metode program.
           </li>
           <li>
-            <strong>static void Main(string[ ] args)</strong> - Titik awal
+            <strong>static void Main(string[] args)</strong> - Titik awal
             eksekusi program. Parameter <em>args</em> digunakan untuk menerima
             argumen dari command line.
           </li>
@@ -70,21 +77,26 @@ const StrukturKode = () => {
         </ul>
       </div>
 
+      {/* Kuis */}
+      {!quizCompleted && <Quiz onComplete={handleQuizComplete} />}
+
       {/* Tombol Navigasi */}
-      <div className="flex justify-between mt-6">
-        <button
-          onClick={handleBack}
-          className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-        >
-          Kembali
-        </button>
-        <button
-          onClick={handleNext}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-        >
-          Next
-        </button>
-      </div>
+      {quizCompleted && (
+        <div className="flex justify-between mt-6">
+          <button
+            onClick={handleBack}
+            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+          >
+            Kembali
+          </button>
+          <button
+            onClick={handleNext}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };
