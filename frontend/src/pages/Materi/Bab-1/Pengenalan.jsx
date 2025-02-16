@@ -9,19 +9,22 @@ const PengenalanCSharp = () => {
   const [isPendahuluanOpen, setPendahuluanOpen] = useState(false);
   const [isTujuanOpen, setTujuanOpen] = useState(false);
   const [isKontenOpen, setKontenOpen] = useState(false);
+  const navigate = useNavigate();
+  const { handleLessonComplete } = useOutletContext();
+  const [quizCompleted, setQuizCompleted] = useState(false);
 
   const togglePendahuluan = () => setPendahuluanOpen(!isPendahuluanOpen);
   const toggleTujuan = () => setTujuanOpen(!isTujuanOpen);
   const toggleKonten = () => setKontenOpen(!isKontenOpen);
 
-  const navigate = useNavigate();
-  // Quiz
-  const { handleLessonComplete } = useOutletContext();
-  const [quizCompleted, setQuizCompleted] = useState(false);
-
   const handleQuizComplete = () => {
     setQuizCompleted(true);
+    // Tidak ada peningkatan progress di sini
+  };
+
+  const handleNext = () => {
     handleLessonComplete("/materi/bab1/pengenalan");
+    navigate("/materi/bab1/instalasi");
   };
 
   return (
@@ -188,7 +191,7 @@ const PengenalanCSharp = () => {
             Kembali
           </button>
           <button
-            onClick={() => navigate("/materi/bab1/instalasi")}
+            onClick={handleNext} // Memanggil handleNext untuk memperbarui progress
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
           >
             Next

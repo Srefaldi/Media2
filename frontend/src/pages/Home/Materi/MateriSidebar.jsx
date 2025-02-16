@@ -22,11 +22,11 @@ const daftarBab = [
         label: "1.2 Instalasi Setup .NET dan Visual Studio Code",
       },
       {
-        path: "/materi/bab1/Struktur-kode",
+        path: "/materi/bab1/struktur-kode",
         label: "1.3 Struktur Kode Bahasa Pemrograman C#",
       },
       {
-        path: "/Materi/bab1/Struktur-eksekusi",
+        path: "/Materi/bab1/struktur-eksekusi",
         label: "1.4 Struktur Eksekusi Kode",
       },
       { path: "/materi/bab1/sintaks-print", label: "1.5 Sintaks Print" },

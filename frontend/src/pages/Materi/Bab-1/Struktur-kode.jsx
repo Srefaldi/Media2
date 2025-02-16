@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Quiz from "./Quiz-bab1/Quiz3"; 
+import { useNavigate, useOutletContext } from "react-router-dom";
+import Quiz from "./Quiz-bab1/Quiz3";
 
 const StrukturKode = () => {
   const navigate = useNavigate();
   const [quizCompleted, setQuizCompleted] = useState(false);
-
+  const { handleLessonComplete } = useOutletContext(); // Ambil fungsi dari konteks
   const handleBack = () => {
     navigate("/materi/bab1/instalasi");
   };
 
   const handleNext = () => {
+    handleLessonComplete("/materi/bab1/struktur-kode");
     navigate("/materi/bab1/struktur-eksekusi");
   };
 

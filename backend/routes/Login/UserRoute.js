@@ -1,4 +1,5 @@
 import express from "express";
+import { saveProgress, getProgress } from "../../controller/home/materi-user/user-progres.jsx";
 import {
     getUsers,
     getUsersById,
@@ -15,4 +16,6 @@ router.get('/users/:id', verifyUser ,adminOnly,getUsersById);
 router.post('/users', verifyUser ,adminOnly,createUsers);
 router.patch('/users/:id', verifyUser ,adminOnly,updateUsers);
 router.delete('/users/:id', verifyUser ,adminOnly,delateUsers);
+router.post('/progress', verifyUser , saveProgress);
+router.get('/progress/:userId', verifyUser , getProgress);
 export default router;

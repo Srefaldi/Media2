@@ -33,19 +33,19 @@ function Navbar() {
   return (
     <nav className="h-22 overflow-hidden bg-[#001F3F]">
       <div className="px-6 container mx-auto flex items-center justify-between">
-        <a href="/" className="w-25">
+        <Link to="/" className="w-25">
           <img src={logo} alt="Logo" className="h-18 w-auto" />
-        </a>
+        </Link>
         <div className="hidden md:inline space-x-6 font-semibold">
-          <a href="/" className="text-white hover:text-black">
+          <Link to="/" className="text-white hover:text-black">
             Beranda
-          </a>
-          <a href="/daftar-materi" className="text-white hover:text-black">
+          </Link>
+          <Link to="/daftar-materi" className="text-white hover:text-black">
             Materi
-          </a>
-          <a href="/informasi" className="text-white hover:text-black">
+          </Link>
+          <Link to="/informasi" className="text-white hover:text-black">
             Informasi
-          </a>
+          </Link>
         </div>
         <button
           className="hidden md:inline px-4 py-2 rounded-3xl font-semibold"
@@ -56,28 +56,6 @@ function Navbar() {
           </Link>
         </button>
         <img src={iconHamburger} className="hamburger md:hidden" alt="Menu" />
-      </div>
-      <div className="menu absolute container hidden flex-col bg-white shadow-md inset-x-0 mx-auto px-6 py-5">
-        <a className="text-black hover:text-red-500" href="/">
-          Beranda
-        </a>
-        <a className="text-black hover:text-red-500" href="/daftar-materi">
-          Materi
-        </a>
-        <a className="text-black hover:text-red-500" href="/informasi">
-          Informasi
-        </a>
-        <Link
-          to="/login"
-          className="hidden md:inline px-4 py-2 rounded-3xl font-semibold text-blue-900 hover:text-black"
-          style={{
-            backgroundColor: "white",
-            display: "inline-block",
-            padding: "8px 16px",
-          }}
-        >
-          Login
-        </Link>
       </div>
     </nav>
   );

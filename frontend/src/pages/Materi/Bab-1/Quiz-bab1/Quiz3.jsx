@@ -4,19 +4,21 @@ const Quiz = ({ onComplete }) => {
   const [functionName, setFunctionName] = useState("");
   const [methodName, setMethodName] = useState("");
   const [showCompiler, setShowCompiler] = useState(false);
+  const [quizFeedback, setQuizFeedback] = useState("");
 
   const handleSubmit = () => {
     if (functionName === "Main" && methodName === "Console") {
+      setQuizFeedback("Jawaban Anda benar! Anda dapat melanjutkan.");
       onComplete();
-      alert("Jawaban Anda benar!");
     } else {
-      alert("Jawaban Anda salah, coba lagi!");
+      setQuizFeedback("Jawaban Anda salah, coba lagi!");
     }
   };
 
   const handleReset = () => {
     setFunctionName("");
     setMethodName("");
+    setQuizFeedback("");
     setShowCompiler(false);
   };
 
@@ -72,7 +74,7 @@ const Quiz = ({ onComplete }) => {
           onClick={handleSubmit}
           className="bg-green-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-green-600"
         >
-          Cek Answer »
+          Cek Jawaban
         </button>
 
         {/* Tombol Reset */}
@@ -102,6 +104,13 @@ const Quiz = ({ onComplete }) => {
             frameBorder="0"
           ></iframe>
         </div>
+      )}
+
+      {/* Umpan Balik Kuis */}
+      {quizFeedback && (
+        <p className={`mt-4 text-center ${functionName === "Main" && methodName === "Console" ? "text-green-500" : "text-red-500"}`}>
+          {quizFeedback}
+        </p>
       )}
     </div>
   );

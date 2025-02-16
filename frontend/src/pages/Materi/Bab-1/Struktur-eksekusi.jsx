@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import gambar118 from "./img-bab1/Gambar-118.png";
+
 const StrukturEksekusi = () => {
   const navigate = useNavigate();
 
@@ -15,7 +16,7 @@ const StrukturEksekusi = () => {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">1.4 Struktur Eksekusi Kode</h2>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md">
+      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
         Bahasa pemrograman C# memiliki struktur eksekusi kode yang sekuensial,
         yang berarti kode yang ditulis terlebih dahulu akan dieksekusi terlebih
         dahulu. Struktur eksekusi sekuensial adalah struktur umum yang digunakan
@@ -24,12 +25,12 @@ const StrukturEksekusi = () => {
       <h3 className="text-xl font-semibold mt-4">
         Contoh Struktur Eksekusi Kode
       </h3>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md">
+      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
         Dapat diketahui lebih lanjut mengenai struktur eksekusi sekuensial
         menggunakan sampel kode di bawah ini. <br />
         Cobalah kode program pada compiler:
       </p>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md italic">
+      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md italic text-justify">
         <iframe
           width="100%"
           height="475"
@@ -42,7 +43,7 @@ const StrukturEksekusi = () => {
       </p>
 
       <h3 className="text-xl font-semibold mt-4">Control Structures</h3>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md">
+      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
         Di dalam struktur eksekusi kode terdapat control structures yang berguna
         untuk mengatur proses eksekusi sebuah kode program. Terdapat 3 tipe
         control structures dalam bahasa pemrograman:
@@ -62,7 +63,7 @@ const StrukturEksekusi = () => {
         </ul>
       </p>
 
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md italic">
+      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md italic text-justify">
         <div className="flex justify-center">
           <img
             src={gambar118}
