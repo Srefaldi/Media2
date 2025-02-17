@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import styled from "styled-components";
+import ProgressBar from "../../../components/Home/Materi/ProgressBarComponents";
 
 const ScrollableList = styled.ul`
   overflow-y: auto; /* Pastikan overflow-y diatur ke auto */
@@ -22,11 +23,11 @@ const daftarBab = [
         label: "1.2 Instalasi Setup .NET dan Visual Studio Code",
       },
       {
-        path: "/materi/bab1/Struktur-kode",
+        path: "/materi/bab1/struktur-kode",
         label: "1.3 Struktur Kode Bahasa Pemrograman C#",
       },
       {
-        path: "/Materi/bab1/Struktur-eksekusi",
+        path: "/Materi/bab1/struktur-eksekusi",
         label: "1.4 Struktur Eksekusi Kode",
       },
       { path: "/materi/bab1/sintaks-print", label: "1.5 Sintaks Print" },
@@ -186,7 +187,7 @@ const daftarBab = [
   },
 ];
 
-const MateriSidebar = ({ completedLessons }) => {
+const MateriSidebar = ({ completedLessons, progress }) => {
   const [openBab, setOpenBab] = useState(null);
 
   const toggleDropdown = (babId) => {
@@ -196,7 +197,8 @@ const MateriSidebar = ({ completedLessons }) => {
   return (
     <div className="bg-[#001F3F] text-white p-4 w-64 overflow-y-auto">
       <h2 className="text-center text-xl font-bold mb-4">DAFTAR MATERI</h2>
-      <ul className="space-y-2">
+      <ProgressBar progress={progress} />
+      <ul className="mt-4 space-y-2">
         {daftarBab.map((bab) => (
           <li key={bab.id}>
             <button

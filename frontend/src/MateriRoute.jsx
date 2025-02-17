@@ -7,6 +7,9 @@ import PengenalanCSharp from "../src/pages/Materi/Bab-1/Pengenalan";
 import InstalasiSetup from "../src/pages/Materi/Bab-1/Instalasi";
 import StrukturKode from "../src/pages/Materi/Bab-1/Struktur-kode";
 import StrukturEksekusi from "../src/pages/Materi/Bab-1/Struktur-eksekusi";
+import SintaksPrint from "../src/pages/Materi/Bab-1/Sintaks-print";
+
+// BAB 2
 import TipeData from "../src/pages/Materi/Bab-2/tipedata";
 import Variabel from "../src/pages/Materi/Bab-2/variabel";
 
@@ -22,6 +25,7 @@ const MateriRoutes = () => {
         <Route path="bab1/instalasi" element={<InstalasiSetup />} />
         <Route path="bab1/struktur-kode" element={<StrukturKode />} />
         <Route path="bab1/struktur-eksekusi" element={<StrukturEksekusi />} />
+        <Route path="bab1/sintaks-print" element={<SintaksPrint />} />
 
         {/* BAB 2 */}
         <Route path="bab2/tipedata" element={<TipeData />} />

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux"; 
-import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
 import { IoLogOut } from "react-icons/io5";
 import logo from "../../../assets/img/logo-nav.png";
 import md5 from "crypto-js/md5";
@@ -9,7 +9,7 @@ import { LogOut, reset } from "../../../features/authSlice";
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const userEmail = user?.email ? user.email.trim().toLowerCase() : "";
@@ -30,9 +30,9 @@ const Navbar = () => {
   return (
     <nav className="bg-[#001F3F] border-gray-200 dark:bg-gray-900 dark:border-gray-700 h-20">
       <div className="max-screen-xl flex flex-wrap items-center justify-between mx-auto p-1 bg-[#001F3F]">
-        <a href="/" className="w-20">
+        <Link to="/" className="w-20">
           <img src={logo} alt="Logo" className="h-6 w-auto" />
-        </a>
+        </Link>
 
         <button
           type="button"
@@ -89,12 +89,12 @@ const Navbar = () => {
                 <div className="z-10 absolute font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-36 dark:bg-gray-700 dark:divide-gray-600">
                   <ul className="py-1 text-xs text-gray-700 dark:text-gray-400">
                     <li>
-                      <a
-                        href="/dashboard"
+                      <Link
+                        to="/dashboard"
                         className="block px-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Dashboard
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                   <div className="py-1">

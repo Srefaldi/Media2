@@ -4,11 +4,11 @@ Content-Type: application/json
 
 
 {
-    "name": "Chim",
-    "email": "chim@gmail.com",
-    "password": "123456",
-    "confPassword": "123456",
-    "role": "user"
+    "name": "ADMIN",
+    "email": "admin@gmail.com",
+    "password": "123",
+    "confPassword": "123",
+    "role": "admin"
 }
 
 
