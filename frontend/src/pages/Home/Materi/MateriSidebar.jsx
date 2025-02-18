@@ -34,7 +34,7 @@ const daftarBab = [
       { path: "/materi/bab1/sintaks-komentar", label: "1.6 Sintaks Komentar" },
       { path: "/materi/bab1/error-csharp", label: "1.7 Error Pada C#" },
       { path: "/materi/bab1/latihan-bab1", label: "Latihan" },
-      { path: "/materi/bab1/kuis", label: "KUIS" },
+      { path: "/materi/bab1/kuis-bab1", label: "KUIS" },
       { path: "/materi/bab1/rangkuman", label: "RANGKUMAN" },
     ],
   },

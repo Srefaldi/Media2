@@ -7,7 +7,8 @@ const Quiz = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Validasi jawaban
-    if (selectedAnswer === "C") {
+    if (selectedAnswer === "B") {
+      // Jawaban benar adalah B
       setQuizFeedback("Jawaban benar! Anda dapat melanjutkan.");
       onComplete();
     } else {
@@ -24,10 +25,7 @@ const Quiz = ({ onComplete }) => {
     <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-center mb-4">Kuis</h2>
       <form onSubmit={handleSubmit}>
-        <p className="mb-4 text-gray-700">
-          1. Apa yang harus kita instal untuk menjalankan kode program dengan
-          bahasa pemrograman C# pada Visual Studio Code?
-        </p>
+        <p className="mb-4 text-gray-700">Hasil kompilasi program C# ....</p>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
             <div key={option} className="mb-2">
@@ -69,7 +67,7 @@ const Quiz = ({ onComplete }) => {
       {quizFeedback && (
         <p
           className={`mt-4 text-center ${
-            selectedAnswer === "C" ? "text-green-500" : "text-red-500"
+            selectedAnswer === "B" ? "text-green-500" : "text-red-500"
           }`}
         >
           {quizFeedback}
@@ -82,15 +80,15 @@ const Quiz = ({ onComplete }) => {
 const getOptionText = (option) => {
   switch (option) {
     case "A":
-      return ".NET SDK dan .NET Master";
+      return "Binary langsung";
     case "B":
-      return ".NET Master dan .NET Runtime";
+      return "CIL (Common Intermediate Language)";
     case "C":
-      return ".NET SDK dan .NET Runtime";
+      return "Java bytecode";
     case "D":
-      return ".NET Framework dan .NET Core";
+      return "Assembly language";
     case "E":
-      return ".NET SDK dan Visual Studio";
+      return "HTML";
     default:
       return "";
   }

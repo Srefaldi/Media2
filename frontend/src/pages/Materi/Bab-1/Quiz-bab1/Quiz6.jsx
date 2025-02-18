@@ -25,9 +25,7 @@ const Quiz = ({ onCorrectAnswer }) => {
   return (
     <div className="mt-6 p-4 bg-white rounded-lg shadow-md">
       <h3 className="text-xl font-semibold mb-2">Kuis</h3>
-      <p className="mb-4">
-        1. Sintaks untuk membuat single line comment adalah …
-      </p>
+      <p className="mb-4">Sintaks untuk membuat single line comment adalah …</p>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
