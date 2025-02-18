@@ -9,8 +9,8 @@ import StrukturKode from "../src/pages/Materi/Bab-1/Struktur-kode";
 import StrukturEksekusi from "../src/pages/Materi/Bab-1/Struktur-eksekusi";
 import SintaksPrint from "../src/pages/Materi/Bab-1/Sintaks-print";
 import SintaksKomentar from "../src/pages/Materi/Bab-1/SintaksKomentar";
-
 import ErrorCSharp from "../src/pages/Materi/Bab-1/ErrorCSharp";
+import Latihan from "../src/pages/Materi/Bab-1/Latihan";
 
 // BAB 2
 import TipeData from "../src/pages/Materi/Bab-2/tipedata";
@@ -31,7 +31,7 @@ const MateriRoutes = () => {
         <Route path="bab1/sintaks-print" element={<SintaksPrint />} />
         <Route path="bab1/sintaks-komentar" element={<SintaksKomentar />} />
         <Route path="bab1/error-csharp" element={<ErrorCSharp />} />
-
+        <Route path="bab1/latihan-bab1" element={<Latihan />} />
         {/* BAB 2 */}
         <Route path="bab2/tipedata" element={<TipeData />} />
         <Route path="bab2/variabel" element={<Variabel />} />
