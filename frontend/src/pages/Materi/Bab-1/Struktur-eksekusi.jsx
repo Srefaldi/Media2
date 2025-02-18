@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import gambar118 from "./img-bab1/Gambar-118.png";
 import Quiz from "./Quiz-bab1/Quiz4";
 
 const StrukturEksekusi = () => {
   const navigate = useNavigate();
   const [quizCompleted, setQuizCompleted] = useState(false);
-
+  const { handleLessonComplete } = useOutletContext(); // Ambil fungsi dari konteks
   const handleBack = () => {
     navigate("/materi/bab1/struktur-kode");
   };
 
   const handleNext = () => {
+    handleLessonComplete("/materi/bab1/struktur-eksekusi");
     navigate("/materi/bab1/sintaks-print");
   };
 
@@ -84,15 +85,7 @@ const StrukturEksekusi = () => {
       </p>
 
       {/* Kuis */}
-      {!quizCompleted ? (
-        <Quiz onComplete={handleQuizComplete} /> // Use the Quiz component
-      ) : (
-        <div className="mt-4 text-center">
-          <p className="text-green-500">
-            Kuis selesai! Anda dapat melanjutkan.
-          </p>
-        </div>
-      )}
+      {!quizCompleted && <Quiz onComplete={handleQuizComplete} />}
 
       {/* Tombol Navigasi */}
       {quizCompleted && (
