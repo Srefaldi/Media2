@@ -1,0 +1,12 @@
+/* MateriLayout.css */
+.fixed {
+    position: fixed;
+  }
+  
+  .h-[calc(100vh-80px)] {
+    height: calc(100vh - 80px); /* Sesuaikan dengan tinggi navbar Anda */
+  }
+  
+  .ml-64 {
+    margin-left: 16rem; /* Sesuaikan dengan lebar sidebar Anda */
+  }

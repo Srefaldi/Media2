@@ -28,8 +28,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-[#001F3F] border-gray-200 dark:bg-gray-900 dark:border-gray-700 h-20">
-      <div className="max-screen-xl flex flex-wrap items-center justify-between mx-auto p-1 bg-[#001F3F]">
+    <nav>
+      <div className="max-screen-xl flex flex-wrap items-center justify-between mx-auto p-1 bg-[#001F3F] fixed h-20 top-0 left-0 w-full z-10">
         <Link to="/" className="w-20">
           <img src={logo} alt="Logo" className="h-6 w-auto" />
         </Link>
@@ -65,10 +65,10 @@ const Navbar = () => {
               >
                 <img
                   src={avatarUrl}
-                  alt="User "
+                  alt="User  "
                   className="w-6 h-6 rounded-full mr-2"
                 />
-                {user ? user.name : "User "}
+                {user ? user.name : "User  "}
                 <svg
                   className="w-3 h-3 ml-1"
                   aria-hidden="true"

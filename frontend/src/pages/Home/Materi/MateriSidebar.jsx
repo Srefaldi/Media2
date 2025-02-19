@@ -195,7 +195,9 @@ const MateriSidebar = ({ completedLessons, progress }) => {
   };
 
   return (
-    <div className="bg-[#001F3F] text-white p-4 w-64 overflow-y-auto">
+    <div className="bg-[#001F3F] text-white p-4 w-64 overflow-hidden">
+      {" "}
+      {/* Ganti overflow-y-auto dengan overflow-hidden */}
       <h2 className="text-center text-xl font-bold mb-4">DAFTAR MATERI</h2>
       <ProgressBar progress={progress} />
       <ul className="mt-4 space-y-2">
@@ -210,8 +212,8 @@ const MateriSidebar = ({ completedLessons, progress }) => {
             </button>
             <ScrollableList
               className={classNames("pl-4 transition-all duration-300", {
-                "max-h-[300px]": openBab === bab.id,
-                "max-h-0": openBab !== bab.id,
+                "max-h-[300px] overflow-y-auto": openBab === bab.id, // Tambahkan overflow-y-auto saat bab terbuka
+                "max-h-0 overflow-hidden": openBab !== bab.id, // Tambahkan overflow-hidden saat bab tertutup
               })}
             >
               {bab.subBab.map((sub, index) => (
