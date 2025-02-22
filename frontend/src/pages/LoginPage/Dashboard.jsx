@@ -31,8 +31,3 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-
-{/* <Layout>
-  {user?.role === "user" && <Home />}
-  {user?.role === "guru" && <GuruDashboard />}
-</Layout> */}

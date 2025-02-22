@@ -24,6 +24,7 @@ const PengenalanCSharp = () => {
 
   const handleNext = () => {
     handleLessonComplete("/materi/bab1/pengenalan");
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/instalasi");
   };
 

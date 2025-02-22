@@ -8,16 +8,18 @@ const StrukturEksekusi = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const { handleLessonComplete } = useOutletContext(); // Ambil fungsi dari konteks
   const handleBack = () => {
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/struktur-kode");
   };
 
   const handleNext = () => {
     handleLessonComplete("/materi/bab1/struktur-eksekusi");
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/sintaks-print");
   };
 
   const handleQuizComplete = () => {
-    setQuizCompleted(true); // Set quiz as completed
+    setQuizCompleted(true);
   };
 
   return (

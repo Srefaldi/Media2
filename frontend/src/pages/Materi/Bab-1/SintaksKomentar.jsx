@@ -9,10 +9,12 @@ const SintaksKomentar = () => {
 
   const handleNext = () => {
     handleLessonComplete("/materi/bab1/sintaks-komentar");
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/error-csharp");
   };
 
   const handleBack = () => {
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/sintaks-print");
   };
 

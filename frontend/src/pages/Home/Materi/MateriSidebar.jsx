@@ -195,9 +195,9 @@ const MateriSidebar = ({ completedLessons, progress }) => {
   };
 
   return (
-    <div className="bg-[#001F3F] text-white p-4 w-64 overflow-hidden">
+    <div className="bg-white text-gray-900 p-4 w-64 overflow-hidden">
       {" "}
-      {/* Ganti overflow-y-auto dengan overflow-hidden */}
+      {/* Ganti warna latar belakang menjadi putih */}
       <h2 className="text-center text-xl font-bold mb-4">DAFTAR MATERI</h2>
       <ProgressBar progress={progress} />
       <ul className="mt-4 space-y-2">
@@ -205,22 +205,32 @@ const MateriSidebar = ({ completedLessons, progress }) => {
           <li key={bab.id}>
             <button
               onClick={() => toggleDropdown(bab.id)}
-              className="w-full text-left p-2 flex justify-between items-center rounded bg-gray-700 hover:bg-gray-600"
+              className="w-full text-left p-2 flex justify-between items-center rounded transition duration-200"
+              style={{
+                backgroundColor: "#68217A",
+                color: "white",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "#4A5B6D")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "#68217A")
+              }
             >
               <span>🗂 {bab.judul}</span>
               <span>{openBab === bab.id ? "▲" : "▼"}</span>
             </button>
             <ScrollableList
               className={classNames("pl-4 transition-all duration-300", {
-                "max-h-[300px] overflow-y-auto": openBab === bab.id, // Tambahkan overflow-y-auto saat bab terbuka
-                "max-h-0 overflow-hidden": openBab !== bab.id, // Tambahkan overflow-hidden saat bab tertutup
+                "max-h-[300px] overflow-y-auto": openBab === bab.id,
+                "max-h-0 overflow-hidden": openBab !== bab.id,
               })}
             >
               {bab.subBab.map((sub, index) => (
                 <li key={index}>
                   <Link
                     to={sub.path}
-                    className={`text-white block p-2 hover:bg-gray-600 rounded ${
+                    className={`text-gray-900 block p-2 hover:bg-gray-300 rounded ${
                       completedLessons.includes(sub.path)
                         ? ""
                         : "opacity-50 cursor-not-allowed"
@@ -242,7 +252,7 @@ const MateriSidebar = ({ completedLessons, progress }) => {
       <div className="mt-6">
         <Link
           to="/dashboard"
-          className="block text-center bg-[#526D82] text-white py-2 px-4 rounded-full hover:bg-blue-600 transition"
+          className="block text-center bg-[#68217A] text-white py-2 px-4 rounded-full hover:bg-[#4A5B6D] transition"
         >
           Kembali ke Dashboard
         </Link>

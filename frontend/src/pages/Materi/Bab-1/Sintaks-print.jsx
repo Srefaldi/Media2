@@ -37,12 +37,14 @@ const SintaksPrint = () => {
 
   // State untuk kuis
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const { handleLessonComplete } = useOutletContext(); // Ambil fungsi dari konteks
+  const { handleLessonComplete } = useOutletContext(); 
   const handleBack = () => {
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/struktur-eksekusi");
   };
   const handleNext = () => {
     handleLessonComplete("/materi/bab1/sintaks-print");
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/sintaks-komentar");
   };
 

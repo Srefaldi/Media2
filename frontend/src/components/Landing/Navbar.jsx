@@ -1,86 +1,64 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/img/logo-nav.png";
 import iconHamburger from "../../assets/img/icon-hamburger.svg";
 import iconClose from "../../assets/img/icon-close.svg";
 
-function Navbar() {
-  useEffect(() => {
-    const hamburger = document.querySelector(".hamburger");
-    const menu = document.querySelector(".menu");
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const toggleMenu = () => {
-      let src = hamburger.src.includes(iconHamburger)
-        ? iconClose
-        : iconHamburger;
-      hamburger.src = src;
-      menu.classList.toggle("hidden");
-      menu.classList.toggle("flex");
-      menu.classList.toggle("text-center");
-    };
-
-    if (hamburger && menu) {
-      hamburger.addEventListener("click", toggleMenu);
-    }
-
-    return () => {
-      if (hamburger) {
-        hamburger.removeEventListener("click", toggleMenu);
-      }
-    };
-  }, []);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <nav className="h-22 overflow-hidden bg-[#001F3F]">
-      <div className="px-6 container mx-auto flex items-center justify-between">
-        <a href="/" className="w-25">
-          <img src={logo} alt="Logo" className="h-18 w-auto" />
+    <header className="text-gray-700 body-font border-b border-gray-200">
+      <div className="container mx-auto flex flex-wrap p-4 flex-col md:flex-row items-center justify-between">
+        <a
+          className="flex title-font font-medium items-center text-gray-900 md:mb-0"
+          href="/"
+        >
+          <span className="ml-3 text-xl">
+            <span className="font-bold" style={{ color: "#68217A" }}>
+              SHARP
+            </span>{" "}
+            LEARN
+          </span>
         </a>
-        <div className="hidden md:inline space-x-6 font-semibold">
-          <a href="/" className="text-white hover:text-black">
-            Beranda
-          </a>
-          <a href="/daftar-materi" className="text-white hover:text-black">
-            Materi
-          </a>
-          <a href="/informasi" className="text-white hover:text-black">
-            Informasi
-          </a>
+
+        <div className="flex items-center md:ml-auto">
+          <button
+            className="md:hidden inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-opacity-80 rounded text-base"
+            onClick={toggleMenu}
+          >
+            <img
+              src={isMenuOpen ? iconClose : iconHamburger}
+              className="hamburger"
+              alt="Menu"
+            />
+          </button>
+          <div
+            className={`${
+              isMenuOpen ? "flex" : "hidden"
+            } absolute top-16 right-0 bg-white shadow-lg rounded-lg md:flex md:static md:bg-transparent md:shadow-none`}
+          >
+            <button className="inline flex items-center border border-[#68217A] py-1 px-3 focus:outline-none rounded text-base text-black hover:bg-[#68217A] hover:text-white mx-2">
+              <Link to="/daftar" className="text-black">
+                DAFTAR
+              </Link>
+            </button>
+            <button
+              className="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-opacity-80 rounded text-base mx-2"
+              style={{ backgroundColor: "#68217A" }}
+            >
+              <Link to="/login" className="text-white hover:text-gray-200">
+                MASUK
+              </Link>
+            </button>
+          </div>
         </div>
-        <button
-          className="hidden md:inline px-4 py-2 rounded-3xl font-semibold"
-          style={{ backgroundColor: "white" }}
-        >
-          <Link to="/login" className="text-blue-900 hover:text-black">
-            Login
-          </Link>
-        </button>
-        <img src={iconHamburger} className="hamburger md:hidden" alt="Menu" />
       </div>
-      <div className="menu absolute container hidden flex-col bg-white shadow-md inset-x-0 mx-auto px-6 py-5">
-        <a className="text-black hover:text-red-500" href="/">
-          Beranda
-        </a>
-        <a className="text-black hover:text-red-500" href="/daftar-materi">
-          Materi
-        </a>
-        <a className="text-black hover:text-red-500" href="/informasi">
-          Informasi
-        </a>
-        <Link
-          to="/login"
-          className="hidden md:inline px-4 py-2 rounded-3xl font-semibold text-blue-900 hover:text-black"
-          style={{
-            backgroundColor: "white",
-            display: "inline-block",
-            padding: "8px 16px",
-          }}
-        >
-          Login
-        </Link>
-      </div>
-    </nav>
+    </header>
   );
-}
+};
 
 export default Navbar;

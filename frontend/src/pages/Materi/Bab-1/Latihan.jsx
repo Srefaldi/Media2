@@ -127,17 +127,19 @@ const Latihan = () => {
     if (score < 80) {
       alert("Skor Anda di bawah 80. Silakan baca ulang materi.");
     }
-    setIsFinished(true); // Tandai kuis sebagai selesai
+    setIsFinished(true);
   };
 
   // Fungsi untuk menangani tombol Next
   const handleNext = () => {
-    navigate("/materi/bab1/kuis-bab1"); // Ganti dengan rute yang sesuai
+    window.scrollTo(0, 0);
+    navigate("/materi/bab1/kuis-bab1");
   };
 
   // Fungsi untuk menangani tombol Back
   const handleBack = () => {
-    navigate("/materi/bab1/error-csharp"); // Ganti dengan rute yang sesuai
+    window.scrollTo(0, 0);
+    navigate("/materi/bab1/error-csharp");
   };
 
   return (

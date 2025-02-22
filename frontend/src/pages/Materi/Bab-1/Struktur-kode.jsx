@@ -5,13 +5,15 @@ import Quiz from "./Quiz-bab1/Quiz3";
 const StrukturKode = () => {
   const navigate = useNavigate();
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const { handleLessonComplete } = useOutletContext(); // Ambil fungsi dari konteks
+  const { handleLessonComplete } = useOutletContext();
   const handleBack = () => {
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/instalasi");
   };
 
   const handleNext = () => {
     handleLessonComplete("/materi/bab1/struktur-kode");
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/struktur-eksekusi");
   };
 

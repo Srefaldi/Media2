@@ -4,20 +4,22 @@ import Quiz from "./Quiz-bab1/Quiz7"; // Import komponen Quiz
 
 const ErrorCSharp = () => {
   const navigate = useNavigate();
-  const { handleLessonComplete } = useOutletContext(); // Ambil fungsi dari konteks
-  const [quizCompleted, setQuizCompleted] = useState(false); // State untuk kuis
+  const { handleLessonComplete } = useOutletContext();
+  const [quizCompleted, setQuizCompleted] = useState(false); 
 
   const handleNext = () => {
     handleLessonComplete("/materi/bab1/error-csharp");
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/latihan-bab1");
   };
 
   const handleBack = () => {
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/sintaks-komentar");
   };
 
   const handleQuizCompletion = () => {
-    setQuizCompleted(true); // Set quiz as completed
+    setQuizCompleted(true); 
   };
 
   return (
