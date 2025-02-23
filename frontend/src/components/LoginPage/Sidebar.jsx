@@ -16,42 +16,38 @@ const Sidebar = () => {
   };
 
   return (
-    <div>
-      <aside className="menu pl-2 has-shadow">
-        <ul className="menu-list">
-          <li>
-            <NavLink to={"/dashboard"}>
-              <IoHome /> Dashboard
-            </NavLink>
-          </li>
-          {/* Tampilkan menu Products hanya jika pengguna adalah admin */}
-          {user && user.role === "admin" && (
-            <li>
-              <NavLink to={"/products"}>
-                <IoPricetag /> Data Evaluasi
-              </NavLink>
-            </li>
-          )}
-        </ul>
+    <div className="sidebar bg-gray-200 w-64 p-4">
+      <h2 className="text-lg font-bold mb-4">Menu</h2>
+      <nav>
+        <NavLink
+          to={"/dashboard"}
+          className="block p-2 rounded hover:bg-gray-300"
+        >
+          <IoHome /> Dashboard
+        </NavLink>
         {user && user.role === "admin" && (
-          <div>
-            <ul className="menu-list">
-              <li>
-                <NavLink to={"/users"}>
-                  <IoPerson /> Data User
-                </NavLink>
-              </li>
-            </ul>
-          </div>
+          <NavLink
+            to={"/products"}
+            className="block p-2 rounded hover:bg-gray-300"
+          >
+            <IoPricetag /> Data Evaluasi
+          </NavLink>
         )}
-        <ul className="menu-list">
-          <li>
-            <button onClick={logout} className="button is-white">
-              <IoLogOut /> Logout
-            </button>
-          </li>
-        </ul>
-      </aside>
+        {user && user.role === "admin" && (
+          <NavLink
+            to={"/users"}
+            className="block p-2 rounded hover:bg-gray-300"
+          >
+            <IoPerson /> Data User
+          </NavLink>
+        )}
+        <button
+          onClick={logout}
+          className="block p-2 rounded hover:bg-gray-300 w-full text-left"
+        >
+          <IoLogOut /> Logout
+        </button>
+      </nav>
     </div>
   );
 };

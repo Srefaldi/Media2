@@ -4,7 +4,7 @@ import iconClose from "../../assets/img/icon-close.svg";
 import heroImage from "../../assets/img/logo-hero.png";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
-
+import InfoModal from "./InfoModal";
 const daftarMateri = [
   {
     bab: "BAB 1",
@@ -39,6 +39,11 @@ const daftarMateri = [
       "Pengertian Tipe Data",
       "Klasifikasi Tipe Data",
       "Tipe Data Dasar",
+      "1. Integer",
+      "2. Floating-point",
+      "3. Boolean",
+      "4. Char",
+      "5. String",
     ],
   },
   {
@@ -81,9 +86,14 @@ const daftarMateri = [
 
 function Landing() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modal
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen); // Fungsi untuk membuka/menutup modal
   };
 
   return (
@@ -120,14 +130,12 @@ function Landing() {
               } absolute top-16 right-0 bg-white shadow-lg rounded-lg md:flex md:static md:bg-transparent md:shadow-none`}
             >
               <button className="inline flex items-center border border-[#68217A] py-1 px-3 focus:outline-none rounded text-base text-black hover:bg-[#68217A] hover:text-white mx-2">
-                {" "}
-                {/* Tambahkan mx-2 */}
                 <Link to="/daftar" className="text-black">
                   DAFTAR
                 </Link>
               </button>
               <button
-                className="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-opacity-80 rounded text-base mx-2" // Tambahkan mx-2
+                className="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-opacity-80 rounded text-base mx-2"
                 style={{ backgroundColor: "#68217A" }}
               >
                 <Link to="/login" className="text-white hover:text-gray-200">
@@ -163,13 +171,15 @@ function Landing() {
               >
                 DAFTAR MATERI
               </a>
-              <button className="ml-4 inline-flex text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg">
+              <button
+                onClick={toggleModal} // Menambahkan event handler untuk membuka modal
+                className="ml-4 inline-flex text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg"
+              >
                 INFORMASI
               </button>
             </div>
           </div>
 
-          {/* DAFTAR MATERI */}
           <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
             <img
               className="object-cover object-center rounded w-full h-auto"
@@ -207,7 +217,6 @@ function Landing() {
             ))}
           </div>
         </div>
-        {/*BUATKAN BUTTON MULAI BELAJAR DISINI */}
         <div className="flex justify-center mt-8">
           <Link
             to="/login"
@@ -218,6 +227,9 @@ function Landing() {
           </Link>
         </div>
       </section>
+
+      {/* Modal Informasi */}
+      <InfoModal isOpen={isModalOpen} toggleModal={toggleModal} />
 
       {/* Footer */}
       <Footer />
