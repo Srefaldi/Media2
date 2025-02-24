@@ -1,18 +1,19 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import NotificationPopup from "../../../../components/Home/Materi/PopUp/PopUpSalahJawaban";
 
 const Quiz = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [quizFeedback, setQuizFeedback] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validasi jawaban
+
     if (selectedAnswer === "B") {
-      // Jawaban benar adalah B
-      setQuizFeedback("Jawaban benar! Anda dapat melanjutkan.");
       onComplete();
     } else {
-      setQuizFeedback("Jawaban salah, coba lagi!");
+      setShowNotification(true);
     }
   };
 
@@ -21,9 +22,20 @@ const Quiz = ({ onComplete }) => {
     setQuizFeedback("");
   };
 
+  const handleCloseNotification = () => {
+    setShowNotification(false);
+    setSelectedAnswer("");
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-center mb-4">Kuis</h2>
+      <h2
+        className="text-lg font-semibold text-center"
+        style={{ color: "#6E2A7F" }}
+      >
+        UJI PENGETAHUAN
+      </h2>
       <form onSubmit={handleSubmit}>
         <p className="mb-4 text-gray-700">Hasil kompilasi program C# ....</p>
         <div className="mb-4">
@@ -32,7 +44,7 @@ const Quiz = ({ onComplete }) => {
               <label
                 className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 ${
                   selectedAnswer === option
-                    ? "bg-[#001F3F] text-white border-[#001F3F]"
+                    ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
                     : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
                 }`}
               >
@@ -48,19 +60,44 @@ const Quiz = ({ onComplete }) => {
             </div>
           ))}
         </div>
-        <div className="flex justify-between">
+        <div className="flex space-x-2">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
           >
             Kirim
           </button>
           <button
             type="button"
             onClick={handleReset}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-200"
+            style={{
+              backgroundColor: "red", // Warna merah
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+              marginLeft: "1rem", // Tambahkan margin kiri untuk jarak
+            }}
+            onMouseEnter={
+              (e) => (e.currentTarget.style.backgroundColor = "#c0392b") // Warna merah lebih gelap saat hover
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "red")
+            }
           >
-            Reset
+            Hapus Jawaban
           </button>
         </div>
       </form>
@@ -72,6 +109,11 @@ const Quiz = ({ onComplete }) => {
         >
           {quizFeedback}
         </p>
+      )}
+
+      {/* Notifikasi jika jawaban salah */}
+      {showNotification && (
+        <NotificationPopup onClose={handleCloseNotification} />
       )}
     </div>
   );

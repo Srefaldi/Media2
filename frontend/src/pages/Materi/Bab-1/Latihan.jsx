@@ -1,14 +1,25 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Pastikan untuk mengimpor useNavigate
-import "../style/latihan.css"; // Pastikan untuk mengimpor file CSS
+import { useNavigate } from "react-router-dom";
+import PopUpJawabanSalah from "../../../components/Home/Materi/PopUp/Latihan/PopUpSalah"; // Ganti dengan path yang sesuai
+import PopUpJawabanKosong from "../../../components/Home/Materi/PopUp/Latihan/PopUpKosong"; // Ganti dengan path yang sesuai
+import PopUpSkor from "../../../components/Home/Materi/PopUp/Latihan/PopUpSkor"; // Ganti dengan path yang sesuai
+import PopUpJawabanBelumSelesai from "../../../components/Home/Materi/PopUp/Latihan/PopUpBelumSelesai"; // Ganti dengan path yang sesuai
+import PopUpJawabanBenar from "../../../components/Home/Materi/PopUp/Latihan/PopUpBenar";
+import "../style/latihan.css";
 
 const Latihan = () => {
-  const navigate = useNavigate(); // Inisialisasi useNavigate
+  const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState(Array(5).fill("")); // Array untuk menyimpan jawaban
-  const [score, setScore] = useState(0); // State untuk menyimpan skor
-  const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null)); // Status jawaban untuk setiap soal
-  const [isFinished, setIsFinished] = useState(false); // Status selesai
+  const [answers, setAnswers] = useState(Array(5).fill(""));
+  const [score, setScore] = useState(0);
+  const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null));
+  const [isFinished, setIsFinished] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [showEmptyNotification, setShowEmptyNotification] = useState(false);
+  const [showScoreNotification, setShowScoreNotification] = useState(false);
+  const [showIncompleteNotification, setShowIncompleteNotification] =
+    useState(false); // State untuk notifikasi jawaban belum selesai
+  const [showCorrectNotification, setShowCorrectNotification] = useState(false); // State untuk notifikasi jawaban benar
 
   const questions = [
     {
@@ -49,7 +60,7 @@ const Latihan = () => {
         _____
     } 
 }`,
-      correctAnswer: ["/*", "*/"], // Menyimpan jawaban yang benar sebagai array
+      correctAnswer: ["/*", "*/"],
     },
     {
       id: 4,
@@ -90,6 +101,13 @@ const Latihan = () => {
   const checkAnswer = () => {
     const question = questions[currentQuestionIndex];
     const userAnswers = answers[currentQuestionIndex] || [];
+
+    // Cek apakah jawaban kosong
+    if (userAnswers.every((answer) => answer === "")) {
+      setShowEmptyNotification(true); // Tampilkan notifikasi jika jawaban kosong
+      return;
+    }
+
     const isCorrect =
       userAnswers.length === question.correctAnswer.length &&
       userAnswers.every(
@@ -97,13 +115,13 @@ const Latihan = () => {
       );
 
     if (isCorrect) {
-      alert("Jawaban Anda benar!");
       setScore(score + 20); // Tambah 20 poin jika jawaban benar
       const newAnswerStatus = [...answerStatus];
       newAnswerStatus[currentQuestionIndex] = "correct"; // Tandai jawaban benar
       setAnswerStatus(newAnswerStatus);
+      setShowCorrectNotification(true); // Tampilkan pop-up jawaban benar
     } else {
-      alert("Jawaban Anda salah, coba lagi!");
+      setShowNotification(true); // Tampilkan notifikasi jika salah
       const newAnswerStatus = [...answerStatus];
       newAnswerStatus[currentQuestionIndex] = "incorrect"; // Tandai jawaban salah
       setAnswerStatus(newAnswerStatus);
@@ -114,18 +132,24 @@ const Latihan = () => {
     setCurrentQuestionIndex(index);
   };
 
-  // Fungsi untuk mereset jawaban
-  const resetAnswers = () => {
-    setAnswers(Array(5).fill("")); // Mengatur ulang jawaban ke nilai awal
-    setScore(0); // Reset skor ke 0
-    setAnswerStatus(Array(5).fill(null)); // Reset status jawaban
-    setIsFinished(false); // Reset status selesai
+  // Fungsi untuk mereset jawaban untuk soal yang sedang dipilih
+  const resetAnswerForCurrentQuestion = () => {
+    const newAnswers = [...answers];
+    newAnswers[currentQuestionIndex] = ""; // Reset jawaban untuk soal yang sedang dipilih
+    setAnswers(newAnswers);
   };
 
   // Fungsi untuk menangani tombol selesai
   const handleFinish = () => {
+    // Cek apakah ada soal yang belum dijawab
+    const hasIncompleteAnswers = answers.some((answer) => answer === "");
+    if (hasIncompleteAnswers) {
+      setShowIncompleteNotification(true); // Tampilkan pop-up jika ada soal yang belum dijawab
+      return;
+    }
+
     if (score < 80) {
-      alert("Skor Anda di bawah 80. Silakan baca ulang materi.");
+      setShowScoreNotification(true); // Tampilkan pop-up skor jika di bawah 80
     }
     setIsFinished(true);
   };
@@ -151,15 +175,52 @@ const Latihan = () => {
       {/* Petunjuk Mengerjakan Latihan */}
       <div className="mt-4 p-4 border rounded-lg bg-gray-100">
         <h3 className="font-semibold">Petunjuk Mengerjakan Latihan</h3>
-        <ol className="list-decimal list-inside text-gray-600 text-justify">
+        <ol className="list-decimal list-inside text-gray-600 text-justify mt-2">
           <li>
             Jawablah soal-soal di bawah ini dengan mengisikannya pada inputan
             yang tersedia.
           </li>
-          <li>Tekan tombol cek jawaban untuk mengecek jawaban.</li>
+          <li>
+            Tekan tombol{" "}
+            <button
+              disabled
+              style={{
+                backgroundColor: "#6E2A7F",
+                color: "white",
+                padding: "0.5rem 1rem",
+                borderRadius: "0.5rem",
+                transition: "background-color 0.2s",
+                cursor: "not-allowed",
+                opacity: 0.6,
+              }}
+            >
+              Cek Jawaban
+            </button>{" "}
+            untuk mengecek jawaban.
+          </li>
           <li>
             Apabila notifikasi berwarna Merah jawaban salah, dan apabila
             berwarna Hijau jawaban benar.
+          </li>
+          <li>
+            Tekan tombol{" "}
+            <button
+              disabled
+              style={{
+                backgroundColor: "white",
+                color: "#6E2A7F",
+                padding: "0.5rem 1rem",
+                borderRadius: "0.5rem",
+                transition: "background-color 0.2s, border-color 0.2s",
+                border: "2px solid #6E2A7F",
+                cursor: "not-allowed",
+                opacity: 0.6,
+              }}
+              className="ml-2"
+            >
+              Selesai
+            </button>{" "}
+            untuk mengirim semua jawaban.
           </li>
         </ol>
       </div>
@@ -224,7 +285,6 @@ const Latihan = () => {
                   .map((part, index) => (
                     <>
                       {part.split(" ").map((word, wordIndex) => {
-                        // Menentukan warna berdasarkan kata
                         if (
                           word.includes("class") ||
                           word.includes("public") ||
@@ -277,19 +337,47 @@ const Latihan = () => {
           </div>
           <button
             onClick={checkAnswer}
-            className="bg-green-500 text-white px-4 py-2 mt-2 rounded-lg hover:bg-green-600"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
           >
             Cek Jawaban
           </button>
           <button
-            onClick={resetAnswers}
+            onClick={resetAnswerForCurrentQuestion}
             className="bg-red-500 text-white px-4 py-2 mt-2 ml-2 rounded-lg hover:bg-red-600"
           >
-            Reset Jawaban
+            Hapus Jawaban
           </button>
           <button
             onClick={handleFinish}
-            className="bg-blue-500 text-white px-4 py-2 mt-2 ml-2 rounded-lg hover:bg-blue-600"
+            style={{
+              backgroundColor: "white", // Warna latar belakang putih
+              color: "#6E2A7F", // Warna teks sesuai tema
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s, border-color 0.2s",
+              border: "2px solid #6E2A7F", // Outline border dengan warna tema
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#e0e0e0"; // Warna abu-abu saat hover
+              e.currentTarget.style.borderColor = "#5B1F6A"; // Warna border lebih gelap saat hover
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "white"; // Kembali ke warna latar belakang putih
+              e.currentTarget.style.borderColor = "#6E2A7F"; // Kembali ke warna border tema
+            }}
+            className="ml-2"
           >
             Selesai
           </button>
@@ -313,6 +401,29 @@ const Latihan = () => {
           )}
         </div>
       </div>
+
+      {/* Notifikasi jika jawaban salah */}
+      {showNotification && (
+        <PopUpJawabanSalah onClose={() => setShowNotification(false)} />
+      )}
+      {/* Notifikasi jika jawaban kosong */}
+      {showEmptyNotification && (
+        <PopUpJawabanKosong onClose={() => setShowEmptyNotification(false)} />
+      )}
+      {/* Notifikasi jika skor di bawah 80 */}
+      {showScoreNotification && (
+        <PopUpSkor onClose={() => setShowScoreNotification(false)} />
+      )}
+      {/* Notifikasi jika ada jawaban yang belum selesai */}
+      {showIncompleteNotification && (
+        <PopUpJawabanBelumSelesai
+          onClose={() => setShowIncompleteNotification(false)}
+        />
+      )}
+      {/* Notifikasi jika jawaban benar */}
+      {showCorrectNotification && (
+        <PopUpJawabanBenar onClose={() => setShowCorrectNotification(false)} />
+      )}
     </div>
   );
 };

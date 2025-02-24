@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import PopUpJawabanSalah from "../../../../components/Home/Materi/PopUp/PopUpSalahJawaban";
 
-const Quiz = ({ onCorrectAnswer }) => {
+const Quiz = ({ onComplete }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -12,9 +14,13 @@ const Quiz = ({ onCorrectAnswer }) => {
     e.preventDefault();
     // Validasi jawaban
     if (selectedOption === "C") {
-      onCorrectAnswer(); // Panggil fungsi jika jawaban benar
+      onComplete();
+      setIsSubmitted(true);
+      setShowNotification(false);
+    } else {
+      setShowNotification(true);
+      setIsSubmitted(true);
     }
-    setIsSubmitted(true);
   };
 
   const handleReset = () => {
@@ -22,9 +28,20 @@ const Quiz = ({ onCorrectAnswer }) => {
     setIsSubmitted(false);
   };
 
+  const handleCloseNotification = () => {
+    setShowNotification(false);
+    setSelectedOption("");
+    window.scrollTo(0, 0);
+  };
+
   return (
-    <div className="mt-6 p-4 bg-white rounded-lg shadow-md">
-      <h3 className="text-xl font-semibold mb-2">Kuis</h3>
+    <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h2
+        className="text-lg font-semibold text-center"
+        style={{ color: "#6E2A7F" }}
+      >
+        UJI PENGETAHUAN
+      </h2>
       <p className="mb-4">Sintaks untuk membuat single line comment adalah …</p>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -33,7 +50,7 @@ const Quiz = ({ onCorrectAnswer }) => {
               <label
                 className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 ${
                   selectedOption === option
-                    ? "bg-[#001F3F] text-white border-[#001F3F]"
+                    ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
                     : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
                 }`}
               >
@@ -49,19 +66,44 @@ const Quiz = ({ onCorrectAnswer }) => {
             </div>
           ))}
         </div>
-        <div className="flex justify-between">
+        <div className="flex space-x-2">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
           >
-            Kirim Jawaban
+            Kirim
           </button>
+
           <button
             type="button"
             onClick={handleReset}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-200"
+            style={{
+              backgroundColor: "red", // Warna merah
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={
+              (e) => (e.currentTarget.style.backgroundColor = "#c0392b") // Warna merah lebih gelap saat hover
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "red")
+            }
           >
-            Reset
+            Hapus Jawaban
           </button>
         </div>
       </form>
@@ -71,10 +113,13 @@ const Quiz = ({ onCorrectAnswer }) => {
             selectedOption === "C" ? "text-green-500" : "text-red-500"
           }`}
         >
-          {selectedOption === "C"
-            ? "Jawaban Anda benar!"
-            : "Jawaban Anda salah. Coba lagi!"}
+          {selectedOption === "C"}
         </p>
+      )}
+
+      {/* Notifikasi jika jawaban salah */}
+      {showNotification && (
+        <PopUpJawabanSalah onClose={handleCloseNotification} />
       )}
     </div>
   );
@@ -87,7 +132,7 @@ const getOptionText = (option) => {
     case "B":
       return "&&";
     case "C":
-      return "//";
+      return "//"; // Jawaban benar
     case "D":
       return "##";
     case "E":

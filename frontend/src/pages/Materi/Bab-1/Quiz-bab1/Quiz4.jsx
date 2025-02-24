@@ -1,37 +1,49 @@
 import React, { useState } from "react";
+import PopUpJawabanSalah from "../../../../components/Home/Materi/PopUp/PopUpSalahJawaban";
 
 const Quiz = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [quizFeedback, setQuizFeedback] = useState("");
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [showCompiler, setShowCompiler] = useState(false); // State for compiler visibility
+  const [showCompiler, setShowCompiler] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Validasi jawaban
     if (selectedAnswer === "C") {
-      setQuizFeedback("Jawaban benar! Anda dapat melanjutkan.");
       setQuizCompleted(true);
-      setShowCompiler(false); // Hide compiler when quiz is completed
-      onComplete(); // Call onComplete to notify parent component
+      setShowCompiler(false);
+      onComplete();
     } else {
-      setQuizFeedback("Jawaban salah, coba lagi!");
+      setShowNotification(true);
     }
   };
 
   const handleReset = () => {
     setSelectedAnswer("");
     setQuizFeedback("");
-    setQuizCompleted(false); // Reset status kuis
+    setQuizCompleted(false);
   };
 
   const toggleCompiler = () => {
-    setShowCompiler(!showCompiler); // Toggle compiler visibility
+    setShowCompiler((prev) => !prev);
+  };
+
+  const handleCloseNotification = () => {
+    setShowNotification(false);
+    setSelectedAnswer("");
+    window.scrollTo(0, 0);
   };
 
   return (
-    <>
-      <h3 className="text-xl font-semibold mt-4">Kuis</h3>
+    <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h2
+        className="text-lg font-semibold text-center"
+        style={{ color: "#6E2A7F" }}
+      >
+        UJI PENGETAHUAN
+      </h2>
       <form
         onSubmit={handleSubmit}
         className="bg-white p-4 rounded-lg shadow-md"
@@ -57,7 +69,7 @@ const Quiz = ({ onComplete }) => {
               <label
                 className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 ${
                   selectedAnswer === option
-                    ? "bg-[#001F3F] text-white border-[#001F3F]"
+                    ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
                     : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
                 }`}
               >
@@ -73,28 +85,64 @@ const Quiz = ({ onComplete }) => {
             </div>
           ))}
         </div>
-        <div className="flex justify-between">
+        <div className="flex space-x-2">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
           >
             Kirim
           </button>
-
           <button
             type="button"
             onClick={handleReset}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-200"
+            style={{
+              backgroundColor: "red", // Warna merah
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={
+              (e) => (e.currentTarget.style.backgroundColor = "#c0392b") // Warna merah lebih gelap saat hover
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "red")
+            }
           >
-            Reset
+            Hapus Jawaban
+          </button>
+          <button
+            onClick={toggleCompiler}
+            style={{
+              backgroundColor: "white", // Warna latar belakang putih
+              color: "#6E2A7F", // Warna teks sesuai tema
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s, border-color 0.2s",
+              border: "2px solid #6E2A7F", // Outline border dengan warna tema
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#aab7b8")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "white")
+            }
+          >
+            {showCompiler ? "Sembunyikan Compiler" : "Coba di Compiler"}
           </button>
         </div>
-        <button
-          onClick={toggleCompiler}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200 mt-4"
-        >
-          {showCompiler ? "Sembunyikan Compiler" : "Coba Kode"}
-        </button>
         {showCompiler && (
           <iframe
             width="100%"
@@ -105,6 +153,8 @@ const Quiz = ({ onComplete }) => {
           ></iframe>
         )}
       </form>
+
+      {/* Umpan Balik Kuis */}
       {quizFeedback && (
         <p
           className={`mt-4 text-center ${
@@ -114,14 +164,19 @@ const Quiz = ({ onComplete }) => {
           {quizFeedback}
         </p>
       )}
-    </>
+
+      {/* Notifikasi jika jawaban salah */}
+      {showNotification && (
+        <PopUpJawabanSalah onClose={handleCloseNotification} />
+      )}
+    </div>
   );
 };
 
 const getOptionText = (option) => {
   switch (option) {
     case "A":
-      return "Mobil\nSepeda\nMotor";
+      return "Mobil \nSepeda\nMotor";
     case "B":
       return "Sepeda\nMobil\nMotor";
     case "C":

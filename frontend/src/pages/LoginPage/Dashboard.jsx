@@ -76,18 +76,18 @@ const Dashboard = () => {
                     <div className="bg-white h-2 rounded">
                       <div
                         className="bg-[gray] h-2 rounded"
-                        style={{ width: "52.2%" }}
+                        style={{ width: "5.13%" }}
                       ></div>
                     </div>
                     <p className="absolute top-0 left-0 transform -translate-y-6">
-                      52.2%
+                      5.13%
                     </p>
                   </div>
-                  <p>35 / 67 Submateri</p>
+                  <p>2 / 39 Submateri</p>
                   <button
                     className="mt-3 ml-auto bg-white border border-[#68217A] py-2 px-4 rounded-md hover:bg-[#f0f0f0] focus:outline-none"
                     style={{ color: "#68217A" }}
-                    onClick={handleOpenModal} // Buka modal saat diklik
+                    onClick={handleOpenModal}
                   >
                     Lihat Detail Progress
                   </button>

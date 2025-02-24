@@ -1,17 +1,18 @@
 import React, { useState } from "react";
+import PopUpJawabanSalah from "../../../../components/Home/Materi/PopUp/PopUpSalahJawaban";
 
 const Quiz = ({ onComplete }) => {
   const [functionName, setFunctionName] = useState("");
   const [methodName, setMethodName] = useState("");
   const [showCompiler, setShowCompiler] = useState(false);
   const [quizFeedback, setQuizFeedback] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleSubmit = () => {
     if (functionName === "Main" && methodName === "Console") {
-      setQuizFeedback("Jawaban Anda benar! Anda dapat melanjutkan.");
       onComplete();
     } else {
-      setQuizFeedback("Jawaban Anda salah, coba lagi!");
+      setShowNotification(true);
     }
   };
 
@@ -26,9 +27,19 @@ const Quiz = ({ onComplete }) => {
     setShowCompiler((prev) => !prev);
   };
 
+  const handleCloseNotification = () => {
+    setShowNotification(false);
+    setFunctionName("");
+    setMethodName("");
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-lg font-semibold text-gray-800 text-center">
+      <h2
+        className="text-lg font-semibold text-center"
+        style={{ color: "#6E2A7F" }}
+      >
         UJI PENGETAHUAN
       </h2>
 
@@ -45,7 +56,7 @@ const Quiz = ({ onComplete }) => {
                 type="text"
                 value={functionName}
                 onChange={(e) => setFunctionName(e.target.value)}
-                className="border border-gray-400 px-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-blue-300"
+                className="border border-gray-400 px-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
               />
               {` (string[] args)`}
               {"\n{"}
@@ -54,12 +65,12 @@ const Quiz = ({ onComplete }) => {
                 type="text"
                 value={methodName}
                 onChange={(e) => setMethodName(e.target.value)}
-                className="border border-gray-400 px-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-blue-300"
+                className="border border-gray-400 px-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
               />
               {`.`}
               <input
                 type="text"
-                className="border border-gray-400 px-2 py-1 w-32 rounded-md focus:ring-2 focus:ring-blue-300"
+                className="border border-gray-400 px-2 py-1 w-32 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
                 value="WriteLine"
                 readOnly
               />
@@ -72,15 +83,38 @@ const Quiz = ({ onComplete }) => {
         {/* Tombol Submit */}
         <button
           onClick={handleSubmit}
-          className="bg-green-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-green-600"
+          style={{
+            backgroundColor: "#6E2A7F",
+            color: "white",
+            padding: "0.5rem 1rem",
+            borderRadius: "0.5rem",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.backgroundColor = "#5B1F6A")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }
         >
           Cek Jawaban
         </button>
 
-        {/* Tombol Reset */}
+        {/* Tombol Reset (Hapus Jawaban) */}
         <button
           onClick={handleReset}
-          className="bg-gray-500 text-white px-4 py-2 mt-4 ml-2 rounded-lg hover:bg-gray-600"
+          style={{
+            backgroundColor: "red", // Warna merah
+            color: "white",
+            padding: "0.5rem 1rem",
+            borderRadius: "0.5rem",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={
+            (e) => (e.currentTarget.style.backgroundColor = "#c0392b") // Warna merah lebih gelap saat hover
+          }
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "red")}
+          className="ml-2"
         >
           Hapus Jawaban
         </button>
@@ -88,7 +122,23 @@ const Quiz = ({ onComplete }) => {
         {/* Tombol Coba Kode di Compiler */}
         <button
           onClick={handleTryCode}
-          className="bg-blue-500 text-white px-4 py-2 mt-4 ml-2 rounded-lg hover:bg-blue-600"
+          style={{
+            backgroundColor: "white", // Warna latar belakang putih
+            color: "#6E2A7F", // Warna teks sesuai tema
+            padding: "0.5rem 1rem",
+            borderRadius: "0.5rem",
+            transition: "background-color 0.2s, border-color 0.2s",
+            border: "2px solid #6E2A7F", // Outline border dengan warna tema
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "#e0e0e0"; // Warna abu-abu saat hover
+            e.currentTarget.style.borderColor = "#5B1F6A"; // Warna border lebih gelap saat hover
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "white"; // Kembali ke warna latar belakang putih
+            e.currentTarget.style.borderColor = "#6E2A7F"; // Kembali ke warna border tema
+          }}
+          className="ml-2"
         >
           Coba Kode di Compiler
         </button>
@@ -117,6 +167,11 @@ const Quiz = ({ onComplete }) => {
         >
           {quizFeedback}
         </p>
+      )}
+
+      {/* Notifikasi jika jawaban salah */}
+      {showNotification && (
+        <PopUpJawabanSalah onClose={handleCloseNotification} />
       )}
     </div>
   );

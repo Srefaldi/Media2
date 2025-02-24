@@ -37,7 +37,7 @@ const SintaksPrint = () => {
 
   // State untuk kuis
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const { handleLessonComplete } = useOutletContext(); 
+  const { handleLessonComplete } = useOutletContext();
   const handleBack = () => {
     window.scrollTo(0, 0);
     navigate("/materi/bab1/struktur-eksekusi");
@@ -151,7 +151,7 @@ const SintaksPrint = () => {
         <code>Console.WriteLine()</code> dalam bahasa pemrograman C# adalah
         sebuah command untuk menampilkan hasil di dalam (). Untuk menampilkan
         sebuah karakter atau kalimat menggunakan fungsi{" "}
-        <code>Console.WriteLine()</code> maka karakter atau kalimat tersebut
+        <code>Console.WriteLine()</code>, maka karakter atau kalimat tersebut
         harus dilingkupi dengan tanda kutip ("").
       </p>
       <p className="text-gray-700 text-justify mb-2">
@@ -167,9 +167,21 @@ const SintaksPrint = () => {
           />
           <button
             onClick={handleRunMain}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "# 5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
           >
-            Run
+            Jalankan
           </button>
         </div>
         <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
@@ -196,9 +208,21 @@ const SintaksPrint = () => {
           />
           <button
             onClick={handleRunNumeric}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
           >
-            Run
+            Jalankan
           </button>
         </div>
         <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
@@ -212,7 +236,7 @@ const SintaksPrint = () => {
       <h3 className="text-xl font-semibold mt-4">
         Contoh Menggabungkan String
       </h3>
-      <p className="text-gray -700 bg-white p-4 rounded-lg shadow-md text-justify mb-4">
+      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify mb-4">
         Anda dapat menggabungkan string dan string lainnya.
       </p>
       <div className="flex space-x-4 mb-6">
@@ -225,9 +249,21 @@ const SintaksPrint = () => {
           />
           <button
             onClick={handleRunStringConcat}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
           >
-            Run
+            Jalankan
           </button>
         </div>
         <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
@@ -252,9 +288,21 @@ const SintaksPrint = () => {
           />
           <button
             onClick={handleRunStringAndNumber}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
           >
-            Run
+            Jalankan
           </button>
         </div>
         <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
@@ -279,9 +327,21 @@ const SintaksPrint = () => {
           />
           <button
             onClick={handleRunNumberAndNumber}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
           >
-            Run
+            Jalankan
           </button>
         </div>
         <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
@@ -293,7 +353,7 @@ const SintaksPrint = () => {
       </div>
 
       {/* Komponen Kuis */}
-      {!quizCompleted && <Quiz onCorrectAnswer={handleQuizCompletion} />}
+      {!quizCompleted && <Quiz onComplete={handleQuizCompletion} />}
 
       {/* Tombol Next dan Back */}
       {quizCompleted && (
@@ -306,7 +366,19 @@ const SintaksPrint = () => {
           </button>
           <button
             onClick={handleNext}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
           >
             Next
           </button>

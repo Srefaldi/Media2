@@ -140,9 +140,9 @@ const InfoModal = ({ isOpen, toggleModal }) => {
                   <span>{openBabIndex === index ? "▼" : "▲"}</span>
                 </button>
                 {openBabIndex === index && (
-                  <ul className="list-disc list-inside mt-2 pl-4">
+                  <ul className="list-disc list-inside mt-3 pl-4">
                     {materi.subMateri.map((sub, subIndex) => (
-                      <li key={subIndex} className="flex justify-between">
+                      <li key={subIndex} className="flex mt-2 justify-between">
                         <span>{sub}</span>
                         {index === 0 &&
                           sub !== "Pengenalan C#" &&
