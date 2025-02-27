@@ -91,7 +91,7 @@ const daftarBab = [
       { path: "/materi/bab3/char", label: "4. Char" },
       { path: "/materi/bab3/string", label: "5. String" },
       { path: "/materi/bab3/latihan", label: "Latihan" },
-      { path: "/materi/bab3/kuis", label: "KUIS" },
+      { path: "/materi/bab3/kuis-bab1", label: "KUIS" },
       { path: "/materi/bab3/rangkuman", label: "Rangkuman" },
     ],
   },

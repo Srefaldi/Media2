@@ -104,14 +104,14 @@ const Quiz = ({ onComplete }) => {
         <button
           onClick={handleReset}
           style={{
-            backgroundColor: "red", // Warna merah
+            backgroundColor: "red",
             color: "white",
             padding: "0.5rem 1rem",
             borderRadius: "0.5rem",
             transition: "background-color 0.2s",
           }}
-          onMouseEnter={
-            (e) => (e.currentTarget.style.backgroundColor = "#c0392b") // Warna merah lebih gelap saat hover
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.backgroundColor = "#c0392b")
           }
           onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "red")}
           className="ml-2"
@@ -123,20 +123,20 @@ const Quiz = ({ onComplete }) => {
         <button
           onClick={handleTryCode}
           style={{
-            backgroundColor: "white", // Warna latar belakang putih
-            color: "#6E2A7F", // Warna teks sesuai tema
+            backgroundColor: "white",
+            color: "#6E2A7F",
             padding: "0.5rem 1rem",
             borderRadius: "0.5rem",
             transition: "background-color 0.2s, border-color 0.2s",
-            border: "2px solid #6E2A7F", // Outline border dengan warna tema
+            border: "2px solid #6E2A7F",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#e0e0e0"; // Warna abu-abu saat hover
-            e.currentTarget.style.borderColor = "#5B1F6A"; // Warna border lebih gelap saat hover
+            e.currentTarget.style.backgroundColor = "#e0e0e0";
+            e.currentTarget.style.borderColor = "#5B1F6A";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "white"; // Kembali ke warna latar belakang putih
-            e.currentTarget.style.borderColor = "#6E2A7F"; // Kembali ke warna border tema
+            e.currentTarget.style.backgroundColor = "white";
+            e.currentTarget.style.borderColor = "#6E2A7F";
           }}
           className="ml-2"
         >

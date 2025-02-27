@@ -1,5 +1,5 @@
 import React from "react";
-import SuccessIcon from "../../../../../assets/img/benar.png"; 
+import SuccessIcon from "../../../../../assets/img/benar.png";
 
 const PopUpJawabanBenar = ({ onClose }) => {
   return (
@@ -13,7 +13,7 @@ const PopUpJawabanBenar = ({ onClose }) => {
         <div className="text-sm font-normal">
           <span className="mb-1 text-sm font-semibold">JAWABAN ANDA BENAR</span>
           <div className="mb-2 text-sm font-normal">
-            Silakan lanjutkan ke soal berikutnya.
+            Silakan lanjutkan ke materi berikutnya.
           </div>
           <button
             onClick={onClose}

@@ -66,15 +66,9 @@ const InfoModal = ({ isOpen, toggleModal }) => {
                   </p>
                   <p className="font-bold text-center mt-2">
                     PENGEMBANGAN MEDIA PEMBELAJARAN INTERAKTIF BERBASIS WEB PADA
-                    MATERI DASAR-DASAR PEMROGRAMAN C# DENGAN MODEL TUTORIAL
+                    MATERI DASAR-DASAR PEMROGRAMAN C# DENGAN METODE TUTORIAL
                   </p>
                   <ul className="list-disc list-inside mt-3">
-                    <li>
-                      <strong>Nama:</strong> Sopia Refaldi
-                    </li>
-                    <li>
-                      <strong>Email:</strong> sopiarefaldii@gmail.com
-                    </li>
                     <li>
                       <strong>Dosen Pembimbing 1:</strong> Dr. R. Ati Sukmawati,
                       M.Kom
@@ -82,6 +76,12 @@ const InfoModal = ({ isOpen, toggleModal }) => {
                     <li>
                       <strong>Dosen Pembimbing 2:</strong> Muhammad Hifdzi
                       Adini, S.Kom., M.T
+                    </li>
+                    <li>
+                      <strong>Nama:</strong> Sopia Refaldi
+                    </li>
+                    <li>
+                      <strong>Email:</strong> sopiarefaldii@gmail.com
                     </li>
                     <li>
                       <strong>Program Studi:</strong> S-1 Pendidikan Komputer
@@ -140,8 +140,34 @@ const InfoModal = ({ isOpen, toggleModal }) => {
               )}
             </div>
 
-            <button className="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              <Link to="/login" className="text-white hover:text-gray-200">
+            <button
+              style={{
+                backgroundColor: "#6E2A7F",
+                color: "white",
+                padding: "0.5rem 1rem",
+                borderRadius: "0.5rem",
+                width: "100%",
+                display: "inline-flex",
+                justifyContent: "center",
+                fontWeight: "500",
+                fontSize: "0.875rem",
+                textAlign: "center",
+                transition: "background-color 0.2s, ring-color 0.2s",
+                outline: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "#5B1F6A")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "#6E2A7F")
+              }
+            >
+              <Link
+                to="/login"
+                style={{ color: "white", textDecoration: "none" }}
+              >
                 Mulai Belajar
               </Link>
             </button>

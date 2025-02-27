@@ -54,7 +54,7 @@ const Quiz = ({ onComplete }) => {
         </p>
         <pre className="bg-gray-100 p-2 rounded-md mb-4">
           {`namespace CsharpLearn {
-    class Animal {
+    class Transportasi {
         static void Main(string[] args) {
             Console.WriteLine("Mobil");
             Console.WriteLine("Motor");
@@ -124,6 +124,7 @@ const Quiz = ({ onComplete }) => {
             Hapus Jawaban
           </button>
           <button
+            type="button" // Tambahkan type="button" di sini
             onClick={toggleCompiler}
             style={{
               backgroundColor: "white", // Warna latar belakang putih

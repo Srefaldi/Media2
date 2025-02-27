@@ -1,31 +1,26 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import NotificationPopup from "../../../../components/Home/Materi/PopUp/PopUpSalahJawaban";
+import PopUpJawabanSalah from "../../../../components/Home/Materi/PopUp/Materi/PopUpSalah";
 
 const Quiz = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
-  const [quizFeedback, setQuizFeedback] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
+  const [showWrongAnswerPopup, setShowWrongAnswerPopup] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (selectedAnswer === "B") {
-      onComplete();
+      alert("Jawaban Benar");
+      onComplete(true);
     } else {
-      setShowNotification(true);
+      setSelectedAnswer("");
+
+      setShowWrongAnswerPopup(true);
+      window.scrollTo(0, 0);
     }
   };
 
   const handleReset = () => {
     setSelectedAnswer("");
-    setQuizFeedback("");
-  };
-
-  const handleCloseNotification = () => {
-    setShowNotification(false);
-    setSelectedAnswer("");
-    window.scrollTo(0, 0);
   };
 
   return (
@@ -83,15 +78,15 @@ const Quiz = ({ onComplete }) => {
             type="button"
             onClick={handleReset}
             style={{
-              backgroundColor: "red", // Warna merah
+              backgroundColor: "red",
               color: "white",
               padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s",
-              marginLeft: "1rem", // Tambahkan margin kiri untuk jarak
+              marginLeft: "1rem",
             }}
-            onMouseEnter={
-              (e) => (e.currentTarget.style.backgroundColor = "#c0392b") // Warna merah lebih gelap saat hover
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#c0392b")
             }
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor = "red")
@@ -101,19 +96,9 @@ const Quiz = ({ onComplete }) => {
           </button>
         </div>
       </form>
-      {quizFeedback && (
-        <p
-          className={`mt-4 text-center ${
-            selectedAnswer === "B" ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {quizFeedback}
-        </p>
-      )}
 
-      {/* Notifikasi jika jawaban salah */}
-      {showNotification && (
-        <NotificationPopup onClose={handleCloseNotification} />
+      {showWrongAnswerPopup && (
+        <PopUpJawabanSalah onClose={() => setShowWrongAnswerPopup(false)} />
       )}
     </div>
   );

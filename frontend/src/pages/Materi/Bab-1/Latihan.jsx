@@ -19,7 +19,7 @@ const Latihan = () => {
   const [showScoreNotification, setShowScoreNotification] = useState(false);
   const [showIncompleteNotification, setShowIncompleteNotification] =
     useState(false); // State untuk notifikasi jawaban belum selesai
-  const [showCorrectNotification, setShowCorrectNotification] = useState(false); // State untuk notifikasi jawaban benar
+  const [showCorrectNotification, setShowCorrectNotification] = useState(false);
 
   const questions = [
     {
@@ -389,13 +389,13 @@ const Latihan = () => {
                   score >= 80 ? "block" : "hidden"
                 }`}
               >
-                Next
+                Selanjutnya
               </button>
               <button
                 onClick={handleBack}
                 className="bg-gray-500 text-white px-4 py-2 rounded-lg"
               >
-                Back
+                Kembali
               </button>
             </div>
           )}

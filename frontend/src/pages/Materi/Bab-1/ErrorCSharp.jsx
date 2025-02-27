@@ -149,7 +149,7 @@ const ErrorCSharp = () => {
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
             }
           >
-            Next
+            Selanjutnya
           </button>
         </div>
       )}

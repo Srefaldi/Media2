@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://tepiankuis2.softforge.my.id/library/tepian.min.js"></script>
+</head>
+<body>
+    <div id="kuis"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var elementKuis = document.getElementById("kuis");
+            var kuis = new tepianKuis(elementKuis, {
+                Key: "nCHoSM8ZOMTY9Nl7hXofHXqJwwjMvyT5",
+                quiz: "75sm",
+                title: "BAB 1"
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 import React from "react";
-import ErrorIcon from "../../../../assets/img/salah.png"; // Pastikan jalur ini benar
+import ErrorIcon from "../../../../../assets/img/salah.png";
 
 const PopUpJawabanSalah = ({ onClose }) => {
   return (

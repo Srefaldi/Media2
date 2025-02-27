@@ -83,21 +83,21 @@ const Quiz = ({ onComplete }) => {
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
             }
           >
-            Kirim Jawaban
+            Kirim
           </button>
 
           <button
             type="button"
             onClick={handleReset}
             style={{
-              backgroundColor: "red", // Warna merah
+              backgroundColor: "red", 
               color: "white",
               padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s",
             }}
             onMouseEnter={
-              (e) => (e.currentTarget.style.backgroundColor = "#c0392b") // Warna merah lebih gelap saat hover
+              (e) => (e.currentTarget.style.backgroundColor = "#c0392b") 
             }
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor = "red")
