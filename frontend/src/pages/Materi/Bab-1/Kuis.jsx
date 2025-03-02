@@ -15,10 +15,6 @@ const Kuis = () => {
     `;
 
     document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
   }, []);
 
   return <div id="kuis">Kuis</div>;
