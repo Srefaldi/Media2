@@ -271,7 +271,7 @@ const Latihan = () => {
         <div className="w-full p-4 border rounded-lg">
           {/* Tampilkan Skor */}
           <div className="mt-4 p-4 border rounded-lg bg-gray-100 text-center">
-            <h3 className="font-semibold">SKOR ANDA: {score}</h3>
+            <h3 className="font-semibold">SKOR : {score}</h3>
           </div>
           <h3 className="font-semibold">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
           <p className="text-gray-600">

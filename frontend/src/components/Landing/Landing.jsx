@@ -220,7 +220,7 @@ function Landing() {
         <div className="flex justify-center mt-8">
           <Link
             to="/login"
-            className="inline-flex text-white border-0 py-2 px-6 focus:outline-none hover:bg-opacity-80 rounded text-lg"
+            className="inline-flex text-white border-0 py-2 px-6 focus:outline-none hover:bg-opacity-80 rounded text-lg text-decoration-none"
             style={{ backgroundColor: "#68217A" }}
           >
             MULAI BELAJAR
