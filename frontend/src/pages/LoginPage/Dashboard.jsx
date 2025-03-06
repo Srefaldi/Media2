@@ -4,13 +4,12 @@ import { useNavigate, Link } from "react-router-dom";
 import { getMe } from "../../features/authSlice";
 import Navbar from "../../components/Landing/NavbarLogin/NavbarLogin";
 import Footer from "../../components/Landing/Footer";
-import Sidebar from "../../components/LoginPage/Sidebar"; // Import Sidebar
+import Sidebar from "../../components/LoginPage/Sidebar";
 import csharpIcon from "../../assets/img/logo-belajar.png";
 import IconNext from "../../assets/img/next.png";
 import info from "../../assets/img/info.png";
 import InfoModal from "../../components/Home/Dashboard/InfoModal";
 import Informasi from "../../components/Home/Dashboard/ModalInformasi";
-
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,19 +61,32 @@ const Dashboard = () => {
                 <img src={info} alt="Icon" className="w-7 h-7" />
               </button>
               <div className="welcome-card bg-[#68217A] text-white p-4 rounded-lg flex flex-col">
-                <h2 className="text-2xl font-bold">Selamat Datang, {user?.name}!</h2>
+                <h2 className="text-2xl font-bold">
+                  Selamat Datang, {user?.name}!
+                </h2>
                 <p className="mt-2">Mulai belajar lagi, Lanjutkan Progresmu.</p>
-                <h4 className="text-lg font-semibold">Progress Terakhir Belajar</h4>
+                <h4 className="text-lg font-semibold">
+                  Progress Terakhir Belajar
+                </h4>
                 <div className="flex items-center mt-4">
-                  <img alt="C# Dasar course icon" className="w-24 h-24 mr-4" src={csharpIcon} />
+                  <img
+                    alt="C# Dasar course icon"
+                    className="w-24 h-24 mr-4"
+                    src={csharpIcon}
+                  />
                   <div>
                     <h5 className="mb-3 text-lg">C# Dasar</h5>
                     <p>Materi</p>
                     <div className="relative mt-2">
                       <div className="h-2 bg-white rounded">
-                        <div className="h-2 rounded bg-gray" style={{ width: "5.13%" }}></div>
+                        <div
+                          className="h-2 bg-gray-500 rounded"
+                          style={{ width: "5.13%" }}
+                        ></div>
                       </div>
-                      <p className="absolute top-0 left-0 transform -translate-y-6">5.13%</p>
+                      <p className="absolute top-0 left-0 transform -translate-y-6">
+                        5.13%
+                      </p>
                     </div>
                     <p>2 / 39 Submateri</p>
                     <button
@@ -87,7 +99,10 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="flex items-center justify-end mt-auto">
-                  <Link to="/materi" class Name="flex items-center font-bold text-white">
+                  <Link
+                    to="/materi"
+                    className="flex items-center font-bold text-white"
+                  >
                     LANJUTKAN BELAJAR
                     <img src={IconNext} alt="Next" className="w-6 h-6 ml-2" />
                   </Link>

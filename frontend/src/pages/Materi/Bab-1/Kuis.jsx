@@ -1,29 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PopUpJawabanSalah from "../../../components/Home/Materi/PopUp/Latihan/PopUpSalah"; // Ganti dengan path yang sesuai
 import PopUpJawabanKosong from "../../../components/Home/Materi/PopUp/Latihan/PopUpKosong"; // Ganti dengan path yang sesuai
 import PopUpJawabanBenar from "../../../components/Home/Materi/PopUp/Latihan/PopUpBenar"; // Ganti dengan path yang sesuai
 import PopUpSkor from "../../../components/Home/Materi/PopUp/Latihan/PopUpSkor"; // Ganti dengan path yang sesuai
 import PopUpJawabanBelumSelesai from "../../../components/Home/Materi/PopUp/Latihan/PopUpBelumSelesai"; // Ganti dengan path yang sesuai
-import questions from "./SoalJson/KuisBab1.json"; // Ganti dengan path yang sesuai
+import questionsData from "./SoalJson/BAB1.json"; // Ganti dengan path yang sesuai
 
 const Kuis = () => {
   const navigate = useNavigate();
-  const [selectedAnswers, setSelectedAnswers] = useState(
-    Array(questions.length).fill("")
-  );
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showNotification, setShowNotification] = useState(false);
   const [showCorrectNotification, setShowCorrectNotification] = useState(false);
   const [showEmptyNotification, setShowEmptyNotification] = useState(false);
   const [showIncompleteNotification, setShowIncompleteNotification] =
     useState(false);
-  const [showScoreNotification, setShowScoreNotification] = useState(false); // State untuk pop-up skor
+  const [showScoreNotification, setShowScoreNotification] = useState(false);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
-  const [answerStatus, setAnswerStatus] = useState(
-    Array(questions.length).fill(null)
-  );
+  const [answerStatus, setAnswerStatus] = useState([]);
+  const [hasAnswered, setHasAnswered] = useState(
+    Array(questionsData.length).fill(false)
+  ); // Menyimpan status apakah soal sudah dijawab
+
+  // Fungsi untuk mengambil teks dari HTML
+  const getTextFromHTML = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+
+  // Parse questions from JSON data
+  const questions = questionsData
+    .map((item) => {
+      try {
+        const soalData = JSON.parse(item.soal_data);
+        return {
+          id: item.judul_soal,
+          question: getTextFromHTML(soalData.pertanyaan), // Ambil teks dari HTML
+          options: soalData.pilihan.map((option) =>
+            getTextFromHTML(option.text)
+          ), // Ambil teks dari setiap opsi
+          correctAnswer: getTextFromHTML(
+            soalData.pilihan.find((option) => option.benar)?.text || ""
+          ), // Ambil teks dari pilihan yang benar
+        };
+      } catch (error) {
+        console.error("Error parsing question data:", error);
+        return null; // Kembalikan null jika terjadi kesalahan
+      }
+    })
+    .filter(Boolean); // Hapus item null dari array
+
+  useEffect(() => {
+    setSelectedAnswers(Array(questions.length).fill(""));
+    setAnswerStatus(Array(questions.length).fill(null));
+  }, [questions.length]);
 
   const handleAnswerChange = (answer) => {
     const newAnswers = [...selectedAnswers];
@@ -33,7 +65,7 @@ const Kuis = () => {
 
   const checkAnswers = () => {
     const answer = selectedAnswers[currentQuestionIndex];
-    const correctAnswer = questions[currentQuestionIndex].correctAnswer;
+    const correctAnswer = questions[currentQuestionIndex].correctAnswer; // Ambil teks dari jawaban yang benar
 
     if (answer === "") {
       setShowEmptyNotification(true);
@@ -42,9 +74,17 @@ const Kuis = () => {
 
     const newAnswerStatus = [...answerStatus];
     if (answer === correctAnswer) {
-      setScore((prevScore) => prevScore + 10);
-      newAnswerStatus[currentQuestionIndex] = "correct";
-      setShowCorrectNotification(true);
+      if (!hasAnswered[currentQuestionIndex]) {
+        // Cek apakah soal sudah dijawab
+        setScore((prevScore) => prevScore + 10);
+        newAnswerStatus[currentQuestionIndex] = "correct";
+        setShowCorrectNotification(true);
+        setHasAnswered((prev) => {
+          const newHasAnswered = [...prev];
+          newHasAnswered[currentQuestionIndex] = true; // Tandai soal sebagai sudah dijawab
+          return newHasAnswered;
+        });
+      }
     } else {
       newAnswerStatus[currentQuestionIndex] = "incorrect";
       setShowNotification(true);
@@ -63,23 +103,23 @@ const Kuis = () => {
       (answer) => answer === ""
     );
     if (hasIncompleteAnswers) {
-      setShowIncompleteNotification(true); // Tampilkan pop-up jika ada soal yang belum dijawab
+      setShowIncompleteNotification(true);
     } else {
       if (score < 80) {
-        setShowScoreNotification(true); // Tampilkan pop-up skor jika di bawah 80
+        setShowScoreNotification(true);
       }
-      setIsFinished(true); // Tandai kuis selesai
+      setIsFinished(true);
     }
   };
 
   return (
-    <div className="max-w-full mx-auto p-4 bg-white rounded-lg shadow-lg">
-      <h2 className="text-lg font-semibold text-gray-800 text-center">
+    <div className="max-w-full p-4 mx-auto bg-white rounded-lg shadow-lg">
+      <h2 className="text-lg font-semibold text-center text-gray-800">
         KUIS BAB 1
       </h2>
-      <div className="mt-4 p-4 border rounded-lg bg-gray-100">
+      <div className="p-4 mt-4 bg-gray-100 border rounded-lg">
         <h3 className="font-semibold">Petunjuk Mengerjakan Kuis</h3>
-        <ol className="list-decimal list-inside text-gray-600 text-justify mt-2">
+        <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside">
           <li>
             Jawablah pertanyaan berikut dengan memilih salah satu jawaban yang
             paling tepat.
@@ -129,13 +169,13 @@ const Kuis = () => {
         </ol>
       </div>
 
-      <div className="mt-4 p-4 border rounded-lg bg-gray-100 text-center">
+      <div className="p-4 mt-4 text-center bg-gray-100 border rounded-lg">
         <h3 className="font-semibold">SKOR : {score}</h3>
       </div>
 
-      <div className="mt-4 flex">
+      <div className="flex mt-4">
         <div className="flex flex-col mr-6">
-          <h3 className="font-semibold text-center text-lg mt-8">SOAL</h3>
+          <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
           <div className="flex flex-col">
             <div className="flex flex-row mb-2">
               {questions.slice(0, 5).map((question, index) => (
@@ -251,7 +291,7 @@ const Kuis = () => {
               </button>
               <button
                 onClick={resetAnswerForCurrentQuestion}
-                className="btn bg-red-500 text-white ml-2 mr-2"
+                className="ml-2 mr-2 text-white bg-red-500 btn"
                 style={{
                   padding: "0.5rem 1rem",
                   borderRadius: "0.5rem",
@@ -303,12 +343,12 @@ const Kuis = () => {
       )}
       {isFinished && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg">
+          <div className="p-4 bg-white rounded-lg">
             <h3 className="font-semibold">Kuis Selesai!</h3>
             <p>Skor Anda: {score}</p>
             <div className="mt-4">
               <button
-                onClick={() => navigate("/materi/bab1/kuis-bab1")}
+                onClick={() => navigate("/materi /bab1/kuis-bab1")}
                 className={`bg-gray-500 text-white px-4 py-2 rounded-lg mr-2 ${
                   score >= 80 ? "block" : "hidden"
                 }`}
@@ -317,7 +357,7 @@ const Kuis = () => {
               </button>
               <button
                 onClick={() => navigate("/materi/bab1/error-csharp")}
-                className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                className="px-4 py-2 text-white bg-gray-500 rounded-lg"
               >
                 Kembali
               </button>
