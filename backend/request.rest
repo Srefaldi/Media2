@@ -4,7 +4,7 @@ Content-Type: application/json
 
 
 {
-    "name": "ADMIN",
+    "name": "Faldi",
     "email": "admin@gmail.com",
     "password": "123",
     "confPassword": "123",
@@ -45,12 +45,12 @@ DELETE http://localhost:5000/users/2a60f550-bf95-4453-8ab9-455e57c78361
 ### 
 # Login USer
 
-POST http://localhost:5000/login
+POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "email": "chim@gmail.com",
-    "password": "123456"
+    "email": "faldi@gmail.com",
+    "password": "123"
 }
 
 ###
@@ -58,7 +58,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "email": "admin@gmail.com",
+    "email": "Faldi@gmail.com",
     "password": "123456"
 }
 
