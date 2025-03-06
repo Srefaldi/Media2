@@ -5,7 +5,9 @@ import PopUpJawabanKosong from "../../../components/Home/Materi/PopUp/Latihan/Po
 import PopUpJawabanBenar from "../../../components/Home/Materi/PopUp/Latihan/PopUpBenar"; // Ganti dengan path yang sesuai
 import PopUpSkor from "../../../components/Home/Materi/PopUp/Latihan/PopUpSkor"; // Ganti dengan path yang sesuai
 import PopUpJawabanBelumSelesai from "../../../components/Home/Materi/PopUp/Latihan/PopUpBelumSelesai"; // Ganti dengan path yang sesuai
+import PopUpSudahMenjawab from "../../../components/Home/Materi/PopUp/Materi/PopUpSudahMenjawab"; // Ganti dengan path yang sesuai
 import questionsData from "./SoalJson/BAB1.json"; // Ganti dengan path yang sesuai
+import IconPetunjuk from "../../../assets/img/informasi.png";
 
 const Kuis = () => {
   const navigate = useNavigate();
@@ -17,6 +19,9 @@ const Kuis = () => {
   const [showIncompleteNotification, setShowIncompleteNotification] =
     useState(false);
   const [showScoreNotification, setShowScoreNotification] = useState(false);
+  const [showAlreadyAnsweredPopup, setShowAlreadyAnsweredPopup] =
+    useState(false); // State untuk popup sudah menjawab
+  const [showLowScorePopup, setShowLowScorePopup] = useState(false); // State untuk popup skor rendah
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [answerStatus, setAnswerStatus] = useState([]);
@@ -84,6 +89,9 @@ const Kuis = () => {
           newHasAnswered[currentQuestionIndex] = true; // Tandai soal sebagai sudah dijawab
           return newHasAnswered;
         });
+      } else {
+        // Jika sudah dijawab sebelumnya, tampilkan popup
+        setShowAlreadyAnsweredPopup(true);
       }
     } else {
       newAnswerStatus[currentQuestionIndex] = "incorrect";
@@ -106,9 +114,10 @@ const Kuis = () => {
       setShowIncompleteNotification(true);
     } else {
       if (score < 80) {
-        setShowScoreNotification(true);
+        setShowLowScorePopup(true);
+      } else {
+        setIsFinished(true);
       }
-      setIsFinished(true);
     }
   };
 
@@ -117,9 +126,21 @@ const Kuis = () => {
       <h2 className="text-lg font-semibold text-center text-gray-800">
         KUIS BAB 1
       </h2>
-      <div className="p-4 mt-4 bg-gray-100 border rounded-lg">
-        <h3 className="font-semibold">Petunjuk Mengerjakan Kuis</h3>
-        <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside">
+      <div
+        className="relative p-4 mt-4 border rounded-lg"
+        style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
+      >
+        <h3
+          className="flex items-center p-2 text-lg font-semibold border rounded-lg w-75"
+          style={{
+            outline: "2px solid #6E2A7F",
+            outlineOffset: "2px",
+          }}
+        >
+          <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
+          PETUNJUK MENGERJAKAN
+        </h3>
+        <ol className="z-10 mt-2 text-justify text-gray-600 list-decimal list-inside ">
           <li>
             Jawablah pertanyaan berikut dengan memilih salah satu jawaban yang
             paling tepat.
@@ -341,6 +362,7 @@ const Kuis = () => {
           onClose={() => setShowIncompleteNotification(false)}
         />
       )}
+
       {isFinished && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="p-4 bg-white rounded-lg">
@@ -348,7 +370,7 @@ const Kuis = () => {
             <p>Skor Anda: {score}</p>
             <div className="mt-4">
               <button
-                onClick={() => navigate("/materi /bab1/kuis-bab1")}
+                onClick={() => navigate("/materi/bab1/kuis-bab1")}
                 className={`bg-gray-500 text-white px-4 py-2 rounded-lg mr-2 ${
                   score >= 80 ? "block" : "hidden"
                 }`}
@@ -365,8 +387,13 @@ const Kuis = () => {
           </div>
         </div>
       )}
-      {showScoreNotification && (
-        <PopUpSkor onClose={() => setShowScoreNotification(false)} />
+      {showAlreadyAnsweredPopup && (
+        <PopUpSudahMenjawab
+          onClose={() => setShowAlreadyAnsweredPopup(false)}
+        />
+      )}
+      {showLowScorePopup && (
+        <PopUpSkor onClose={() => setShowLowScorePopup(false)} />
       )}
     </div>
   );

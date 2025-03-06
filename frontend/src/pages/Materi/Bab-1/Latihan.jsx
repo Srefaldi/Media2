@@ -6,7 +6,7 @@ import PopUpSkor from "../../../components/Home/Materi/PopUp/Latihan/PopUpSkor";
 import PopUpJawabanBelumSelesai from "../../../components/Home/Materi/PopUp/Latihan/PopUpBelumSelesai"; // Ganti dengan path yang sesuai
 import PopUpJawabanBenar from "../../../components/Home/Materi/PopUp/Latihan/PopUpBenar";
 import "../style/latihan.css";
-
+import IconPetunjuk from "../../../assets/img/informasi.png";
 const Latihan = () => {
   const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -167,15 +167,27 @@ const Latihan = () => {
   };
 
   return (
-    <div className="max-w-full mx-auto p-2 bg-white rounded-lg shadow-lg">
-      <h2 className="text-lg font-semibold text-gray-800 text-center">
+    <div className="max-w-full p-2 mx-auto bg-white rounded-lg shadow-lg">
+      <h2 className="text-lg font-semibold text-center text-gray-800">
         LATIHAN BAB 1
       </h2>
 
       {/* Petunjuk Mengerjakan Latihan */}
-      <div className="mt-4 p-4 border rounded-lg bg-gray-100">
-        <h3 className="font-semibold">Petunjuk Mengerjakan Latihan</h3>
-        <ol className="list-decimal list-inside text-gray-600 text-justify mt-2">
+      <div
+        className="relative p-4 mt-4 border rounded-lg"
+        style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
+      >
+        <h3
+          className="flex items-center p-2 text-lg font-semibold border rounded-lg w-80"
+          style={{
+            outline: "2px solid #6E2A7F",
+            outlineOffset: "2px",
+          }}
+        >
+          <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
+          PETUNJUK MENGERJAKAN
+        </h3>
+        <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside">
           <li>
             Jawablah soal-soal di bawah ini dengan mengisikannya pada inputan
             yang tersedia.
@@ -225,9 +237,9 @@ const Latihan = () => {
         </ol>
       </div>
 
-      <div className="mt-6 flex">
+      <div className="flex mt-6">
         <div className="flex flex-col mr-6">
-          <h3 className="font-semibold text-center text-lg mt-8">SOAL</h3>
+          <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
           <div className="flex flex-row">
             {questions.slice(0, 3).map((question, index) => (
               <button
@@ -270,14 +282,14 @@ const Latihan = () => {
 
         <div className="w-full p-4 border rounded-lg">
           {/* Tampilkan Skor */}
-          <div className="mt-4 p-4 border rounded-lg bg-gray-100 text-center">
+          <div className="p-4 mt-4 text-center bg-gray-100 border rounded-lg">
             <h3 className="font-semibold">SKOR : {score}</h3>
           </div>
           <h3 className="font-semibold">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
           <p className="text-gray-600">
             {questions[currentQuestionIndex].prompt}
           </p>
-          <div className="bg-gray-100 p-4 mt-2 rounded-lg font-mono text-sm">
+          <div className="p-4 mt-2 font-mono text-sm bg-gray-100 rounded-lg">
             <pre className="code-block">
               <code>
                 {questions[currentQuestionIndex].code
@@ -326,7 +338,7 @@ const Latihan = () => {
                           onChange={(e) =>
                             handleAnswerChange(e.target.value, index)
                           }
-                          className="border border-gray-400 px-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-blue-300"
+                          className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
                           placeholder="Jawaban..."
                         />
                       )}
@@ -355,7 +367,7 @@ const Latihan = () => {
           </button>
           <button
             onClick={resetAnswerForCurrentQuestion}
-            className="bg-red-500 text-white px-4 py-2 mt-2 ml-2 rounded-lg hover:bg-red-600"
+            className="px-4 py-2 mt-2 ml-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
           >
             Hapus Jawaban
           </button>
@@ -393,7 +405,7 @@ const Latihan = () => {
               </button>
               <button
                 onClick={handleBack}
-                className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                className="px-4 py-2 text-white bg-gray-500 rounded-lg"
               >
                 Kembali
               </button>

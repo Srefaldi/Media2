@@ -141,27 +141,27 @@ const SintaksPrint = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">1.5 Sintaks Print</h2>
-      <h3 className="text-xl font-semibold mt-4">
+      <h2 className="mb-4 text-2xl font-bold">1.5 Sintaks Print</h2>
+      <h3 className="mt-4 text-xl font-semibold">
         Menampilkan hasil dalam program menggunakan fungsi
       </h3>
-      <h4 className="text-xl font-semibold mt-4">Console.WriteLine()</h4>
+      <h4 className="mt-4 text-xl font-semibold">Console.WriteLine()</h4>
 
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify mb-4">
+      <p className="p-4 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <code>Console.WriteLine()</code> dalam bahasa pemrograman C# adalah
         sebuah command untuk menampilkan hasil di dalam (). Untuk menampilkan
         sebuah karakter atau kalimat menggunakan fungsi{" "}
         <code>Console.WriteLine()</code>, maka karakter atau kalimat tersebut
         harus dilingkupi dengan tanda kutip ("").
       </p>
-      <p className="text-gray-700 text-justify mb-2">
+      <p className="mb-2 text-justify text-gray-700">
         Cobalah kode program pada compiler:
       </p>
-      <div className="flex space-x-4 mb-6">
-        <div className="shadow-md rounded-lg p-4 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">Compiler</h2>
+      <div className="flex mb-6 space-x-4">
+        <div className="w-full max-w-md p-4 rounded-lg shadow-md">
+          <h2 className="mb-2 text-xl font-semibold">Compiler</h2>
           <textarea
-            className="w-full h-32 border border-gray-300 rounded-lg p-2"
+            className="w-full h-32 p-2 border border-gray-300 rounded-lg"
             value={mainCode}
             onChange={(e) => setMainCode(e.target.value)} // Update state saat textarea berubah
           />
@@ -184,25 +184,25 @@ const SintaksPrint = () => {
             Jalankan
           </button>
         </div>
-        <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">Output</h2>
-          <pre className="border border-gray-300 rounded-lg p-2 h-32 overflow-auto">
+        <div className="w-full max-w-md p-4 bg-white rounded-lg shadow-md">
+          <h2 className="mb-2 text-xl font-semibold">Output</h2>
+          <pre className="h-32 p-2 overflow-auto border border-gray-300 rounded-lg">
             {mainOutput}
           </pre>
         </div>
       </div>
 
-      <h3 className="text-xl font-semibold mt-4">
+      <h3 className="mt-4 text-xl font-semibold">
         Contoh Console.WriteLine Nilai Numerik
       </h3>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify mb-4">
+      <p className="p-4 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         Untuk mencetak nilai numerik, masukkan angka tanpa tanda kutip.
       </p>
-      <div className="flex space-x-4 mb-6">
-        <div className="shadow-md rounded-lg p-4 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">Compiler</h2>
+      <div className="flex mb-6 space-x-4">
+        <div className="w-full max-w-md p-4 rounded-lg shadow-md">
+          <h2 className="mb-2 text-xl font-semibold">Compiler</h2>
           <textarea
-            className="w-full h-32 border border-gray-300 rounded-lg p-2"
+            className="w-full h-32 p-2 border border-gray-300 rounded-lg"
             value={numericCode}
             onChange={(e) => setNumericCode(e.target.value)} // Update state saat textarea berubah
           />
@@ -225,25 +225,25 @@ const SintaksPrint = () => {
             Jalankan
           </button>
         </div>
-        <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">Output</h2>
-          <pre className="border border-gray-300 rounded-lg p-2 h-32 overflow-auto">
+        <div className="w-full max-w-md p-4 bg-white rounded-lg shadow-md">
+          <h2 className="mb-2 text-xl font-semibold">Output</h2>
+          <pre className="h-32 p-2 overflow-auto border border-gray-300 rounded-lg">
             {numericOutput}
           </pre>
         </div>
       </div>
 
-      <h3 className="text-xl font-semibold mt-4">
+      <h3 className="mt-4 text-xl font-semibold">
         Contoh Menggabungkan String
       </h3>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify mb-4">
+      <p className="p-4 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         Anda dapat menggabungkan string dan string lainnya.
       </p>
-      <div className="flex space-x-4 mb-6">
-        <div className="shadow-md rounded-lg p-4 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">Compiler</h2>
+      <div className="flex mb-6 space-x-4">
+        <div className="w-full max-w-md p-4 rounded-lg shadow-md">
+          <h2 className="mb-2 text-xl font-semibold">Compiler</h2>
           <textarea
-            className="w-full h-32 border border-gray-300 rounded-lg p-2"
+            className="w-full h-32 p-2 border border-gray-300 rounded-lg"
             value={stringConcatCode}
             onChange={(e) => setStringConcatCode(e.target.value)} // Update state saat textarea berubah
           />
@@ -266,23 +266,23 @@ const SintaksPrint = () => {
             Jalankan
           </button>
         </div>
-        <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">Output</h2>
-          <pre className="border border-gray-300 rounded-lg p-2 h-32 overflow-auto">
+        <div className="w-full max-w-md p-4 bg-white rounded-lg shadow-md">
+          <h2 className="mb-2 text-xl font-semibold">Output</h2>
+          <pre className="h-32 p-2 overflow-auto border border-gray-300 rounded-lg">
             {stringConcatOutput}
           </pre>
         </div>
       </div>
 
-      <h3 className="text-xl font-semibold mt-4">Contoh String dan Angka</h3>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify mb-4">
+      <h3 className="mt-4 text-xl font-semibold">Contoh String dan Angka</h3>
+      <p className="p-4 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         Anda juga dapat menggabungkan string dan angka.
       </p>
-      <div className="flex space-x-4 mb-6">
-        <div className="shadow-md rounded-lg p-4 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">Compiler</h2>
+      <div className="flex mb-6 space-x-4">
+        <div className="w-full max-w-md p-4 rounded-lg shadow-md">
+          <h2 className="mb-2 text-xl font-semibold">Compiler</h2>
           <textarea
-            className="w-full h-32 border border-gray-300 rounded-lg p-2"
+            className="w-full h-32 p-2 border border-gray-300 rounded-lg"
             value={stringAndNumberCode}
             onChange={(e) => setStringAndNumberCode(e.target.value)} // Update state saat textarea berubah
           />
@@ -305,23 +305,23 @@ const SintaksPrint = () => {
             Jalankan
           </button>
         </div>
-        <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">Output</h2>
-          <pre className="border border-gray-300 rounded-lg p-2 h-32 overflow-auto">
+        <div className="w-full max-w-md p-4 bg-white rounded-lg shadow-md">
+          <h2 className="mb-2 text-xl font-semibold">Output</h2>
+          <pre className="h-32 p-2 overflow-auto border border-gray-300 rounded-lg">
             {stringAndNumberOutput}
           </pre>
         </div>
       </div>
 
-      <h3 className="text-xl font-semibold mt-4">Contoh Angka dan Angka</h3>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify mb-4">
+      <h3 className="mt-4 text-xl font-semibold">Contoh Angka dan Angka</h3>
+      <p className="p-4 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         Anda juga dapat menggabungkan angka dan angka lainnya.
       </p>
-      <div className="flex space-x-4 mb-6">
-        <div className="shadow-md rounded-lg p-4 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">Compiler</h2>
+      <div className="flex mb-6 space-x-4">
+        <div className="w-full max-w-md p-4 rounded-lg shadow-md">
+          <h2 className="mb-2 text-xl font-semibold">Compiler</h2>
           <textarea
-            className="w-full h-32 border border-gray-300 rounded-lg p-2"
+            className="w-full h-32 p-2 border border-gray-300 rounded-lg"
             value={numberAndNumberCode}
             onChange={(e) => setNumberAndNumberCode(e.target.value)} // Update state saat textarea berubah
           />
@@ -344,9 +344,9 @@ const SintaksPrint = () => {
             Jalankan
           </button>
         </div>
-        <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-2">Output</h2>
-          <pre className="border border-gray-300 rounded-lg p-2 h-32 overflow-auto">
+        <div className="w-full max-w-md p-4 bg-white rounded-lg shadow-md">
+          <h2 className="mb-2 text-xl font-semibold">Output</h2>
+          <pre className="h-32 p-2 overflow-auto border border-gray-300 rounded-lg">
             {numberAndNumberOutput}
           </pre>
         </div>
@@ -360,7 +360,7 @@ const SintaksPrint = () => {
         <div className="flex justify-between mt-6">
           <button
             onClick={handleBack}
-            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+            className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
           >
             Kembali
           </button>
