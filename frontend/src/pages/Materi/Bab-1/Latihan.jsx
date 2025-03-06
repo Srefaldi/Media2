@@ -245,15 +245,29 @@ const Latihan = () => {
               <button
                 key={question.id}
                 onClick={() => handleQuestionSelect(index)}
-                className={`w-8 h-8 flex items-center justify-center rounded-lg mx-0.5 my-1 ${
-                  currentQuestionIndex === index
-                    ? "bg-blue-500 text-white"
-                    : answerStatus[index] === "correct"
-                    ? "bg-green-500 text-white"
-                    : answerStatus[index] === "incorrect"
-                    ? "bg-red-500 text-white"
-                    : "bg-gray-300 text-gray-700"
-                }`}
+                style={{
+                  width: "2rem",
+                  height: "2rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "0.5rem",
+                  margin: "0.125rem",
+                  backgroundColor:
+                    currentQuestionIndex === index
+                      ? "#6E2A7F"
+                      : answerStatus[index] === "correct"
+                      ? "#10B981"
+                      : answerStatus[index] === "incorrect"
+                      ? "#EF4444"
+                      : "#D1D5DB",
+                  color:
+                    currentQuestionIndex === index ||
+                    answerStatus[index] === "correct" ||
+                    answerStatus[index] === "incorrect"
+                      ? "white"
+                      : "black",
+                }}
               >
                 {question.id}
               </button>
@@ -264,15 +278,29 @@ const Latihan = () => {
               <button
                 key={question.id}
                 onClick={() => handleQuestionSelect(index + 3)} // Menyesuaikan index
-                className={`w-8 h-8 flex items-center justify-center rounded-lg mx-0.5 my-1 ${
-                  currentQuestionIndex === index + 3
-                    ? "bg-blue-500 text-white"
-                    : answerStatus[index + 3] === "correct"
-                    ? "bg-green-500 text-white"
-                    : answerStatus[index + 3] === "incorrect"
-                    ? "bg-red-500 text-white"
-                    : "bg-gray-300 text-gray-700"
-                }`}
+                style={{
+                  width: "2rem",
+                  height: "2rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "0.5rem",
+                  margin: "0.125rem",
+                  backgroundColor:
+                    currentQuestionIndex === index + 3
+                      ? "#6E2A7F"
+                      : answerStatus[index + 3] === "correct"
+                      ? "#10B981"
+                      : answerStatus[index + 3] === "incorrect"
+                      ? "#EF4444"
+                      : "#D1D5DB",
+                  color:
+                    currentQuestionIndex === index + 3 ||
+                    answerStatus[index + 3] === "correct" ||
+                    answerStatus[index + 3] === "incorrect"
+                      ? "white"
+                      : "black",
+                }}
               >
                 {question.id}
               </button>
