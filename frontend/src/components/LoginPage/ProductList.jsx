@@ -18,23 +18,21 @@ const ProductList = () => {
     await axios.delete(`http://localhost:5000/products/${productId}`);
     getProducts();
   };
-  
 
   return (
     <div>
-      <h1 className="title">Products</h1>
-      <h2 className="subtitle">List of Products</h2>
-      <Link to="/products/add" className="button is-primary mb-2">
-        Add New
+      <h1 className="title">Data Evaluasi</h1>
+      <Link to="/products/add" className="mb-2 button is-primary">
+        TAMBAH
       </Link>
       <table className="table is-striped is-fullwidth">
         <thead>
           <tr>
-            <th>No</th>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Created By</th>
-            <th>Actions</th>
+            <th>KELAS</th>
+            <th>NAMA </th>
+            <th>BAB</th>
+            <th>NILAI</th>
+            <th>AKSI</th>
           </tr>
         </thead>
         <tbody>
@@ -49,13 +47,13 @@ const ProductList = () => {
                   to={`/products/edit/${product.uuid}`}
                   className="button is-small is-info"
                 >
-                  Edit
+                  PERBARUI
                 </Link>
                 <button
                   onClick={() => deleteProduct(product.uuid)}
                   className="button is-small is-danger"
                 >
-                  Delete
+                  HAPUS
                 </button>
               </td>
             </tr>

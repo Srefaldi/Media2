@@ -190,14 +190,13 @@ const Kuis = () => {
         </ol>
       </div>
 
-      <div className="p-4 mt-4 text-center bg-gray-100 border rounded-lg">
-        <h3 className="font-semibold">SKOR : {score}</h3>
-      </div>
-
       <div className="flex mt-4">
-        <div className="flex flex-col mr-6">
+        <div className="flex flex-col mr-3">
+          <div className="w-64 p-4 mt-4 text-center bg-gray-100 border rounded-lg">
+            <h3 className="font-semibold">SKOR : {score}</h3>
+          </div>
           <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
-          <div className="flex flex-col">
+          <div className="flex flex-col ml-10">
             <div className="flex flex-row mb-2">
               {questions.slice(0, 5).map((question, index) => (
                 <button
@@ -370,7 +369,7 @@ const Kuis = () => {
             <p>Skor Anda: {score}</p>
             <div className="mt-4">
               <button
-                onClick={() => navigate("/materi/bab1/kuis-bab1")}
+                onClick={() => navigate("/materi/bab1/rangkuman-bab1")}
                 className={`bg-gray-500 text-white px-4 py-2 rounded-lg mr-2 ${
                   score >= 80 ? "block" : "hidden"
                 }`}

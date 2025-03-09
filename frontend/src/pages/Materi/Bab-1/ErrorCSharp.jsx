@@ -24,20 +24,23 @@ const ErrorCSharp = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">1.7 Error Pada C#</h2>
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <p className="text-gray-700 text-justify mb-4">
+      <h1 className="mb-4 text-2xl font-bold text-center">
+        BAB 1 - PENDAHULUAN
+      </h1>
+      <h2 className="mb-4 text-2xl font-bold">1.7 Error Pada C#</h2>
+      <div className="p-4 bg-white rounded-lg shadow-md">
+        <p className="mb-4 text-justify text-gray-700">
           Dalam pemrograman C# terdapat beberapa tipe-tipe error yang dapat
           muncul dalam pembuatan program, contohnya adalah:
         </p>
-        <ul className="list-disc pl-6 mb-4">
+        <ul className="pl-6 mb-4 list-disc">
           <li>Syntax Error</li>
           <li>Runtime Error</li>
           <li>Logical Error</li>
         </ul>
 
-        <h3 className="font-semibold mt-4">Syntax Error</h3>
-        <ul className="list-disc pl-6 mb-4 text-justify">
+        <h3 className="mt-4 font-semibold">Syntax Error</h3>
+        <ul className="pl-6 mb-4 text-justify list-disc">
           <li>
             {" "}
             Bahasa pemrograman digunakan di bawah aturan dan konvensi yang
@@ -57,8 +60,8 @@ const ErrorCSharp = () => {
             sisi.
           </li>
         </ul>
-        <h4 className="font-semibold mt-4 mb-2">Perhatikan kode berikut :</h4>
-        <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto">
+        <h4 className="mt-4 mb-2 font-semibold">Perhatikan kode berikut :</h4>
+        <pre className="p-4 overflow-x-auto bg-gray-100 rounded-lg">
           <iframe
             width="100%"
             height="400"
@@ -67,8 +70,8 @@ const ErrorCSharp = () => {
           ></iframe>
         </pre>
 
-        <h3 className="font-semibold mt-4">Runtime Error</h3>
-        <ul className="list-disc pl-6 mb-4 text-justify">
+        <h3 className="mt-4 font-semibold">Runtime Error</h3>
+        <ul className="pl-6 mb-4 text-justify list-disc">
           <li>
             Berbeda dengan kesalahan sintaks, kode yang benar secara tata bahasa
             masih dapat menyebabkan kesalahan selama eksekusi. Jenis kesalahan
@@ -84,7 +87,7 @@ const ErrorCSharp = () => {
             terjadi.
           </li>
         </ul>
-        <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto">
+        <pre className="p-4 overflow-x-auto bg-gray-100 rounded-lg">
           <iframe
             width="100%"
             height="475"
@@ -93,8 +96,8 @@ const ErrorCSharp = () => {
           ></iframe>
         </pre>
 
-        <h3 className="font-semibold mt-4">Logical Error</h3>
-        <ul className="list-disc pl-6 mb-4 text-justify">
+        <h3 className="mt-4 font-semibold">Logical Error</h3>
+        <ul className="pl-6 mb-4 text-justify list-disc">
           <li>
             Logical error atau kesalahan logika merupakan error yang paling
             sulit untuk dideteksi.{" "}
@@ -129,7 +132,7 @@ const ErrorCSharp = () => {
         <div className="flex justify-between mt-6">
           <button
             onClick={handleBack}
-            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+            className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
           >
             Kembali
           </button>

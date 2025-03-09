@@ -24,13 +24,13 @@ const MateriLayout = () => {
       <Navbar />
       <div className="flex flex-1 mt-20">
         {/* Tambahkan margin-top untuk konten */}
-        <div className="fixed top-20 left-0 w-64 h-[calc(100vh-80px)] overflow-hidden overflow-y-auto bg-[white] text-white">
+        <div className="fixed top-20 left-0 w-70 h-[calc(100vh-80px)] overflow-hidden overflow-y-auto bg-[white] text-white">
           <MateriSidebar
             completedLessons={completedLessons}
             progress={progress}
           />
         </div>
-        <div className="flex-1 ml-64 p-6 overflow-y-auto">
+        <div className="flex-1 p-6 ml-64 overflow-y-auto">
           {/* Konten Materi */}
           <Outlet context={{ handleLessonComplete }} />
           <Footer />

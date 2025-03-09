@@ -141,6 +141,10 @@ const SintaksPrint = () => {
 
   return (
     <div>
+      
+      <h1 className="mb-4 text-2xl font-bold text-center">
+        BAB 1 - PENDAHULUAN
+      </h1>
       <h2 className="mb-4 text-2xl font-bold">1.5 Sintaks Print</h2>
       <h3 className="mt-4 text-xl font-semibold">
         Menampilkan hasil dalam program menggunakan fungsi

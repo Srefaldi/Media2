@@ -24,22 +24,25 @@ const StrukturEksekusi = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">1.4 Struktur Eksekusi Kode</h2>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+      <h1 className="mb-4 text-2xl font-bold text-center">
+        BAB 1 - PENDAHULUAN
+      </h1>
+      <h2 className="mb-4 text-2xl font-bold">1.4 Struktur Eksekusi Kode</h2>
+      <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         Bahasa pemrograman C# memiliki struktur eksekusi kode yang sekuensial,
         yang berarti kode yang ditulis terlebih dahulu akan dieksekusi terlebih
         dahulu. Struktur eksekusi sekuensial adalah struktur umum yang digunakan
         sebagian besar bahasa pemrograman termasuk C#.
       </p>
-      <h3 className="text-xl font-semibold mt-4">
+      <h3 className="mt-4 text-xl font-semibold">
         Contoh Struktur Eksekusi Kode
       </h3>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+      <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         Dapat diketahui lebih lanjut mengenai struktur eksekusi sekuensial
         menggunakan sampel kode di bawah ini. <br />
         Cobalah kode program pada compiler:
       </p>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md italic text-justify">
+      <p className="p-4 italic text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <iframe
           width="100%"
           height="475"
@@ -51,12 +54,12 @@ const StrukturEksekusi = () => {
         yang akan dicetak terakhir.
       </p>
 
-      <h3 className="text-xl font-semibold mt-4">Control Structures</h3>
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+      <h3 className="mt-4 text-xl font-semibold">Control Structures</h3>
+      <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         Di dalam struktur eksekusi kode terdapat control structures yang berguna
         untuk mengatur proses eksekusi sebuah kode program. Terdapat 3 tipe
         control structures dalam bahasa pemrograman:
-        <ul className="list-disc list-inside bg-white p-4 rounded-lg shadow-md">
+        <ul className="p-4 list-disc list-inside bg-white rounded-lg shadow-md">
           <li>
             <strong>Sequence</strong> - struktur dimana perintah dieksekusi
             secara berurutan.
@@ -72,12 +75,12 @@ const StrukturEksekusi = () => {
         </ul>
       </p>
 
-      <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md italic text-justify">
+      <p className="p-4 italic text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <div className="flex justify-center">
           <img
             src={gambar118}
             alt="Gambar 1.2 Alur eksekusi Common Language Runtime"
-            className="w-170 h-auto"
+            className="h-auto w-170"
           />
         </div>
 
@@ -94,7 +97,7 @@ const StrukturEksekusi = () => {
         <div className="flex justify-between mt-6">
           <button
             onClick={handleBack}
-            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+            className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
           >
             Kembali
           </button>

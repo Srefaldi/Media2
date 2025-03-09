@@ -15,7 +15,6 @@ import Kuis from "../src/pages/Materi/Bab-1/Kuis";
 import Rangkuman from "../src/pages/Materi/Bab-1/Rangkuman";
 
 // BAB 2
-import TipeData from "../src/pages/Materi/Bab-2/tipedata";
 import Variabel from "../src/pages/Materi/Bab-2/variabel";
 
 const MateriRoutes = () => {
@@ -38,7 +37,7 @@ const MateriRoutes = () => {
         <Route path="bab1/rangkuman-bab1" element={<Rangkuman />} />
 
         {/* BAB 2 */}
-        <Route path="bab2/tipedata" element={<TipeData />} />
+        <Route path="bab2/pengertian-variabel" element={<Variabel />} />
         <Route path="bab2/variabel" element={<Variabel />} />
       </Route>
     </Routes>

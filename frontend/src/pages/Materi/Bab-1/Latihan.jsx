@@ -238,7 +238,10 @@ const Latihan = () => {
       </div>
 
       <div className="flex mt-6">
-        <div className="flex flex-col mr-6">
+        <div className="flex flex-col mr-3">
+          <div className="p-4 mt-4 text-center bg-gray-100 border rounded-lg">
+            <h3 className="font-semibold">SKOR : {score}</h3>
+          </div>
           <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
           <div className="flex flex-row">
             {questions.slice(0, 3).map((question, index) => (
@@ -310,9 +313,7 @@ const Latihan = () => {
 
         <div className="w-full p-4 border rounded-lg">
           {/* Tampilkan Skor */}
-          <div className="p-4 mt-4 text-center bg-gray-100 border rounded-lg">
-            <h3 className="font-semibold">SKOR : {score}</h3>
-          </div>
+
           <h3 className="font-semibold">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
           <p className="text-gray-600">
             {questions[currentQuestionIndex].prompt}
