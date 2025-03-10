@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import Quiz from "./Quiz-bab1/Quiz1"; // Pastikan path ini sesuai
-// import alur from "./img-bab1/alur.png"; // Gambar yang digunakan
-// import logoc from "./img-bab1/logo.png"; // Gambar yang digunakan
+// import Quiz from "./Quiz-bab2/Quiz1"; // Pastikan path ini sesuai
+import alur from "./img-bab2/ilustrasi.png";
+import logoc from "./img-bab2/script.png";
+import memori from "./img-bab2/memori.png";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import iconBook from "../../../assets/img/book.png";
+import iconTujuan from "../../../assets/img/tujuan.png";
+import iconKonten from "../../../assets/img/konten.png";
 
 const TipeData = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -30,16 +34,18 @@ const TipeData = () => {
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
 
       {/* Pendahuluan Materi */}
-      <div>
+      <div className="w-full mb-4 border border-gray-300 rounded-lg">
         <h3
-          className="flex items-center font-bold cursor-pointer"
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
           onClick={togglePendahuluan}
+          style={{ backgroundColor: "#68217A" }}
         >
+          <img src={iconBook} alt="Icon" className="w-8 h-8 mr-2" />
           PENDAHULUAN MATERI
           <span className="ml-2">{isPendahuluanOpen ? "▲" : "▼"}</span>
         </h3>
         {isPendahuluanOpen && (
-          <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+          <div className="p-4 text-justify text-gray-700 rounded-b-lg">
             <p>
               Pada bab ini, kita akan mempelajari tentang variabel dalam bahasa
               pemrograman C#. Variabel merupakan elemen penting dalam
@@ -55,16 +61,20 @@ const TipeData = () => {
       </div>
 
       {/* Tujuan Pembelajaran */}
-      <div>
+      <div
+        className="w-full mb-4 border border-gray-300 rounded-lg"
+        style={{ backgroundColor: "#68217A" }}
+      >
         <h3
-          className="flex items-center font-bold cursor-pointer"
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
           onClick={toggleTujuan}
         >
+          <img src={iconTujuan} alt="Icon" className="w-8 h-8 mr-2" />
           TUJUAN PEMBELAJARAN
           <span className="ml-2">{isTujuanOpen ? "▲" : "▼"}</span>
         </h3>
         {isTujuanOpen && (
-          <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-lg shadow-md">
+          <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-b-lg">
             <li>Mampu memahami konsep variabel data dan klasifikasinya</li>
             <li>
               Dapat memahami konsep variabel serta dapat mendeklarasikan dan
@@ -77,16 +87,21 @@ const TipeData = () => {
       </div>
 
       {/* Konten Materi */}
-      <div>
+      <div
+        className="w-full mb-4 border border-gray-300 rounded-lg"
+        style={{ backgroundColor: "#68217A" }}
+      >
         <h3
-          className="flex items-center font-bold cursor-pointer"
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
           onClick={toggleKonten}
         >
+          {" "}
+          <img src={iconKonten} alt="Icon" className="w-8 h-8 mr-2" />
           KONTEN MATERI
           <span className="ml-2">{isKontenOpen ? "▲" : "▼"}</span>
         </h3>
         {isKontenOpen && (
-          <ul className="p-4 pl-6 text-justify text-gray-700 list-decimal bg-white rounded-lg shadow-md">
+          <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
             <li>2.1 Pengertian Variabel</li>
             <li>2.2 Penamaan Variabel</li>
             <li>2.3 Tipe Data dalam Variabel</li>
@@ -98,7 +113,7 @@ const TipeData = () => {
 
       {/* Pengertian Variabel */}
       <div>
-        <h2 className="text-2xl font-bold">2.1 Pengertian Variabel</h2>
+        <h2 className="mt-2 text-2xl font-bold">2.1 Pengertian Variabel</h2>
         <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             Variabel adalah suatu data yang nilainya dapat berubah-ubah.
@@ -111,7 +126,7 @@ const TipeData = () => {
 
         <div className="flex justify-center p-4">
           <img
-            // src={logoc}
+            src={logoc}
             alt="Gambar 2.1 Contoh script variabel"
             className="h-auto w-60"
           />
@@ -135,7 +150,7 @@ const TipeData = () => {
 
         <div className="flex justify-center p-4">
           <img
-            // src={alur}
+            src={alur}
             alt="Gambar 2.2 Ilustrasi Data ke Variabel"
             className="h-auto w-100"
           />
@@ -154,7 +169,7 @@ const TipeData = () => {
 
         <div className="flex justify-center p-4">
           <img
-            // src={alur}
+            src={memori}
             alt="Gambar 2.3 Contoh Bagaimana String 'CsharpLearn' Disimpan di Memori Komputer"
             className="h-auto w-100"
           />

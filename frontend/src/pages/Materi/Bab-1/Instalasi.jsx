@@ -4,7 +4,7 @@ import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
 const InstalasiSetup = () => {
   const navigate = useNavigate();
-  const { handleLessonComplete } = useOutletContext(); // Ambil fungsi dari konteks
+  const { handleLessonComplete } = useOutletContext();
 
   const handleBack = () => {
     window.scrollTo(0, 0);

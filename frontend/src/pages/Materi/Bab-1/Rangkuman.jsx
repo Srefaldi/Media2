@@ -1,17 +1,18 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
 
 const Rangkuman = () => {
   const navigate = useNavigate();
-
+  const { handleLessonComplete } = useOutletContext();
   const handleNext = () => {
+    handleLessonComplete("/materi/bab1/rangkuman-bab1");
     navigate("/materi/bab2/pengertian-variabel");
   };
 
   const handleBack = () => {
-    navigate("/materi/bab1/kuis-komentar");
+    navigate("/materi/bab1/kuis-bab1");
   };
 
   return (
@@ -87,7 +88,7 @@ const Rangkuman = () => {
         {/* Tombol Navigasi */}
         <div className="flex justify-between mt-6">
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={handleBack}
             className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
           >
             <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />

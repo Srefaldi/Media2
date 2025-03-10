@@ -6,6 +6,9 @@ import { useOutletContext } from "react-router-dom";
 import Quiz from "./Quiz-bab1/Quiz1";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import iconBook from "../../../assets/img/book.png"; // Tambahkan ikon jika diperlukan
+import iconTujuan from "../../../assets/img/tujuan.png"; // Tambahkan ikon jika diperlukan
+import iconKonten from "../../../assets/img/konten.png"; // Tambahkan ikon jika diperlukan
 
 const PengenalanCSharp = () => {
   const [isPendahuluanOpen, setPendahuluanOpen] = useState(false);
@@ -35,16 +38,19 @@ const PengenalanCSharp = () => {
         BAB 1 - PENDAHULUAN
       </h1>
 
-      <div>
+      {/* Pendahuluan Materi */}
+      <div className="w-full mb-4 border border-gray-300 rounded-lg">
         <h3
-          className="flex items-center font-bold cursor-pointer"
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
           onClick={togglePendahuluan}
+          style={{ backgroundColor: "#68217A" }}
         >
+          <img src={iconBook} alt="Icon" className="w-8 h-8 mr-2" />
           PENDAHULUAN MATERI
           <span className="ml-2">{isPendahuluanOpen ? "▲" : "▼"}</span>
         </h3>
         {isPendahuluanOpen && (
-          <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+          <div className="p-4 text-justify text-gray-700 bg-white rounded-b-lg">
             <p>
               Pada bab ini, kita akan mempelajari pendahuluan bahasa pemrograman
               C#. Bahasa ini memiliki kesamaan dan perbedaan dengan bahasa
@@ -57,16 +63,21 @@ const PengenalanCSharp = () => {
         )}
       </div>
 
-      <div>
+      {/* Tujuan Pembelajaran */}
+      <div
+        className="w-full mb-4 border border-gray-300 rounded-lg"
+        style={{ backgroundColor: "#68217A" }}
+      >
         <h3
-          className="flex items-center font-bold cursor-pointer"
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
           onClick={toggleTujuan}
         >
+          <img src={iconTujuan} alt="Icon" className="w-8 h-8 mr-2" />
           TUJUAN PEMBELAJARAN
           <span className="ml-2">{isTujuanOpen ? "▲" : "▼"}</span>
         </h3>
         {isTujuanOpen && (
-          <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-lg shadow-md">
+          <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-b-lg">
             <li>Mampu memahami struktur kode bahasa pemrograman C#</li>
             <li>
               Mampu memahami struktur eksekusi kode (sequence, selection, dan
@@ -84,27 +95,34 @@ const PengenalanCSharp = () => {
         )}
       </div>
 
-      <div>
+      {/* Konten Materi */}
+      <div
+        className="w-full mb-4 border border-gray-300 rounded-lg"
+        style={{ backgroundColor: "#68217A" }}
+      >
         <h3
-          className="flex items-center font-bold cursor-pointer"
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
           onClick={toggleKonten}
         >
+          <img src={iconKonten} alt="Icon" className="w-8 h-8 mr-2" />
           KONTEN MATERI
           <span className="ml-2">{isKontenOpen ? "▲" : "▼"}</span>
         </h3>
         {isKontenOpen && (
-          <ul className="p-4 pl-6 text-justify text-gray-700 list-decimal bg-white rounded-lg shadow-md">
-            <li>Pengenalan C#</li>
-            <li>Instalasi Setup .NET dan Visual Studio Code</li>
-            <li>Struktur Kode Bahasa Pemrograman C#</li>
-            <li>Struktur Eksekusi Kode</li>
-            <li>Sintaks Print</li>
-            <li>Sintaks Komentar</li>
-            <li>Error pada C#</li>
+          <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
+            <li>1.1 Pengenalan C#</li>
+            <li>1.2 Instalasi Setup .NET dan Visual Studio Code</li>
+            <li>1.3 Struktur Kode Bahasa Pemrograman C#</li>
+            <li>1.4 Struktur Eksekusi Kode</li>
+            <li>1.5 Sintaks Print</li>
+            <li>1.6 Sintaks Komentar</li>
+            <li>1.7 Error pada C#</li>
+            <li>1.8 Rangkuman</li>
           </ul>
         )}
       </div>
 
+      {/* Pengertian C# */}
       <div>
         <h2 className="text-2xl font-bold">1.1 Pengenalan C#</h2>
 

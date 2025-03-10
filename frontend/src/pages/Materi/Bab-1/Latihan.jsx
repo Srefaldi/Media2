@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import PopUpJawabanSalah from "../../../components/Home/Materi/PopUp/Latihan/PopUpSalah"; // Ganti dengan path yang sesuai
-import PopUpJawabanKosong from "../../../components/Home/Materi/PopUp/Latihan/PopUpKosong"; // Ganti dengan path yang sesuai
-import PopUpSkor from "../../../components/Home/Materi/PopUp/Latihan/PopUpSkor"; // Ganti dengan path yang sesuai
-import PopUpJawabanBelumSelesai from "../../../components/Home/Materi/PopUp/Latihan/PopUpBelumSelesai"; // Ganti dengan path yang sesuai
-import PopUpJawabanBenar from "../../../components/Home/Materi/PopUp/Latihan/PopUpBenar";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert2
 import "../style/latihan.css";
 import IconPetunjuk from "../../../assets/img/informasi.png";
 import nextIcon from "../../../assets/img/selanjutnya.png";
@@ -12,17 +8,13 @@ import backIcon from "../../../assets/img/kembali.png";
 
 const Latihan = () => {
   const navigate = useNavigate();
+  const { handleLessonComplete } = useOutletContext();
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState(Array(5).fill(""));
   const [score, setScore] = useState(0);
   const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null));
   const [isFinished, setIsFinished] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
-  const [showEmptyNotification, setShowEmptyNotification] = useState(false);
-  const [showScoreNotification, setShowScoreNotification] = useState(false);
-  const [showIncompleteNotification, setShowIncompleteNotification] =
-    useState(false); // State untuk notifikasi jawaban belum selesai
-  const [showCorrectNotification, setShowCorrectNotification] = useState(false);
 
   const questions = [
     {
@@ -107,7 +99,12 @@ const Latihan = () => {
 
     // Cek apakah jawaban kosong
     if (userAnswers.every((answer) => answer === "")) {
-      setShowEmptyNotification(true); // Tampilkan notifikasi jika jawaban kosong
+      Swal.fire({
+        title: "Soal Belum Dijawab!",
+        text: "Silakan isi jawaban sebelum melanjutkan.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
       return;
     }
 
@@ -122,12 +119,22 @@ const Latihan = () => {
       const newAnswerStatus = [...answerStatus];
       newAnswerStatus[currentQuestionIndex] = "correct"; // Tandai jawaban benar
       setAnswerStatus(newAnswerStatus);
-      setShowCorrectNotification(true); // Tampilkan pop-up jawaban benar
+      Swal.fire({
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjutkan ke soal berikutnya.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     } else {
-      setShowNotification(true); // Tampilkan notifikasi jika salah
       const newAnswerStatus = [...answerStatus];
       newAnswerStatus[currentQuestionIndex] = "incorrect"; // Tandai jawaban salah
       setAnswerStatus(newAnswerStatus);
+      Swal.fire({
+        title: "Jawaban Salah!",
+        text: "Silakan coba lagi.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -135,40 +142,70 @@ const Latihan = () => {
     setCurrentQuestionIndex(index);
   };
 
-  // Fungsi untuk mereset jawaban untuk soal yang sedang dipilih
   const resetAnswerForCurrentQuestion = () => {
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = ""; // Reset jawaban untuk soal yang sedang dipilih
     setAnswers(newAnswers);
   };
 
-  // Fungsi untuk menangani tombol selesai
   const handleFinish = () => {
     // Cek apakah ada soal yang belum dijawab
     const hasIncompleteAnswers = answers.some((answer) => answer === "");
     if (hasIncompleteAnswers) {
-      setShowIncompleteNotification(true); // Tampilkan pop-up jika ada soal yang belum dijawab
+      Swal.fire({
+        title: "Masih Ada Soal Belum Dijawab!",
+        text: "Silakan periksa kembali jawaban anda.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
       return;
     }
 
     if (score < 80) {
-      setShowScoreNotification(true); // Tampilkan pop-up skor jika di bawah 80
+      Swal.fire({
+        title: "Skor Anda di Bawah 80!",
+        text: "Silakan baca kembali materi dan jawab latihan kembali.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      }).then(() => {
+        setIsFinished(true); // Set finished state to true
+      });
+    } else {
+      // Menampilkan SweetAlert untuk hasil kuis
+      Swal.fire({
+        title: "Kuis Selesai!",
+        text: `Skor Anda: ${score}`,
+        icon: "success",
+        showCancelButton: true,
+        confirmButtonText: "Selanjutnya",
+        cancelButtonText: "Kembali",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handleLessonComplete("/materi/bab1/latihan-bab1");
+          window.scrollTo(0, 0);
+          navigate("/materi/bab1/kuis-bab1");
+        } else {
+          navigate("/materi/bab1/error-csharp");
+        }
+      });
     }
-    setIsFinished(true);
   };
 
-  // Fungsi untuk menangani tombol Next
   const handleNext = () => {
     window.scrollTo(0, 0);
     navigate("/materi/bab1/kuis-bab1");
   };
 
-  // Fungsi untuk menangani tombol Back
   const handleBack = () => {
     window.scrollTo(0, 0);
     navigate("/materi/bab1/error-csharp");
   };
-
+  const navigateToTop = (navigate, path) => {
+    navigate(path);
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 100);
+  };
   return (
     <div className="max-w-full p-2 mx-auto bg-white rounded-lg shadow-lg">
       <h2 className="text-lg font-semibold text-center text-gray-800">
@@ -315,8 +352,6 @@ const Latihan = () => {
         </div>
 
         <div className="w-full p-4 border rounded-lg">
-          {/* Tampilkan Skor */}
-
           <h3 className="font-semibold">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
           <p className="text-gray-600">
             {questions[currentQuestionIndex].prompt}
@@ -428,63 +463,45 @@ const Latihan = () => {
           {isFinished && (
             <div className="mt-4">
               <button
-                onClick={() => navigate("/dashboard")}
+                onClick={() =>
+                  navigateToTop(navigate, "/materi/bab1/pengenalan")
+                }
                 className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
               >
                 <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
                 Kembali
               </button>
-              <button
-                onClick={handleNext}
-                className="flex items-center justify-between"
-                style={{
-                  backgroundColor: "#6E2A7F",
-                  color: "white",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "0.5rem",
-                  transition: "background-color 0.2s",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#5B1F6A")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#6E2A7F")
-                }
-              >
-                <span className="flex-grow">Selanjutnya</span>{" "}
-                <img
-                  src={nextIcon}
-                  alt="Selanjutnya"
-                  className="w-5 h-5 ml-2"
-                />
-              </button>
+
+              {score >= 80 && (
+                <button
+                  onClick={handleNext}
+                  className="flex items-center justify-between mt-2"
+                  style={{
+                    backgroundColor: "#6E2A7F",
+                    color: "white",
+                    padding: "0.5rem 1rem",
+                    borderRadius: "0.5rem",
+                    transition: "background-color 0.2s",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#5B1F6A")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#6E2A7F")
+                  }
+                >
+                  <span className="flex-grow">Selanjutnya</span>{" "}
+                  <img
+                    src={nextIcon}
+                    alt="Selanjutnya"
+                    className="w-5 h-5 ml-2"
+                  />
+                </button>
+              )}
             </div>
           )}
         </div>
       </div>
-
-      {/* Notifikasi jika jawaban salah */}
-      {showNotification && (
-        <PopUpJawabanSalah onClose={() => setShowNotification(false)} />
-      )}
-      {/* Notifikasi jika jawaban kosong */}
-      {showEmptyNotification && (
-        <PopUpJawabanKosong onClose={() => setShowEmptyNotification(false)} />
-      )}
-      {/* Notifikasi jika skor di bawah 80 */}
-      {showScoreNotification && (
-        <PopUpSkor onClose={() => setShowScoreNotification(false)} />
-      )}
-      {/* Notifikasi jika ada jawaban yang belum selesai */}
-      {showIncompleteNotification && (
-        <PopUpJawabanBelumSelesai
-          onClose={() => setShowIncompleteNotification(false)}
-        />
-      )}
-      {/* Notifikasi jika jawaban benar */}
-      {showCorrectNotification && (
-        <PopUpJawabanBenar onClose={() => setShowCorrectNotification(false)} />
-      )}
     </div>
   );
 };

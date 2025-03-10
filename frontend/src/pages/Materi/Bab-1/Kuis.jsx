@@ -1,61 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import PopUpJawabanSalah from "../../../components/Home/Materi/PopUp/Latihan/PopUpSalah"; // Ganti dengan path yang sesuai
-import PopUpJawabanKosong from "../../../components/Home/Materi/PopUp/Latihan/PopUpKosong"; // Ganti dengan path yang sesuai
-import PopUpJawabanBenar from "../../../components/Home/Materi/PopUp/Latihan/PopUpBenar"; // Ganti dengan path yang sesuai
-import PopUpSkor from "../../../components/Home/Materi/PopUp/Latihan/PopUpSkor"; // Ganti dengan path yang sesuai
-import PopUpJawabanBelumSelesai from "../../../components/Home/Materi/PopUp/Latihan/PopUpBelumSelesai"; // Ganti dengan path yang sesuai
-import PopUpSudahMenjawab from "../../../components/Home/Materi/PopUp/Materi/PopUpSudahMenjawab"; // Ganti dengan path yang sesuai
+import { useNavigate, useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert
 import questionsData from "./SoalJson/BAB1.json"; // Ganti dengan path yang sesuai
 import IconPetunjuk from "../../../assets/img/informasi.png";
 
 const Kuis = () => {
   const navigate = useNavigate();
+  const { handleLessonComplete } = useOutletContext();
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [showNotification, setShowNotification] = useState(false);
-  const [showCorrectNotification, setShowCorrectNotification] = useState(false);
-  const [showEmptyNotification, setShowEmptyNotification] = useState(false);
-  const [showIncompleteNotification, setShowIncompleteNotification] =
-    useState(false);
-  const [showScoreNotification, setShowScoreNotification] = useState(false);
-  const [showAlreadyAnsweredPopup, setShowAlreadyAnsweredPopup] =
-    useState(false); // State untuk popup sudah menjawab
-  const [showLowScorePopup, setShowLowScorePopup] = useState(false); // State untuk popup skor rendah
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [answerStatus, setAnswerStatus] = useState([]);
   const [hasAnswered, setHasAnswered] = useState(
     Array(questionsData.length).fill(false)
-  ); // Menyimpan status apakah soal sudah dijawab
+  );
 
-  // Fungsi untuk mengambil teks dari HTML
   const getTextFromHTML = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
   };
 
-  // Parse questions from JSON data
   const questions = questionsData
     .map((item) => {
       try {
         const soalData = JSON.parse(item.soal_data);
         return {
           id: item.judul_soal,
-          question: getTextFromHTML(soalData.pertanyaan), // Ambil teks dari HTML
+          question: getTextFromHTML(soalData.pertanyaan),
           options: soalData.pilihan.map((option) =>
             getTextFromHTML(option.text)
-          ), // Ambil teks dari setiap opsi
+          ),
           correctAnswer: getTextFromHTML(
             soalData.pilihan.find((option) => option.benar)?.text || ""
-          ), // Ambil teks dari pilihan yang benar
+          ),
         };
       } catch (error) {
         console.error("Error parsing question data:", error);
-        return null; // Kembalikan null jika terjadi kesalahan
+        return null;
       }
     })
-    .filter(Boolean); // Hapus item null dari array
+    .filter(Boolean);
 
   useEffect(() => {
     setSelectedAnswers(Array(questions.length).fill(""));
@@ -70,32 +55,49 @@ const Kuis = () => {
 
   const checkAnswers = () => {
     const answer = selectedAnswers[currentQuestionIndex];
-    const correctAnswer = questions[currentQuestionIndex].correctAnswer; // Ambil teks dari jawaban yang benar
+    const correctAnswer = questions[currentQuestionIndex].correctAnswer;
 
     if (answer === "") {
-      setShowEmptyNotification(true);
+      Swal.fire({
+        title: "Soal Belum Dijawab!",
+        text: "Silakan isi jawaban sebelum melanjutkan.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
       return;
     }
 
     const newAnswerStatus = [...answerStatus];
     if (answer === correctAnswer) {
       if (!hasAnswered[currentQuestionIndex]) {
-        // Cek apakah soal sudah dijawab
         setScore((prevScore) => prevScore + 10);
         newAnswerStatus[currentQuestionIndex] = "correct";
-        setShowCorrectNotification(true);
+        Swal.fire({
+          title: "Jawaban Anda Benar!",
+          text: "Silakan lanjutkan ke soal berikutnya.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
         setHasAnswered((prev) => {
           const newHasAnswered = [...prev];
-          newHasAnswered[currentQuestionIndex] = true; // Tandai soal sebagai sudah dijawab
+          newHasAnswered[currentQuestionIndex] = true;
           return newHasAnswered;
         });
       } else {
-        // Jika sudah dijawab sebelumnya, tampilkan popup
-        setShowAlreadyAnsweredPopup(true);
+        Swal.fire({
+          icon: "info",
+          title: "Sudah Menjawab",
+          text: "Anda sudah menjawab soal ini sebelumnya.",
+        });
       }
     } else {
       newAnswerStatus[currentQuestionIndex] = "incorrect";
-      setShowNotification(true);
+      Swal.fire({
+        title: "Jawaban Salah!",
+        text: "Silakan coba lagi.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
     setAnswerStatus(newAnswerStatus);
   };
@@ -111,12 +113,38 @@ const Kuis = () => {
       (answer) => answer === ""
     );
     if (hasIncompleteAnswers) {
-      setShowIncompleteNotification(true);
+      Swal.fire({
+        title: "Masih Ada Soal Belum Dijawab!",
+        text: "Silakan periksa kembali jawaban anda.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
     } else {
       if (score < 80) {
-        setShowLowScorePopup(true);
+        Swal.fire({
+          title: "Skor Anda di Bawah 80!",
+          text: "Silakan baca kembali materi dan jawab latihan kembali.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
       } else {
-        setIsFinished(true);
+        // Menampilkan SweetAlert untuk hasil kuis
+        Swal.fire({
+          title: "Kuis Selesai!",
+          text: `Skor Anda: ${score}`,
+          icon: "success",
+          showCancelButton: true,
+          confirmButtonText: "Selanjutnya",
+          cancelButtonText: "Kembali",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            handleLessonComplete("/materi/bab1/kuis-bab1");
+            window.scrollTo(0, 0);
+            navigate("/materi/bab1/rangkuman-bab1");
+          } else {
+            navigate("/materi/bab1/error-csharp");
+          }
+        });
       }
     }
   };
@@ -347,21 +375,6 @@ const Kuis = () => {
         </div>
       </div>
 
-      {showNotification && (
-        <PopUpJawabanSalah onClose={() => setShowNotification(false)} />
-      )}
-      {showEmptyNotification && (
-        <PopUpJawabanKosong onClose={() => setShowEmptyNotification(false)} />
-      )}
-      {showCorrectNotification && (
-        <PopUpJawabanBenar onClose={() => setShowCorrectNotification(false)} />
-      )}
-      {showIncompleteNotification && (
-        <PopUpJawabanBelumSelesai
-          onClose={() => setShowIncompleteNotification(false)}
-        />
-      )}
-
       {isFinished && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="p-4 bg-white rounded-lg">
@@ -385,14 +398,6 @@ const Kuis = () => {
             </div>
           </div>
         </div>
-      )}
-      {showAlreadyAnsweredPopup && (
-        <PopUpSudahMenjawab
-          onClose={() => setShowAlreadyAnsweredPopup(false)}
-        />
-      )}
-      {showLowScorePopup && (
-        <PopUpSkor onClose={() => setShowLowScorePopup(false)} />
       )}
     </div>
   );
