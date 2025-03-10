@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import PopUpJawabanSalah from "../../../../components/Home/Materi/PopUp/PopUpSalahJawaban";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Quiz = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [quizFeedback, setQuizFeedback] = useState("");
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [showCompiler, setShowCompiler] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,8 +14,24 @@ const Quiz = ({ onComplete }) => {
       setQuizCompleted(true);
       setShowCompiler(false);
       onComplete();
+
+      // Menampilkan SweetAlert untuk jawaban benar
+      Swal.fire({
+        title: "Jawaban Anda Benar",
+        text: "Silahkan Lanjut Kemateri Berikutnya",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     } else {
-      setShowNotification(true);
+      // Menampilkan SweetAlert untuk jawaban salah
+      setSelectedAnswer("");
+      setQuizFeedback("");
+      Swal.fire({
+        title: "Jawaban Salah!",
+        text: "Baca Kembali Materi dan Coba Lagi",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -30,14 +45,8 @@ const Quiz = ({ onComplete }) => {
     setShowCompiler((prev) => !prev);
   };
 
-  const handleCloseNotification = () => {
-    setShowNotification(false);
-    setSelectedAnswer("");
-    window.scrollTo(0, 0);
-  };
-
   return (
-    <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -46,13 +55,13 @@ const Quiz = ({ onComplete }) => {
       </h2>
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-4 rounded-lg shadow-md"
+        className="p-4 bg-white rounded-lg shadow-md"
       >
         <p className="mb-4 text-gray-700">
           Dari sampel kode di bawah ini, yang mana yang merupakan hasil output
           dengan urutan struktur eksekusi kode yang benar?
         </p>
-        <pre className="bg-gray-100 p-2 rounded-md mb-4">
+        <pre className="p-2 mb-4 bg-gray-100 rounded-md">
           {`namespace CsharpLearn {
     class Transportasi {
         static void Main(string[] args) {
@@ -164,11 +173,6 @@ const Quiz = ({ onComplete }) => {
         >
           {quizFeedback}
         </p>
-      )}
-
-      {/* Notifikasi jika jawaban salah */}
-      {showNotification && (
-        <PopUpJawabanSalah onClose={handleCloseNotification} />
       )}
     </div>
   );

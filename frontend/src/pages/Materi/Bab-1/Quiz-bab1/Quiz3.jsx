@@ -1,18 +1,32 @@
 import React, { useState } from "react";
-import PopUpJawabanSalah from "../../../../components/Home/Materi/PopUp/PopUpSalahJawaban";
+import Swal from "sweetalert2"; // Import SweetAlert
 
 const Quiz = ({ onComplete }) => {
   const [functionName, setFunctionName] = useState("");
   const [methodName, setMethodName] = useState("");
   const [showCompiler, setShowCompiler] = useState(false);
   const [quizFeedback, setQuizFeedback] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
 
   const handleSubmit = () => {
     if (functionName === "Main" && methodName === "Console") {
       onComplete();
+      Swal.fire({
+        title: "Jawaban Anda Benar",
+        text: "Silahkan Lanjut Kemateri Berikutnya",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     } else {
-      setShowNotification(true);
+      window.scrollTo(0, 0);
+      setFunctionName("");
+      setMethodName("");
+      setQuizFeedback("");
+      Swal.fire({
+        title: "Jawaban Salah!",
+        text: "Baca Kembali Materi dan Coba Lagi",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -27,15 +41,8 @@ const Quiz = ({ onComplete }) => {
     setShowCompiler((prev) => !prev);
   };
 
-  const handleCloseNotification = () => {
-    setShowNotification(false);
-    setFunctionName("");
-    setMethodName("");
-    window.scrollTo(0, 0);
-  };
-
   return (
-    <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -44,11 +51,11 @@ const Quiz = ({ onComplete }) => {
       </h2>
 
       <div className="mt-4">
-        <p className="text-gray-600 mt-2">
+        <p className="mt-2 text-gray-600">
           Lengkapi kode berikut agar bisa menampilkan "Hello World"
         </p>
 
-        <div className="bg-gray-100 p-4 mt-3 rounded-lg font-mono text-sm">
+        <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
               {`static void `}
@@ -167,11 +174,6 @@ const Quiz = ({ onComplete }) => {
         >
           {quizFeedback}
         </p>
-      )}
-
-      {/* Notifikasi jika jawaban salah */}
-      {showNotification && (
-        <PopUpJawabanSalah onClose={handleCloseNotification} />
       )}
     </div>
   );

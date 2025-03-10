@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PopUpJawabanSalah from "../../../../components/Home/Materi/PopUp/PopUpSalahJawaban";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Quiz = ({ onComplete }) => {
   const [selectedOption, setSelectedOption] = useState("");
@@ -17,9 +17,22 @@ const Quiz = ({ onComplete }) => {
       onComplete();
       setIsSubmitted(true);
       setShowNotification(false);
+
+      Swal.fire({
+        title: "Jawaban Anda Benar",
+        text: "Silahkan Lanjut Kemateri Berikutnya",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     } else {
-      setShowNotification(true);
-      setIsSubmitted(true);
+      setSelectedOption("");
+      setIsSubmitted(false);
+      Swal.fire({
+        title: "Jawaban Salah!",
+        text: "Baca Kembali Materi dan Coba Lagi",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -35,7 +48,7 @@ const Quiz = ({ onComplete }) => {
   };
 
   return (
-    <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}

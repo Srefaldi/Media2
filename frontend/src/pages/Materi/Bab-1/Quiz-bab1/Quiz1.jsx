@@ -1,20 +1,33 @@
 import React, { useState } from "react";
-import PopUpJawabanSalah from "../../../../components/Home/Materi/PopUp/Materi/PopUpSalah";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Quiz = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
-  const [showWrongAnswerPopup, setShowWrongAnswerPopup] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (selectedAnswer === "B") {
+      window.scrollTo(0, document.body.scrollHeight);
+
+      Swal.fire({
+        title: "Jawaban Anda Benar",
+        text: "Silahkan Lanjut Kemateri Berikutnya",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+
       onComplete(true);
     } else {
-      setSelectedAnswer("");
-
-      setShowWrongAnswerPopup(true);
+      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
+      setSelectedAnswer("");
+      Swal.fire({
+        title: "Jawaban Salah!",
+        text: "Baca Kembali Materi dan Coba Lagi",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -95,10 +108,6 @@ const Quiz = ({ onComplete }) => {
           </button>
         </div>
       </form>
-
-      {showWrongAnswerPopup && (
-        <PopUpJawabanSalah onClose={() => setShowWrongAnswerPopup(false)} />
-      )}
     </div>
   );
 };

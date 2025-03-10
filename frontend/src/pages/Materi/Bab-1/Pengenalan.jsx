@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router-dom";
 import Quiz from "./Quiz-bab1/Quiz1";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+
 const PengenalanCSharp = () => {
   const [isPendahuluanOpen, setPendahuluanOpen] = useState(false);
   const [isTujuanOpen, setTujuanOpen] = useState(false);
@@ -20,7 +21,6 @@ const PengenalanCSharp = () => {
 
   const handleQuizComplete = () => {
     setQuizCompleted(true);
-    // Tidak ada peningkatan progress di sini
   };
 
   const handleNext = () => {
@@ -211,12 +211,7 @@ const PengenalanCSharp = () => {
             }
           >
             <span>Selanjutnya</span>
-            <img
-              src={nextIcon}
-              alt="Selanjutnya"
-              className="w-5 h-5 ml-2"
-            />{" "}
-            {/* Ikon di pojok kanan */}
+            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
         </div>
       )}
