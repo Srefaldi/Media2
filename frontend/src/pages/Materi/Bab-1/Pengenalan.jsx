@@ -4,7 +4,8 @@ import alur from "./img-bab1/alur.png";
 import logoc from "./img-bab1/logo.png";
 import { useOutletContext } from "react-router-dom";
 import Quiz from "./Quiz-bab1/Quiz1";
-
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
 const PengenalanCSharp = () => {
   const [isPendahuluanOpen, setPendahuluanOpen] = useState(false);
   const [isTujuanOpen, setTujuanOpen] = useState(false);
@@ -30,20 +31,20 @@ const PengenalanCSharp = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4 text-center">
+      <h1 className="mb-4 text-2xl font-bold text-center">
         BAB 1 - PENDAHULUAN
       </h1>
 
       <div>
         <h3
-          className="font-bold cursor-pointer flex items-center"
+          className="flex items-center font-bold cursor-pointer"
           onClick={togglePendahuluan}
         >
           PENDAHULUAN MATERI
           <span className="ml-2">{isPendahuluanOpen ? "▲" : "▼"}</span>
         </h3>
         {isPendahuluanOpen && (
-          <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+          <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
             <p>
               Pada bab ini, kita akan mempelajari pendahuluan bahasa pemrograman
               C#. Bahasa ini memiliki kesamaan dan perbedaan dengan bahasa
@@ -58,14 +59,14 @@ const PengenalanCSharp = () => {
 
       <div>
         <h3
-          className="font-bold cursor-pointer flex items-center"
+          className="flex items-center font-bold cursor-pointer"
           onClick={toggleTujuan}
         >
           TUJUAN PEMBELAJARAN
           <span className="ml-2">{isTujuanOpen ? "▲" : "▼"}</span>
         </h3>
         {isTujuanOpen && (
-          <ul className="text-gray-700 bg-white p-4 rounded-lg shadow-md list-disc pl-6 text-justify">
+          <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-lg shadow-md">
             <li>Mampu memahami struktur kode bahasa pemrograman C#</li>
             <li>
               Mampu memahami struktur eksekusi kode (sequence, selection, dan
@@ -85,14 +86,14 @@ const PengenalanCSharp = () => {
 
       <div>
         <h3
-          className="font-bold cursor-pointer flex items-center"
+          className="flex items-center font-bold cursor-pointer"
           onClick={toggleKonten}
         >
           KONTEN MATERI
           <span className="ml-2">{isKontenOpen ? "▲" : "▼"}</span>
         </h3>
         {isKontenOpen && (
-          <ul className="text-gray-700 bg-white p-4 rounded-lg shadow-md list-decimal pl-6 text-justify">
+          <ul className="p-4 pl-6 text-justify text-gray-700 list-decimal bg-white rounded-lg shadow-md">
             <li>Pengenalan C#</li>
             <li>Instalasi Setup .NET dan Visual Studio Code</li>
             <li>Struktur Kode Bahasa Pemrograman C#</li>
@@ -105,9 +106,9 @@ const PengenalanCSharp = () => {
       </div>
 
       <div>
-        <h2 className="font-bold text-2xl">1.1 Pengenalan C#</h2>
+        <h2 className="text-2xl font-bold">1.1 Pengenalan C#</h2>
 
-        <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             C# (“See-Sharp”) adalah bahasa pemrograman modern yang dikembangkan
             oleh Microsoft sebagai bagian dari inisiatif .NET mereka. Bahasa ini
@@ -121,11 +122,11 @@ const PengenalanCSharp = () => {
         </div>
 
         <div className="flex justify-center p-4">
-          <img src={logoc} alt="Gambar 1.1 Logo C#" className="w-60 h-auto" />
+          <img src={logoc} alt="Gambar 1.1 Logo C#" className="h-auto w-60" />
         </div>
         <p className="font-bold text-center">Gambar 1.1 Logo C#</p>
 
-        <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             Seperti halnya bahasa pemrograman yang lain, C# bisa digunakan untuk
             membangun berbagai macam jenis aplikasi, seperti aplikasi berbasis
@@ -133,7 +134,7 @@ const PengenalanCSharp = () => {
             web services. <br />
           </p>
         </div>
-        <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             C# dikembangkan sebagai respons terhadap kebutuhan akan bahasa
             pemrograman yang kuat namun sederhana untuk mengembangkan aplikasi
@@ -146,7 +147,7 @@ const PengenalanCSharp = () => {
             signifikan.
           </p>
         </div>
-        <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             Pada tahun 2003, C# diakui sebagai standar oleh ECMA (European
             Computer Manufacturers Association) dan ISO (International
@@ -154,7 +155,7 @@ const PengenalanCSharp = () => {
             bahasa ini secara global.
           </p>
         </div>
-        <div className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             Program C# tidak seperti program C dan C++ yang di-compile menjadi
             binary yang bisa dieksekusi langsung oleh prosesor. Program C#
@@ -171,7 +172,7 @@ const PengenalanCSharp = () => {
           <img
             src={alur}
             alt="Gambar 1.2 Alur eksekusi Common Language Runtime"
-            className="w-100 h-auto"
+            className="h-auto w-100"
           />
         </div>
         <p className="font-bold text-center">
@@ -187,12 +188,14 @@ const PengenalanCSharp = () => {
         <div className="flex justify-between mt-6">
           <button
             onClick={() => navigate("/dashboard")}
-            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
           >
+            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
             Kembali
           </button>
           <button
             onClick={handleNext}
+            className="flex items-center justify-between"
             style={{
               backgroundColor: "#6E2A7F",
               color: "white",
@@ -207,7 +210,13 @@ const PengenalanCSharp = () => {
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
             }
           >
-            Selanjutnya
+            <span>Selanjutnya</span>
+            <img
+              src={nextIcon}
+              alt="Selanjutnya"
+              className="w-5 h-5 ml-2"
+            />{" "}
+            {/* Ikon di pojok kanan */}
           </button>
         </div>
       )}

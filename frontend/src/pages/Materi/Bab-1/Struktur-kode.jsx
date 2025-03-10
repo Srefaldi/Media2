@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Quiz from "./Quiz-bab1/Quiz3";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
 
 const StrukturKode = () => {
   const navigate = useNavigate();
@@ -23,16 +25,16 @@ const StrukturKode = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4 text-center">
+      <h1 className="mb-4 text-2xl font-bold text-center">
         BAB 1 - PENDAHULUAN
       </h1>
 
       <div>
-        <h2 className="font-bold text-2xl">
+        <h2 className="text-2xl font-bold">
           1.3 Struktur Kode Bahasa Pemrograman C#
         </h2>
 
-        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+        <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           Sebelum memulai pembelajaran pemrograman kita perlu mengetahui
           struktur dasar dari kode bahasa pemrograman C#. Kita dapat melihat
           struktur kode bahasa pemrograman C# yang paling dasar dengan contoh
@@ -41,7 +43,7 @@ const StrukturKode = () => {
           Cobalah kode pada compiler:
         </p>
 
-        <pre className="bg-gray-100 p-4 rounded-lg overflow-x -auto">
+        <pre className="p-4 bg-gray-100 rounded-lg overflow-x -auto">
           <iframe
             width="100%"
             height="475"
@@ -50,11 +52,11 @@ const StrukturKode = () => {
           ></iframe>
         </pre>
 
-        <p className="text-gray-700 bg-white p-4 rounded-lg shadow-md text-justify">
+        <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           Penjelasan Kode:
         </p>
 
-        <ul className="list-disc pl-6 bg-white p-4 rounded-lg shadow-md">
+        <ul className="p-4 pl-6 list-disc bg-white rounded-lg shadow-md">
           <li>
             <strong>using System;</strong> - Digunakan untuk mengimpor namespace
             System, sehingga kita dapat menggunakan kelas seperti Console tanpa
@@ -87,13 +89,15 @@ const StrukturKode = () => {
       {quizCompleted && (
         <div className="flex justify-between mt-6">
           <button
-            onClick={handleBack}
-            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+            onClick={() => navigate("/dashboard")}
+            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
           >
+            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
             Kembali
           </button>
           <button
             onClick={handleNext}
+            className="flex items-center justify-between"
             style={{
               backgroundColor: "#6E2A7F",
               color: "white",
@@ -106,9 +110,15 @@ const StrukturKode = () => {
             }
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            } 
+            }
           >
-            Selanjutnya
+            <span>Selanjutnya</span>
+            <img
+              src={nextIcon}
+              alt="Selanjutnya"
+              className="w-5 h-5 ml-2"
+            />{" "}
+            {/* Ikon di pojok kanan */}
           </button>
         </div>
       )}

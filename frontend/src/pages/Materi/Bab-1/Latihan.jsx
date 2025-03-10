@@ -7,6 +7,9 @@ import PopUpJawabanBelumSelesai from "../../../components/Home/Materi/PopUp/Lati
 import PopUpJawabanBenar from "../../../components/Home/Materi/PopUp/Latihan/PopUpBenar";
 import "../style/latihan.css";
 import IconPetunjuk from "../../../assets/img/informasi.png";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
+
 const Latihan = () => {
   const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -425,18 +428,35 @@ const Latihan = () => {
           {isFinished && (
             <div className="mt-4">
               <button
-                onClick={handleNext}
-                className={`bg-gray-500 text-white px-4 py-2 rounded-lg mr-2 ${
-                  score >= 80 ? "block" : "hidden"
-                }`}
+                onClick={() => navigate("/dashboard")}
+                className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
               >
-                Selanjutnya
+                <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+                Kembali
               </button>
               <button
-                onClick={handleBack}
-                className="px-4 py-2 text-white bg-gray-500 rounded-lg"
+                onClick={handleNext}
+                className="flex items-center justify-between"
+                style={{
+                  backgroundColor: "#6E2A7F",
+                  color: "white",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.5rem",
+                  transition: "background-color 0.2s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#5B1F6A")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#6E2A7F")
+                }
               >
-                Kembali
+                <span className="flex-grow">Selanjutnya</span>{" "}
+                <img
+                  src={nextIcon}
+                  alt="Selanjutnya"
+                  className="w-5 h-5 ml-2"
+                />
               </button>
             </div>
           )}

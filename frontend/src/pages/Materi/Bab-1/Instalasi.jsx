@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
 const InstalasiSetup = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext(); // Ambil fungsi dari konteks
@@ -18,20 +19,22 @@ const InstalasiSetup = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">
+      <h2 className="mb-4 text-2xl font-bold">
         Instalasi Setup .NET dan Visual Studio Code
       </h2>
 
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
-          onClick={handleBack}
-          className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+          onClick={() => navigate("/dashboard")}
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
         >
+          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
         <button
-          onClick={handleNext} // Memanggil handleNext untuk memperbarui progress
+          onClick={handleNext}
+          className="flex items-center justify-between"
           style={{
             backgroundColor: "#6E2A7F",
             color: "white",
@@ -46,7 +49,9 @@ const InstalasiSetup = () => {
             (e.currentTarget.style.backgroundColor = "#6E2A7F")
           }
         >
-          Selanjutnya
+          <span>Selanjutnya</span>
+          <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />{" "}
+          {/* Ikon di pojok kanan */}
         </button>
       </div>
     </div>

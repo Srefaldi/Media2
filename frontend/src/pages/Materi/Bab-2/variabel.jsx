@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 // import Quiz from "./Quiz-bab1/Quiz1"; // Pastikan path ini sesuai
 // import alur from "./img-bab1/alur.png"; // Gambar yang digunakan
 // import logoc from "./img-bab1/logo.png"; // Gambar yang digunakan
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
 
 const TipeData = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -16,7 +18,7 @@ const TipeData = () => {
   };
 
   const handleNext = () => {
-    navigate("/materi/bab2/penamaan-variabel"); // Ganti dengan path yang sesuai
+    navigate("/materi/bab2/penamaan-variabel");
   };
 
   const togglePendahuluan = () => setPendahuluanOpen(!isPendahuluanOpen);
@@ -25,7 +27,7 @@ const TipeData = () => {
 
   return (
     <div>
-            <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
+      <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
 
       {/* Pendahuluan Materi */}
       <div>
@@ -171,12 +173,14 @@ const TipeData = () => {
         <div className="flex justify-between mt-6">
           <button
             onClick={() => navigate("/dashboard")}
-            className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
           >
+            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
             Kembali
           </button>
           <button
             onClick={handleNext}
+            className="flex items-center justify-between"
             style={{
               backgroundColor: "#6E2A7F",
               color: "white",
@@ -191,7 +195,13 @@ const TipeData = () => {
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
             }
           >
-            Selanjutnya
+            <span>Selanjutnya</span>
+            <img
+              src={nextIcon}
+              alt="Selanjutnya"
+              className="w-5 h-5 ml-2"
+            />{" "}
+            {/* Ikon di pojok kanan */}
           </button>
         </div>
       )}
