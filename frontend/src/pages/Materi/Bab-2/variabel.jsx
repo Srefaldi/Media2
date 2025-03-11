@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import Quiz from "./Quiz-bab2/Quiz1"; // Pastikan path ini sesuai
+import Quiz from "./Quiz-bab2/Quiz1"; // Pastikan path ini sesuai
 import alur from "./img-bab2/ilustrasi.png";
 import logoc from "./img-bab2/script.png";
 import memori from "./img-bab2/memori.png";
@@ -9,19 +9,21 @@ import backIcon from "../../../assets/img/kembali.png";
 import iconBook from "../../../assets/img/book.png";
 import iconTujuan from "../../../assets/img/tujuan.png";
 import iconKonten from "../../../assets/img/konten.png";
-
-const TipeData = () => {
+import { useOutletContext } from "react-router-dom";
+const Variabel = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [isPendahuluanOpen, setPendahuluanOpen] = useState(false);
   const [isTujuanOpen, setTujuanOpen] = useState(false);
   const [isKontenOpen, setKontenOpen] = useState(false);
   const navigate = useNavigate();
-
+  const { handleLessonComplete } = useOutletContext();
   const handleQuizComplete = () => {
     setQuizCompleted(true);
   };
 
   const handleNext = () => {
+    handleLessonComplete("/materi/bab2/variabel");
+    window.scrollTo(0, 0);
     navigate("/materi/bab2/penamaan-variabel");
   };
 
@@ -95,7 +97,6 @@ const TipeData = () => {
           className="flex items-center p-4 font-bold text-white cursor-pointer"
           onClick={toggleKonten}
         >
-          {" "}
           <img src={iconKonten} alt="Icon" className="w-8 h-8 mr-2" />
           KONTEN MATERI
           <span className="ml-2">{isKontenOpen ? "▲" : "▼"}</span>
@@ -124,39 +125,33 @@ const TipeData = () => {
           </p>
         </div>
 
-        <div className="flex justify-center p-4">
-          <img
-            src={logoc}
-            alt="Gambar 2.1 Contoh script variabel"
-            className="h-auto w-60"
-          />
-        </div>
-        <p className="font-bold text-center">
-          Gambar 2.1 Contoh script variabel
-        </p>
-
         <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <p>
-            Maksud dari satu baris script di atas ialah memberi instruksi untuk
-            membuat variabel "s" yang dialokasikan pada memori sebesar bit tipe
-            data integer dengan nilai NULL (tidak terisi apapun). Dalam
-            mempelajari bahasa pemrograman selain Assembly, kita tidak perlu
-            memikirkan dimana alamat memori untuk menyimpan variabel tersebut.
-            Namun yang perlu dipahami ialah kapan dan untuk apa kita memilih
-            tipe data untuk suatu variabel. Dengan kata lain, kita harus tahu
-            dan paham dalam penggunaan tipe data pada variabel.
-          </p>
+          <pre className="bg-gray-100 p-2 rounded-lg">
+            <code className="text-gray-800">int s;</code>
+          </pre>
+          <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+            <p>
+              Maksud dari satu baris script di atas ialah memberi instruksi
+              untuk membuat variabel "s" yang dialokasikan pada memori sebesar
+              bit tipe data integer dengan nilai NULL (tidak terisi apapun).
+              Dalam mempelajari bahasa pemrograman selain Assembly, kita tidak
+              perlu memikirkan dimana alamat memori untuk menyimpan variabel
+              tersebut. Namun yang perlu dipahami ialah kapan dan untuk apa kita
+              memilih tipe data untuk suatu variabel. Dengan kata lain, kita
+              harus tahu dan paham dalam penggunaan tipe data pada variabel.
+            </p>
+          </div>
         </div>
 
         <div className="flex justify-center p-4">
           <img
             src={alur}
             alt="Gambar 2.2 Ilustrasi Data ke Variabel"
-            className="h-auto w-100"
+            className="h-100 w-100"
           />
         </div>
         <p className="font-bold text-center">
-          Gambar 2.2 Ilustrasi Data ke Variabel
+          Gambar 2.1 Ilustrasi Data ke Variabel
         </p>
 
         <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
@@ -171,17 +166,17 @@ const TipeData = () => {
           <img
             src={memori}
             alt="Gambar 2.3 Contoh Bagaimana String 'CsharpLearn' Disimpan di Memori Komputer"
-            className="h-auto w-100"
+            className="h-150 w-150"
           />
         </div>
         <p className="font-bold text-center">
-          Gambar 2.3 Contoh Bagaimana String "CsharpLearn" Disimpan di Memori
+          Gambar 2.2 Contoh Bagaimana String "CsharpLearn" Disimpan di Memori
           Komputer
         </p>
       </div>
 
       {/* Kuis */}
-      {/* {!quizCompleted && <Quiz onComplete={handleQuizComplete} />} */}
+      {!quizCompleted && <Quiz onComplete={handleQuizComplete} />}
 
       {/* Tombol Navigasi */}
       {quizCompleted && (
@@ -211,12 +206,7 @@ const TipeData = () => {
             }
           >
             <span>Selanjutnya</span>
-            <img
-              src={nextIcon}
-              alt="Selanjutnya"
-              className="w-5 h-5 ml-2"
-            />{" "}
-            {/* Ikon di pojok kanan */}
+            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
         </div>
       )}
@@ -224,4 +214,4 @@ const TipeData = () => {
   );
 };
 
-export default TipeData;
+export default Variabel;
