@@ -1,33 +1,28 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const Quiz = ({ onComplete }) => {
+const QuizKategoriVariabel = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (selectedAnswer === "B") {
-      window.scrollTo(0, document.body.scrollHeight);
-
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",
         icon: "success",
         confirmButtonText: "OK",
       });
-
       onComplete(true);
     } else {
-      // Scroll ke atas ketika jawaban salah
-      window.scrollTo(0, 0);
-      setSelectedAnswer("");
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
         icon: "error",
         confirmButtonText: "OK",
       });
+      setSelectedAnswer("");
     }
   };
 
@@ -45,8 +40,8 @@ const Quiz = ({ onComplete }) => {
       </h2>
       <form onSubmit={handleSubmit}>
         <p className="mb-4 text-gray-700">
-          Yang perlu diperhatikan dalam memilih tipe data untuk sebuah variabel
-          ...
+          "Variabel static mempertahankan nilai yang sama di seluruh instance
+          dari kelasnya karena ..."
         </p>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
@@ -118,18 +113,18 @@ const Quiz = ({ onComplete }) => {
 const getOptionText = (option) => {
   switch (option) {
     case "A":
-      return "Lokasi penyimpanan variabel di dalam memori";
+      return "Nilai static hanya dapat diubah sekali";
     case "B":
-      return "Kapan dan untuk apa tipe data tersebut digunakan";
+      return "Variabel static adalah bagian dari tipe, bukan dari instance objek";
     case "C":
-      return "Cara menuliskan nama variabel dalam bahasa pemrograman";
+      return "Setiap instance akan selalu menginisialisasi variabel static";
     case "D":
-      return "Ukuran layar untuk menampilkan variabel";
+      return "C# secara otomatis mengunci variabel static agar nilainya tidak berubah";
     case "E":
-      return "Warna teks variabel pada editor kode";
+      return "Variabel static hanya dapat digunakan dalam metode static";
     default:
       return "";
   }
 };
 
-export default Quiz;
+export default QuizKategoriVariabel;

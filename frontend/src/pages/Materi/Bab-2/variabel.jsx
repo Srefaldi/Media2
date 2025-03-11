@@ -105,9 +105,12 @@ const Variabel = () => {
           <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
             <li>2.1 Pengertian Variabel</li>
             <li>2.2 Penamaan Variabel</li>
-            <li>2.3 Tipe Data dalam Variabel</li>
-            <li>2.4 Variabel dan Konstanta</li>
-            <li>2.5 Rangkuman</li>
+            <li>2.3 Kategori Variabel</li>
+            <li>2.4 Deklarasi dan Inisialisasi Variabel</li>
+            <li>2.5 Deklarasi Banyak Variabel</li>
+            <li>2.6 Variabel Konstanta</li>
+            <li>2.7 Sintaks Input</li>
+            <li>Rangkuman</li>
           </ul>
         )}
       </div>
@@ -126,7 +129,7 @@ const Variabel = () => {
         </div>
 
         <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <pre className="bg-gray-100 p-2 rounded-lg">
+          <pre className="p-2 bg-gray-100 rounded-lg">
             <code className="text-gray-800">int s;</code>
           </pre>
           <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">

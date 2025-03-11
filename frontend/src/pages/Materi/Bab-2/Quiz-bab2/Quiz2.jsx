@@ -1,33 +1,28 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const Quiz = ({ onComplete }) => {
+const QuizPenamaanVariabel = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (selectedAnswer === "B") {
-      window.scrollTo(0, document.body.scrollHeight);
-
+    if (selectedAnswer === "E") {
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",
         icon: "success",
         confirmButtonText: "OK",
       });
-
       onComplete(true);
     } else {
-      // Scroll ke atas ketika jawaban salah
-      window.scrollTo(0, 0);
-      setSelectedAnswer("");
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
         icon: "error",
         confirmButtonText: "OK",
       });
+      setSelectedAnswer("");
     }
   };
 
@@ -45,8 +40,7 @@ const Quiz = ({ onComplete }) => {
       </h2>
       <form onSubmit={handleSubmit}>
         <p className="mb-4 text-gray-700">
-          Yang perlu diperhatikan dalam memilih tipe data untuk sebuah variabel
-          ...
+          Mana dari nama variabel berikut yang benar dalam C# ....
         </p>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
@@ -118,18 +112,18 @@ const Quiz = ({ onComplete }) => {
 const getOptionText = (option) => {
   switch (option) {
     case "A":
-      return "Lokasi penyimpanan variabel di dalam memori";
+      return "1totalNilai";
     case "B":
-      return "Kapan dan untuk apa tipe data tersebut digunakan";
+      return "total#nilai";
     case "C":
-      return "Cara menuliskan nama variabel dalam bahasa pemrograman";
+      return "_total_nilai";
     case "D":
-      return "Ukuran layar untuk menampilkan variabel";
+      return "Public";
     case "E":
-      return "Warna teks variabel pada editor kode";
+      return "TotalNilai";
     default:
       return "";
   }
 };
 
-export default Quiz;
+export default QuizPenamaanVariabel;

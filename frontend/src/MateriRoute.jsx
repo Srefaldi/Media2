@@ -17,6 +17,8 @@ import Rangkuman from "../src/pages/Materi/Bab-1/Rangkuman";
 // BAB 2
 import Variabel from "../src/pages/Materi/Bab-2/variabel";
 import PenamaanVariabel from "../src/pages/Materi/Bab-2/PenamaanVariabel";
+import KategoriVariabel from "./pages/Materi/Bab-2/KategoriVariabel";
+import DeklarasiInisialisasi from "./pages/Materi/Bab-2/DeklarasiInisialisasi";
 
 const MateriRoutes = () => {
   return (
@@ -41,6 +43,11 @@ const MateriRoutes = () => {
 
         <Route path="bab2/variabel" element={<Variabel />} />
         <Route path="bab2/penamaan-variabel" element={<PenamaanVariabel />} />
+        <Route path="bab2/kategori-variabel" element={<KategoriVariabel />} />
+        <Route
+          path="bab2/deklarasi-inialisasi"
+          element={<DeklarasiInisialisasi />}
+        />
       </Route>
     </Routes>
   );
