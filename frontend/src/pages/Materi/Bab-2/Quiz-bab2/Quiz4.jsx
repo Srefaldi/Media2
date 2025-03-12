@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const QuizKategoriVariabel = ({ onComplete }) => {
+const QuizDeklarasiVariabel = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
 
   const handleSubmit = (e) => {
@@ -40,8 +40,8 @@ const QuizKategoriVariabel = ({ onComplete }) => {
       </h2>
       <form onSubmit={handleSubmit}>
         <p className="mb-4 text-gray-700">
-          Variabel static mempertahankan nilai yang sama di seluruh instance
-          dari kelasnya karena ...
+          Terdapat dua cara untuk mendeklarasikan variabel pada C#, eksplisit
+          dan implisit. Kapan kita perlu menggunakan variabel implisit ...
         </p>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
@@ -113,18 +113,18 @@ const QuizKategoriVariabel = ({ onComplete }) => {
 const getOptionText = (option) => {
   switch (option) {
     case "A":
-      return "Nilai static hanya dapat diubah sekali";
+      return "Saat kita menggunakan tipe data integer";
     case "B":
-      return "Variabel static adalah bagian dari tipe, bukan dari instance objek";
+      return "Saat kita tidak mengetahui tipe data yang akan digunakan";
     case "C":
-      return "Setiap instance akan selalu menginisialisasi variabel static";
+      return "Saat penggunaan dengan bilangan genap";
     case "D":
-      return "C# secara otomatis mengunci variabel static agar nilainya tidak berubah";
+      return "Saat kita ingin mendeklarasikan variabel dengan tipe data yang lebih kompleks";
     case "E":
-      return "Variabel static hanya dapat digunakan dalam metode static";
+      return "Saat kita ingin menggunakan variabel di dalam loop saja";
     default:
       return "";
   }
 };
 
-export default QuizKategoriVariabel;
+export default QuizDeklarasiVariabel;

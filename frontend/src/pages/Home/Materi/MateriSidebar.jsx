@@ -55,7 +55,7 @@ const MateriSidebar = ({ completedLessons, progress }) => {
   };
 
   return (
-    <div className="p-4 overflow-hidden text-gray-900 bg-white w-70">
+    <div className="w-full p-4 overflow-hidden text-gray-900 bg-white">
       <h2 className="mb-4 text-xl font-bold text-center">DAFTAR MATERI</h2>
       <ProgressBar progress={progress} />
       <ul className="mt-4 space-y-2">

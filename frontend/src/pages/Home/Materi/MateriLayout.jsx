@@ -9,13 +9,16 @@ const MateriLayout = () => {
   const [progress, setProgress] = useState(0);
   const [completedLessons, setCompletedLessons] = useState([]);
 
-  const totalLessons = 10;
+  const totalLessons = 39; // Total materi
 
   const handleLessonComplete = (lessonId) => {
     if (!completedLessons.includes(lessonId)) {
       const newCompletedLessons = [...completedLessons, lessonId];
       setCompletedLessons(newCompletedLessons);
-      setProgress((newCompletedLessons.length / totalLessons) * 100);
+
+      // Hitung progress dan batasi ke dua angka di belakang koma
+      const newProgress = (newCompletedLessons.length / totalLessons) * 100;
+      setProgress(parseFloat(newProgress.toFixed(2))); // Menggunakan toFixed(2) untuk membatasi dua desimal
     }
   };
 
@@ -24,7 +27,7 @@ const MateriLayout = () => {
       <Navbar />
       <div className="flex flex-1 mt-20">
         {/* Tambahkan margin-top untuk konten */}
-        <div className="fixed top-20 left-0 w-70 h-[calc(100vh-80px)] overflow-hidden overflow-y-auto bg-[white] text-white">
+        <div className="fixed top-20 left-0 w-73 h-[calc(100vh-80px)] overflow-hidden overflow-y-auto bg-[white] text-white">
           <MateriSidebar
             completedLessons={completedLessons}
             progress={progress}

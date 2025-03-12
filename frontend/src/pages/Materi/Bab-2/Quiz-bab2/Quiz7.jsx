@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const QuizKategoriVariabel = ({ onComplete }) => {
+const QuizSintaksInput = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (selectedAnswer === "B") {
+    if (selectedAnswer === "A") {
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",
@@ -40,8 +40,8 @@ const QuizKategoriVariabel = ({ onComplete }) => {
       </h2>
       <form onSubmit={handleSubmit}>
         <p className="mb-4 text-gray-700">
-          Variabel static mempertahankan nilai yang sama di seluruh instance
-          dari kelasnya karena ...
+          Fungsi apa saja yang dapat kita gunakan untuk memasukan data (proses
+          input) pada bahasa pemrograman C# ...
         </p>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
@@ -113,18 +113,18 @@ const QuizKategoriVariabel = ({ onComplete }) => {
 const getOptionText = (option) => {
   switch (option) {
     case "A":
-      return "Nilai static hanya dapat diubah sekali";
+      return "Read(), ReadKey(), dan ReadLine()";
     case "B":
-      return "Variabel static adalah bagian dari tipe, bukan dari instance objek";
+      return "Write() dan WriteLine()";
     case "C":
-      return "Setiap instance akan selalu menginisialisasi variabel static";
+      return "Read() dan Write()";
     case "D":
-      return "C# secara otomatis mengunci variabel static agar nilainya tidak berubah";
+      return "GetInput()";
     case "E":
-      return "Variabel static hanya dapat digunakan dalam metode static";
+      return "GetOutput()";
     default:
       return "";
   }
 };
 
-export default QuizKategoriVariabel;
+export default QuizSintaksInput;

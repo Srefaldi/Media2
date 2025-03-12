@@ -58,9 +58,9 @@
         "label": "2.6 Variabel Konstanta"
       },
       { "path": "/materi/bab2/sintaks-input", "label": "2.7 Sintaks Input" },
-      { "path": "/materi/bab2/latihan", "label": "Latihan" },
-      { "path": "/materi/bab2/kuis", "label": "KUIS" },
-      { "path": "/materi/bab2/rangkuman", "label": "Rangkuman" }
+      { "path": "/materi/bab2/latihan-bab2", "label": "Latihan" },
+      { "path": "/materi/bab2/kuis-bab2", "label": "KUIS" },
+      { "path": "/materi/bab2/rangkuman-bab2", "label": "Rangkuman" }
     ]
   },
   {

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const QuizKategoriVariabel = ({ onComplete }) => {
+const QuizDeklarasiBanyakVariabel = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (selectedAnswer === "B") {
+    if (selectedAnswer === "C") {
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",
@@ -40,8 +40,8 @@ const QuizKategoriVariabel = ({ onComplete }) => {
       </h2>
       <form onSubmit={handleSubmit}>
         <p className="mb-4 text-gray-700">
-          Variabel static mempertahankan nilai yang sama di seluruh instance
-          dari kelasnya karena ...
+          Dalam deklarasi banyak variabel pada C#, setiap variabel dalam satu
+          baris kode dipisahkan dengan …
         </p>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
@@ -113,18 +113,18 @@ const QuizKategoriVariabel = ({ onComplete }) => {
 const getOptionText = (option) => {
   switch (option) {
     case "A":
-      return "Nilai static hanya dapat diubah sekali";
+      return "Titik koma ( ; )";
     case "B":
-      return "Variabel static adalah bagian dari tipe, bukan dari instance objek";
+      return "Titik ( . )";
     case "C":
-      return "Setiap instance akan selalu menginisialisasi variabel static";
+      return "Koma ( , )";
     case "D":
-      return "C# secara otomatis mengunci variabel static agar nilainya tidak berubah";
+      return "Tanda ( : )";
     case "E":
-      return "Variabel static hanya dapat digunakan dalam metode static";
+      return "Spasi";
     default:
       return "";
   }
 };
 
-export default QuizKategoriVariabel;
+export default QuizDeklarasiBanyakVariabel;

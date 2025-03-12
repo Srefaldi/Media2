@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const QuizKategoriVariabel = ({ onComplete }) => {
+const Quiz6 = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (selectedAnswer === "B") {
+    if (selectedAnswer === "A") {
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",
@@ -40,8 +40,7 @@ const QuizKategoriVariabel = ({ onComplete }) => {
       </h2>
       <form onSubmit={handleSubmit}>
         <p className="mb-4 text-gray-700">
-          Variabel static mempertahankan nilai yang sama di seluruh instance
-          dari kelasnya karena ...
+          Dalam C#, variabel konstanta biasanya digunakan untuk ...
         </p>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
@@ -113,18 +112,18 @@ const QuizKategoriVariabel = ({ onComplete }) => {
 const getOptionText = (option) => {
   switch (option) {
     case "A":
-      return "Nilai static hanya dapat diubah sekali";
+      return "Menyimpan nilai tetap yang tidak berubah sepanjang eksekusi program";
     case "B":
-      return "Variabel static adalah bagian dari tipe, bukan dari instance objek";
+      return "Menyimpan nilai sementara yang dapat berubah sesuai kebutuhan";
     case "C":
-      return "Setiap instance akan selalu menginisialisasi variabel static";
+      return "Menyimpan nilai yang hanya digunakan dalam satu metode";
     case "D":
-      return "C# secara otomatis mengunci variabel static agar nilainya tidak berubah";
+      return "Menyimpan referensi ke objek yang dapat diubah";
     case "E":
-      return "Variabel static hanya dapat digunakan dalam metode static";
+      return "Menyimpan nilai yang hanya tersedia saat runtime";
     default:
       return "";
   }
 };
 
-export default QuizKategoriVariabel;
+export default Quiz6;

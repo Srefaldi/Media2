@@ -18,7 +18,13 @@ import Rangkuman from "../src/pages/Materi/Bab-1/Rangkuman";
 import Variabel from "../src/pages/Materi/Bab-2/variabel";
 import PenamaanVariabel from "../src/pages/Materi/Bab-2/PenamaanVariabel";
 import KategoriVariabel from "./pages/Materi/Bab-2/KategoriVariabel";
-import DeklarasiInisialisasi from "./pages/Materi/Bab-2/DeklarasiInisialisasi";
+import DeklarasiVariabel from "./pages/Materi/Bab-2/DeklarasidanInisialisasi";
+import DeklarasiInisialisasi from "./pages/Materi/Bab-2/BanyakVariabel";
+import VariabelKonstanta from "./pages/Materi/Bab-2/VariabelKonstanta";
+import SintaksInput from "./pages/Materi/Bab-2/SintaksInput";
+import LatihanBab2 from "./pages/Materi/Bab-2/Latihan";
+import KuisBab2 from "./pages/Materi/Bab-2/Kuis";
+import RangkumanBab2 from "./pages/Materi/Bab-2/Rangkuman";
 
 const MateriRoutes = () => {
   return (
@@ -46,8 +52,17 @@ const MateriRoutes = () => {
         <Route path="bab2/kategori-variabel" element={<KategoriVariabel />} />
         <Route
           path="bab2/deklarasi-inialisasi"
+          element={<DeklarasiVariabel />}
+        />
+        <Route
+          path="bab2/deklarasi-banyak"
           element={<DeklarasiInisialisasi />}
         />
+        <Route path="bab2/variabel-konstanta" element={<VariabelKonstanta />} />
+        <Route path="bab2/sintaks-input" element={<SintaksInput />} />
+        <Route path="bab2/latihan-bab2" element={<LatihanBab2 />} />
+        <Route path="bab2/kuis-bab2" element={<KuisBab2 />} />
+        <Route path="bab2/rangkuman-bab2" element={<RangkumanBab2 />} />
       </Route>
     </Routes>
   );

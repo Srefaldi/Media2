@@ -173,8 +173,7 @@ const Variabel = () => {
           />
         </div>
         <p className="font-bold text-center">
-          Gambar 2.2 Contoh Bagaimana String "CsharpLearn" Disimpan di Memori
-          Komputer
+          Gambar 2.2 String "CsharpLearn" Disimpan di Memori Komputer
         </p>
       </div>
 
