@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2"; // Import SweetAlert2
 import "../style/latihan.css";
@@ -11,10 +11,12 @@ const Latihan = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState(Array(5).fill(""));
+  const [answers, setAnswers] = useState(Array(5).fill([])); // Ubah menjadi array dua dimensi
   const [score, setScore] = useState(0);
   const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null));
   const [isFinished, setIsFinished] = useState(false);
+  const [hasAnswered, setHasAnswered] = useState(Array(5).fill(false)); // Track if the question has been answered
+  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
 
   const questions = [
     {
@@ -86,19 +88,33 @@ const Latihan = () => {
     },
   ];
 
-  const handleAnswerChange = (value, index) => {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleTimeUp(); // Call finish function when time is up
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, []);
+
+  const handleAnswerChange = (value, inputIndex) => {
     const newAnswers = [...answers];
-    newAnswers[currentQuestionIndex] = newAnswers[currentQuestionIndex] || []; // Pastikan array ada
-    newAnswers[currentQuestionIndex][index] = value; // Simpan jawaban berdasarkan index
+    newAnswers[currentQuestionIndex][inputIndex] = value; // Simpan jawaban berdasarkan index
     setAnswers(newAnswers);
   };
 
   const checkAnswer = () => {
     const question = questions[currentQuestionIndex];
-    const userAnswers = answers[currentQuestionIndex] || [];
+    const userAnswers = answers[currentQuestionIndex];
 
     // Cek apakah jawaban kosong
-    if (userAnswers.every((answer) => answer === "")) {
+    if (userAnswers.some((answer) => answer === "")) {
       Swal.fire({
         title: "Soal Belum Dijawab!",
         text: "Silakan isi jawaban sebelum melanjutkan.",
@@ -108,26 +124,37 @@ const Latihan = () => {
       return;
     }
 
-    const isCorrect =
-      userAnswers.length === question.correctAnswer.length &&
-      userAnswers.every(
-        (answer, index) => answer === question.correctAnswer[index]
-      );
+    const isCorrect = userAnswers.every(
+      (answer, index) => answer === question.correctAnswer[index]
+    );
 
     if (isCorrect) {
-      setScore(score + 20); // Tambah 20 poin jika jawaban benar
-      const newAnswerStatus = [...answerStatus];
-      newAnswerStatus[currentQuestionIndex] = "correct"; // Tandai jawaban benar
-      setAnswerStatus(newAnswerStatus);
-      Swal.fire({
-        title: "Jawaban Anda Benar!",
-        text: "Silakan lanjutkan ke soal berikutnya.",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      if (!hasAnswered[currentQuestionIndex]) {
+        setScore((prevScore) => prevScore + 20); // Tambah 20 poin jika jawaban benar
+        const newAnswerStatus = [...answerStatus];
+        newAnswerStatus[currentQuestionIndex] = "correct"; // Tandai jawaban benar
+        setAnswerStatus(newAnswerStatus);
+        setHasAnswered((prev) => {
+          const newHasAnswered = [...prev];
+          newHasAnswered[currentQuestionIndex] = true; // Tandai soal sudah dijawab
+          return newHasAnswered;
+        });
+        Swal.fire({
+          title: "Jawaban Anda Benar!",
+          text: "Silakan lanjutkan ke soal berikutnya.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else {
+        Swal.fire({
+          icon: "info",
+          title: "Sudah Menjawab",
+          text: "Anda sudah menjawab soal ini.",
+        });
+      }
     } else {
       const newAnswerStatus = [...answerStatus];
-      newAnswerStatus[currentQuestionIndex] = "incorrect"; // Tandai jawaban salah
+      newAnswerStatus[currentQuestionIndex] = "incorrect";
       setAnswerStatus(newAnswerStatus);
       Swal.fire({
         title: "Jawaban Salah!",
@@ -140,17 +167,17 @@ const Latihan = () => {
 
   const handleQuestionSelect = (index) => {
     setCurrentQuestionIndex(index);
-  };
-
-  const resetAnswerForCurrentQuestion = () => {
+    // Reset jawaban untuk soal yang dipilih
     const newAnswers = [...answers];
-    newAnswers[currentQuestionIndex] = ""; // Reset jawaban untuk soal yang sedang dipilih
+    newAnswers[index] = Array(questions[index].correctAnswer.length).fill(""); // Reset jawaban untuk soal yang sedang dipilih
     setAnswers(newAnswers);
   };
 
   const handleFinish = () => {
     // Cek apakah ada soal yang belum dijawab
-    const hasIncompleteAnswers = answers.some((answer) => answer === "");
+    const hasIncompleteAnswers = answers.some((answerArray) =>
+      answerArray.some((answer) => answer === "")
+    );
     if (hasIncompleteAnswers) {
       Swal.fire({
         title: "Masih Ada Soal Belum Dijawab!",
@@ -161,29 +188,37 @@ const Latihan = () => {
       return;
     }
 
-    if (score < 80) {
+    clearInterval(); // Stop the timer
+
+    // Pastikan skor sudah diperbarui sebelum menampilkan alert
+    console.log("Skor sebelum alert:", score); // Debugging
+    if (score >= 80) {
+      // Jika skor >= 80, tampilkan pesan selesai
       Swal.fire({
-        title: "Skor Anda di Bawah 80!",
-        text: "Silakan baca kembali materi dan jawab latihan kembali.",
-        icon: "warning",
-        confirmButtonText: "OK",
-      }).then(() => {
-        setIsFinished(true); // Set finished state to true
-      });
-    } else {
-      // Menampilkan SweetAlert untuk hasil kuis
-      Swal.fire({
-        title: "Kuis Selesai!",
-        text: `Skor Anda: ${score}`,
+        title: "Selamat!",
+        text: "Anda telah selesai mengerjakan latihan.",
         icon: "success",
-        showCancelButton: true,
         confirmButtonText: "Selanjutnya",
-        cancelButtonText: "Kembali",
       }).then((result) => {
         if (result.isConfirmed) {
           handleLessonComplete("/materi/bab1/latihan-bab1");
           window.scrollTo(0, 0);
           navigate("/materi/bab1/kuis-bab1");
+        }
+      });
+    } else {
+      // Jika skor < 80, tampilkan skor
+      Swal.fire({
+        title: "WAKTU HABIS",
+        text: "Skor anda tidak mencukupi, Silahkan Coba Kembali.",
+        icon: "error",
+        showCancelButton: true,
+        confirmButtonText: "Coba Lagi",
+        cancelButtonText: "Kembali",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/materi/bab1/latihan-bab1");
+          window.location.reload();
         } else {
           navigate("/materi/bab1/error-csharp");
         }
@@ -191,21 +226,18 @@ const Latihan = () => {
     }
   };
 
-  const handleNext = () => {
-    window.scrollTo(0, 0);
-    navigate("/materi/bab1/kuis-bab1");
+  const handleTimeUp = () => {
+    clearInterval(); // Stop the timer
+    Swal.fire({
+      title: "Waktu Habis!",
+      text: `Skor Anda: ${score}`,
+      icon: "warning",
+      confirmButtonText: "OK",
+    }).then(() => {
+      handleFinish(); // Call finish function to show the score
+    });
   };
 
-  const handleBack = () => {
-    window.scrollTo(0, 0);
-    navigate("/materi/bab1/error-csharp");
-  };
-  const navigateToTop = (navigate, path) => {
-    navigate(path);
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 100);
-  };
   return (
     <div className="max-w-full p-2 mx-auto bg-white rounded-lg shadow-lg">
       <h2 className="text-lg font-semibold text-center text-gray-800">
@@ -229,7 +261,7 @@ const Latihan = () => {
         </h3>
         <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside">
           <li>
-            Jawablah soal-soal di bawah ini dengan mengisikannya pada inputan
+            Jawablah soal-soal di bawah ini dengan mengisikannya pada input an
             yang tersedia.
           </li>
           <li>
@@ -279,12 +311,16 @@ const Latihan = () => {
 
       <div className="flex mt-6">
         <div className="flex flex-col mr-3">
-          <div className="p-4 mt-4 text-center bg-gray-100 border rounded-lg">
-            <h3 className="font-semibold">SKOR : {score}</h3>
+          <div className="p-4 mt-5 text-center text-red-600 bg-gray-100 border rounded-lg">
+            <h3 className="font-semibold">
+              Waktu Tersisa: {Math.floor(timeLeft / 60)}:
+              {(timeLeft % 60).toString().padStart(2, "0")}
+            </h3>
           </div>
+          {/* Waktu */}
           <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
           <div className="flex flex-row">
-            {questions.slice(0, 3).map((question, index) => (
+            {questions.map((question, index) => (
               <button
                 key={question.id}
                 onClick={() => handleQuestionSelect(index)}
@@ -316,42 +352,12 @@ const Latihan = () => {
               </button>
             ))}
           </div>
-          <div className="flex flex-row">
-            {questions.slice(3).map((question, index) => (
-              <button
-                key={question.id}
-                onClick={() => handleQuestionSelect(index + 3)} // Menyesuaikan index
-                style={{
-                  width: "2rem",
-                  height: "2rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "0.5rem",
-                  margin: "0.125rem",
-                  backgroundColor:
-                    currentQuestionIndex === index + 3
-                      ? "#6E2A7F"
-                      : answerStatus[index + 3] === "correct"
-                      ? "#10B981"
-                      : answerStatus[index + 3] === "incorrect"
-                      ? "#EF4444"
-                      : "#D1D5DB",
-                  color:
-                    currentQuestionIndex === index + 3 ||
-                    answerStatus[index + 3] === "correct" ||
-                    answerStatus[index + 3] === "incorrect"
-                      ? "white"
-                      : "black",
-                }}
-              >
-                {question.id}
-              </button>
-            ))}
-          </div>
         </div>
 
         <div className="w-full p-4 border rounded-lg">
+          <div className="p-4 mb-4 text-center bg-gray-100 border rounded-lg">
+            <h3 className="font-semibold">SKOR : {score}</h3>
+          </div>
           <h3 className="font-semibold">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
           <p className="text-gray-600">
             {questions[currentQuestionIndex].prompt}
@@ -397,11 +403,7 @@ const Latihan = () => {
                           1 && (
                         <input
                           type="text"
-                          value={
-                            answers[currentQuestionIndex]
-                              ? answers[currentQuestionIndex][index]
-                              : ""
-                          }
+                          value={answers[currentQuestionIndex][index] || ""}
                           onChange={(e) =>
                             handleAnswerChange(e.target.value, index)
                           }
@@ -433,7 +435,13 @@ const Latihan = () => {
             Cek Jawaban
           </button>
           <button
-            onClick={resetAnswerForCurrentQuestion}
+            onClick={() => {
+              const newAnswers = [...answers];
+              newAnswers[currentQuestionIndex] = Array(
+                questions[currentQuestionIndex].correctAnswer.length
+              ).fill(""); // Reset jawaban untuk soal yang sedang dipilih
+              setAnswers(newAnswers);
+            }}
             className="px-4 py-2 mt-2 ml-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
           >
             Hapus Jawaban
@@ -441,65 +449,25 @@ const Latihan = () => {
           <button
             onClick={handleFinish}
             style={{
-              backgroundColor: "white", // Warna latar belakang putih
-              color: "#6E2A7F", // Warna teks sesuai tema
+              backgroundColor: "white",
+              color: "#6E2A7F",
               padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s, border-color 0.2s",
-              border: "2px solid #6E2A7F", // Outline border dengan warna tema
+              border: "2px solid #6E2A7F",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#e0e0e0"; // Warna abu-abu saat hover
-              e.currentTarget.style.borderColor = "#5B1F6A"; // Warna border lebih gelap saat hover
+              e.currentTarget.style.backgroundColor = "#e0e0e0";
+              e.currentTarget.style.borderColor = "#5B1F6A";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "white"; // Kembali ke warna latar belakang putih
-              e.currentTarget.style.borderColor = "#6E2A7F"; // Kembali ke warna border tema
+              e.currentTarget.style.backgroundColor = "white";
+              e.currentTarget.style.borderColor = "#6E2A7F";
             }}
             className="ml-2"
           >
             Selesai
           </button>
-          {isFinished && (
-            <div className="mt-4">
-              <button
-                onClick={() =>
-                  navigateToTop(navigate, "/materi/bab1/pengenalan")
-                }
-                className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-              >
-                <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-                Kembali
-              </button>
-
-              {score >= 80 && (
-                <button
-                  onClick={handleNext}
-                  className="flex items-center justify-between mt-2"
-                  style={{
-                    backgroundColor: "#6E2A7F",
-                    color: "white",
-                    padding: "0.5rem 1rem",
-                    borderRadius: "0.5rem",
-                    transition: "background-color 0.2s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#5B1F6A")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#6E2A7F")
-                  }
-                >
-                  <span className="flex-grow">Selanjutnya</span>{" "}
-                  <img
-                    src={nextIcon}
-                    alt="Selanjutnya"
-                    className="w-5 h-5 ml-2"
-                  />
-                </button>
-              )}
-            </div>
-          )}
         </div>
       </div>
     </div>

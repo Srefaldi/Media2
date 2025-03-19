@@ -11,16 +11,21 @@ import iconTujuan from "../../../assets/img/tujuan.png"; // Tambahkan ikon jika 
 import iconKonten from "../../../assets/img/konten.png"; // Tambahkan ikon jika diperlukan
 
 const PengenalanCSharp = () => {
-  const [isPendahuluanOpen, setPendahuluanOpen] = useState(false);
-  const [isTujuanOpen, setTujuanOpen] = useState(false);
-  const [isKontenOpen, setKontenOpen] = useState(false);
+  const [openSections, setOpenSections] = useState({
+    pendahuluan: false,
+    tujuan: false,
+    konten: false,
+  });
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
   const [quizCompleted, setQuizCompleted] = useState(false);
 
-  const togglePendahuluan = () => setPendahuluanOpen(!isPendahuluanOpen);
-  const toggleTujuan = () => setTujuanOpen(!isTujuanOpen);
-  const toggleKonten = () => setKontenOpen(!isKontenOpen);
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
 
   const handleQuizComplete = () => {
     setQuizCompleted(true);
@@ -42,25 +47,23 @@ const PengenalanCSharp = () => {
       <div className="w-full mb-4 border border-gray-300 rounded-lg">
         <h3
           className="flex items-center p-4 font-bold text-white cursor-pointer"
-          onClick={togglePendahuluan}
+          onClick={() => toggleSection("pendahuluan")}
           style={{ backgroundColor: "#68217A" }}
         >
           <img src={iconBook} alt="Icon" className="w-8 h-8 mr-2" />
           PENDAHULUAN MATERI
-          <span className="ml-2">{isPendahuluanOpen ? "▲" : "▼"}</span>
+          <span className="ml-2">▼</span>
         </h3>
-        {isPendahuluanOpen && (
-          <div className="p-4 text-justify text-gray-700 bg-white rounded-b-lg">
-            <p>
-              Pada bab ini, kita akan mempelajari pendahuluan bahasa pemrograman
-              C#. Bahasa ini memiliki kesamaan dan perbedaan dengan bahasa
-              pemrograman lain, yang memberikan ciri khas tersendiri. Setelah
-              mempelajari materi ini, diharapkan pembaca dapat menulis kode
-              program sesuai ketentuan dan menghindari kesalahan umum dalam
-              pemrograman.
-            </p>
-          </div>
-        )}
+        <div className="p-4 text-justify text-gray-700 bg-white rounded-b-lg">
+          <p>
+            Pada bab ini, kita akan mempelajari pendahuluan bahasa pemrograman
+            C#. Bahasa ini memiliki kesamaan dan perbedaan dengan bahasa
+            pemrograman lain, yang memberikan ciri khas tersendiri. Setelah
+            mempelajari materi ini, diharapkan pembaca dapat menulis kode
+            program sesuai ketentuan dan menghindari kesalahan umum dalam
+            pemrograman.
+          </p>
+        </div>
       </div>
 
       {/* Tujuan Pembelajaran */}
@@ -70,29 +73,28 @@ const PengenalanCSharp = () => {
       >
         <h3
           className="flex items-center p-4 font-bold text-white cursor-pointer"
-          onClick={toggleTujuan}
+          onClick={() => toggleSection("tujuan")}
         >
           <img src={iconTujuan} alt="Icon" className="w-8 h-8 mr-2" />
           TUJUAN PEMBELAJARAN
-          <span className="ml-2">{isTujuanOpen ? "▲" : "▼"}</span>
+          <span className="ml-2"> ▼</span>
         </h3>
-        {isTujuanOpen && (
-          <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-b-lg">
-            <li>Mampu memahami struktur kode bahasa pemrograman C#</li>
-            <li>
-              Mampu memahami struktur eksekusi kode (sequence, selection, dan
-              iteration)
-            </li>
-            <li>
-              Mampu menggunakan sintaks print untuk fungsi output dan sintaks
-              komentar
-            </li>
-            <li>
-              Mampu mengetahui jenis-jenis error yang ada pada bahasa
-              pemrograman C#
-            </li>
-          </ul>
-        )}
+
+        <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-b-lg">
+          <li>Mampu memahami struktur kode bahasa pemrograman C#</li>
+          <li>
+            Mampu memahami struktur eksekusi kode (sequence, selection, dan
+            iteration)
+          </li>
+          <li>
+            Mampu menggunakan sintaks print untuk fungsi output dan sintaks
+            komentar
+          </li>
+          <li>
+            Mampu mengetahui jenis-jenis error yang ada pada bahasa pemrograman
+            C#
+          </li>
+        </ul>
       </div>
 
       {/* Konten Materi */}
@@ -102,24 +104,23 @@ const PengenalanCSharp = () => {
       >
         <h3
           className="flex items-center p-4 font-bold text-white cursor-pointer"
-          onClick={toggleKonten}
+          onClick={() => toggleSection("konten")}
         >
           <img src={iconKonten} alt="Icon" className="w-8 h-8 mr-2" />
           KONTEN MATERI
-          <span className="ml-2">{isKontenOpen ? "▲" : "▼"}</span>
+          <span className="ml-2">▼</span>
         </h3>
-        {isKontenOpen && (
-          <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
-            <li>1.1 Pengenalan C#</li>
-            <li>1.2 Instalasi Setup .NET dan Visual Studio Code</li>
-            <li>1.3 Struktur Kode Bahasa Pemrograman C#</li>
-            <li>1.4 Struktur Eksekusi Kode</li>
-            <li>1.5 Sintaks Print</li>
-            <li>1.6 Sintaks Komentar</li>
-            <li>1.7 Error pada C#</li>
-            <li>1.8 Rangkuman</li>
-          </ul>
-        )}
+
+        <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
+          <li>1.1 Pengenalan C#</li>
+          <li>1.2 Instalasi Setup .NET dan Visual Studio Code</li>
+          <li>1.3 Struktur Kode Bahasa Pemrograman C#</li>
+          <li>1.4 Struktur Eksekusi Kode</li>
+          <li>1.5 Sintaks Print</li>
+          <li>1.6 Sintaks Komentar</li>
+          <li>1.7 Error pada C#</li>
+          <li>1.8 Rangkuman</li>
+        </ul>
       </div>
 
       {/* Pengertian C# */}

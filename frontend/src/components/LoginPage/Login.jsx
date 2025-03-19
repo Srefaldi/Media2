@@ -5,6 +5,7 @@ import { LoginUser, reset } from "../../features/authSlice";
 import Navbar from "../Landing/Navbar";
 import Footer from "../Landing/Footer";
 import loginImage from "../../assets/img/hero-login.png";
+import Tooltip from "./Tooltip"; // Import Tooltip
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,26 +30,23 @@ const Login = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Navbar */}
-      <Navbar />
-      <div className="flex flex-1 items-center justify-center bg-gray-100">
-        <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="flex items-center justify-center flex-1 bg-gray-100">
+        <div className="flex flex-col w-full max-w-4xl overflow-hidden bg-white rounded-lg shadow-lg md:flex-row">
           {/* Left Section */}
-          <div className="hidden md:flex md:flex-1 items-center justify-center bg-purple-200">
-            {" "}
-            {/* Ganti bg-gray-200 menjadi bg-purple-200 */}
+          <div className="items-center justify-center hidden bg-purple-200 md:flex md:flex-1">
             <img
               alt="Illustration"
-              className="max-w-full h-auto"
+              className="h-auto max-w-full"
               src={loginImage}
             />
           </div>
           {/* Right Section */}
           <div className="flex-1 p-8">
-            <h1 className="text-2xl font-bold mb-4 text-[#68217A]">MASUK</h1>
-            {/* Ganti warna teks menjadi text-purple-700 */}
-            <p className="mb-6 text-gray-600">
-              Media Pembelajaran Dasar - Dasar C#
+            <h1 className="text-2xl font-bold mb-10 text-[#68217A]">
+              SHARP LEARN
+            </h1>
+            <p className="mb-3 text-gray-600">
+              Silahkan masuk dengan akun yang telah terdaftar ...{" "}
             </p>
             {isError && <p className="text-red-500">{message}</p>}
             <form onSubmit={Auth}>
@@ -62,7 +60,7 @@ const Login = () => {
                   required
                 />
               </div>
-              <div className="mb-4 flex items-center">
+              <div className="flex items-center mb-4">
                 <input
                   type="password"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -71,16 +69,18 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <a href="#" className="text-purple-500 ml-2">
-                  {" "}
-                  {/* Ganti text-blue-500 menjadi text-purple-500 */}
-                  Lupa Password?
-                </a>
+                <div className="text-center ">
+                  <Tooltip message="Silakan hubungi guru untuk mereset password">
+                    <a href="/login" className="text-purple-500">
+                      Lupa Password?
+                    </a>
+                  </Tooltip>
+                </div>
               </div>
               <button
                 type="submit"
                 style={{ backgroundColor: "#68217A" }}
-                className="w-full text-white py-2 rounded-md hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full py-2 text-white rounded-md hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 {isLoading ? "Memuat..." : "MASUK"}
               </button>
@@ -88,15 +88,12 @@ const Login = () => {
             <p className="mt-4 text-gray-600">
               Belum punya akun?{" "}
               <a href="#" className="text-purple-500">
-                {" "}
-                {/* Ganti text-blue-500 menjadi text-purple-500 */}
                 DAFTAR
               </a>
             </p>
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

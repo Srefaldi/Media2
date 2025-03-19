@@ -15,6 +15,7 @@ const Kuis = () => {
   const [hasAnswered, setHasAnswered] = useState(
     Array(questionsData.length).fill(false)
   );
+  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
 
   const getTextFromHTML = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
@@ -45,6 +46,20 @@ const Kuis = () => {
   useEffect(() => {
     setSelectedAnswers(Array(questions.length).fill(""));
     setAnswerStatus(Array(questions.length).fill(null));
+
+    // Timer
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleTimeUp(); // Call finish function when time is up
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer); // Cleanup on unmount
   }, [questions.length]);
 
   const handleAnswerChange = (answer) => {
@@ -87,7 +102,7 @@ const Kuis = () => {
         Swal.fire({
           icon: "info",
           title: "Sudah Menjawab",
-          text: "Anda sudah menjawab soal ini sebelumnya.",
+          text: "Anda sudah menjawab soal ini.",
         });
       }
     } else {
@@ -120,33 +135,71 @@ const Kuis = () => {
         confirmButtonText: "OK",
       });
     } else {
-      if (score < 80) {
+      // Jika semua soal telah dijawab
+      if (score >= 80) {
+        // Jika skor >= 80, tampilkan pesan selesai
         Swal.fire({
-          title: "Skor Anda di Bawah 80!",
-          text: "Silakan baca kembali materi dan jawab latihan kembali.",
-          icon: "warning",
-          confirmButtonText: "OK",
-        });
-      } else {
-        // Menampilkan SweetAlert untuk hasil kuis
-        Swal.fire({
-          title: "Kuis Selesai!",
-          text: `Skor Anda: ${score}`,
+          title: "Selamat!",
+          text: "Anda telah selesai mengerjakan kuis.",
           icon: "success",
-          showCancelButton: true,
           confirmButtonText: "Selanjutnya",
-          cancelButtonText: "Kembali",
         }).then((result) => {
           if (result.isConfirmed) {
             handleLessonComplete("/materi/bab1/kuis-bab1");
             window.scrollTo(0, 0);
             navigate("/materi/bab1/rangkuman-bab1");
-          } else {
-            navigate("/materi/bab1/error-csharp");
           }
         });
+      } else {
+        showFinalScore();
       }
     }
+  };
+
+  const handleTimeUp = () => {
+    clearInterval(); // Stop the timer
+    Swal.fire({
+      title: "Waktu Habis!",
+      text: `Skor Anda: ${score}`,
+      icon: "warning",
+      confirmButtonText: "OK",
+    }).then(() => {
+      showFinalScore(); // Call finish function to show the score
+    });
+  };
+
+  const showFinalScore = () => {
+    Swal.fire({
+      title: "WAKTU HABIS",
+      text: "Skor anda tidak mencukupi, Silahkan Coba Kembali.",
+      icon: score >= 80 ? "success" : "error",
+      showCancelButton: true,
+      confirmButtonText: score >= 80 ? "Selanjutnya" : "Coba Lagi",
+      cancelButtonText: "Kembali",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (score >= 80) {
+          handleLessonComplete("/materi/bab1/kuis-bab1");
+          window.scrollTo(0, 0);
+          navigate("/materi/bab1/rangkuman-bab1");
+        } else {
+          navigate("/materi/bab1/kuis-bab1");
+          window.location.reload();
+        }
+      } else {
+        navigate("/materi/bab1/error-csharp");
+      }
+    });
+  };
+
+  const resetQuiz = () => {
+    setSelectedAnswers(Array(questions.length).fill(""));
+    setAnswerStatus(Array(questions.length).fill(null));
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setIsFinished(false);
+    setHasAnswered(Array(questions.length).fill(false));
+    setTimeLeft(20 * 60); // Reset time to 20 minutes in seconds
   };
 
   return (
@@ -154,6 +207,7 @@ const Kuis = () => {
       <h2 className="text-lg font-semibold text-center text-gray-800">
         KUIS BAB 1
       </h2>
+
       <div
         className="relative p-4 mt-4 border rounded-lg"
         style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
@@ -218,13 +272,16 @@ const Kuis = () => {
         </ol>
       </div>
 
-      <div className="flex mt-4">
-        <div className="flex flex-col mr-3">
-          <div className="w-64 p-4 mt-4 text-center bg-gray-100 border rounded-lg">
-            <h3 className="font-semibold">SKOR : {score}</h3>
+      <div className="flex mt-6 mr-6">
+        <div className="flex flex-col">
+          <div className="p-4 mt-4 mr-2 text-center text-red-600 bg-gray-100 border rounded-lg">
+            <h3 className="font-semibold">
+              Waktu Tersisa: {Math.floor(timeLeft / 60)}:
+              {(timeLeft % 60).toString().padStart(2, "0")}
+            </h3>
           </div>
           <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
-          <div className="flex flex-col ml-10">
+          <div className="flex flex-col ml-2 mr-5">
             <div className="flex flex-row mb-2">
               {questions.slice(0, 5).map((question, index) => (
                 <button
@@ -295,6 +352,10 @@ const Kuis = () => {
         </div>
 
         <div className="w-full p-4 border rounded-lg">
+          <div className="p-4 mb-4 text-center bg-gray-100 border rounded-lg">
+            <h3 className="font-semibold">SKOR : {score}</h3>
+          </div>
+
           <h3 className="font-semibold">{`${questions[currentQuestionIndex].id}. ${questions[currentQuestionIndex].question}`}</h3>
           <div className="mt-2 mb-4">
             {questions[currentQuestionIndex].options.map((option) => (
@@ -381,14 +442,21 @@ const Kuis = () => {
             <h3 className="font-semibold">Kuis Selesai!</h3>
             <p>Skor Anda: {score}</p>
             <div className="mt-4">
-              <button
-                onClick={() => navigate("/materi/bab1/rangkuman-bab1")}
-                className={`bg-gray-500 text-white px-4 py-2 rounded-lg mr-2 ${
-                  score >= 80 ? "block" : "hidden"
-                }`}
-              >
-                Selanjutnya
-              </button>
+              {score >= 80 ? (
+                <button
+                  onClick={() => navigate("/materi/bab1/rangkuman-bab1")}
+                  className="px-4 py-2 text-white bg-gray-500 rounded-lg"
+                >
+                  Selanjutnya
+                </button>
+              ) : (
+                <button
+                  onClick={resetQuiz}
+                  className="px-4 py-2 text-white bg-gray-500 rounded-lg"
+                >
+                  Coba Lagi
+                </button>
+              )}
               <button
                 onClick={() => navigate("/materi/bab1/error-csharp")}
                 className="px-4 py-2 text-white bg-gray-500 rounded-lg"

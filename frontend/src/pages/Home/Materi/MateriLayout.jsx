@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import MateriSidebar from "./MateriSidebar";
 import Navbar from "./Navbar";
-import Footer from "../../../components/Landing/Footer";
+import Footer from "../../../components/Landing/Footer2";
 import "./style/MateriLayout.css"; // Impor file CSS
 
 const MateriLayout = () => {
@@ -16,9 +16,8 @@ const MateriLayout = () => {
       const newCompletedLessons = [...completedLessons, lessonId];
       setCompletedLessons(newCompletedLessons);
 
-      // Hitung progress dan batasi ke dua angka di belakang koma
       const newProgress = (newCompletedLessons.length / totalLessons) * 100;
-      setProgress(parseFloat(newProgress.toFixed(2))); // Menggunakan toFixed(2) untuk membatasi dua desimal
+      setProgress(parseFloat(newProgress.toFixed(2)));
     }
   };
 
@@ -27,13 +26,13 @@ const MateriLayout = () => {
       <Navbar />
       <div className="flex flex-1 mt-20">
         {/* Tambahkan margin-top untuk konten */}
-        <div className="fixed top-20 left-0 w-73 h-[calc(100vh-80px)] overflow-hidden overflow-y-auto bg-[white] text-white">
+        <div className="fixed top-20 left-0 w-79 h-[calc(100vh-80px)] bg-white text-white hide-scrollbar">
           <MateriSidebar
             completedLessons={completedLessons}
             progress={progress}
           />
         </div>
-        <div className="flex-1 p-6 ml-64 overflow-y-auto">
+        <div className="flex-1 p-6 overflow-y-auto ml-70">
           {/* Konten Materi */}
           <Outlet context={{ handleLessonComplete }} />
           <Footer />

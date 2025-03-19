@@ -27,10 +27,6 @@ const Variabel = () => {
     navigate("/materi/bab2/penamaan-variabel");
   };
 
-  const togglePendahuluan = () => setPendahuluanOpen(!isPendahuluanOpen);
-  const toggleTujuan = () => setTujuanOpen(!isTujuanOpen);
-  const toggleKonten = () => setKontenOpen(!isKontenOpen);
-
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
@@ -39,27 +35,24 @@ const Variabel = () => {
       <div className="w-full mb-4 border border-gray-300 rounded-lg">
         <h3
           className="flex items-center p-4 font-bold text-white cursor-pointer"
-          onClick={togglePendahuluan}
           style={{ backgroundColor: "#68217A" }}
         >
           <img src={iconBook} alt="Icon" className="w-8 h-8 mr-2" />
           PENDAHULUAN MATERI
-          <span className="ml-2">{isPendahuluanOpen ? "▲" : "▼"}</span>
+          <span className="ml-2">▼</span>
         </h3>
-        {isPendahuluanOpen && (
-          <div className="p-4 text-justify text-gray-700 rounded-b-lg">
-            <p>
-              Pada bab ini, kita akan mempelajari tentang variabel dalam bahasa
-              pemrograman C#. Variabel merupakan elemen penting dalam
-              pemrograman yang digunakan untuk menyimpan data. Memahami cara
-              mendeklarasikan dan menggunakan variabel dengan benar akan
-              membantu dalam pengembangan program yang efisien. Setelah
-              mempelajari materi ini, diharapkan pembaca dapat membedakan antara
-              variabel dan konstanta, serta menghindari kesalahan dalam penamaan
-              variabel.
-            </p>
-          </div>
-        )}
+
+        <div className="p-4 text-justify text-gray-700 rounded-b-lg">
+          <p>
+            Pada bab ini, kita akan mempelajari tentang variabel dalam bahasa
+            pemrograman C#. Variabel merupakan elemen penting dalam pemrograman
+            yang digunakan untuk menyimpan data. Memahami cara mendeklarasikan
+            dan menggunakan variabel dengan benar akan membantu dalam
+            pengembangan program yang efisien. Setelah mempelajari materi ini,
+            diharapkan pembaca dapat membedakan antara variabel dan konstanta,
+            serta menghindari kesalahan dalam penamaan variabel.
+          </p>
+        </div>
       </div>
 
       {/* Tujuan Pembelajaran */}
@@ -67,25 +60,21 @@ const Variabel = () => {
         className="w-full mb-4 border border-gray-300 rounded-lg"
         style={{ backgroundColor: "#68217A" }}
       >
-        <h3
-          className="flex items-center p-4 font-bold text-white cursor-pointer"
-          onClick={toggleTujuan}
-        >
+        <h3 className="flex items-center p-4 font-bold text-white cursor-pointer">
           <img src={iconTujuan} alt="Icon" className="w-8 h-8 mr-2" />
           TUJUAN PEMBELAJARAN
-          <span className="ml-2">{isTujuanOpen ? "▲" : "▼"}</span>
+          <span className="ml-2">▼</span>
         </h3>
-        {isTujuanOpen && (
-          <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-b-lg">
-            <li>Mampu memahami konsep variabel data dan klasifikasinya</li>
-            <li>
-              Dapat memahami konsep variabel serta dapat mendeklarasikan dan
-              menginisialisasikannya
-            </li>
-            <li>Mampu menggunakan fungsi input pada pemrograman</li>
-            <li>Dapat menghindari kesalahan dalam penulisan variabel</li>
-          </ul>
-        )}
+
+        <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-b-lg">
+          <li>Mampu memahami konsep variabel data dan klasifikasinya</li>
+          <li>
+            Dapat memahami konsep variabel serta dapat mendeklarasikan dan
+            menginisialisasikannya
+          </li>
+          <li>Mampu menggunakan fungsi input pada pemrograman</li>
+          <li>Dapat menghindari kesalahan dalam penulisan variabel</li>
+        </ul>
       </div>
 
       {/* Konten Materi */}
@@ -93,26 +82,22 @@ const Variabel = () => {
         className="w-full mb-4 border border-gray-300 rounded-lg"
         style={{ backgroundColor: "#68217A" }}
       >
-        <h3
-          className="flex items-center p-4 font-bold text-white cursor-pointer"
-          onClick={toggleKonten}
-        >
+        <h3 className="flex items-center p-4 font-bold text-white cursor-pointer">
           <img src={iconKonten} alt="Icon" className="w-8 h-8 mr-2" />
           KONTEN MATERI
-          <span className="ml-2">{isKontenOpen ? "▲" : "▼"}</span>
+          <span className="ml-2">▼</span>
         </h3>
-        {isKontenOpen && (
-          <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
-            <li>2.1 Pengertian Variabel</li>
-            <li>2.2 Penamaan Variabel</li>
-            <li>2.3 Kategori Variabel</li>
-            <li>2.4 Deklarasi dan Inisialisasi Variabel</li>
-            <li>2.5 Deklarasi Banyak Variabel</li>
-            <li>2.6 Variabel Konstanta</li>
-            <li>2.7 Sintaks Input</li>
-            <li>Rangkuman</li>
-          </ul>
-        )}
+
+        <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
+          <li>2.1 Pengertian Variabel</li>
+          <li>2.2 Penamaan Variabel</li>
+          <li>2.3 Kategori Variabel</li>
+          <li>2.4 Deklarasi dan Inisialisasi Variabel</li>
+          <li>2.5 Deklarasi Banyak Variabel</li>
+          <li>2.6 Variabel Konstanta</li>
+          <li>2.7 Sintaks Input</li>
+          <li>Rangkuman</li>
+        </ul>
       </div>
 
       {/* Pengertian Variabel */}
