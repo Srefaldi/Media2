@@ -166,11 +166,20 @@ const Latihan = () => {
   };
 
   const handleQuestionSelect = (index) => {
-    setCurrentQuestionIndex(index);
-    // Reset jawaban untuk soal yang dipilih
-    const newAnswers = [...answers];
-    newAnswers[index] = Array(questions[index].correctAnswer.length).fill(""); // Reset jawaban untuk soal yang sedang dipilih
-    setAnswers(newAnswers);
+    // Cek jika soal sudah dijawab
+    if (hasAnswered[index]) {
+      Swal.fire({
+        icon: "info",
+        title: "Sudah Menjawab",
+        text: "Anda sudah menjawab soal ini.",
+      });
+    } else {
+      setCurrentQuestionIndex(index);
+      // Reset jawaban untuk soal yang dipilih
+      const newAnswers = [...answers];
+      newAnswers[index] = Array(questions[index].correctAnswer.length).fill(""); // Reset jawaban untuk soal yang sedang dipilih
+      setAnswers(newAnswers);
+    }
   };
 
   const handleFinish = () => {
@@ -317,7 +326,6 @@ const Latihan = () => {
               {(timeLeft % 60).toString().padStart(2, "0")}
             </h3>
           </div>
-          {/* Waktu */}
           <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
           <div className="flex flex-row">
             {questions.map((question, index) => (
@@ -355,9 +363,6 @@ const Latihan = () => {
         </div>
 
         <div className="w-full p-4 border rounded-lg">
-          <div className="p-4 mb-4 text-center bg-gray-100 border rounded-lg">
-            <h3 className="font-semibold">SKOR : {score}</h3>
-          </div>
           <h3 className="font-semibold">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
           <p className="text-gray-600">
             {questions[currentQuestionIndex].prompt}

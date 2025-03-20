@@ -135,9 +135,7 @@ const Kuis = () => {
         confirmButtonText: "OK",
       });
     } else {
-      // Jika semua soal telah dijawab
       if (score >= 80) {
-        // Jika skor >= 80, tampilkan pesan selesai
         Swal.fire({
           title: "Selamat!",
           text: "Anda telah selesai mengerjakan kuis.",
@@ -200,6 +198,18 @@ const Kuis = () => {
     setIsFinished(false);
     setHasAnswered(Array(questions.length).fill(false));
     setTimeLeft(20 * 60); // Reset time to 20 minutes in seconds
+  };
+
+  const handleQuestionSelect = (index) => {
+    if (hasAnswered[index]) {
+      Swal.fire({
+        icon: "info",
+        title: "Sudah Menjawab",
+        text: "Anda sudah menjawab soal ini.",
+      });
+    } else {
+      setCurrentQuestionIndex(index);
+    }
   };
 
   return (
@@ -286,7 +296,7 @@ const Kuis = () => {
               {questions.slice(0, 5).map((question, index) => (
                 <button
                   key={question.id}
-                  onClick={() => setCurrentQuestionIndex(index)}
+                  onClick={() => handleQuestionSelect(index)}
                   style={{
                     width: "2rem",
                     height: "2rem",
@@ -319,7 +329,7 @@ const Kuis = () => {
               {questions.slice(5, 10).map((question, index) => (
                 <button
                   key={question.id}
-                  onClick={() => setCurrentQuestionIndex(index + 5)}
+                  onClick={() => handleQuestionSelect(index + 5)}
                   style={{
                     width: "2rem",
                     height: "2rem",
@@ -364,7 +374,7 @@ const Kuis = () => {
                   className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 ${
                     selectedAnswers[currentQuestionIndex] === option
                       ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
-                      : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
+                      : "bg-gray-100 text-gray-800 border-gray-300 hover:bg -gray-200"
                   }`}
                 >
                   <input
