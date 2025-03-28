@@ -26,6 +26,12 @@ import LatihanBab2 from "./pages/Materi/Bab-2/Latihan";
 import KuisBab2 from "./pages/Materi/Bab-2/Kuis";
 import RangkumanBab2 from "./pages/Materi/Bab-2/Rangkuman";
 
+// BAB 3
+import PengertianTipeData from "./pages/Materi/Bab-3/tipeData";
+import KlasifikasiTipeData from "./pages/Materi/Bab-3/klasifikasiTipeData";
+import TipeDataDasar from "./pages/Materi/Bab-3/tipeDataDasar";
+import Integer from "./pages/Materi/Bab-3/Integer";
+
 const MateriRoutes = () => {
   return (
     <Routes>
@@ -63,6 +69,18 @@ const MateriRoutes = () => {
         <Route path="bab2/latihan-bab2" element={<LatihanBab2 />} />
         <Route path="bab2/kuis-bab2" element={<KuisBab2 />} />
         <Route path="bab2/rangkuman-bab2" element={<RangkumanBab2 />} />
+
+        {/* Tipe Data */}
+        <Route
+          path="bab3/pengertian-tipedata"
+          element={<PengertianTipeData />}
+        />
+        <Route
+          path="bab3/klasifikasi-tipedata"
+          element={<KlasifikasiTipeData />}
+        />
+        <Route path="bab3/tipe-data-dasar" element={<TipeDataDasar />} />
+        <Route path="bab3/integer" element={<Integer />} />
       </Route>
     </Routes>
   );

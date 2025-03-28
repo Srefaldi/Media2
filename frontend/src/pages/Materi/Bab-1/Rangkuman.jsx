@@ -8,10 +8,12 @@ const Rangkuman = () => {
   const { handleLessonComplete } = useOutletContext();
   const handleNext = () => {
     handleLessonComplete("/materi/bab1/rangkuman-bab1");
-    navigate("/materi/bab2/pengertian-variabel");
+    window.scrollTo(0, 0);
+    navigate("/materi/bab2/variabel");
   };
 
   const handleBack = () => {
+    window.scrollTo(0, 0);
     navigate("/materi/bab1/kuis-bab1");
   };
 

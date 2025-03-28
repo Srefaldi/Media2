@@ -69,11 +69,11 @@
     "icon": "tipeDataIcon",
     "subBab": [
       {
-        "path": "/materi/bab3/pengertian-tipe-data",
+        "path": "/materi/bab3/pengertian-tipedata",
         "label": "3.1 Pengertian Tipe Data"
       },
       {
-        "path": "/materi/bab3/klasifikasi-tipe-data",
+        "path": "/materi/bab3/klasifikasi-tipedata",
         "label": "3.2 Klasifikasi Tipe Data"
       },
       {

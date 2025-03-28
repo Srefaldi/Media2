@@ -295,7 +295,7 @@ const Latihan = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         if (score >= 80) {
-          handleLessonComplete("/materi/bab1/kuis-bab1");
+          handleLessonComplete("/materi/bab1/latihan-bab1");
           window.scrollTo(0, 0);
           navigate("/materi/bab1/kuis-bab1");
         } else {
