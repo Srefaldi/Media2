@@ -26,7 +26,10 @@ const Variabel = () => {
     window.scrollTo(0, 0);
     navigate("/materi/bab2/penamaan-variabel");
   };
-
+  const handleBack = () => {
+    window.scrollTo(0, 0);
+    navigate("/materi/bab1/rangkuman-bab1");
+  };
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
@@ -169,7 +172,7 @@ const Variabel = () => {
       {quizCompleted && (
         <div className="flex justify-between mt-6">
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={handleBack}
             className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
           >
             <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
