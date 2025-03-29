@@ -45,7 +45,7 @@ const TipeDataDasar = () => {
           akses data. Berikut adalah beberapa tipe data nilai dasar yang sering
           digunakan dalam C#:
         </p>
-        <ul className="list-disc pl-6">
+        <ul className="pl-6 list-disc">
           <li>
             <strong>int (Integer)</strong>: Tipe data untuk bilangan bulat
             seperti 1, 2, 3.
@@ -98,7 +98,7 @@ const TipeDataDasar = () => {
           alokasi memori dan pengelolaan. Berikut adalah beberapa tipe data
           referensi dasar yang sering digunakan dalam C#:
         </p>
-        <ul className="list-disc pl-6">
+        <ul className="pl-6 list-disc">
           <li>
             <strong>string</strong>: Tipe data untuk kumpulan karakter, seperti
             "Mari Belajar CSharp".

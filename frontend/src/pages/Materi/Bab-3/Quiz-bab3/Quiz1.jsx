@@ -36,7 +36,7 @@ const Quiz = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-3 max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto mt-4 bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}

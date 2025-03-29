@@ -31,6 +31,13 @@ import PengertianTipeData from "./pages/Materi/Bab-3/tipeData";
 import KlasifikasiTipeData from "./pages/Materi/Bab-3/klasifikasiTipeData";
 import TipeDataDasar from "./pages/Materi/Bab-3/tipeDataDasar";
 import Integer from "./pages/Materi/Bab-3/Integer";
+import Float from "./pages/Materi/Bab-3/FlotingPoint";
+import Boolean from "./pages/Materi/Bab-3/Boolean";
+import Char from "./pages/Materi/Bab-3/Char";
+import String from "./pages/Materi/Bab-3/String";
+import LatihanBab3 from "./pages/Materi/Bab-3/Latihan";
+import KuisBab3 from "./pages/Materi/Bab-3/Kuis";
+import RangkumanBab3 from "./pages/Materi/Bab-3/Rangkuman";
 
 const MateriRoutes = () => {
   return (
@@ -81,6 +88,13 @@ const MateriRoutes = () => {
         />
         <Route path="bab3/tipe-data-dasar" element={<TipeDataDasar />} />
         <Route path="bab3/integer" element={<Integer />} />
+        <Route path="bab3/floating-point" element={<Float />} />
+        <Route path="bab3/boolean" element={<Boolean />} />
+        <Route path="bab3/char" element={<Char />} />
+        <Route path="bab3/string" element={<String />} />
+        <Route path="bab3/latihan-bab3" element={<LatihanBab3 />} />
+        <Route path="bab3/kuis-bab3" element={<KuisBab3 />} />
+        <Route path="bab3/rangkuman-bab3" element={<RangkumanBab3 />} />
       </Route>
     </Routes>
   );

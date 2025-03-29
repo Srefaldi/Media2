@@ -103,6 +103,8 @@ const MateriSidebar = ({ completedLessons, progress }) => {
                     onClick={(e) => {
                       if (!completedLessons.includes(sub.path)) {
                         e.preventDefault();
+                      } else {
+                        window.scrollTo(0, 0); // Scroll ke atas saat sub-menu diklik
                       }
                     }}
                   >

@@ -38,7 +38,7 @@ const KlasifikasiTipeData = () => {
         </p>
       </div>
 
-      <div className="mt-2 p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 mt-2 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h3 className="text-xl font-bold">
           Predefined Types (Tipe Data Bawaan)
         </h3>
@@ -76,86 +76,86 @@ const KlasifikasiTipeData = () => {
           </thead>
           <tbody>
             <tr>
-              <td className="border border-gray-300 p-2">byte</td>
-              <td className="border border-gray-300 p-2">0 ~ 255</td>
+              <td className="p-2 border border-gray-300">byte</td>
+              <td className="p-2 border border-gray-300">0 ~ 255</td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">sbyte</td>
-              <td className="border border-gray-300 p-2">-128 ~ 127</td>
+              <td className="p-2 border border-gray-300">sbyte</td>
+              <td className="p-2 border border-gray-300">-128 ~ 127</td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">short</td>
-              <td className="border border-gray-300 p-2">-32.768 ~ 32.767</td>
+              <td className="p-2 border border-gray-300">short</td>
+              <td className="p-2 border border-gray-300">-32.768 ~ 32.767</td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">ushort</td>
-              <td className="border border-gray-300 p-2">0 ~ 65.535</td>
+              <td className="p-2 border border-gray-300">ushort</td>
+              <td className="p-2 border border-gray-300">0 ~ 65.535</td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">int</td>
-              <td className="border border-gray-300 p-2">
+              <td className="p-2 border border-gray-300">int</td>
+              <td className="p-2 border border-gray-300">
                 -2.147.483.648 ~ 2.147.483.647
               </td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">uint</td>
-              <td className="border border-gray-300 p-2">0 ~ 4.294.967.295</td>
+              <td className="p-2 border border-gray-300">uint</td>
+              <td className="p-2 border border-gray-300">0 ~ 4.294.967.295</td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">long</td>
-              <td className="border border-gray-300 p-2">
+              <td className="p-2 border border-gray-300">long</td>
+              <td className="p-2 border border-gray-300">
                 -9.223.372.036.854.775.808 ~ 9.223.372.036.854.775.807
               </td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">ulong</td>
-              <td className="border border-gray-300 p-2">
+              <td className="p-2 border border-gray-300">ulong</td>
+              <td className="p-2 border border-gray-300">
                 0 ~ 18.446.744.073.709.551.615
               </td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">float</td>
-              <td className="border border-gray-300 p-2">
+              <td className="p-2 border border-gray-300">float</td>
+              <td className="p-2 border border-gray-300">
                 -3.402823e38 ~ 3.402823e38
               </td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">double</td>
-              <td className="border border-gray-300 p-2">
+              <td className="p-2 border border-gray-300">double</td>
+              <td className="p-2 border border-gray-300">
                 -1.79769313486232e308 ~ 1.79769313486232e308
               </td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">decimal</td>
-              <td className="border border-gray-300 p-2">
+              <td className="p-2 border border-gray-300">decimal</td>
+              <td className="p-2 border border-gray-300">
                 -79228162514264337593543950335 ~ 79228162514264337593543950335
               </td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">char</td>
-              <td className="border border-gray-300 p-2">
+              <td className="p-2 border border-gray-300">char</td>
+              <td className="p-2 border border-gray-300">
                 Sebuah karakter unicode
               </td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">string</td>
-              <td className="border border-gray-300 p-2">
+              <td className="p-2 border border-gray-300">string</td>
+              <td className="p-2 border border-gray-300">
                 Sebuah string karakter unicode
               </td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">boolean</td>
-              <td className="border border-gray-300 p-2">True & False</td>
+              <td className="p-2 border border-gray-300">boolean</td>
+              <td className="p-2 border border-gray-300">True & False</td>
             </tr>
             <tr>
-              <td className="border border-gray-300 p-2">object</td>
-              <td className="border border-gray-300 p-2">Sebuah Objek</td>
+              <td className="p-2 border border-gray-300">object</td>
+              <td className="p-2 border border-gray-300">Sebuah Objek</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md mt-4">
+      <div className="p-4 mt-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p>
           Semua tipe data pada tabel di atas merupakan tipe nilai (value type)
           kecuali <code>object</code> dan <code>string</code> yang merupakan
@@ -163,7 +163,7 @@ const KlasifikasiTipeData = () => {
         </p>
       </div>
 
-      <div className="mt-2 p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 mt-2 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h3 className="text-xl font-bold">
           User-defined Types (Tipe Data yang Didefinisikan Sendiri)
         </h3>

@@ -85,9 +85,9 @@
       { "path": "/materi/bab3/boolean", "label": "3.6 Boolean" },
       { "path": "/materi/bab3/char", "label": "3.7 Char" },
       { "path": "/materi/bab3/string", "label": "3.8 String" },
-      { "path": "/materi/bab3/latihan", "label": "Latihan" },
-      { "path": "/materi/bab3/kuis-bab1", "label": "KUIS" },
-      { "path": "/materi/bab3/rangkuman", "label": "Rangkuman" }
+      { "path": "/materi/bab3/latihan-bab3", "label": "Latihan" },
+      { "path": "/materi/bab3/kuis-bab3", "label": "KUIS" },
+      { "path": "/materi/bab3/rangkuman-bab3", "label": "Rangkuman" }
     ]
   },
   {
