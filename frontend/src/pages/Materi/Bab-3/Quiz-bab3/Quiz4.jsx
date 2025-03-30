@@ -64,7 +64,7 @@ const Quiz4 = ({ onComplete }) => {
                 type="text"
                 value={var1}
                 onChange={(e) => setVar1(e.target.value)}
-                className="border border-gray-400 px-2 py-1 w-32 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
+                className="border border-gray-400 mb-2 px-2 py-1 w-32 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
                 placeholder="Jawaban ..."
               />
               {`;\nint var2 = `}
@@ -72,7 +72,7 @@ const Quiz4 = ({ onComplete }) => {
                 type="text"
                 value={var2}
                 onChange={(e) => setVar2(e.target.value)}
-                className="border border-gray-400 px-2 py-1 w-32 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
+                className="border border-gray-400 px-2 mb-2 py-1 w-32 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
                 placeholder="Jawaban ..."
               />
               {`;\nint var3 = `}
@@ -80,7 +80,7 @@ const Quiz4 = ({ onComplete }) => {
                 type="text"
                 value={var3}
                 onChange={(e) => setVar3(e.target.value)}
-                className="border border-gray-400 px-2 py-1 w-32 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
+                className="border border-gray-400 px-2 mb-2 py-1 w-32 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
                 placeholder="Jawaban ..."
               />
               {`;\n\nConsole.WriteLine(var1);\nConsole.WriteLine(var2);\nConsole.WriteLine(var3);`}

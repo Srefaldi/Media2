@@ -19,7 +19,7 @@ const TipeData = () => {
   };
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab3/tipe-data");
+    handleLessonComplete("/materi/bab3/pengertian-tipedata");
     window.scrollTo(0, 0);
     navigate("/materi/bab3/klasifikasi-tipedata");
   };

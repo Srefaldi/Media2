@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
-const Quiz6 = ({ onComplete }) => {
-  const [operator1, setOperator1] = useState("");
-  const [operator2, setOperator2] = useState("");
-  const [operator3, setOperator3] = useState("");
+const Quiz8 = ({ onComplete }) => {
+  const [dataType, setDataType] = useState("");
+  const [stringValue, setStringValue] = useState("");
+  const [output, setOutput] = useState("");
   const [quizFeedback, setQuizFeedback] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Cek jawaban
-    if (operator1 === "<" && operator2 === "==" && operator3 === ">") {
+    if (
+      dataType === "string" &&
+      stringValue === '"Hello World"' &&
+      output === "greeting"
+    ) {
       onComplete();
       Swal.fire({
         title: "Jawaban Anda Benar",
@@ -22,10 +26,10 @@ const Quiz6 = ({ onComplete }) => {
     } else {
       // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
-      setOperator1("");
-      setOperator2("");
-      setOperator3("");
-      setQuizFeedback("Jawaban Anda Salah! Silakan coba lagi.");
+      setDataType("");
+      setStringValue("");
+      setOutput("");
+
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
@@ -36,14 +40,14 @@ const Quiz6 = ({ onComplete }) => {
   };
 
   const handleReset = () => {
-    setOperator1("");
-    setOperator2("");
-    setOperator3("");
+    setDataType("");
+    setStringValue("");
+    setOutput("");
     setQuizFeedback("");
   };
 
   return (
-    <div className="max-w-full p-6 mx-auto mt-4 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -53,40 +57,38 @@ const Quiz6 = ({ onComplete }) => {
 
       <div className="mt-4">
         <p className="mt-2 text-gray-600">
-          Lengkapi kode berikut dengan operator perbandingan yang benar:
+          Lengkapi kode berikut dengan tipe data dan nilai yang benar untuk
+          mencetak Hello World ...
         </p>
 
-        <div className="p-4 mt-3 mb-4 font-mono text-sm bg-gray-100 rounded-lg">
+        <div className="p-4 mb-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
-              {`bool hasil1 = 50 `}
+              {`\npublic class BelajarCSharp  \n{\n    public static void Main() \n    {\n        `}
               <input
                 type="text"
-                value={operator1}
-                onChange={(e) => setOperator1(e.target.value)}
-                className="border border-gray-400 mb-2 px-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
+                value={dataType}
+                onChange={(e) => setDataType(e.target.value)}
+                className="border border-gray-400 px-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
                 placeholder="Jawaban..."
               />
-              {` 30; // Bandingkan apakah 50 lebih kecil dari 30\n`}
-              {`bool hasil2 = 15 `}
+              {` greeting = `}
               <input
                 type="text"
-                value={operator2}
-                onChange={(e) => setOperator2(e.target.value)}
-                className="border border-gray-400 px-2 mb-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
+                value={stringValue}
+                onChange={(e) => setStringValue(e.target.value)}
+                className="border border-gray-400 px-2 py-1 w-20 mb-2 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
                 placeholder="Jawaban..."
               />
-              {` 15; // Bandingkan apakah 15 sama dengan 15\n`}
-              {`bool hasil3 = 'B'`}
+              {`;\n        Console.WriteLine(`}
               <input
                 type="text"
-                value={operator3}
-                onChange={(e) => setOperator3(e.target.value)}
-                className="border border-gray-400 px-2 py-1 mb-2 w-20 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
+                value={output}
+                onChange={(e) => setOutput(e.target.value)}
+                className="border border-gray-400 px-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
                 placeholder="Jawaban..."
               />
-              {` 'b'; // Bandingkan apakah karakter 'B' lebih besar dari 'b'\n\n`}
-              {`Console.WriteLine("hasil1 = " + hasil1);\nConsole.WriteLine("hasil2 = " + hasil2);\nConsole.WriteLine("hasil3 = " + hasil3);`}
+              {`);\n    }\n}`}
             </code>
           </pre>
         </div>
@@ -139,4 +141,4 @@ const Quiz6 = ({ onComplete }) => {
   );
 };
 
-export default Quiz6;
+export default Quiz8;
