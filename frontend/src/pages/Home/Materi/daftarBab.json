@@ -124,9 +124,9 @@
         "path": "/materi/bab4/operator-equality",
         "label": "Operator Equality (Kesetaraan)"
       },
-      { "path": "/materi/bab4/latihan", "label": "Latihan" },
-      { "path": "/materi/bab4/kuis", "label": "KUIS" },
-      { "path": "/materi/bab4/rangkuman", "label": "Rangkuman" }
+      { "path": "/materi/bab4/latihan-bab4", "label": "Latihan" },
+      { "path": "/materi/bab4/kuis-bab4", "label": "KUIS" },
+      { "path": "/materi/bab4/rangkuman-bab4", "label": "Rangkuman" }
     ]
   },
   {

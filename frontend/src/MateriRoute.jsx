@@ -39,6 +39,18 @@ import LatihanBab3 from "./pages/Materi/Bab-3/Latihan";
 import KuisBab3 from "./pages/Materi/Bab-3/Kuis";
 import RangkumanBab3 from "./pages/Materi/Bab-3/Rangkuman";
 
+// BAB 4
+import PengertianOperator from "./pages/Materi/Bab-4/pengertianOperator";
+import OperatorAritmatika from "./pages/Materi/Bab-4/operatorAritmatika";
+import OperatorInD from "./pages/Materi/Bab-4/operatorInD";
+import OperatorPenugasan from "./pages/Materi/Bab-4/operatorPenugasan";
+import OperatorPerbandingan from "./pages/Materi/Bab-4/operatorPerbandingan";
+import OperatorLogika from "./pages/Materi/Bab-4/operatorLogika";
+import OperatorBersyarat from "./pages/Materi/Bab-4/operatorBersyarat";
+import OperatorKesetaraan from "./pages/Materi/Bab-4/operatorKesetaraan";
+import LatihanBab4 from "./pages/Materi/Bab-4/Latihan";
+import KuisBab4 from "./pages/Materi/Bab-4/Kuis";
+import RangkumanBab4 from "./pages/Materi/Bab-4/Rangkuman";
 const MateriRoutes = () => {
   return (
     <Routes>
@@ -77,7 +89,7 @@ const MateriRoutes = () => {
         <Route path="bab2/kuis-bab2" element={<KuisBab2 />} />
         <Route path="bab2/rangkuman-bab2" element={<RangkumanBab2 />} />
 
-        {/* Tipe Data */}
+        {/*   BAB 3 Tipe Data */}
         <Route
           path="bab3/pengertian-tipedata"
           element={<PengertianTipeData />}
@@ -95,6 +107,37 @@ const MateriRoutes = () => {
         <Route path="bab3/latihan-bab3" element={<LatihanBab3 />} />
         <Route path="bab3/kuis-bab3" element={<KuisBab3 />} />
         <Route path="bab3/rangkuman-bab3" element={<RangkumanBab3 />} />
+
+        {/* BAB 4  */}
+        <Route
+          path="bab4/pengertian-operator"
+          element={<PengertianOperator />}
+        />
+        <Route
+          path="bab4/operator-arithmetic"
+          element={<OperatorAritmatika />}
+        />
+        <Route
+          path="bab4/operator-increment-decrement"
+          element={<OperatorInD />}
+        />
+        <Route
+          path="bab4/operator-assignment"
+          element={<OperatorPenugasan />}
+        />
+        <Route
+          path="bab4/operator-comparison"
+          element={<OperatorPerbandingan />}
+        />
+        <Route path="bab4/operator-logika" element={<OperatorLogika />} />
+        <Route
+          path="bab4/operator-conditional"
+          element={<OperatorBersyarat />}
+        />
+        <Route path="bab4/operator-equality" element={<OperatorKesetaraan />} />
+        <Route path="bab4/latihan-bab4" element={<LatihanBab4 />} />
+        <Route path="bab4/kuis-bab4" element={<KuisBab4 />} />
+        <Route path="bab4/rangkuman-bab4" element={<RangkumanBab4 />} />
       </Route>
     </Routes>
   );

@@ -10,7 +10,7 @@ const Rangkuman = () => {
   const handleNext = () => {
     handleLessonComplete("/materi/bab3/rangkuman-bab3");
     window.scrollTo(0, 0);
-    navigate("/materi/bab4/");
+    navigate("/materi/bab4/pengertian-operator");
   };
 
   const handleBack = () => {
@@ -36,7 +36,7 @@ const Rangkuman = () => {
           <li className="text-justify mb-2">
             Tipe data dalam C# dibagi menjadi <strong>value types</strong> (int,
             float, double, bool, char) dan
-            <strong> reference types</strong> (string, array, class).
+            <strong> reference types</strong> (string, class).
           </li>
           <li className="text-justify mb-2">
             Tipe data nilai meliputi:
@@ -68,10 +68,6 @@ const Rangkuman = () => {
               <li>
                 <strong>string</strong>: digunakan untuk menyimpan kumpulan
                 karakter.
-              </li>
-              <li>
-                <strong>array</strong>: digunakan untuk menyimpan banyak nilai
-                pada suatu variabel.
               </li>
             </ul>
           </li>
