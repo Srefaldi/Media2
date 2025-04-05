@@ -1,20 +1,33 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QuizBoolean from "./Quiz-bab3/Quiz6"; // Import komponen kuis
-import nextIcon from "../../../assets/img/selanjutnya.png";
-import backIcon from "../../../assets/img/kembali.png";
+import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
+import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
 import { useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Boolean = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
 
-  const handleQuizComplete = () => {
+  const handleQuizComplete = (isPassed) => {
     setQuizCompleted(true);
+    setQuizPassed(isPassed); // Set status kuis
   };
 
   const handleNext = () => {
+    if (!quizPassed) {
+      // Jika kuis belum dijawab dengan benar, tampilkan peringatan
+      Swal.fire({
+        title: "Oops!",
+        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
+      return; // Hentikan eksekusi jika kuis belum benar
+    }
     handleLessonComplete("/materi/bab3/boolean");
     window.scrollTo(0, 0);
     navigate("/materi/bab3/char");
@@ -50,7 +63,7 @@ const Boolean = () => {
           <code>bool</code>, Anda dapat menggunakan kode berikut:
         </p>
         <pre className="p-2 font-mono bg-gray-100 rounded">
-          <code>{`bool var1\nbool var2;\nvar1 = true;\nvar2 = false;\nConsole.WriteLine("var1 = " + var1);  // Output: var1 = True\nConsole.WriteLine("var2 = " + var2);  // Output: var2 = False`}</code>
+          <code>{`bool var1;\nbool var2;\nvar1 = true;\nvar2 = false;\nConsole.WriteLine("var1 = " + var1);  // Output: var1 = True\nConsole.WriteLine("var2 = " + var2);  // Output: var2 = False`}</code>
         </pre>
         <p>
           Dalam kode di atas, <code>var1</code> dan <code>var2</code> adalah
@@ -71,8 +84,7 @@ const Boolean = () => {
         </p>
         <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
-            {`bool var1 = 18 < 13;\nbool var2 = 26 > 18;\nbool var3 = 'A' == 'a';\nConsole.WriteLine("var1 = " + var1);  // Output: var1 = False\nConsole.WriteLine("var2 = " + var2);  // Output: var2 = True\nConsole.WriteLine("var3 = " + var3);  // Output: var3 = False
-`}
+            {`bool var1 = 18 < 13;\nbool var2 = 26 > 18;\nbool var3 = 'A' == 'a';\nConsole.WriteLine("var1 = " + var1);  // Output: var1 = False\nConsole.WriteLine("var2 = " + var2);  // Output: var2 = True\nConsole.WriteLine("var3 = " + var3);  // Output: var3 = False`}
           </code>
         </pre>
         <p>
@@ -97,31 +109,13 @@ const Boolean = () => {
         </p>
         <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
-            {`int var1 = 18;
-int var2 = 13;
-  if (var1 < var2
-  { 
-    Console.WriteLine("var1 lebih kecil daripada var2"); 
-  } 
-    else if (var1 > var2) 
-  { 
-    Console.WriteLine("var1 lebih besar daripada var2"); 
-  } 
-    else 
-  { 
-    Console.WriteLine("var1 sama dengan var2"); 
-  }`}
+            {`int var1 = 18;\nint var2 = 13;\nif (var1 < var2) {\n    Console.WriteLine("var1 lebih kecil daripada var2");\n} else if (var1 > var2) {\n    Console.WriteLine("var1 lebih besar daripada var2");\n} else {\n    Console.WriteLine("var1 sama dengan var2");\n}`}
           </code>
         </pre>
         <p>
           Dalam kode di atas, <code>var1</code> menyimpan hasil perbandingan
           <code>18 &lt; 13</code>, yang bernilai <code>false</code> karena
-          <code>18</code> lebih besar dari <code>13</code>.<code>var2</code>{" "}
-          menyimpan hasil perbandingan <code>26 &gt; 18</code>, yang bernilai{" "}
-          <code>true</code> karena <code>26</code> lebih besar dari{" "}
-          <code>18</code>.<code>var3</code> menyimpan hasil perbandingan{" "}
-          <code>'A' == 'a'</code>, yang bernilai <code>false</code> karena
-          karakter <code>'A'</code> tidak sama dengan karakter <code>'a'</code>.
+          <code>18</code> lebih besar dari <code>13</code>.
         </p>
       </div>
 
@@ -137,16 +131,14 @@ int var2 = 13;
           ></iframe>
         </div>
         <p>
-          <p>
-            Dalam kode ini, pengguna memasukkan sebuah angka, lalu program
-            memeriksa apakah angka tersebut **genap** menggunakan operasi{" "}
-            <code>angka % 2 == 0</code>. Hasilnya disimpan dalam **variabel
-            boolean** <code>isGenap</code>, yang digunakan dalam **pernyataan
-            if-else** untuk menentukan apakah angka **genap atau ganjil**.
-            **Tipe data <code>bool</code> dalam C#** sangat penting dalam
-            **logika, perbandingan, dan kontrol alur program**, memungkinkan
-            kode lebih **efisien** dalam menangani kondisi.
-          </p>
+          Dalam kode ini, pengguna memasukkan sebuah angka, lalu program
+          memeriksa apakah angka tersebut **genap** menggunakan operasi{" "}
+          <code>angka % 2 == 0</code>. Hasilnya disimpan dalam **variabel
+          boolean** <code>isGenap</code>, yang digunakan dalam **pernyataan
+          if-else** untuk menentukan apakah angka **genap atau ganjil**. **Tipe
+          data <code>bool</code> dalam C#** sangat penting dalam **logika,
+          perbandingan, dan kontrol alur program**, memungkinkan kode lebih
+          **efisien** dalam menangani kondisi.
         </p>
       </div>
 
@@ -154,15 +146,15 @@ int var2 = 13;
       {!quizCompleted && <QuizBoolean onComplete={handleQuizComplete} />}
 
       {/* Tombol Navigasi */}
-      {quizCompleted && (
-        <div className="flex justify-between mt-6">
-          <button
-            onClick={handleBack}
-            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-          >
-            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-            Kembali
-          </button>
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={handleBack}
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+        >
+          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+          Kembali
+        </button>
+        {quizCompleted && (
           <button
             onClick={handleNext}
             className="flex items-center justify-between"
@@ -183,8 +175,8 @@ int var2 = 13;
             <span>Selanjutnya</span>
             <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

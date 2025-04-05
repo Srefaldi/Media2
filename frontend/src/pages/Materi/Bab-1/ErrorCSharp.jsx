@@ -44,15 +44,14 @@ const ErrorCSharp = () => {
         <h3 className="mt-4 font-semibold">Syntax Error</h3>
         <ul className="pl-6 mb-4 text-justify list-disc">
           <li>
-            {" "}
             Bahasa pemrograman digunakan di bawah aturan dan konvensi yang
             ketat. Menulis kode yang menyimpang dari aturan tata bahasa
-            menghasilkan syntax error.{" "}
+            menghasilkan syntax error.
           </li>
           <li>
             Untuk mencegah kesalahan sintaks atau syntax error kita harus
             mempelajari dan mempraktikkan tata bahasa dan kode C# sesuai dengan
-            aturan yang ditetapkan.{" "}
+            aturan yang ditetapkan.
           </li>
 
           <li>
@@ -68,7 +67,7 @@ const ErrorCSharp = () => {
             width="100%"
             height="400"
             src="https://dotnetfiddle.net/Widget/cg6VKM"
-            frameborder="0"
+            frameBorder="0"
           ></iframe>
         </pre>
 
@@ -77,11 +76,11 @@ const ErrorCSharp = () => {
           <li>
             Berbeda dengan kesalahan sintaks, kode yang benar secara tata bahasa
             masih dapat menyebabkan kesalahan selama eksekusi. Jenis kesalahan
-            ini disebut kesalahan runtime atau Runtime Error.{" "}
+            ini disebut kesalahan runtime atau Runtime Error.
           </li>
           <li>
             Untuk mencegah kesalahan runtime, kamu harus mempertimbangkan
-            kemungkinan pengguna memasukkan data yang salah.{" "}
+            kemungkinan pengguna memasukkan data yang salah.
           </li>
           <li>
             Sebagai contoh, dalam kode di bawah ini, pengguna mencoba mencetak
@@ -94,7 +93,7 @@ const ErrorCSharp = () => {
             width="100%"
             height="475"
             src="https://dotnetfiddle.net/Widget/60SVzk"
-            frameborder="0"
+            frameBorder="0"
           ></iframe>
         </pre>
 
@@ -102,19 +101,17 @@ const ErrorCSharp = () => {
         <ul className="pl-6 mb-4 text-justify list-disc">
           <li>
             Logical error atau kesalahan logika merupakan error yang paling
-            sulit untuk dideteksi.{" "}
+            sulit untuk dideteksi.
           </li>
           <li>
-            {" "}
             Hal itu disebabkan error yang satu ini terjadi bukan karena adanya
             kesalahan sintaks / penulisan atau kesalahan pada proses runtime.
             Namun, juga karena adanya kesalahan dari programmer dalam penggunaan
-            algoritma.{" "}
+            algoritma.
           </li>
           <li>
-            {" "}
             Sebagian besar dari logical error terjadi karena adanya kesalahan
-            dalam perhitungan atau menggunakan variabel yang salah.{" "}
+            dalam perhitungan atau menggunakan variabel yang salah.
           </li>
 
           <li>
@@ -130,15 +127,15 @@ const ErrorCSharp = () => {
       {!quizCompleted && <Quiz onComplete={handleQuizCompletion} />}
 
       {/* Tombol Navigasi */}
-      {quizCompleted && (
-        <div className="flex justify-between mt-6">
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-          >
-            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-            Kembali
-          </button>
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={handleBack}
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+        >
+          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+          Kembali
+        </button>
+        {quizCompleted && (
           <button
             onClick={handleNext}
             className="flex items-center justify-between"
@@ -157,15 +154,10 @@ const ErrorCSharp = () => {
             }
           >
             <span>Selanjutnya</span>
-            <img
-              src={nextIcon}
-              alt="Selanjutnya"
-              className="w-5 h-5 ml-2"
-            />{" "}
-            {/* Ikon di pojok kanan */}
+            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

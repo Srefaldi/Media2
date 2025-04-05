@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import QuizPenamaanVariabel from "./Quiz-bab2/Quiz2";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
@@ -7,18 +7,18 @@ import backIcon from "../../../assets/img/kembali.png";
 const PenamaanVariabel = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const navigate = useNavigate();
-  const { handleLessonComplete } = useOutletContext();
   const handleQuizComplete = () => {
     setQuizCompleted(true);
   };
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab2/penamaan-variabel");
+    // Logika untuk menyelesaikan pelajaran dan navigasi ke halaman berikutnya
     window.scrollTo(0, 0);
     navigate("/materi/bab2/kategori-variabel");
   };
 
   const handleBack = () => {
+    // Navigasi kembali ke halaman sebelumnya
     window.scrollTo(0, 0);
     navigate("/materi/bab2/variabel");
   };
@@ -124,56 +124,23 @@ const PenamaanVariabel = () => {
           notasi Camel. Yang terpenting dari penamaan variabel ini adalah
           gunakanlah nama yang dapat memudahkan program untuk dibaca.
         </p>
-        <div className="flex justify-center mb-4">
-          <table className="w-full max-w-md mx-auto border border-gray-300">
-            <thead className="bg-[#68217A] text-white text-center">
-              <tr>
-                <th className="p-2 text-white border border-gray-300">
-                  Notasi
-                </th>
-                <th className="p-2 text-white border border-gray-300">
-                  Contoh
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="p-2 border border-gray-300">Pascal</td>
-                <td className="p-2 border border-gray-300">
-                  NamaMahasiswa, TotalMahasiswa
-                </td>
-              </tr>
-              <tr>
-                <td className="p-2 border border-gray-300">Camel</td>
-                <td className="p-2 border border-gray-300">
-                  namaMahasiswa, totalMahasiswa
-                </td>
-              </tr>
-              <tr>
-                <td className="p-2 border border-gray-300">Hungarian</td>
-                <td className="p-2 border border-gray-300">
-                  strNamaMahasiswa, intTotalMahasiswa
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
+
+      {/* Kuis */}
       {!quizCompleted && (
         <QuizPenamaanVariabel onComplete={handleQuizComplete} />
       )}
-      {/* Tombol Navigasi */}
 
-      {quizCompleted && (
-        <div className="flex justify-between mt-6">
-          {" "}
-          <button
-            onClick={handleBack}
-            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-          >
-            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-            Kembali
-          </button>
+      {/* Tombol Navigasi */}
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={handleBack}
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+        >
+          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+          Kembali
+        </button>
+        {quizCompleted && (
           <button
             onClick={handleNext}
             className="flex items-center justify-between"
@@ -194,8 +161,8 @@ const PenamaanVariabel = () => {
             <span>Selanjutnya</span>
             <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

@@ -122,7 +122,6 @@ const DeklarasiBanyak = () => {
               Perlu diingat, untuk pembuatan variabel dengan <code>var</code>{" "}
               harus kita isi nilainya, karena kalau tidak akan terjadi error.
             </p>
-            {/* TAMBAH DISINI */}
             <p className="mb-2">
               Contoh penggunaan <code>var</code> dalam mendeklarasikan variabel:
             </p>
@@ -162,7 +161,7 @@ const DeklarasiBanyak = () => {
           width="100%"
           height="400"
           src="https://dotnetfiddle.net/Widget/ZDE2kr"
-          frameborder="0"
+          frameBorder="0"
         ></iframe>
       </div>
 
@@ -172,15 +171,15 @@ const DeklarasiBanyak = () => {
       )}
 
       {/* Tombol Navigasi */}
-      {quizCompleted && (
-        <div className="flex justify-between mt-6">
-          <button
-            onClick={handleBack}
-            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-          >
-            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-            Kembali
-          </button>
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={handleBack}
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+        >
+          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+          Kembali
+        </button>
+        {quizCompleted && (
           <button
             onClick={handleNext}
             className="flex items-center justify-between"
@@ -201,8 +200,8 @@ const DeklarasiBanyak = () => {
             <span>Selanjutnya</span>
             <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

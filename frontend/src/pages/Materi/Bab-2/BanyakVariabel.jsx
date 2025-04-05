@@ -2,24 +2,37 @@ import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
 import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import QuizDeklarasiBanyakVariabel from "./Quiz-bab2/Quiz5";
+import QuizDeklarasiBanyakVariabel from "./Quiz-bab2/Quiz5"; // Pastikan path ini sesuai
 
 const DeklarasiBanyakVariabel = () => {
   const navigate = useNavigate();
-  const [quizCompleted, setQuizCompleted] = useState(false);
   const { handleLessonComplete } = useOutletContext();
+  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
 
   const handleQuizComplete = (isPassed) => {
     setQuizCompleted(true);
+    setQuizPassed(isPassed); // Set status kuis
   };
 
   const handleNext = () => {
+    if (!quizPassed) {
+      // Jika kuis belum dijawab dengan benar, tampilkan peringatan
+      Swal.fire({
+        title: "Oops!",
+        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
+      return; // Hentikan eksekusi jika kuis belum benar
+    }
     handleLessonComplete("/materi/bab2/deklarasi-banyak");
     window.scrollTo(0, 0);
     navigate("/materi/bab2/variabel-konstanta");
   };
 
   const handleBack = () => {
+    window.scrollTo(0, 0);
     navigate("/materi/bab2/deklarasi-inialisasi");
   };
 
@@ -60,16 +73,15 @@ const DeklarasiBanyakVariabel = () => {
       )}
 
       {/* Tombol Navigasi */}
-
-      {quizCompleted && (
-        <div className="flex justify-between mt-6">
-          <button
-            onClick={handleBack}
-            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-          >
-            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-            Kembali
-          </button>
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={handleBack}
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+        >
+          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+          Kembali
+        </button>
+        {quizCompleted && (
           <button
             onClick={handleNext}
             className="flex items-center justify-between"
@@ -90,8 +102,8 @@ const DeklarasiBanyakVariabel = () => {
             <span>Selanjutnya</span>
             <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

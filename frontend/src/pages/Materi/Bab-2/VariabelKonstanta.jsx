@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2"; // Import SweetAlert2
-import nextIcon from "../../../assets/img/selanjutnya.png";
-import backIcon from "../../../assets/img/kembali.png";
+import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
+import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
 import Quiz6 from "./Quiz-bab2/Quiz6";
 
 const VariabelKonstanta = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [quizPassed, setQuizPassed] = useState(false);
+  const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
 
   const handleQuizComplete = (isPassed) => {
     setQuizCompleted(true);
-    setQuizPassed(isPassed);
+    setQuizPassed(isPassed); // Set status kuis
   };
 
   const handleNext = () => {
@@ -101,15 +101,15 @@ const VariabelKonstanta = () => {
       {!quizCompleted && <Quiz6 onComplete={handleQuizComplete} />}
 
       {/* Tombol Navigasi */}
-      {quizCompleted && (
-        <div className="flex justify-between mt-6">
-          <button
-            onClick={handleBack}
-            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-          >
-            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-            Kembali
-          </button>
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={handleBack}
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+        >
+          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+          Kembali
+        </button>
+        {quizCompleted && (
           <button
             onClick={handleNext}
             className="flex items-center justify-between"
@@ -130,8 +130,8 @@ const VariabelKonstanta = () => {
             <span>Selanjutnya</span>
             <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

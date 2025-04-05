@@ -1,19 +1,33 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import QuizString from "./Quiz-bab3/Quiz8"; // Import komponen kuis
-import nextIcon from "../../../assets/img/selanjutnya.png";
-import backIcon from "../../../assets/img/kembali.png";
+import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
+import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
 import { useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const String = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
-  const handleQuizComplete = () => {
+
+  const handleQuizComplete = (isPassed) => {
     setQuizCompleted(true);
+    setQuizPassed(isPassed); // Set status kuis
   };
 
   const handleNext = () => {
+    if (!quizPassed) {
+      // Jika kuis belum dijawab dengan benar, tampilkan peringatan
+      Swal.fire({
+        title: "Oops!",
+        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
+      return; // Hentikan eksekusi jika kuis belum benar
+    }
     handleLessonComplete("/materi/bab3/string");
     window.scrollTo(0, 0);
     navigate("/materi/bab3/char");
@@ -289,7 +303,7 @@ string txt = "The character \\ is called backslash."; `}
         <pre className="font-mono bg-gray-100 p-2 rounded">
           <code>
             {`int x = 10; 
-int y = 20; 
+ int y = 20; 
 int z = x + y;  // z akan menjadi 30 (sebuah integer/angka) `}
           </code>
         </pre>
@@ -311,15 +325,15 @@ string z = x + y;  // z akan menjadi 1020 (a string)
       {!quizCompleted && <QuizString onComplete={handleQuizComplete} />}
 
       {/* Tombol Navigasi */}
-      {quizCompleted && (
-        <div className="flex justify-between mt-6">
-          <button
-            onClick={handleBack}
-            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-          >
-            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-            Kembali
-          </button>
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={handleBack}
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+        >
+          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+          Kembali
+        </button>
+        {quizCompleted && (
           <button
             onClick={handleNext}
             className="flex items-center justify-between"
@@ -340,8 +354,8 @@ string z = x + y;  // z akan menjadi 1020 (a string)
             <span>Selanjutnya</span>
             <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

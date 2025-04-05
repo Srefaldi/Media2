@@ -40,10 +40,12 @@ const SintaksPrint = () => {
   // State untuk kuis
   const [quizCompleted, setQuizCompleted] = useState(false);
   const { handleLessonComplete } = useOutletContext();
+
   const handleBack = () => {
     window.scrollTo(0, 0);
     navigate("/materi/bab1/struktur-eksekusi");
   };
+
   const handleNext = () => {
     handleLessonComplete("/materi/bab1/sintaks-print");
     window.scrollTo(0, 0);
@@ -180,7 +182,7 @@ const SintaksPrint = () => {
               transition: "background-color 0.2s",
             }}
             onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "# 5B1F6A")
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
             }
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
@@ -360,16 +362,16 @@ const SintaksPrint = () => {
       {/* Komponen Kuis */}
       {!quizCompleted && <Quiz onComplete={handleQuizCompletion} />}
 
-      {/* Tombol Next dan Back */}
-      {quizCompleted && (
-        <div className="flex justify-between mt-6">
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-          >
-            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-            Kembali
-          </button>
+      {/* Tombol Navigasi */}
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={handleBack}
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+        >
+          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+          Kembali
+        </button>
+        {quizCompleted && (
           <button
             onClick={handleNext}
             className="flex items-center justify-between"
@@ -388,15 +390,10 @@ const SintaksPrint = () => {
             }
           >
             <span>Selanjutnya</span>
-            <img
-              src={nextIcon}
-              alt="Selanjutnya"
-              className="w-5 h-5 ml-2"
-            />{" "}
-            {/* Ikon di pojok kanan */}
+            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

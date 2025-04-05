@@ -9,6 +9,7 @@ const StrukturEksekusi = () => {
   const navigate = useNavigate();
   const [quizCompleted, setQuizCompleted] = useState(false);
   const { handleLessonComplete } = useOutletContext(); // Ambil fungsi dari konteks
+
   const handleBack = () => {
     window.scrollTo(0, 0);
     navigate("/materi/bab1/struktur-kode");
@@ -95,15 +96,15 @@ const StrukturEksekusi = () => {
       {!quizCompleted && <Quiz onComplete={handleQuizComplete} />}
 
       {/* Tombol Navigasi */}
-      {quizCompleted && (
-        <div className="flex justify-between mt-6">
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-          >
-            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-            Kembali
-          </button>
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={handleBack}
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+        >
+          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+          Kembali
+        </button>
+        {quizCompleted && (
           <button
             onClick={handleNext}
             className="flex items-center justify-between"
@@ -122,15 +123,10 @@ const StrukturEksekusi = () => {
             }
           >
             <span>Selanjutnya</span>
-            <img
-              src={nextIcon}
-              alt="Selanjutnya"
-              className="w-5 h-5 ml-2"
-            />{" "}
-            {/* Ikon di pojok kanan */}
+            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
