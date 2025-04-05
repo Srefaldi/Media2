@@ -3,16 +3,21 @@ import { useNavigate } from "react-router-dom";
 import Quiz3 from "./Quiz-bab4/Quiz3"; // Import komponen kuis
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import { useOutletContext } from "react-router-dom";
 
 const OperatorInD = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const navigate = useNavigate();
+  const { handleLessonComplete } = useOutletContext();
 
   const handleNext = () => {
-    navigate("/materi/bab4/operator-assignment"); // Ganti dengan rute topik berikutnya
+    handleLessonComplete("/materi/bab4/operator-increment-decrement");
+    window.scrollTo(0, 0);
+    navigate("/materi/bab4/operator-assignment");
   };
 
   const handleBack = () => {
+    window.scrollTo(0, 0);
     navigate("/materi/bab4/operator-arithmetic");
   };
 
