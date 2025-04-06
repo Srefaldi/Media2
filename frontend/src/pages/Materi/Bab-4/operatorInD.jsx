@@ -32,7 +32,7 @@ const OperatorInD = () => {
         Operator Increment dan Decrement
       </h2>
 
-      <div className="mt-2 p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md mb-4">
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mb-2">
           Operator increment dan decrement adalah sebutan untuk operasi seperti{" "}
           <code>a++</code> dan <code>a--</code>. Ini sebenarnya penulisan
@@ -49,20 +49,20 @@ const OperatorInD = () => {
           Berikut adalah daftar{" "}
           <strong>operator Increment dan Decrement</strong> dalam C#:
         </p>
-        <p className="text-gray-600 text-sm text-center italic">
+        <p className="text-sm italic text-center text-gray-600">
           Tabel 4.2 Tabel daftar operator increment dan decrement
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
-          <table className="w-200 border border-gray-300 text-center">
+          <table className="text-center border border-gray-300 w-200">
             <thead className="bg-[#68217A] text-white text-center">
               <tr>
-                <th className="p-2 border text-white border-gray-300">
+                <th className="p-2 text-white border border-gray-300">
                   Operator
                 </th>
-                <th className="p-2 border text-white border-gray-300">
+                <th className="p-2 text-white border border-gray-300">
                   Keterangan
                 </th>
-                <th className="p-2 border text-white border-gray-300">
+                <th className="p-2 text-white border border-gray-300">
                   Contoh
                 </th>
               </tr>

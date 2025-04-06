@@ -30,7 +30,7 @@ const OperatorAssignment = () => {
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 4 - OPERATOR</h1>
       <h2 className="mt-2 mb-4 text-2xl font-bold">Operator Penugasan</h2>
 
-      <div className="mt-2 p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md mb-4">
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mb-2">
           Operator penugasan (Assignment Operator) merupakan operator untuk
           memberikan tugas pada variabel. Dalam pemrograman C#, operator
@@ -45,11 +45,11 @@ const OperatorAssignment = () => {
         <p className="mb-2">
           Berikut adalah daftar <strong>Operator Assignment</strong> dalam C#:
         </p>
-        <p className="text-gray-600 text-sm text-center italic">
+        <p className="text-sm italic text-center text-gray-600">
           Tabel 4.3 Tabel daftar simbol operator penugasan
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
-          <table className="border border-gray-300 text-center">
+          <table className="text-center border border-gray-300">
             <thead className="bg-[#68217A] text-white text-center">
               <tr>
                 <th className="p-2 text-white border border-gray-300">
@@ -99,11 +99,11 @@ const OperatorAssignment = () => {
           </table>
         </div>
         <p className="mb-2 font-bold">Contoh kasus operator penugasan:</p>
-        <p className="text-gray-600 text-sm text-center italic">
+        <p className="text-sm italic text-center text-gray-600">
           Tabel 4.4 Tabel daftar contoh kasus operator penugasan
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
-          <table className="border border-gray-300 text-center">
+          <table className="text-center border border-gray-300">
             <thead className="bg-[#68217A] text-white text-center">
               <tr>
                 <th className="p-2 text-white border border-gray-300">

@@ -51,6 +51,19 @@ import OperatorKesetaraan from "./pages/Materi/Bab-4/operatorKesetaraan";
 import LatihanBab4 from "./pages/Materi/Bab-4/Latihan";
 import KuisBab4 from "./pages/Materi/Bab-4/Kuis";
 import RangkumanBab4 from "./pages/Materi/Bab-4/Rangkuman";
+
+// BAB 5
+import PengertianKontrolAlur from "./pages/Materi/Bab-5/Pengertian";
+import PernyataanIf from "./pages/Materi/Bab-5/PernyataanIf";
+import PernyataanSwitch from "./pages/Materi/Bab-5/PernyataanSwitch";
+import Perulangan from "./pages/Materi/Bab-5/Perulangan";
+import PernyataanBreakdanContinue from "./pages/Materi/Bab-5/PernyataanBreakdanContinue";
+import PerulanganBersarang from "./pages/Materi/Bab-5/PernyataanBersarang";
+import LatihanBab5 from "./pages/Materi/Bab-5/Latihan";
+import KuisBab5 from "./pages/Materi/Bab-5/Kuis";
+import RangkumanBab5 from "./pages/Materi/Bab-5/Rangkuman";
+import PernyataanBersarang from "./pages/Materi/Bab-5/PernyataanBersarang";
+
 const MateriRoutes = () => {
   return (
     <Routes>
@@ -138,6 +151,26 @@ const MateriRoutes = () => {
         <Route path="bab4/latihan-bab4" element={<LatihanBab4 />} />
         <Route path="bab4/kuis-bab4" element={<KuisBab4 />} />
         <Route path="bab4/rangkuman-bab4" element={<RangkumanBab4 />} />
+
+        {/* BAB 5 KONTROL ALUR */}
+        <Route
+          path="bab5/pengertian-kontrol-alur"
+          element={<PengertianKontrolAlur />}
+        />
+        <Route path="bab5/pernyataan-if-else" element={<PernyataanIf />} />
+        <Route path="bab5/pernyataan-switch" element={<PernyataanSwitch />} />
+        <Route path="bab5/pernyataan-perulangan" element={<Perulangan />} />
+        <Route
+          path="bab5/pernyataan-break-continue"
+          element={<PernyataanBreakdanContinue />}
+        />
+        <Route
+          path="bab5/perulangan-bersarang"
+          element={<PernyataanBersarang />}
+        />
+        <Route path="bab5/latihan-bab5" element={<LatihanBab5 />} />
+        <Route path="bab5/kuis-bab5" element={<KuisBab5 />} />
+        <Route path="bab5/rangkuman-bab5" element={<RangkumanBab5 />} />
       </Route>
     </Routes>
   );
