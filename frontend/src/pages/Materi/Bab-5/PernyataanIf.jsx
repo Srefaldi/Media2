@@ -8,9 +8,7 @@ import { useOutletContext } from "react-router-dom";
 
 const PernyataanIfElse = () => {
   const [quiz1Completed, setQuiz1Completed] = useState(false);
-  const [showNextMaterial, setShowNextMaterial] = useState(false);
-  const [showQuiz2, setShowQuiz2] = useState(false); // State untuk menampilkan Quiz2
-  const [quiz2Completed, setQuiz2Completed] = useState(false); // State untuk menandakan Quiz2 selesai
+  const [quiz2Completed, setQuiz2Completed] = useState(false);
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
 
@@ -27,8 +25,6 @@ const PernyataanIfElse = () => {
 
   const handleQuiz1Complete = () => {
     setQuiz1Completed(true);
-    setShowNextMaterial(true); // Tampilkan materi selanjutnya
-    setShowQuiz2(true); // Tampilkan Quiz2 setelah Quiz1 selesai
   };
 
   const handleQuiz2Complete = () => {
@@ -67,26 +63,27 @@ const PernyataanIfElse = () => {
     // statement 
 } `}</code>
         </pre>
-        {/* Ganti dengan path gambar yang sesuai */}
         <p className="mb-2">
           Pernyataan if menentukan kondisi ekspresi yang akan dievaluasi.
           Apabila <strong> kondisi benar (true)</strong>, maka{" "}
           <strong>
             pernyataan dalam kurung kurawal {`{}`} akan dieksekusi
           </strong>
-          .Apabila <strong>kondisi salah (false)</strong>, maka{" "}
+          . Apabila <strong>kondisi salah (false)</strong>, maka{" "}
           <strong>akan diabaikan</strong>. Kemudian komputer akan melanjutkan
           program yang berada setelah pernyataan if tersebut.
         </p>
-        <p className="mb-2 font-bold">Cobalah kode program pada complier :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
             height="475"
             src="https://dotnetfiddle.net/Widget/feof8O"
-            frameborder="0"
+            frameBorder="0"
           ></iframe>
         </div>
+      </div>
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h3 className="font-bold">Penggunaan Operator</h3>
         <p className="mb-2">
           Dalam menggunakan statement if kita juga dapat memanfaatkan{" "}
@@ -100,13 +97,13 @@ const PernyataanIfElse = () => {
           </strong>
           .
         </p>
-        <p className="mb-2 font-bold">Cobalah kode program pada complier :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
             height="475"
             src="https://dotnetfiddle.net/Widget/FR3iI5"
-            frameborder="0"
+            frameBorder="0"
           ></iframe>
         </div>
         <p className="mb-2">
@@ -119,8 +116,7 @@ const PernyataanIfElse = () => {
           <code>{`if (5 + 4 == 9) 
 { 
     Console.WriteLine("Benar"); 
-}  
-} `}</code>
+}`}</code>
         </pre>
         <p className="mb-2">
           Pada program di atas, <strong>if</strong> menjelaskan bahwa apabila
@@ -133,13 +129,15 @@ const PernyataanIfElse = () => {
           <code>{`if (3 * 3 != 9) 
 { 
     Console.WriteLine("Benar"); 
-} `}</code>
+}`}</code>
         </pre>
         <p className="mb-2">
           Pada program di atas, operator diubah dari sama dengan == menjadi
           bukan sama dengan <strong>!= </strong>maka kata benar tidak akan
           dicetak pada layar.
         </p>
+      </div>
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h3 className="font-bold">Pernyataan Else</h3>
         <p className="mb-2">
           <strong>Else adalah statement pengikut dari if</strong>, apabila
@@ -169,60 +167,61 @@ else
             akan dieksekusi.
           </li>
         </ul>
-        <p className="mb-2 font-bold">Cobalah kode program pada complier :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
             height="475"
             src="https://dotnetfiddle.net/Widget/pSZyLU"
-            frameborder="0"
+            frameBorder="0"
           ></iframe>
         </div>
       </div>
 
       {/* Kuis Pertama */}
-      {!quiz1Completed && <QuizIfElse onComplete={handleQuiz1Complete} />}
+      <QuizIfElse onComplete={handleQuiz1Complete} />
 
       {/* Materi Selanjutnya */}
-      {showNextMaterial && showQuiz2 && (
-        <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <h3 className="font-bold">Pernyataan if bersarang</h3>
-          <p className="mb-2">
-            <strong>Statemen if </strong>bersarang umum dijumpai dalam
-            pemrograman. <strong>Statement if bersarang </strong>adalah sebuah
-            statement <strong>if </strong>yang menjadi target dari{" "}
-            <strong>if </strong> atau <strong>else</strong> lain. Jadi dapat
-            diasumsikan bahwa ada statement <strong>if </strong>di dalam
-            statement <strong>if </strong>.
-          </p>
-          <p className="mb-2 font-bold">Contoh 1 :</p>
-          <p className="mb-2 font-bold">Cobalah kode program pada complier :</p>
-          <div className="flex justify-center mb-4">
-            <iframe
-              width="100%"
-              height="475"
-              src="https://dotnetfiddle.net/Widget/j64s8i"
-              frameborder="0"
-            ></iframe>
-          </div>
-          <p className="mb-2 font-bold">Contoh 2 :</p>
-          <p className="mb-2 font-bold">Cobalah kode program pada complier :</p>
-          <div className="flex justify-center mb-4">
-            <iframe
-              width="100%"
-              height="475"
-              src="https://dotnetfiddle.net/Widget/0HuiA0"
-              frameborder="0"
-            ></iframe>
-          </div>
-          <h3 className="font-bold">If, Else, dan Else If</h3>
-          <p className="mb-2">
-            Statement <strong>if-else-if </strong>merupakan sintaks pemrograman
-            yang umum dijumpai. Format umum dari statement{" "}
-            <strong>if-else-if </strong> adalah
-          </p>
-          <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
-            <code>{`if (kondisi) 
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h3 className="font-bold">Pernyataan if bersarang</h3>
+        <p className="mb-2">
+          <strong>Statemen if </strong>bersarang umum dijumpai dalam
+          pemrograman. <strong>Statement if bersarang </strong>adalah sebuah
+          statement <strong>if </strong>yang menjadi target dari{" "}
+          <strong>if </strong> atau <strong>else</strong> lain. Jadi dapat
+          diasumsikan bahwa ada statement <strong>if </strong>di dalam statement{" "}
+          <strong>if </strong>.
+        </p>
+        <p className="mb-2 font-bold">Contoh 1 :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <div className="flex justify-center mb-4">
+          <iframe
+            width="100%"
+            height="475"
+            src="https://dotnetfiddle.net/Widget/j64s8i"
+            frameBorder="0"
+          ></iframe>
+        </div>
+        <p className="mb-2 font-bold">Contoh 2 :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <div className="flex justify-center mb-4">
+          <iframe
+            width="100%"
+            height="475"
+            src="https://dotnetfiddle.net/Widget/0HuiA0"
+            frameBorder="0"
+          ></iframe>
+        </div>
+      </div>
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h3 className="font-bold">If, Else, dan Else If</h3>
+        <p className="mb-2">
+          Statement <strong>if-else-if </strong>merupakan sintaks pemrograman
+          yang umum dijumpai. Format umum dari statement{" "}
+          <strong>if-else-if </strong> adalah
+        </p>
+        <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
+          <code>{`if (kondisi) 
     statement; 
 else if (kondisi) 
     statement; 
@@ -231,37 +230,36 @@ else if (kondisi)
 . . . 
 else 
     statement; `}</code>
-          </pre>
-          <p className="mb-2">
-            Ekspresi kondisional dievaluasi dari atas ke bawah. Begitu ditemukan
-            kondisi yang bernilai <strong>True</strong>, maka statement terkait
-            akan dieksekusi, dan sisa kondisi akan dilompati. Jika tidak ada
-            kondisi bernilai <strong>True</strong>, maka <strong>else </strong>
-            terakhir akan dieksekusi. Kalau <strong>else </strong> terakhir
-            berperan sebagai kondisi default. Jika tidak ada{" "}
-            <strong>else </strong> terakhir dan semua kondisi bernilai{" "}
-            <strong>False </strong>, <strong>maka tidak akan ada aksi</strong>{" "}
-            yang akan dilakukan.
-          </p>
-          <p className="mb-2">
-            Berikut contoh program yang mendemonstrasikan penggunaan if-else-if.
-            Program ini mencari faktor digit tunggal terkecil (selain 1) atas
-            sebuah nilai yang diberikan.
-          </p>
-          <p className="mb-2 font-bold">Cobalah kode program pada complier :</p>
-          <div className="flex justify-center mb-4">
-            <iframe
-              width="100%"
-              height="475"
-              src="https://dotnetfiddle.net/Widget/RwWXSf"
-              frameborder="0"
-            ></iframe>
-          </div>
+        </pre>
+        <p className="mb-2">
+          Ekspresi kondisional dievaluasi dari atas ke bawah. Begitu ditemukan
+          kondisi yang bernilai <strong>True</strong>, maka statement terkait
+          akan dieksekusi, dan sisa kondisi akan dilompati. Jika tidak ada
+          kondisi bernilai <strong>True</strong>, maka <strong>else </strong>
+          terakhir akan dieksekusi. Kalau <strong>else </strong> terakhir
+          berperan sebagai kondisi default. Jika tidak ada{" "}
+          <strong>else </strong> terakhir dan semua kondisi bernilai{" "}
+          <strong>False </strong>, <strong>maka tidak akan ada aksi</strong>{" "}
+          yang akan dilakukan.
+        </p>
+        <p className="mb-2">
+          Berikut contoh program yang mendemonstrasikan penggunaan if-else-if.
+          Program ini mencari faktor digit tunggal terkecil (selain 1) atas
+          sebuah nilai yang diberikan.
+        </p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <div className="flex justify-center mb-4">
+          <iframe
+            width="100%"
+            height="475"
+            src="https://dotnetfiddle.net/Widget/RwWXSf"
+            frameBorder="0"
+          ></iframe>
         </div>
-      )}
+      </div>
 
       {/* Kuis Kedua */}
-      {showQuiz2 && <Quiz2 onComplete={handleQuiz2Complete} />}
+      <Quiz2 onComplete={handleQuiz2Complete} />
 
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
