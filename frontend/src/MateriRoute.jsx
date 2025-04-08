@@ -64,6 +64,15 @@ import KuisBab5 from "./pages/Materi/Bab-5/Kuis";
 import RangkumanBab5 from "./pages/Materi/Bab-5/Rangkuman";
 import PernyataanBersarang from "./pages/Materi/Bab-5/PernyataanBersarang";
 
+// BAB 6
+import PengenalanMethod from "./pages/Materi/Bab-6/PengenalanMethod";
+import MethodVoid from "./pages/Materi/Bab-6/MethodVoid";
+import MethodTipeData from "./pages/Materi/Bab-6/MethodDenganTipeData";
+import ParameterMethod from "./pages/Materi/Bab-6/ParameterMethod";
+import LatihanBab6 from "./pages/Materi/Bab-6/Latihan";
+import KuisBab6 from "./pages/Materi/Bab-6/Kuis";
+import RangkumanBab6 from "./pages/Materi/Bab-6/Rangkuman";
+
 const MateriRoutes = () => {
   return (
     <Routes>
@@ -171,6 +180,15 @@ const MateriRoutes = () => {
         <Route path="bab5/latihan-bab5" element={<LatihanBab5 />} />
         <Route path="bab5/kuis-bab5" element={<KuisBab5 />} />
         <Route path="bab5/rangkuman-bab5" element={<RangkumanBab5 />} />
+
+        {/* BAB 6 */}
+        <Route path="bab6/pengenalan-method" element={<PengenalanMethod />} />
+        <Route path="bab6/method-void" element={<MethodVoid />} />
+        <Route path="bab6/method-tipe-data" element={<MethodTipeData />} />
+        <Route path="bab6/parameter-method" element={<ParameterMethod />} />
+        <Route path="bab6/latihan-bab6" element={<LatihanBab6 />} />
+        <Route path="bab6/kuis-bab6" element={<KuisBab6 />} />
+        <Route path="bab6/rangkuman-bab6" element={<RangkumanBab6 />} />
       </Route>
     </Routes>
   );

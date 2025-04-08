@@ -174,16 +174,16 @@
       },
       { "path": "/materi/bab6/method-void", "label": "6.2 Method Void" },
       {
-        "path": "/materi/bab6/method-dengan-tipe-data",
+        "path": "/materi/bab6/method-tipe-data",
         "label": "6.3 Method Dengan Tipe Data"
       },
       {
         "path": "/materi/bab6/parameter-method",
         "label": "6.4 Parameter Method"
       },
-      { "path": "/materi/bab6/latihan", "label": "Latihan" },
-      { "path": "/materi/bab6/kuis", "label": "KUIS" },
-      { "path": "/materi/bab6/rangkuman", "label": "Rangkuman" }
+      { "path": "/materi/bab6/latihan-bab6", "label": "Latihan" },
+      { "path": "/materi/bab6/kuis-bab6", "label": "KUIS" },
+      { "path": "/materi/bab6/rangkuman-bab6", "label": "Rangkuman" }
     ]
   }
 ]

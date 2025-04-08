@@ -10,7 +10,7 @@ const Rangkuman = () => {
   const handleNext = () => {
     handleLessonComplete("/materi/bab5/rangkuman-bab5");
     window.scrollTo(0, 0);
-    navigate("/materi/bab5/bab6"); // Ganti dengan rute topik berikutnya
+    navigate("/materi/bab6/pengenalan-method"); // Ganti dengan rute topik berikutnya
   };
 
   const handleBack = () => {
@@ -52,11 +52,18 @@ const Rangkuman = () => {
                 Pernyataan if menentukan kondisi ekspresi yang akan dievaluasi.
                 Apabila kondisi benar (true),{" "}
                 <span className="ml-5">
-                  maka pernyataan dalam kurung kurawal {`{ }`} akan dieksekusi.
-                  Apabila kondisi salah (false), maka if{" "}
+                  maka{" "}
+                  <strong>
+                    pernyataan dalam kurung kurawal {`{ }`} akan dieksekusi
+                  </strong>
+                  . Apabila <strong>kondisi salah</strong> (false), maka{" "}
+                  <strong>if</strong>{" "}
                   <span className="ml-5">
-                    kan diabaikan dan dilakukan pengecekan berikutnya pada else
-                    if hingga else.
+                    <strong>
+                      akan diabaikan dan dilakukan pengecekan berikutnya pada
+                      else if hingga else
+                    </strong>
+                    .
                   </span>
                   a
                 </span>
@@ -67,15 +74,21 @@ const Rangkuman = () => {
             <strong>Pernyataan Switch</strong>
             <ul className="mt-1 list-disc list-inside">
               <li className="-ml-1">
-                Switch statement memastikan persamaan antara sebuah nilai dengan
-                nilai-nilai yang ada pada{" "}
+                <strong>Switch statement</strong> memastikan persamaan antara
+                sebuah nilai dengan nilai-nilai yang ada pada{" "}
                 <span className="ml-5">
-                  case di dalam sebuah switch. Apabila nilai sama, maka operasi
-                  akan dieksekusi. Jika tidak, maka
+                  case di dalam sebuah switch.{" "}
+                  <strong>
+                    Apabila nilai sama, maka operasi akan dieksekusi. Jika
+                    tidak, maka
+                  </strong>
                 </span>
                 <br />
                 <span className="ml-5">
-                  akan dilakukan ke pengecekan pada case selanjutnya.
+                  <strong>
+                    {" "}
+                    akan dilakukan ke pengecekan pada case selanjutnya.
+                  </strong>
                 </span>
               </li>
               <li className="-ml-1">
