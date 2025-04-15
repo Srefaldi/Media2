@@ -121,7 +121,7 @@ const Latihan = () => {
     {
       id: 9,
       prompt:
-        "Lengkapi kode berikut agar program dapat mencetak angka 10 dan 5.5.",
+        " Lengkapi kode berikut agar program dapat mencetak angka 10 dan 5.5.",
       code: `class Program {
     public static void Main(string[] args) {
         Console.WriteLine(_____);
@@ -135,8 +135,8 @@ const Latihan = () => {
       prompt:
         'Lengkapi kode berikut agar dapat menampilkan output "Hello, User!" dengan menggunakan variabel dan konkatenasi string.',
       code: `class Program {
-    public static void Main(string[] args) {
-        string nama = "User";
+ public static void Main(string[] args) {
+        string nama = "User  ";
         Console.WriteLine("Hello, " + _____ + "!");
     }
 }`,
@@ -201,6 +201,11 @@ const Latihan = () => {
           text: "Silakan lanjutkan ke soal berikutnya.",
           icon: "success",
           confirmButtonText: "OK",
+        }).then(() => {
+          // Pindah ke soal berikutnya setelah menekan OK
+          setCurrentQuestionIndex((prevIndex) =>
+            Math.min(prevIndex + 1, questions.length - 1)
+          );
         });
       } else {
         Swal.fire({
@@ -213,11 +218,21 @@ const Latihan = () => {
       const newAnswerStatus = [...answerStatus];
       newAnswerStatus[currentQuestionIndex] = "incorrect";
       setAnswerStatus(newAnswerStatus);
+      setHasAnswered((prev) => {
+        const newHasAnswered = [...prev];
+        newHasAnswered[currentQuestionIndex] = true; // Tandai soal sudah dijawab
+        return newHasAnswered;
+      });
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Silakan coba lagi.",
+        text: "Silahkan lanjut kesoal berikutnya",
         icon: "error",
         confirmButtonText: "OK",
+      }).then(() => {
+        // Pindah ke soal berikutnya setelah menekan OK
+        setCurrentQuestionIndex((prevIndex) =>
+          Math.min(prevIndex + 1, questions.length - 1)
+        );
       });
     }
   };

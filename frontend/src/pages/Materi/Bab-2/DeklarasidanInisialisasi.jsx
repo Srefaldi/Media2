@@ -24,7 +24,7 @@ const DeklarasiBanyak = () => {
         icon: "warning",
         confirmButtonText: "OK",
       });
-      return; // Hentikan eksekusi jika kuis belum benar
+      return;
     }
     handleLessonComplete("/materi/bab2/deklarasi-inialisasi");
     window.scrollTo(0, 0);

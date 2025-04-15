@@ -32,11 +32,11 @@ const Variabel = () => {
   };
 
   return (
-    <div>
+    <div className="p-4">
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
 
       {/* Pendahuluan Materi */}
-      <div className="w-full mb-4 border border-gray-300 rounded-lg">
+      <div className="w-full mb-2 border border-gray-300 rounded-lg shadow-md">
         <h3
           className="flex items-center p-4 font-bold text-white cursor-pointer"
           style={{ backgroundColor: "#68217A" }}
@@ -60,11 +60,11 @@ const Variabel = () => {
       </div>
 
       {/* Tujuan Pembelajaran */}
-      <div
-        className="w-full mb-4 border border-gray-300 rounded-lg"
-        style={{ backgroundColor: "#68217A" }}
-      >
-        <h3 className="flex items-center p-4 font-bold text-white cursor-pointer">
+      <div className="w-full mb-2 border border-gray-300 rounded-lg shadow-md">
+        <h3
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
+          style={{ backgroundColor: "#68217A" }}
+        >
           <img src={iconTujuan} alt="Icon" className="w-8 h-8 mr-2" />
           TUJUAN PEMBELAJARAN
           <span className="ml-2">▼</span>
@@ -82,11 +82,11 @@ const Variabel = () => {
       </div>
 
       {/* Konten Materi */}
-      <div
-        className="w-full mb-4 border border-gray-300 rounded-lg"
-        style={{ backgroundColor: "#68217A" }}
-      >
-        <h3 className="flex items-center p-4 font-bold text-white cursor-pointer">
+      <div className="w-full mb-2 border border-gray-300 rounded-lg shadow-md">
+        <h3
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
+          style={{ backgroundColor: "#68217A" }}
+        >
           <img src={iconKonten} alt="Icon" className="w-8 h-8 mr-2" />
           KONTEN MATERI
           <span className="ml-2">▼</span>
@@ -105,7 +105,7 @@ const Variabel = () => {
       </div>
 
       {/* Pengertian Variabel */}
-      <div>
+      <div className="mb-6">
         <h2 className="mt-2 text-2xl font-bold">2.1 Pengertian Variabel</h2>
         <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
@@ -117,22 +117,20 @@ const Variabel = () => {
           </p>
         </div>
 
+        <pre className="p-2 bg-gray-100 rounded-lg">
+          <code className="text-gray-800">int s;</code>
+        </pre>
         <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <pre className="p-2 bg-gray-100 rounded-lg">
-            <code className="text-gray-800">int s;</code>
-          </pre>
-          <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-            <p>
-              Maksud dari satu baris script di atas ialah memberi instruksi
-              untuk membuat variabel "s" yang dialokasikan pada memori sebesar
-              bit tipe data integer dengan nilai NULL (tidak terisi apapun).
-              Dalam mempelajari bahasa pemrograman selain Assembly, kita tidak
-              perlu memikirkan dimana alamat memori untuk menyimpan variabel
-              tersebut. Namun yang perlu dipahami ialah kapan dan untuk apa kita
-              memilih tipe data untuk suatu variabel. Dengan kata lain, kita
-              harus tahu dan paham dalam penggunaan tipe data pada variabel.
-            </p>
-          </div>
+          <p>
+            Maksud dari satu baris script di atas ialah memberi instruksi untuk
+            membuat variabel "s" yang dialokasikan pada memori sebesar bit tipe
+            data integer dengan nilai NULL (tidak terisi apapun). Dalam
+            mempelajari bahasa pemrograman selain Assembly, kita tidak perlu
+            memikirkan dimana alamat memori untuk menyimpan variabel tersebut.
+            Namun yang perlu dipahami ialah kapan dan untuk apa kita memilih
+            tipe data untuk suatu variabel. Dengan kata lain, kita harus tahu
+            dan paham dalam penggunaan tipe data pada variabel.
+          </p>
         </div>
 
         <div className="flex justify-center p-4">

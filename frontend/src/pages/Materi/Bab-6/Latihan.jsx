@@ -121,40 +121,44 @@ public static void Main()
       (correctAnswer, index) => correctAnswer === userAnswers[index]
     );
 
+    const newAnswerStatus = [...answerStatus];
+    newAnswerStatus[currentQuestionIndex] = isCorrect ? "correct" : "incorrect";
+    setAnswerStatus(newAnswerStatus);
+
+    // Tandai soal sudah dijawab
+    setHasAnswered((prev) => {
+      const newHasAnswered = [...prev];
+      newHasAnswered[currentQuestionIndex] = true; // Tandai soal sudah dijawab
+      return newHasAnswered;
+    });
+
     if (isCorrect) {
-      if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 20); // Tambah 20 poin jika jawaban benar
-        const newAnswerStatus = [...answerStatus];
-        newAnswerStatus[currentQuestionIndex] = "correct"; // Tandai jawaban benar
-        setAnswerStatus(newAnswerStatus);
-        setHasAnswered((prev) => {
-          const newHasAnswered = [...prev];
-          newHasAnswered[currentQuestionIndex] = true; // Tandai soal sudah dijawab
-          return newHasAnswered;
-        });
-        Swal.fire({
-          title: "Jawaban Anda Benar!",
-          text: "Silakan lanjutkan ke soal berikutnya.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "Sudah Menjawab",
-          text: "Anda sudah menjawab soal ini.",
-        });
-      }
+      setScore((prevScore) => prevScore + 20); // Tambah 20 poin jika jawaban benar
+      Swal.fire({
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjutkan ke soal berikutnya.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
     } else {
-      const newAnswerStatus = [...answerStatus];
-      newAnswerStatus[currentQuestionIndex] = "incorrect";
-      setAnswerStatus(newAnswerStatus);
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Silakan coba lagi.",
         icon: "error",
         confirmButtonText: "OK",
       });
+    }
+
+    // Pindah ke soal berikutnya setelah menjawab
+    const nextQuestionIndex = currentQuestionIndex + 1;
+    if (nextQuestionIndex < questions.length) {
+      setCurrentQuestionIndex(nextQuestionIndex);
+      // Reset jawaban untuk soal yang dipilih
+      const newAnswers = [...answers];
+      newAnswers[nextQuestionIndex] = Array(
+        questions[nextQuestionIndex].correctAnswer.length
+      ).fill(""); // Reset jawaban untuk soal yang baru
+      setAnswers(newAnswers);
     }
   };
 
@@ -247,7 +251,7 @@ public static void Main()
   return (
     <div className="max-w-full p-2 mx-auto bg-white rounded-lg shadow-lg">
       <h2 className="text-lg font-semibold text-center text-gray-800">
-        LATIHAN BAB 6 - METHOD
+        LATIHAN BAB 6
       </h2>
 
       {/* Petunjuk Mengerjakan Latihan */}

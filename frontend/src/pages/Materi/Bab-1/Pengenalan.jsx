@@ -33,8 +33,9 @@ const PengenalanCSharp = () => {
 
   const handleNext = () => {
     handleLessonComplete("/materi/bab1/pengenalan");
+    handleLessonComplete("/materi/bab1/instalasi");
     window.scrollTo(0, 0);
-    navigate("/materi/bab1/instalasi");
+    navigate("/materi/bab1/struktur-kode");
   };
 
   return (
@@ -104,7 +105,7 @@ const PengenalanCSharp = () => {
       >
         <h3
           className="flex items-center p-4 font-bold text-white cursor-pointer"
-          onClick={() => toggleSection("konten")}
+          onClick={() => toggleSection("konten ")}
         >
           <img src={iconKonten} alt="Icon" className="w-8 h-8 mr-2" />
           KONTEN MATERI
@@ -112,14 +113,30 @@ const PengenalanCSharp = () => {
         </h3>
 
         <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
-          <li>1.1 Pengenalan C#</li>
-          <li>1.2 Instalasi Setup .NET dan Visual Studio Code</li>
-          <li>1.3 Struktur Kode Bahasa Pemrograman C#</li>
-          <li>1.4 Struktur Eksekusi Kode</li>
-          <li>1.5 Sintaks Print</li>
-          <li>1.6 Sintaks Komentar</li>
-          <li>1.7 Error pada C#</li>
-          <li>1.8 Rangkuman</li>
+          <li>
+            <strong>1.1 Pengenalan C#</strong>
+          </li>
+          <li>
+            <strong>1.2 Instalasi</strong> Setup .NET dan Visual Studio Code
+          </li>
+          <li>
+            <strong>1.3 Struktur Kode</strong> Bahasa Pemrograman C#
+          </li>
+          <li>
+            <strong>1.4 Struktur Eksekusi Kode</strong>
+          </li>
+          <li>
+            <strong>1.5 Sintaks Print</strong>
+          </li>
+          <li>
+            <strong>1.6 Sintaks Komentar</strong>
+          </li>
+          <li>
+            <strong>1.7 Error</strong> pada C#
+          </li>
+          <li>
+            <strong>1.8 Rangkuman</strong>
+          </li>
         </ul>
       </div>
 
@@ -127,7 +144,7 @@ const PengenalanCSharp = () => {
       <div>
         <h2 className="text-2xl font-bold">1.1 Pengenalan C#</h2>
 
-        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             C# (“See-Sharp”) adalah bahasa pemrograman modern yang dikembangkan
             oleh Microsoft sebagai bagian dari inisiatif .NET mereka. Bahasa ini
@@ -140,12 +157,12 @@ const PengenalanCSharp = () => {
           </p>
         </div>
 
-        <div className="flex justify-center p-4">
+        <div className="flex justify-center p-4 mb-6">
           <img src={logoc} alt="Gambar 1.1 Logo C#" className="h-auto w-60" />
         </div>
-        <p className="font-bold text-center">Gambar 1.1 Logo C#</p>
+        <p className="mb-6 font-bold text-center">Gambar 1.1 Logo C#</p>
 
-        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             Seperti halnya bahasa pemrograman yang lain, C# bisa digunakan untuk
             membangun berbagai macam jenis aplikasi, seperti aplikasi berbasis
@@ -153,7 +170,7 @@ const PengenalanCSharp = () => {
             web services. <br />
           </p>
         </div>
-        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             C# dikembangkan sebagai respons terhadap kebutuhan akan bahasa
             pemrograman yang kuat namun sederhana untuk mengembangkan aplikasi
@@ -166,7 +183,7 @@ const PengenalanCSharp = () => {
             signifikan.
           </p>
         </div>
-        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             Pada tahun 2003, C# diakui sebagai standar oleh ECMA (European
             Computer Manufacturers Association) dan ISO (International
@@ -174,7 +191,7 @@ const PengenalanCSharp = () => {
             bahasa ini secara global.
           </p>
         </div>
-        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <p>
             Program C# tidak seperti program C dan C++ yang di-compile menjadi
             binary yang bisa dieksekusi langsung oleh prosesor. Program C#
@@ -187,14 +204,14 @@ const PengenalanCSharp = () => {
           </p>
         </div>
 
-        <div className="flex justify-center p-4">
+        <div className=" flex justify-center p-4 mb-6">
           <img
             src={alur}
-            alt="Gambar 1.2 Alur eksekusi Common Language Runtime"
+            alt="Gambar  1.2 Alur eksekusi Common Language Runtime"
             className="h-auto w-100"
           />
         </div>
-        <p className="font-bold text-center">
+        <p className="mb-6 font-bold text-center">
           Gambar 1.2 Alur eksekusi Common Language Runtime
         </p>
       </div>

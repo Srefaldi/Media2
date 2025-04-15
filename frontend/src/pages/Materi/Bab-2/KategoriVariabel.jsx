@@ -26,15 +26,15 @@ const KategoriVariabel = () => {
 
   return (
     <div>
-      <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
-      <h2 className="mt-2 text-2xl font-bold">2.3 Kategori Variabel</h2>
+      <h1 className="mb-6 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
+      <h2 className="mt-4 mb-4 text-2xl font-bold">2.3 Kategori Variabel</h2>
 
-      <div className="p-4 mt-1 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <p className="mb-4">
+      <div className="p-4 mt-1 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <p className="mb-3">
           Variabel dalam C# dikelompokan menjadi variabel static, variabel
           instance, variabel lokal, dan parameter.
         </p>
-        <div className="text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <div className="mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <h2 className="mt-4 text-xl font-bold">A. Variabel Static</h2>
           <p className="mb-4">
             Variabel static dibuat dengan mendeklarasikan suatu variabel dengan
@@ -65,7 +65,7 @@ const KategoriVariabel = () => {
             di seluruh instance dari kelas tersebut.
           </p>
         </div>
-        <div className="text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <div className="mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <h2 className="mt-4 text-xl font-bold">B. Variabel Instance</h2>
           <p className="mb-4">
             Variabel instance adalah variabel yang merupakan bagian dari
@@ -83,7 +83,7 @@ const KategoriVariabel = () => {
           ></iframe>
           <p className="p-4 mb-4 italic">
             Pada kode di atas, kelas Mahasiswa memiliki dua variabel instance:
-            Nama dan Nim. Konstruk tor Mahasiswa menerima dua parameter untuk
+            Nama dan Nim. Konstruktor Mahasiswa menerima dua parameter untuk
             menginisialisasi variabel instance ini. Dalam metode Main, dua
             instance dari Mahasiswa dibuat dengan nama dan NIM yang berbeda.
             Metode TampilkanInfo kemudian dipanggil untuk masing-masing
@@ -93,7 +93,7 @@ const KategoriVariabel = () => {
             instance dari kelas.
           </p>
         </div>
-        <div className="text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <div className="mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <h2 className="mt-4 text-xl font-bold">C. Variabel Lokal</h2>
           <p className="mb-4">
             Variabel Lokal adalah variabel yang dideklarasikan di dalam suatu

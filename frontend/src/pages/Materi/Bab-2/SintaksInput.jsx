@@ -44,14 +44,14 @@ const SintaksInput = () => {
 
   return (
     <div>
-      <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
-      <h2 className="mt-2 text-2xl font-bold">2.7 Sintaks Input</h2>
+      <h1 className="mb-6 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
+      <h2 className="mt-4 mb-2 text-2xl font-bold">2.7 Sintaks Input</h2>
 
       <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mt-2 text-xl font-bold">
           Memasukan Data Menggunakan Sintaks Input
         </p>
-        <p className="mt-1 mb-4">
+        <p className="mt-1 mb-6">
           Untuk memasukan data, kita dapat menggunakan fungsi{" "}
           <code>Read()</code>, <code>ReadKey()</code>, dan{" "}
           <code>ReadLine()</code>. Fungsi <code>ReadLine()</code> akan membaca

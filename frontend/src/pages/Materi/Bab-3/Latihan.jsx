@@ -94,40 +94,43 @@ const Latihan = () => {
       (correctAnswer, index) => correctAnswer === userAnswers[index]
     );
 
+    const newAnswerStatus = [...answerStatus];
+    newAnswerStatus[currentQuestionIndex] = isCorrect ? "correct" : "incorrect";
+    setAnswerStatus(newAnswerStatus);
+    setHasAnswered((prev) => {
+      const newHasAnswered = [...prev];
+      newHasAnswered[currentQuestionIndex] = true; // Tandai soal sudah dijawab
+      return newHasAnswered;
+    });
+
     if (isCorrect) {
-      if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 20); // Tambah 20 poin jika jawaban benar
-        const newAnswerStatus = [...answerStatus];
-        newAnswerStatus[currentQuestionIndex] = "correct"; // Tandai jawaban benar
-        setAnswerStatus(newAnswerStatus);
-        setHasAnswered((prev) => {
-          const newHasAnswered = [...prev];
-          newHasAnswered[currentQuestionIndex] = true; // Tandai soal sudah dijawab
-          return newHasAnswered;
-        });
-        Swal.fire({
-          title: "Jawaban Anda Benar!",
-          text: "Silakan lanjutkan ke soal berikutnya.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "Sudah Menjawab",
-          text: "Anda sudah menjawab soal ini.",
-        });
-      }
+      setScore((prevScore) => prevScore + 20); // Tambah 20 poin jika jawaban benar
+      Swal.fire({
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjutkan ke soal berikutnya.",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        handleNextQuestion();
+      });
     } else {
-      const newAnswerStatus = [...answerStatus];
-      newAnswerStatus[currentQuestionIndex] = "incorrect";
-      setAnswerStatus(newAnswerStatus);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Silakan coba lagi.",
+        text: "Soal ini sudah dijawab. Silakan coba lagi.",
         icon: "error",
         confirmButtonText: "OK",
+      }).then(() => {
+        handleNextQuestion();
       });
+    }
+  };
+
+  const handleNextQuestion = () => {
+    const nextIndex = currentQuestionIndex + 1;
+    if (nextIndex < questions.length) {
+      setCurrentQuestionIndex(nextIndex);
+    } else {
+      handleFinish(); // Jika sudah tidak ada soal lagi, panggil fungsi selesai
     }
   };
 
