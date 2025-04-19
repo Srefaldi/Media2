@@ -10,6 +10,11 @@ import AddProduct from "./pages/LoginPage/AddProduct";
 import EditProduct from "./pages/LoginPage/EditProduct";
 import LandingPage from "./components/Landing/Landing";
 import CompilerPage from "./pages/Home/Complier/ComplierPage";
+import Informasi from "./pages/LoginPage/Informasi";
+import Petunjuk from "./pages/LoginPage/PetunjukPenggunaan";
+import ProgresBelajar from "./pages/LoginPage/ProgresBelajar";
+import DataNilai from "./pages/LoginPage/DataNilai";
+import Pengaturan from "./pages/LoginPage/Pengaturan";
 
 // Import Route Materi
 import MateriRoutes from "./MateriRoute";
@@ -21,6 +26,11 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/informasi" element={<Informasi />} />
+        <Route path="/petunjuk-penggunaan" element={<Petunjuk />} />
+        <Route path="/progres-belajar" element={<ProgresBelajar />} />
+        <Route path="/pengaturan" element={<Pengaturan />} />
+        <Route path="/data-nilai" element={<DataNilai />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/add" element={<AddUser />} />
         <Route path="/users/edit/:id" element={<EditUser />} />

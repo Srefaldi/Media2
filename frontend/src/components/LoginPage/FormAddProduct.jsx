@@ -33,34 +33,48 @@ const FormAddProduct = () => {
             <form onSubmit={saveProduct}>
               <p className="has-text-centered">{msg}</p>
               <div className="field">
-                <label className="label">Name</label>
+                <label className="label">Nama</label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Product Name"
+                    placeholder="Nama"
                   />
                 </div>
               </div>
               <div className="field">
-                <label className="label">Price</label>
+                <label className="label">Nilai</label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    placeholder="Price"
+                    placeholder="Nilai"
                   />
                 </div>
               </div>
-
+              <div className="field">
+                <label className="label">Materi</label>
+                <div className="control">
+                  <div className="select is-fullwidth">
+                    <select>
+                      <option value="admin">Pendahuluan</option>
+                      <option value="user">Variabel</option>
+                      <option value="user">Tipe Data</option>
+                      <option value="user">Operator</option>
+                      <option value="user">Kontrol Alur</option>
+                      <option value="user">Method</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
               <div className="field">
                 <div className="control">
                   <button type="submit" className="button is-success">
-                    Save
+                    Simpan
                   </button>
                 </div>
               </div>

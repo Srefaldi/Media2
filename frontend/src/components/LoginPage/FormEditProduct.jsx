@@ -43,42 +43,56 @@ const FormEditProduct = () => {
 
   return (
     <div>
-      <h1 className="title">Products</h1>
-      <h2 className="subtitle">Edit Product</h2>
+      <h1 className="title">Data Evaluasi</h1>
+      <h2 className="subtitle">Tambah Data Evaluasi</h2>
       <div className="card is-shadowless">
         <div className="card-content">
           <div className="content">
             <form onSubmit={updateProduct}>
               <p className="has-text-centered">{msg}</p>
               <div className="field">
-                <label className="label">Name</label>
+                <label className="label">Nama</label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Product Name"
+                    placeholder="Nama"
                   />
                 </div>
               </div>
               <div className="field">
-                <label className="label">Price</label>
+                <label className="label">Nilai</label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    placeholder="Price"
+                    placeholder="Nilai"
                   />
                 </div>
               </div>
-
+              <div className="field">
+                <label className="label">Materi</label>
+                <div className="control">
+                  <div className="select is-fullwidth">
+                    <select>
+                      <option value="admin">Pendahuluan</option>
+                      <option value="user">Variabel</option>
+                      <option value="user">Tipe Data</option>
+                      <option value="user">Operator</option>
+                      <option value="user">Kontrol Alur</option>
+                      <option value="user">Method</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
               <div className="field">
                 <div className="control">
                   <button type="submit" className="button is-success">
-                    Update
+                    Simpan
                   </button>
                 </div>
               </div>

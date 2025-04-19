@@ -30,15 +30,15 @@ const FormAddUser = () => {
   };
   return (
     <div>
-      <h1 className="title">Users</h1>
-      <h2 className="subtitle">Add New User</h2>
+      <h1 className="title">Data Siswa</h1>
+      <h2 className="subtitle">Tambahkan Data Siswa</h2>
       <div className="card is-shadowless">
         <div className="card-content">
           <div className="content">
             <form onSubmit={saveUser}>
               <p className="has-text-centered">{msg}</p>
               <div className="field">
-                <label className="label">Name</label>
+                <label className="label">Nama</label>
                 <div className="control">
                   <input
                     type="text"
@@ -50,7 +50,7 @@ const FormAddUser = () => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Email</label>
+                <label className="label">NIS</label>
                 <div className="control">
                   <input
                     type="text"
@@ -74,7 +74,7 @@ const FormAddUser = () => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Confirm Password</label>
+                <label className="label">Konfirmasi Password</label>
                 <div className="control">
                   <input
                     type="password"
@@ -86,7 +86,7 @@ const FormAddUser = () => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Role</label>
+                <label className="label">Kelas</label>
                 <div className="control">
                   <div className="select is-fullwidth">
                     <select
@@ -102,7 +102,7 @@ const FormAddUser = () => {
               <div className="field">
                 <div className="control">
                   <button type="submit" className="button is-success">
-                    Save
+                    Simpan
                   </button>
                 </div>
               </div>

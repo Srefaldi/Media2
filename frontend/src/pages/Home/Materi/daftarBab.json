@@ -185,5 +185,17 @@
       { "path": "/materi/bab6/kuis-bab6", "label": "KUIS" },
       { "path": "/materi/bab6/rangkuman-bab6", "label": "Rangkuman" }
     ]
+  },
+  {
+    "id": "evaluasi",
+    "judul": "EVALUASI",
+    "icon": "evaluasiIcon",
+    "subBab": [
+      {
+        "path": "/materi/evaluasi/evaluasi-akhir",
+        "label": "Evaluasi Akhir"
+      },
+      { "path": "/materi/evaluasi/kesimpulan-akhir", "label": "Kesimpulan" }
+    ]
   }
 ]

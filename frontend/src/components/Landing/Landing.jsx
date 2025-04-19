@@ -171,12 +171,6 @@ function Landing() {
               >
                 DAFTAR MATERI
               </a>
-              <button
-                onClick={toggleModal} // Menambahkan event handler untuk membuka modal
-                className="ml-4 inline-flex text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg"
-              >
-                INFORMASI
-              </button>
             </div>
           </div>
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2"; // Import SweetAlert
-import questionsData from "./SoalJson/BAB6.json"; // Ganti dengan path yang sesuai
+import questionsData from "./SoalJson/evaluasi.json"; // Ganti dengan path yang sesuai
 import IconPetunjuk from "../../../assets/img/informasi.png";
 
 const Kuis = () => {
@@ -85,7 +85,7 @@ const Kuis = () => {
     const newAnswerStatus = [...answerStatus];
     if (answer === correctAnswer) {
       if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 10);
+        setScore((prevScore) => prevScore + 5);
         newAnswerStatus[currentQuestionIndex] = "correct";
         Swal.fire({
           title: "Jawaban Anda Benar!",
@@ -232,7 +232,7 @@ const Kuis = () => {
   return (
     <div className="max-w-full p-4 mx-auto bg-white rounded-lg shadow-lg">
       <h2 className="text-lg font-semibold text-center text-gray-800">
-        KUIS BAB 6
+        EVALUASI AKHIR
       </h2>
 
       <div
@@ -309,72 +309,43 @@ const Kuis = () => {
           </div>
           <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
           <div className="flex flex-col ml-2 mr-5">
-            <div className="flex flex-row mb-2">
-              {questions.slice(0, 5).map((question, index) => (
-                <button
-                  key={question.id}
-                  onClick={() => handleQuestionSelect(index)}
-                  style={{
-                    width: "2rem",
-                    height: "2rem",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: "0.5rem",
-                    margin: "0.125rem",
-                    backgroundColor:
-                      currentQuestionIndex === index
-                        ? "#6E2A7F"
-                        : answerStatus[index] === "correct"
-                        ? "#10B981"
-                        : answerStatus[index] === "incorrect"
-                        ? "#EF4444"
-                        : "#D1D5DB",
-                    color:
-                      currentQuestionIndex === index ||
-                      answerStatus[index] === "correct" ||
-                      answerStatus[index] === "incorrect"
-                        ? "white"
-                        : "black",
-                  }}
-                >
-                  {question.id}
-                </button>
-              ))}
-            </div>
-            <div className="flex flex-row">
-              {questions.slice(5, 10).map((question, index) => (
-                <button
-                  key={question.id}
-                  onClick={() => handleQuestionSelect(index + 5)}
-                  style={{
-                    width: "2rem",
-                    height: "2rem",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: "0.5rem",
-                    margin: "0.125rem",
-                    backgroundColor:
-                      currentQuestionIndex === index + 5
-                        ? "#6E2A7F"
-                        : answerStatus[index + 5] === "correct"
-                        ? "#10B981"
-                        : answerStatus[index + 5] === "incorrect"
-                        ? "#EF4444"
-                        : "#D1D5DB",
-                    color:
-                      currentQuestionIndex === index + 5 ||
-                      answerStatus[index + 5] === "correct" ||
-                      answerStatus[index + 5] === "incorrect"
-                        ? "white"
-                        : "black",
-                  }}
-                >
-                  {question.id}
-                </button>
-              ))}
-            </div>
+            {Array.from({ length: 4 }).map((_, rowIndex) => (
+              <div className="flex flex-row mb-2" key={rowIndex}>
+                {questions
+                  .slice(rowIndex * 5, rowIndex * 5 + 5)
+                  .map((question, index) => (
+                    <button
+                      key={question.id}
+                      onClick={() => handleQuestionSelect(rowIndex * 5 + index)}
+                      style={{
+                        width: "2rem",
+                        height: "2rem",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "0.5rem",
+                        margin: "0.125rem",
+                        backgroundColor:
+                          currentQuestionIndex === rowIndex * 5 + index
+                            ? "#6E2A7F"
+                            : answerStatus[rowIndex * 5 + index] === "correct"
+                            ? "#10B981"
+                            : answerStatus[rowIndex * 5 + index] === "incorrect"
+                            ? "#EF4444"
+                            : "#D1D5DB",
+                        color:
+                          currentQuestionIndex === rowIndex * 5 + index ||
+                          answerStatus[rowIndex * 5 + index] === "correct" ||
+                          answerStatus[rowIndex * 5 + index] === "incorrect"
+                            ? "white"
+                            : "black",
+                      }}
+                    >
+                      {rowIndex * 5 + index + 1}
+                    </button>
+                  ))}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -391,7 +362,7 @@ const Kuis = () => {
                   className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 ${
                     selectedAnswers[currentQuestionIndex] === option
                       ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
-                      : "bg-gray-100 text-gray-800 border-gray-300 hover:bg -gray-200"
+                      : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
                   }`}
                 >
                   <input
@@ -468,29 +439,16 @@ const Kuis = () => {
           <div className="p-4 bg-white rounded-lg">
             <h3 className="font-semibold">Kuis Selesai!</h3>
             <p>Skor Anda: {score}</p>
-            <div className="mt-4">
-              {score >= 80 ? (
-                <button
-                  onClick={() => navigate("/materi/bab1/rangkuman-bab1")}
-                  className="px-4 py-2 text-white bg-gray-500 rounded-lg"
-                >
-                  Selanjutnya
-                </button>
-              ) : (
-                <button
-                  onClick={resetQuiz}
-                  className="px-4 py-2 text-white bg-gray-500 rounded-lg"
-                >
-                  Coba Lagi
-                </button>
-              )}
-              <button
-                onClick={() => navigate("/materi/bab1/error-csharp")}
-                className="px-4 py-2 text-white bg-gray-500 rounded-lg"
-              >
-                Kembali
-              </button>
-            </div>
+            <button
+              onClick={resetQuiz}
+              className="mt-4 text-white bg-blue-500 btn"
+              style={{
+                padding: "0.5rem 1rem",
+                borderRadius: "0.5rem",
+              }}
+            >
+              Ulangi Kuis
+            </button>
           </div>
         </div>
       )}

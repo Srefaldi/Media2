@@ -113,8 +113,25 @@ const Kuis = () => {
         icon: "error",
         confirmButtonText: "OK",
       });
+
+      // Tandai soal sudah dijawab meskipun salah
+      setHasAnswered((prev) => {
+        const newHasAnswered = [...prev];
+        newHasAnswered[currentQuestionIndex] = true; // Tandai soal sudah dijawab
+        return newHasAnswered;
+      });
     }
+
     setAnswerStatus(newAnswerStatus);
+
+    // Pindah ke soal berikutnya setelah menjawab
+    const nextQuestionIndex = currentQuestionIndex + 1;
+    if (nextQuestionIndex < questions.length) {
+      setCurrentQuestionIndex(nextQuestionIndex);
+    } else {
+      // Jika sudah tidak ada soal lagi, set isFinished menjadi true
+      setIsFinished(true);
+    }
   };
 
   const resetAnswerForCurrentQuestion = () => {

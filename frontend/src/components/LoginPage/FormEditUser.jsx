@@ -47,15 +47,15 @@ const FormEditUser = () => {
   };
   return (
     <div>
-      <h1 className="title">Users</h1>
-      <h2 className="subtitle">Update User</h2>
+      <h1 className="title">Data Siswa</h1>
+      <h2 className="subtitle">Perbarui Data Siswa</h2>
       <div className="card is-shadowless">
         <div className="card-content">
           <div className="content">
             <form onSubmit={updateUser}>
               <p className="has-text-centered">{msg}</p>
               <div className="field">
-                <label className="label">Name</label>
+                <label className="label">Nama</label>
                 <div className="control">
                   <input
                     type="text"
@@ -67,7 +67,7 @@ const FormEditUser = () => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Email</label>
+                <label className="label">NIS</label>
                 <div className="control">
                   <input
                     type="text"
@@ -103,7 +103,7 @@ const FormEditUser = () => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Role</label>
+                <label className="label">Kelas</label>
                 <div className="control">
                   <div className="select is-fullwidth">
                     <select
@@ -119,7 +119,7 @@ const FormEditUser = () => {
               <div className="field">
                 <div className="control">
                   <button type="submit" className="button is-success">
-                    Update
+                    Simpan
                   </button>
                 </div>
               </div>

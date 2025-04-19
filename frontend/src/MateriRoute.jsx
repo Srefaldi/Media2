@@ -73,6 +73,9 @@ import LatihanBab6 from "./pages/Materi/Bab-6/Latihan";
 import KuisBab6 from "./pages/Materi/Bab-6/Kuis";
 import RangkumanBab6 from "./pages/Materi/Bab-6/Rangkuman";
 
+// Evaluasi
+import EvaluasiAkhir from "./pages/Materi/EvaluasiAkhir/EvaluasiAkhir";
+
 const MateriRoutes = () => {
   return (
     <Routes>
@@ -189,6 +192,9 @@ const MateriRoutes = () => {
         <Route path="bab6/latihan-bab6" element={<LatihanBab6 />} />
         <Route path="bab6/kuis-bab6" element={<KuisBab6 />} />
         <Route path="bab6/rangkuman-bab6" element={<RangkumanBab6 />} />
+
+        {/* Evaluasi */}
+        <Route path="evaluasi/evaluasi-akhir" element={<EvaluasiAkhir />} />
       </Route>
     </Routes>
   );
