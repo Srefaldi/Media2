@@ -1,41 +1,62 @@
 import User from "../../models/LOGIN/UserModel.js";
 import argon2 from "argon2";
 
-export const Login = async(req, res) =>{
+// Login Controller
+export const Login = async (req, res) => {
+  try {
     const user = await User.findOne({
-        where: {
-            email: req.body.email
-        }
+      where: {
+        nis: req.body.nis, // Mencari pengguna berdasarkan NIS
+      },
     });
-    if(!user) return res.status(404).json({msg: "User Tidak ditemukan"})
-    const match = await argon2.verify(user.password, req.body.password);
-    if(!match) return res.status(400).json({msg: "Password Salah"});
-    req.session.userId = user.uuid;
-    const uuid = user.uuid;
-    const name = user.name;
-    const email = user.email;
-    const role = user.role;
-    res.status(200).json({uuid, name, email, role});
+
+    if (!user) {
+      return res.status(404).json({ msg: "User  tidak ditemukan" });
     }
 
+    const match = await argon2.verify(user.password, req.body.password);
+    if (!match) {
+      return res.status(400).json({ msg: "Password salah" });
+    }
 
-export const Me = async(req, res)=>{
-    if(!req.session.userId){
-        return res.status(401).json({msg: "Mohon login ke akun anda"})
-    };
+    req.session.userId = user.uuid; // Simpan ID pengguna di session
+    const { uuid, name, nis, role } = user; // Ambil data pengguna
+    res.status(200).json({ uuid, name, nis, role }); // Kirim data pengguna
+  } catch (error) {
+    res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+  }
+};
+
+// Controller untuk mendapatkan informasi pengguna yang sedang login
+export const Me = async (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ msg: "Mohon login ke akun anda" });
+  }
+
+  try {
     const user = await User.findOne({
-        attributes:['uuid','name','email','role'],
-        where: {
-            uuid: req.session.userId
-        }
+      attributes: ["uuid", "name", "nis", "role"],
+      where: {
+        uuid: req.session.userId,
+      },
     });
-    if(!user) return res.status(404).json({msg: "User Tidak ditemukan"});
-    res.status(200).json(user);
-}
 
-export const logOut = (req, res)=>{
-    req.session.destroy((err)=>{
-        if(err) return res.status(400).json({msg: "Tidak dapat logout"});
-        res.status(200).json({msg: "Berhasil Logout"});
-    });
-}
+    if (!user) {
+      return res.status(404).json({ msg: "User  tidak ditemukan" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+  }
+};
+
+// Controller untuk logout
+export const logOut = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(400).json({ msg: "Tidak dapat logout" });
+    }
+    res.status(200).json({ msg: "Berhasil logout" });
+  });
+};

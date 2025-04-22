@@ -77,16 +77,16 @@ const Dashboard = () => {
         {user?.role !== "admin" ? (
           <div className="flex-1 p-6 bg-white">
             {/* Kode baru dimulai di sini */}
-            <main className="container mx-auto px-4 py-4">
-              <h1 className="text-center text-4xl font-bold text-gray-800 mb-8">
+            <main className="container px-4 py-4 mx-auto">
+              <h1 className="mb-8 text-4xl font-bold text-center text-gray-800">
                 DASAR-DASAR PEMROGRAMAN C#
               </h1>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                 <div
-                  className="bg-white shadow-md rounded-lg p-8 text-center"
+                  className="p-8 text-center bg-white rounded-lg shadow-md"
                   style={{ border: "4px solid #6E2A7F" }} // Style inline untuk border
                 >
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  <h2 className="mb-4 text-2xl font-bold text-gray-800">
                     PETUNJUK PENGGUNAAN
                   </h2>
                   <img
@@ -96,15 +96,15 @@ const Dashboard = () => {
                     src={petunjukImage} // Ganti dengan gambar internal
                     width="350"
                   />
-                  <button className="bg-transparent border border-gray-600 text-gray-600 py-2 px-4 rounded hover:bg-gray-300">
+                  <button className="px-4 py-2 text-gray-600 bg-transparent border border-gray-600 rounded hover:bg-gray-300">
                     LIHAT PETUNJUK
                   </button>
                 </div>
                 <div
-                  className="bg-white shadow-md rounded-lg p-8 text-center"
+                  className="p-8 text-center bg-white rounded-lg shadow-md"
                   style={{ border: "4px solid #6E2A7F" }} // Style inline untuk border
                 >
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  <h2 className="mb-4 text-2xl font-bold text-gray-800">
                     MATERI
                   </h2>
                   <img
@@ -116,17 +116,17 @@ const Dashboard = () => {
                   />
                   <Link
                     to="/materi"
-                    className="text-white py-2 px-4 rounded hover:bg-gray-300"
+                    className="px-4 py-2 text-white rounded hover:bg-gray-300"
                     style={{ backgroundColor: "#6E2A7F" }}
                   >
                     MULAI BELAJAR
                   </Link>
                 </div>
                 <div
-                  className="bg-white shadow-md rounded-lg p-8 text-center"
+                  className="p-8 text-center bg-white rounded-lg shadow-md"
                   style={{ border: "4px solid #6E2A7F" }} // Style inline untuk border
                 >
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  <h2 className="mb-4 text-2xl font-bold text-gray-800">
                     INFORMASI
                   </h2>
                   <img
@@ -138,7 +138,7 @@ const Dashboard = () => {
                   />
                   <Link
                     to="/informasi"
-                    className="bg-transparent border border-gray-600 text-gray-600 py-2 px-4 rounded hover:bg-gray-300"
+                    className="px-4 py-2 text-gray-600 bg-transparent border border-gray-600 rounded hover:bg-gray-300"
                   >
                     LIHAT INFORMASI
                   </Link>
@@ -157,12 +157,12 @@ const Dashboard = () => {
                   <span className="font-bold">TOKEN</span>
                 </div>
                 <div className="mt-2 font-bold text-gray-900">{token}</div>
-                <button
-                  className="ml-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                {/* <button
+                  className="px-4 py-2 ml-4 text-white bg-blue-500 rounded hover:bg-blue-600"
                   onClick={refreshToken}
                 >
                   Refresh Token
-                </button>
+                </button> */}
               </div>
             </div>
 

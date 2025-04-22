@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const FormAddUser = () => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [nis, setNis] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
   const [role, setRole] = useState("");
@@ -16,7 +16,7 @@ const FormAddUser = () => {
     try {
       await axios.post("http://localhost:5000/users", {
         name: name,
-        email: email,
+        nis: nis,
         password: password,
         confPassword: confPassword,
         role: role,
@@ -55,9 +55,9 @@ const FormAddUser = () => {
                   <input
                     type="text"
                     className="input"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
+                    value={nis}
+                    onChange={(e) => setNis(e.target.value)}
+                    placeholder="NIS"
                   />
                 </div>
               </div>

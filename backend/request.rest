@@ -4,14 +4,12 @@ Content-Type: application/json
 
 
 {
-    "name": "Faldi",
-    "email": "admin@gmail.com",
+    "name": "Siswa",
     "password": "123",
     "confPassword": "123",
-    "role": "admin"
+    "role": "user",
+    "nis":"1234"
 }
-
-
 ###
 # Get all user
 GET http://localhost:5000/users
@@ -21,17 +19,29 @@ GET http://localhost:5000/users
 # GET SINGLE USER
 GET http://localhost:5000/users/97340949-2eee-43fe-836e-3f142f17875f
 
+
+###
+# Login request
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "nis": "123",
+    "password": "123"
+}
+
 ###
 # Update
-PATCH  http://localhost:5000/users/97340949-2eee-43fe-836e-3f142f17875f
+PATCH  http://localhost:5000/users/fbce369c-509a-452e-95c2-2ce7f7686899
 Content-Type: application/json
 
 
 {
     "name": "FALDI UPDATE",
-    "email": "admin@gmail.com",
-    "password": "",
-    "confPassword": "",
+    "nis": "123",
+    "password": "123",
+    "email":"admin1@gmail.com",
+    "confPassword": "123",
     "role": "admin"
 }
 
@@ -49,7 +59,7 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "email": "faldi@gmail.com",
+    "nis": "123",
     "password": "123"
 }
 

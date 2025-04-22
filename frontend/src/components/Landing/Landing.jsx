@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import iconHamburger from "../../assets/img/icon-hamburger.svg";
 import iconClose from "../../assets/img/icon-close.svg";
 import heroImage from "../../assets/img/logo-hero.png";
+import guruIcon from "../../assets/img/icon-guru.png"; // Import your guru icon here
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
 import InfoModal from "./InfoModal";
+
 const daftarMateri = [
   {
     bab: "BAB 1",
@@ -86,14 +88,14 @@ const daftarMateri = [
 
 function Landing() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State untuk modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const toggleModal = () => {
-    setIsModalOpen(!isModalOpen); // Fungsi untuk membuka/menutup modal
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -159,17 +161,28 @@ function Landing() {
               DASAR - DASAR C#
             </h1>
             <p className="mb-8 leading-relaxed text-justify">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Saepe
-              quos vero incidunt deserunt cum aut commodi ratione, illo magni
-              laudantium.
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam
+              atque, autem numquam cum, sint aliquid ea doloribus obcaecati,
+              sapiente voluptates debitis. Aspernatur, praesentium! Ullam
+              repellat excepturi distinctio iusto veniam aperiam eveniet
+              asperiores culpa voluptatem ipsa! Quia aperiam est commodi dolor,
+              deleniti a quibusdam doloremque laudantium nihil velit nostrum
+              suscipit iste.
             </p>
             <div className="flex justify-center flex-wrap">
               <a
                 href="#daftar-materi"
-                className="inline-flex text-white border-0 py-2 px-6 focus:outline-none hover:bg-opacity-80 rounded text-lg"
+                className="inline-flex text-white border-0 py-2 px-6 focus:outline-none hover:bg-opacity-80 rounded text-lg font-bold"
                 style={{ backgroundColor: "#68217A" }}
               >
                 DAFTAR MATERI
+              </a>
+              <a
+                href="#daftar-materi"
+                className="inline-flex ml-4 text-gray-600 border border-gray-400 py-2 px-6 focus:outline-none hover:bg-opacity-80 rounded text-lg font-bold"
+                style={{ backgroundColor: "#FFFFFF" }}
+              >
+                HALAMAN GURU >>
               </a>
             </div>
           </div>
