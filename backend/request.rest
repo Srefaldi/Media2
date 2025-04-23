@@ -4,11 +4,11 @@ Content-Type: application/json
 
 
 {
-    "name": "Siswa",
-    "password": "123",
+    "name": "Siswa 2",
+    "password": "1234",
     "confPassword": "123",
     "role": "user",
-    "nis":"1234"
+    "nis":"12345"
 }
 ###
 # Get all user
@@ -32,17 +32,17 @@ Content-Type: application/json
 
 ###
 # Update
-PATCH  http://localhost:5000/users/fbce369c-509a-452e-95c2-2ce7f7686899
+PATCH  http://localhost:5000/users/00cc4abd-25a7-49f2-ad23-e5fe488bdd7e
 Content-Type: application/json
 
 
 {
-    "name": "FALDI UPDATE",
-    "nis": "123",
+    "name": "Siswa",
+    "nis": "1234",
     "password": "123",
-    "email":"admin1@gmail.com",
+
     "confPassword": "123",
-    "role": "admin"
+    "role": "user"
 }
 
 

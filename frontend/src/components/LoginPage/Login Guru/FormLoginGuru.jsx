@@ -1,31 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LoginUser, reset } from "../../features/authSlice";
-import Navbar from "../Landing/Navbar";
-import Footer from "../Landing/Footer";
-import loginImage from "../../assets/img/hero-login.png";
-import Tooltip from "./Tooltip";
+import { LoginUser, reset, getMe } from "../../../features/authSlice";
+import Navbar from "../../Landing/Navbar";
+import Footer from "../../Landing/Footer";
+import loginImage from "../../../assets/img/hero-login.png";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const Login = () => {
   const [nis, setNis] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
+  const { user, isError, isLoading, message } = useSelector(
     (state) => state.auth
   );
 
-  useEffect(() => {
-    if (user || isSuccess) {
-      navigate("/dashboard");
-    }
-    dispatch(reset());
-  }, [user, isSuccess, dispatch, navigate]);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
-  const Auth = (e) => {
+  const Auth = async (e) => {
     e.preventDefault();
-    dispatch(LoginUser({ nis, password }));
+    try {
+      await dispatch(LoginUser({ nis, password })).unwrap();
+      // Ambil data pengguna untuk memeriksa role
+      const result = await dispatch(getMe()).unwrap();
+      // Periksa role pengguna
+      if (result?.role === "admin") {
+        navigate("/dashboard-guru");
+      } else {
+        navigate("/dashboard");
+      }
+      dispatch(reset());
+    } catch (error) {
+      // Error akan ditangani oleh isError dan message dari state
+      dispatch(reset());
+    }
   };
 
   return (
@@ -42,7 +54,7 @@ const Login = () => {
           </div>
           <div className="flex-1 p-8">
             <h1 className="text-2xl font-bold mb-10 text-[#68217A]">
-              SHARP LEARN
+              MASUK GURU
             </h1>
             <p className="mb-3 text-gray-600">
               Silahkan masuk dengan akun yang telah terdaftar ...
@@ -53,28 +65,31 @@ const Login = () => {
                 <input
                   type="text"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="NIS"
+                  placeholder="NIP"
                   value={nis}
                   onChange={(e) => setNis(e.target.value)}
                   required
                 />
               </div>
-              <div className="flex items-center mb-4">
+              <div className="relative mb-4">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="PASSWORD"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <div className="text-center ">
-                  <Tooltip message="Silakan hubungi guru untuk mereset password">
-                    <a href="/login" className="text-purple-500">
-                      Lupa Password?
-                    </a>
-                  </Tooltip>
-                </div>
+                <span
+                  className="absolute right-3 mt-3 top-1/2 transform -translate-y-1/2 text-gray-600 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <AiOutlineEyeInvisible size={20} />
+                  ) : (
+                    <AiOutlineEye size={20} />
+                  )}
+                </span>
               </div>
               <button
                 type="submit"

@@ -6,16 +6,21 @@ import Navbar from "../Landing/Navbar";
 import Footer from "../Landing/Footer";
 import loginImage from "../../assets/img/hero-login.png";
 import Tooltip from "./Tooltip";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const Login = () => {
   const [nis, setNis] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
   const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state) => state.auth
   );
-
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   useEffect(() => {
     if (user || isSuccess) {
       navigate("/dashboard");
@@ -59,22 +64,25 @@ const Login = () => {
                   required
                 />
               </div>
-              <div className="flex items-center mb-4">
+              <div className="relative mb-4">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="PASSWORD"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <div className="text-center ">
-                  <Tooltip message="Silakan hubungi guru untuk mereset password">
-                    <a href="/login" className="text-purple-500">
-                      Lupa Password?
-                    </a>
-                  </Tooltip>
-                </div>
+                <span
+                  className="absolute right-3 mt-3 top-1/2 transform -translate-y-1/2 text-gray-600 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <AiOutlineEyeInvisible size={20} />
+                  ) : (
+                    <AiOutlineEye size={20} />
+                  )}
+                </span>
               </div>
               <button
                 type="submit"

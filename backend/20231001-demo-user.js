@@ -5,16 +5,15 @@ import argon2 from "argon2";
 const users = [
   {
     name: "Faldi",
-    email: "admin@gmail.com",
-    nis: "123456789",
+
+    nis: "123",
     password: "123", // Password yang akan di-hash
     role: "admin",
   },
   {
-    name: "Budi",
-    email: "budi@gmail.com",
-    nis: "987654321",
-    password: "123",
+    name: "Siswa",
+    nis: "1234",
+    password: "1234",
     role: "user",
   },
   // Tambahkan lebih banyak pengguna jika diperlukan

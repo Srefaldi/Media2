@@ -178,7 +178,7 @@ function Landing() {
                 DAFTAR MATERI
               </a>
               <a
-                href="#daftar-materi"
+                href="/login-guru"
                 className="inline-flex ml-4 text-gray-600 border border-gray-400 py-2 px-6 focus:outline-none hover:bg-opacity-80 rounded text-lg font-bold"
                 style={{ backgroundColor: "#FFFFFF" }}
               >
