@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RegisterGuru, reset } from "../../../features/authSlice";
+import { RegisterSiswa, reset } from "../../../features/authSlice";
 import Navbar from "../../Landing/Navbar";
 import Footer from "../../Landing/Footer";
 import loginImage from "../../../assets/img/daftarfoto.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-const RegisterGuruu = () => {
+const RegisterSiswaa = () => {
   const [fullName, setFullName] = useState("");
-  const [nip, setNip] = useState("");
+  const [nis, setNis] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [school, setSchool] = useState("");
+  const [studentClass, setStudentClass] = useState("");
+  const [token, setToken] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
@@ -33,7 +34,7 @@ const RegisterGuruu = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/login-guru");
+      navigate("/login");
     }
     dispatch(reset());
   }, [isSuccess, dispatch, navigate]);
@@ -46,11 +47,12 @@ const RegisterGuruu = () => {
     }
     setPasswordError("");
     dispatch(
-      RegisterGuru({
+      RegisterSiswa({
         fullName,
-        nip,
+        nis,
         password,
-        school,
+        class: studentClass,
+        token,
       })
     );
   };
@@ -63,16 +65,16 @@ const RegisterGuruu = () => {
           <div className="items-center justify-center hidden md:flex md:flex-1">
             <img
               alt="Illustration"
-              className="h-auto max-w-[300px]" // Sesuaikan max-w-300
+              className="h-auto max-w-[300px]"
               src={loginImage}
             />
           </div>
           <div className="flex-1 p-8">
             <h1 className="text-2xl font-bold mb-10 text-[#68217A]">
-              DAFTAR GURU
+              DAFTAR SISWA
             </h1>
             <p className="mb-3 text-gray-600">
-              Silahkan daftar untuk membuat akun guru ...
+              Silahkan daftar untuk membuat akun siswa ...
             </p>
             {isError && <p className="text-red-500">{message}</p>}
             {passwordError && <p className="text-red-500">{passwordError}</p>}
@@ -91,13 +93,12 @@ const RegisterGuruu = () => {
                 <input
                   type="text"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="NIP"
-                  value={nip}
-                  onChange={(e) => setNip(e.target.value)}
+                  placeholder="NIS"
+                  value={nis}
+                  onChange={(e) => setNis(e.target.value)}
                   required
                 />
               </div>
-              {/* Grup Password dan Konfirmasi Password dalam satu baris */}
               <div className="flex flex-col gap-4 mb-4 md:flex-row">
                 <div className="relative flex-1">
                   <input
@@ -144,9 +145,19 @@ const RegisterGuruu = () => {
                 <input
                   type="text"
                   className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="Asal Sekolah"
-                  value={school}
-                  onChange={(e) => setSchool(e.target.value)}
+                  placeholder="Kelas (contoh: 10A)"
+                  value={studentClass}
+                  onChange={(e) => setStudentClass(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <input
+                  type="text"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="Token "
+                  value={token}
+                  onChange={(e) => setToken(e.target.value)}
                   required
                 />
               </div>
@@ -160,7 +171,7 @@ const RegisterGuruu = () => {
             </form>
             <p className="mt-4 text-gray-600">
               Sudah punya akun?{" "}
-              <a href="/login-guru" className="text-purple-500">
+              <a href="/login" className="text-purple-500">
                 MASUK
               </a>
             </p>
@@ -172,4 +183,4 @@ const RegisterGuruu = () => {
   );
 };
 
-export default RegisterGuruu;
+export default RegisterSiswaa;

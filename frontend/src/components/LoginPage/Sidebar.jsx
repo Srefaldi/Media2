@@ -63,7 +63,7 @@ const Sidebar = () => {
     <SidebarContainer>
       <h2 className="mb-4 text-lg font-bold text-center">DAFTAR MENU</h2>
       <nav>
-        <SidebarLink to={"/dashboard"}>
+        <SidebarLink to={"/dashboard-guru"}>
           <IoHome className="mr-2" /> Dashboard
         </SidebarLink>
         {user && user.role === "admin" && (

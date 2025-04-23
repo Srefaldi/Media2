@@ -16,9 +16,10 @@ const store = new sessionStore({
   db: db,
 });
 
-// (async()=>{
-//     await db.sync();
-// })();
+(async () => {
+  await db.sync({ alter: true });
+  console.log("Database synced");
+})();
 
 app.use(
   session({
@@ -35,7 +36,7 @@ app.use(
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://localhost"],
   })
 );
 
@@ -43,6 +44,8 @@ app.use(express.json());
 app.use(UserRoute);
 app.use(ProductRoute);
 app.use(AuthRoute);
+
+store.sync();
 
 app.listen(process.env.APP_PORT, () => {
   console.log("Server up and running ...");

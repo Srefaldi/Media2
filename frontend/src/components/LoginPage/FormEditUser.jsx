@@ -4,10 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const FormEditUser = () => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confPassword, setConfPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [studentClass, setStudentClass] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
@@ -17,8 +14,7 @@ const FormEditUser = () => {
       try {
         const response = await axios.get(`http://localhost:5000/users/${id}`);
         setName(response.data.name);
-        setEmail(response.data.email);
-        setRole(response.data.role);
+        setStudentClass(response.data.class || "");
       } catch (error) {
         if (error.response) {
           setMsg(error.response.data.msg);
@@ -32,11 +28,8 @@ const FormEditUser = () => {
     e.preventDefault();
     try {
       await axios.patch(`http://localhost:5000/users/${id}`, {
-        name: name,
-        email: email,
-        password: password,
-        confPassword: confPassword,
-        role: role,
+        name,
+        class: studentClass,
       });
       navigate("/users");
     } catch (error) {
@@ -45,87 +38,55 @@ const FormEditUser = () => {
       }
     }
   };
+
   return (
-    <div>
-      <h1 className="title">Data Siswa</h1>
-      <h2 className="subtitle">Perbarui Data Siswa</h2>
-      <div className="card is-shadowless">
-        <div className="card-content">
-          <div className="content">
-            <form onSubmit={updateUser}>
-              <p className="has-text-centered">{msg}</p>
-              <div className="field">
-                <label className="label">Nama</label>
-                <div className="control">
-                  <input
-                    type="text"
-                    className="input"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Name"
-                  />
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">NIS</label>
-                <div className="control">
-                  <input
-                    type="text"
-                    className="input"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
-                  />
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">Password</label>
-                <div className="control">
-                  <input
-                    type="password"
-                    className="input"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="******"
-                  />
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">Confirm Password</label>
-                <div className="control">
-                  <input
-                    type="password"
-                    className="input"
-                    value={confPassword}
-                    onChange={(e) => setConfPassword(e.target.value)}
-                    placeholder="******"
-                  />
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">Kelas</label>
-                <div className="control">
-                  <div className="select is-fullwidth">
-                    <select
-                      value={role}
-                      onChange={(e) => setRole(e.target.value)}
-                    >
-                      <option value="admin">Admin</option>
-                      <option value="user">User</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div className="field">
-                <div className="control">
-                  <button type="submit" className="button is-success">
-                    Simpan
-                  </button>
-                </div>
-              </div>
-            </form>
+    <div className="p-8">
+      <h1 className="mb-2 text-3xl font-semibold text-gray-800">Data Siswa</h1>
+      <h2 className="mb-6 text-xl text-gray-600">Perbarui Data Siswa</h2>
+      <div className="p-6 bg-white rounded-lg shadow-lg">
+        <form onSubmit={updateUser}>
+          {msg && <p className="mb-4 text-center text-red-500">{msg}</p>}
+          <div className="mb-4">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Nama
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-600"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Nama Lengkap"
+              required
+            />
           </div>
-        </div>
+          <div className="mb-4">
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Kelas
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-600"
+              value={studentClass}
+              onChange={(e) => setStudentClass(e.target.value)}
+              placeholder="Contoh: 10A"
+            />
+          </div>
+          <div className="flex space-x-2">
+            <button
+              type="submit"
+              className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
+            >
+              Simpan
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/users")}
+              className="px-4 py-2 text-white bg-gray-500 rounded hover:bg-gray-600"
+            >
+              Batal
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

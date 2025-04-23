@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Userlist = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [itemsPerPage, setItemsPerPage] = useState(20); // Set default to 20
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -13,18 +13,29 @@ const Userlist = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:5000/users");
-    setUsers(response.data);
+    try {
+      const response = await axios.get("http://localhost:5000/users");
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
   const deleteUser = async (userId) => {
-    await axios.delete(`http://localhost:5000/users/${userId}`);
-    getUsers();
+    try {
+      await axios.delete(`http://localhost:5000/users/${userId}`);
+      getUsers();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
   };
 
-  // Filter users based on search term
+  // Filter users based on search term for name and class
   const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    [user.name, user.class || ""]
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
   // Calculate total pages
@@ -43,12 +54,6 @@ const Userlist = () => {
           <h1 className="mb-5 text-3xl font-semibold text-gray-800">
             Data Siswa
           </h1>
-          <Link
-            to="/users/add"
-            className="px-4 py-2 mb-4 text-white bg-blue-500 rounded hover:bg-blue-600"
-          >
-            TAMBAH SISWA
-          </Link>
 
           <div className="flex flex-col mb-6 space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
             <div className="flex items-center mt-4 space-x-2 text-sm text-gray-700">
@@ -69,56 +74,71 @@ const Userlist = () => {
               type="search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Cari..."
+              placeholder="Cari nama atau kelas..."
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md md:w-64 focus:outline-none focus:ring-1 focus:ring-purple-600"
             />
           </div>
 
-          <table className="w-full mt-5 text-sm text-left text-gray-700 border border-spacing-y-2">
+          <table className="w-full mt-5 text-base text-gray-700 border">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="px-3 py-2 font-semibold border-r border-gray-200 select-none">
+              <tr className="text-center border-b border-gray-200">
+                <th className="px-3 py-2 font-semibold text-center select-none">
                   No
                 </th>
-                <th className="px-3 py-2 font-semibold border-r border-gray-200 select-none">
-                  Nama
-                </th>
-                <th className="px-3 py-2 font-semibold border-r border-gray-200 select-none">
+                <th className="px-3 py-2 font-semibold text-center select-none">
                   NIS
                 </th>
-                <th className="px-3 py-2 font-semibold border-r border-gray-200 select-none">
+                <th className="px-3 py-2 font-semibold text-center select-none">
+                  Nama
+                </th>
+                <th className="px-3 py-2 font-semibold text-center select-none">
                   Kelas
                 </th>
-                <th className="px-3 py-2 font-semibold border-r border-gray-200 select-none">
+                <th className="px-3 py-2 font-semibold text-center select-none">
+                  Status Belajar
+                </th>
+                <th className="px-3 py-2 font-semibold text-center select-none">
                   Aksi
                 </th>
               </tr>
             </thead>
             <tbody>
               {currentUsers.map((user, index) => (
-                <tr key={user.uuid} className="border-b border-gray-200">
-                  <td className="px-3 py-2 font-mono text-xs border-r border-gray-200 select-text">
+                <tr
+                  key={user.uuid}
+                  className="items-center text-center border-b border-gray-200"
+                >
+                  <td className="px-3 py-2 font-mono text-base text-center select-text">
                     {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
-                  <td className="px-3 py-2 font-mono text-xs border-r border-gray-200 select-text">
+                  <td className="px-3 py-2 font-mono text-base text-center select-text">
+                    {user.nis}
+                  </td>
+                  <td className="px-3 py-2 font-mono text-base text-center select-text">
                     {user.name}
                   </td>
-                  <td className="px-3 py-2 font-mono text-xs border-r border-gray-200 select-text">
-                    {user.email}
+                  <td className="px-3 py-2 font-mono text-base text-center select-text">
+                    {user.class || "-"}
                   </td>
-                  <td className="px-3 py-2 font-mono text-xs border-r border-gray-200 select-text">
-                    {user.role}
+                  <td className="px-3 py-2 font-mono text-base text-center select-text">
+                    {user.status === "BELUM SELESAI" ? (
+                      <span className="px-2 py-1 text-white bg-red-500 rounded">
+                        {user.status}
+                      </span>
+                    ) : (
+                      user.status
+                    )}
                   </td>
-                  <td className="px-3 py-2 space-x-2 font-mono text-xs border-r border-gray-200 select-text">
+                  <td className="flex justify-center px-3 py-2 space-x-2 font-mono text-base text-center select-text">
                     <Link
                       to={`/users/edit/${user.uuid}`}
-                      className="px-3 py-1 text-xs font-semibold text-white bg-green-500 rounded hover:bg-green-600"
+                      className="px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded hover:bg-green-600"
                     >
                       Perbarui
                     </Link>
                     <button
                       onClick={() => deleteUser(user.uuid)}
-                      className="px-3 py-1 text-xs font-semibold text-white bg-red-600 rounded hover:bg-red-700"
+                      className="px-3 py-1 text-sm font-semibold text-white bg-red-600 rounded hover:bg-red-700"
                     >
                       Hapus
                     </button>
@@ -134,14 +154,14 @@ const Userlist = () => {
               className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 rounded-l hover:bg-gray-600"
               disabled={currentPage === 1}
             >
-              &laquo;
+              «
             </button>
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600"
               disabled={currentPage === 1}
             >
-              &lsaquo;
+              ‹
             </button>
             {Array.from({ length: totalPages }, (_, index) => (
               <button
@@ -161,14 +181,14 @@ const Userlist = () => {
               className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600"
               disabled={currentPage === totalPages}
             >
-              &rsaquo;
+              ›
             </button>
             <button
               onClick={() => setCurrentPage(totalPages)}
               className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 rounded-r hover:bg-gray-600"
               disabled={currentPage === totalPages}
             >
-              &raquo;
+              »
             </button>
           </div>
         </section>

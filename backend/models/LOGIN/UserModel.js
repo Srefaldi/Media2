@@ -24,14 +24,12 @@ const Users = db.define(
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: true, // Ubah menjadi true jika email tidak wajib
+      allowNull: true,
       validate: {
-        notEmpty: true,
         isEmail: true,
       },
     },
     nis: {
-      // Tambahkan kolom NIS
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -50,6 +48,33 @@ const Users = db.define(
       allowNull: false,
       validate: {
         notEmpty: true,
+      },
+    },
+    school: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: {
+          msg: "Sekolah tidak boleh kosong jika diisi",
+        },
+      },
+    },
+    class: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: {
+          msg: "Kelas tidak boleh kosong jika diisi",
+        },
+      },
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: "BELUM SELESAI",
+      validate: {
+        notEmpty: true,
+        isIn: [["SELESAI", "BELUM SELESAI"]],
       },
     },
   },

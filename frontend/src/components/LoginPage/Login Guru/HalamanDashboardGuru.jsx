@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 import { getMe } from "../../../features/authSlice";
 import Navbar from "../../../components/Landing/NavbarLogin/NavbarLogin";
 import Footer from "../../../components/Landing/Footer";
@@ -9,8 +9,8 @@ import { IoStatsChart, IoArrowUp, IoArrowDown } from "react-icons/io5";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
-
   const [token, setToken] = useState("");
+  const [studentCount, setStudentCount] = useState(0);
 
   // Fungsi untuk menghasilkan token baru
   const generateToken = () => {
@@ -27,9 +27,20 @@ const AdminDashboard = () => {
     setToken(generateToken());
   };
 
+  // Fungsi untuk mengambil jumlah siswa
+  const getStudentCount = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/users");
+      setStudentCount(response.data.length);
+    } catch (error) {
+      console.error("Error fetching student count:", error);
+    }
+  };
+
   useEffect(() => {
     dispatch(getMe());
     setToken(generateToken());
+    getStudentCount();
   }, [dispatch]);
 
   return (
@@ -58,7 +69,7 @@ const AdminDashboard = () => {
             <div className="flex items-center justify-between p-4 text-white bg-purple-600 border rounded">
               <div>
                 <div className="font-bold">JUMLAH SISWA</div>
-                <div className="mt-2">20 SISWA</div>
+                <div className="mt-2">{studentCount} SISWA</div>
               </div>
               <i className="text-3xl fas fa-users"></i>
             </div>

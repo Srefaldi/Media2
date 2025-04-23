@@ -116,3 +116,29 @@ Content-Type: application/json
 # Delete Product
 
 DELETE http://localhost:5000/products/975fa411-18cf-46f4-90c9-a943f1c96bfa
+
+
+
+###
+# Dafatr Guru
+POST http://localhost:5000/register-guru
+Content-Type: application/json
+
+{
+  "fullName": "John Doe",
+  "nip": "123456789",
+  "password": "password123",
+  "school": "SMA 1 Jakarta"
+}
+####
+#Daftar Siswa
+POST http://localhost:5000/register-siswa
+Content-Type: application/json
+
+{
+  "fullName": "Jane Doe",
+  "nis": "123456",
+  "password": "password123",
+  "class": "10A",
+  "token": "SISWA_SECRET_2025"
+}

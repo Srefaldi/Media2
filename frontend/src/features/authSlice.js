@@ -10,13 +10,57 @@ const initialState = {
 };
 
 export const LoginUser = createAsyncThunk(
-  "user/LoginUser ",
+  "user/LoginUser",
   async (user, thunkAPI) => {
     try {
       const response = await axios.post("http://localhost:5000/login", {
         nis: user.nis,
         password: user.password,
       });
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const message = error.response.data.msg;
+        return thunkAPI.rejectWithValue(message);
+      }
+    }
+  }
+);
+
+export const RegisterGuru = createAsyncThunk(
+  "user/RegisterGuru",
+  async (user, thunkAPI) => {
+    try {
+      const response = await axios.post("http://localhost:5000/register-guru", {
+        fullName: user.fullName,
+        nip: user.nip,
+        password: user.password,
+        school: user.school,
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const message = error.response.data.msg;
+        return thunkAPI.rejectWithValue(message);
+      }
+    }
+  }
+);
+
+export const RegisterSiswa = createAsyncThunk(
+  "user/RegisterSiswa",
+  async (user, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/register-siswa",
+        {
+          fullName: user.fullName,
+          nis: user.nis,
+          password: user.password,
+          class: user.class,
+          token: user.token,
+        }
+      );
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -59,6 +103,34 @@ export const authSlice = createSlice({
       state.user = action.payload;
     });
     builder.addCase(LoginUser.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+    });
+
+    builder.addCase(RegisterGuru.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(RegisterGuru.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.message = action.payload.msg;
+    });
+    builder.addCase(RegisterGuru.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+    });
+
+    builder.addCase(RegisterSiswa.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(RegisterSiswa.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.message = action.payload.msg;
+    });
+    builder.addCase(RegisterSiswa.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;

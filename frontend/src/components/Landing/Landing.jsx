@@ -101,10 +101,10 @@ function Landing() {
   return (
     <div>
       {/* Navbar */}
-      <header className="text-gray-700 body-font border-b border-gray-200">
-        <div className="container mx-auto flex flex-wrap p-4 flex-col md:flex-row items-center justify-between">
+      <header className="text-gray-700 border-b border-gray-200 body-font">
+        <div className="container flex flex-col flex-wrap items-center justify-between p-4 mx-auto md:flex-row">
           <a
-            className="flex title-font font-medium items-center text-gray-900 md:mb-0"
+            className="flex items-center font-medium text-gray-900 title-font md:mb-0"
             href="/"
           >
             <span className="ml-3 text-xl">
@@ -117,7 +117,7 @@ function Landing() {
 
           <div className="flex items-center md:ml-auto">
             <button
-              className="md:hidden inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-opacity-80 rounded text-base"
+              className="inline-flex items-center px-3 py-1 text-base border-0 rounded md:hidden focus:outline-none hover:bg-opacity-80"
               onClick={toggleMenu}
             >
               <img
@@ -132,12 +132,12 @@ function Landing() {
               } absolute top-16 right-0 bg-white shadow-lg rounded-lg md:flex md:static md:bg-transparent md:shadow-none`}
             >
               <button className="inline flex items-center border border-[#68217A] py-1 px-3 focus:outline-none rounded text-base text-black hover:bg-[#68217A] hover:text-white mx-2">
-                <Link to="/daftar" className="text-black">
+                <Link to="/daftar-siswa" className="text-black">
                   DAFTAR
                 </Link>
               </button>
               <button
-                className="inline-flex items-center border-0 py-1 px-3 focus:outline-none hover:bg-opacity-80 rounded text-base mx-2"
+                className="inline-flex items-center px-3 py-1 mx-2 text-base border-0 rounded focus:outline-none hover:bg-opacity-80"
                 style={{ backgroundColor: "#68217A" }}
               >
                 <Link to="/login" className="text-white hover:text-gray-200">
@@ -151,9 +151,9 @@ function Landing() {
 
       {/* Tampilan Utama */}
       <section className="text-gray-700 body-font">
-        <div className="container mx-auto flex px-5 py-12 md:flex-row flex-col items-center">
-          <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-            <h1 className="title-font sm:text-4xl text-3xl mb-4">
+        <div className="container flex flex-col items-center px-5 py-12 mx-auto md:flex-row">
+          <div className="flex flex-col items-center mb-16 text-center lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 md:items-start md:text-left md:mb-0">
+            <h1 className="mb-4 text-3xl title-font sm:text-4xl">
               <span className="font-bold" style={{ color: "#68217A" }}>
                 MEDIA PEMBELAJARAN
               </span>
@@ -169,17 +169,17 @@ function Landing() {
               deleniti a quibusdam doloremque laudantium nihil velit nostrum
               suscipit iste.
             </p>
-            <div className="flex justify-center flex-wrap">
+            <div className="flex flex-wrap justify-center">
               <a
                 href="#daftar-materi"
-                className="inline-flex text-white border-0 py-2 px-6 focus:outline-none hover:bg-opacity-80 rounded text-lg font-bold"
+                className="inline-flex px-6 py-2 text-lg font-bold text-white border-0 rounded focus:outline-none hover:bg-opacity-80"
                 style={{ backgroundColor: "#68217A" }}
               >
                 DAFTAR MATERI
               </a>
               <a
                 href="/login-guru"
-                className="inline-flex ml-4 text-gray-600 border border-gray-400 py-2 px-6 focus:outline-none hover:bg-opacity-80 rounded text-lg font-bold"
+                className="inline-flex px-6 py-2 ml-4 text-lg font-bold text-gray-600 border border-gray-400 rounded focus:outline-none hover:bg-opacity-80"
                 style={{ backgroundColor: "#FFFFFF" }}
               >
                 HALAMAN GURU >>
@@ -187,9 +187,9 @@ function Landing() {
             </div>
           </div>
 
-          <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
+          <div className="w-5/6 lg:max-w-lg lg:w-full md:w-1/2">
             <img
-              className="object-cover object-center rounded w-full h-auto"
+              className="object-cover object-center w-full h-auto rounded"
               alt="hero"
               src={heroImage}
             />
@@ -198,23 +198,23 @@ function Landing() {
       </section>
 
       {/* Daftar Materi */}
-      <section id="daftar-materi" className="bg-gray-100 py-10">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-6">
+      <section id="daftar-materi" className="py-10 bg-gray-100">
+        <div className="container px-6 mx-auto">
+          <h2 className="mb-6 text-3xl font-bold text-center">
             MATERI PEMBELAJARAN
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
             {daftarMateri.map((materi, index) => (
               <div
                 key={index}
-                className="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition relative"
+                className="relative p-6 transition bg-white rounded-lg shadow-md hover:shadow-lg"
               >
                 <div className="absolute top-0 left-0 w-full bg-[#68217A] text-white text-center rounded-t-lg p-4">
                   <h3 className="text-xl font-semibold">{materi.bab}</h3>
                   <p className="text-lg font-bold">{materi.judul}</p>
                 </div>
                 <div className="pt-20">
-                  <ul className="text-gray-600 text-sm mt-2 list-disc list-inside">
+                  <ul className="mt-2 text-sm text-gray-600 list-disc list-inside">
                     {materi.subMateri.map((sub, i) => (
                       <li key={i}>{sub}</li>
                     ))}
@@ -227,7 +227,7 @@ function Landing() {
         <div className="flex justify-center mt-8">
           <Link
             to="/login"
-            className="inline-flex text-white border-0 py-2 px-6 focus:outline-none hover:bg-opacity-80 rounded text-lg text-decoration-none"
+            className="inline-flex px-6 py-2 text-lg text-white border-0 rounded focus:outline-none hover:bg-opacity-80 text-decoration-none"
             style={{ backgroundColor: "#68217A" }}
           >
             MULAI BELAJAR

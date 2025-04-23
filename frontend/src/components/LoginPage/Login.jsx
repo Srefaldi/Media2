@@ -38,7 +38,7 @@ const Login = () => {
       <Navbar />
       <div className="flex items-center justify-center flex-1 bg-gray-100">
         <div className="flex flex-col w-full max-w-4xl overflow-hidden bg-white rounded-lg shadow-lg md:flex-row">
-          <div className="items-center justify-center hidden bg-purple-200 md:flex md:flex-1">
+          <div className="items-center justify-center hidden md:flex md:flex-1">
             <img
               alt="Illustration"
               className="h-auto max-w-full"
@@ -74,7 +74,7 @@ const Login = () => {
                   required
                 />
                 <span
-                  className="absolute right-3 mt-3 top-1/2 transform -translate-y-1/2 text-gray-600 cursor-pointer"
+                  className="absolute mt-3 text-gray-600 transform -translate-y-1/2 cursor-pointer right-3 top-1/2"
                   onClick={togglePasswordVisibility}
                 >
                   {showPassword ? (
@@ -94,7 +94,7 @@ const Login = () => {
             </form>
             <p className="mt-4 text-gray-600">
               Belum punya akun?{" "}
-              <a href="#" className="text-purple-500">
+              <a href="/daftar-siswa" className="text-purple-500">
                 DAFTAR
               </a>
             </p>

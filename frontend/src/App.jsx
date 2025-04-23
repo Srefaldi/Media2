@@ -23,6 +23,9 @@ import MateriRoutes from "./MateriRoute";
 import LoginGuru from "./components/LoginPage/Login Guru/FormLoginGuru";
 import DashboardGuru from "./components/LoginPage/Login Guru/HalamanDashboardGuru";
 import DaftarGuru from "./components/LoginPage/Login Guru/DaftarGuru";
+
+// Siswa
+import DaftarSiswa from "./components/LoginPage/DaftarSIswa/FormDaftarSiswa";
 function App() {
   return (
     <BrowserRouter>
@@ -35,6 +38,7 @@ function App() {
         <Route path="/petunjuk-penggunaan" element={<Petunjuk />} />
         <Route path="/progres-belajar" element={<ProgresBelajar />} />
         <Route path="/complier" element={<CompilerPage />} />
+        <Route path="/daftar-siswa" element={<DaftarSiswa />} />
         {/* Guru */}
         <Route path="/login-guru" element={<LoginGuru />} />
         <Route path="/daftar-guru" element={<DaftarGuru />} />
