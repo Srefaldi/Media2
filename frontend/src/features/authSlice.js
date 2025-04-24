@@ -73,7 +73,9 @@ export const RegisterSiswa = createAsyncThunk(
 
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   try {
-    const response = await axios.get("http://localhost:5000/me");
+    const response = await axios.get("http://localhost:5000/me", {
+      withCredentials: true, // Tambahkan ini
+    });
     return response.data;
   } catch (error) {
     if (error.response) {

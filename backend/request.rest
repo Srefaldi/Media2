@@ -26,7 +26,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "nis": "123",
+    "nis": "1234",
     "password": "123"
 }
 
@@ -141,4 +141,13 @@ Content-Type: application/json
   "password": "password123",
   "class": "10A",
   "token": "SISWA_SECRET_2025"
+}
+
+###
+# Update Progress
+PATCH http://localhost:5000/users/96a50fbb-f93a-48c3-9194-4943d9d3a9f4/progress
+Content-Type: application/json
+
+{
+  "progress": 0
 }

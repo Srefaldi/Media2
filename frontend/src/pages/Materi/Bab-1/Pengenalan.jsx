@@ -6,9 +6,9 @@ import { useOutletContext } from "react-router-dom";
 import Quiz from "./Quiz-bab1/Quiz1";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
-import iconBook from "../../../assets/img/book.png"; // Tambahkan ikon jika diperlukan
-import iconTujuan from "../../../assets/img/tujuan.png"; // Tambahkan ikon jika diperlukan
-import iconKonten from "../../../assets/img/konten.png"; // Tambahkan ikon jika diperlukan
+import iconBook from "../../../assets/img/book.png";
+import iconTujuan from "../../../assets/img/tujuan.png";
+import iconKonten from "../../../assets/img/konten.png";
 
 const PengenalanCSharp = () => {
   const [openSections, setOpenSections] = useState({
@@ -28,11 +28,13 @@ const PengenalanCSharp = () => {
   };
 
   const handleQuizComplete = () => {
+    console.log("Quiz completed, calling handleLessonComplete");
     setQuizCompleted(true);
+    handleLessonComplete("/materi/bab1/pengenalan");
   };
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab1/pengenalan");
+    console.log("Navigating to next lesson");
     handleLessonComplete("/materi/bab1/instalasi");
     window.scrollTo(0, 0);
     navigate("/materi/bab1/struktur-kode");
@@ -105,7 +107,7 @@ const PengenalanCSharp = () => {
       >
         <h3
           className="flex items-center p-4 font-bold text-white cursor-pointer"
-          onClick={() => toggleSection("konten ")}
+          onClick={() => toggleSection("konten")}
         >
           <img src={iconKonten} alt="Icon" className="w-8 h-8 mr-2" />
           KONTEN MATERI
@@ -204,10 +206,10 @@ const PengenalanCSharp = () => {
           </p>
         </div>
 
-        <div className=" flex justify-center p-4 mb-6">
+        <div className="flex justify-center p-4 mb-6">
           <img
             src={alur}
-            alt="Gambar  1.2 Alur eksekusi Common Language Runtime"
+            alt="Gambar 1.2 Alur eksekusi Common Language Runtime"
             className="h-auto w-100"
           />
         </div>

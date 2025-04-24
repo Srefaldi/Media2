@@ -38,7 +38,7 @@ export const Me = async (req, res) => {
 
   try {
     const user = await User.findOne({
-      attributes: ["uuid", "name", "nis", "role"],
+      attributes: ["uuid", "name", "nis", "role", "progress"], // Tambahkan progress
       where: {
         uuid: req.session.userId,
       },
@@ -50,6 +50,7 @@ export const Me = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
+    console.error("Error di Me:", error.message);
     res.status(500).json({ msg: "Terjadi kesalahan pada server" });
   }
 };

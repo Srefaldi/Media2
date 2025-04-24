@@ -6,6 +6,7 @@ import Navbar from "../../components/Landing/NavbarLogin/NavbarLogin";
 import Footer from "../../components/Landing/Footer";
 import InfoModal from "../../components/Home/Dashboard/InfoModal";
 import Informasi from "../../components/Home/Dashboard/ModalInformasi";
+import daftarBab from "../Home/Materi/daftarBab.json";
 
 // Impor gambar internal
 import petunjukImage from "../../assets/img/petunjuk-penggunaan.png";
@@ -15,9 +16,10 @@ import informasiImage from "../../assets/img/informasi-icon.png";
 const UserDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isError } = useSelector((state) => state.auth);
+  const { isError, user } = useSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInformasiOpen, setIsInformasiOpen] = useState(false);
+  const [lastLessonPath, setLastLessonPath] = useState("/materi");
 
   useEffect(() => {
     dispatch(getMe());
@@ -28,6 +30,24 @@ const UserDashboard = () => {
       navigate("/login");
     }
   }, [isError, navigate]);
+
+  useEffect(() => {
+    if (user?.progress) {
+      const totalLessons = 39;
+      const completedCount = Math.round((user.progress / 100) * totalLessons);
+      const allLessons = daftarBab.flatMap((bab) =>
+        bab.subBab.map((sub) => sub.path)
+      );
+      // Ambil materi terakhir yang diselesaikan atau berikutnya
+      const lastCompletedIndex = Math.min(
+        completedCount,
+        allLessons.length - 1
+      );
+      const nextLessonPath = allLessons[lastCompletedIndex] || "/materi";
+      setLastLessonPath(nextLessonPath);
+      console.log("Last lesson path:", nextLessonPath);
+    }
+  }, [user]);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -91,7 +111,7 @@ const UserDashboard = () => {
                   width="350"
                 />
                 <Link
-                  to="/materi"
+                  to={lastLessonPath}
                   className="px-4 py-2 text-white rounded hover:bg-gray-300"
                   style={{ backgroundColor: "#6E2A7F" }}
                 >

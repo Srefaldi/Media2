@@ -77,6 +77,15 @@ const Users = db.define(
         isIn: [["SELESAI", "BELUM SELESAI"]],
       },
     },
+    progress: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+      defaultValue: null,
+      validate: {
+        min: 0,
+        max: 100,
+      },
+    },
   },
   {
     freezeTableName: true,

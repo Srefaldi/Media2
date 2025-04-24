@@ -3,22 +3,29 @@ import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import styled from "styled-components";
 import ProgressBar from "../../../components/Home/Materi/ProgressBarComponents";
-import daftarBab from "./daftarBab.json"; // Ensure this path is correct
-
-// Import images
+import daftarBab from "./daftarBab.json";
 import pendahuluanIcon from "./style/img/pendahuluan.png";
 import variabelIcon from "./style/img/variabel.png";
 import tipeDataIcon from "./style/img/tipedata.png";
 import operatorIcon from "./style/img/operator.png";
 import kontrolAlurIcon from "./style/img/kontrol.png";
 import methodIcon from "./style/img/method.png";
-import lockIcon from "./style/img/lock.png"; // Import lock icon
-import unlockIcon from "./style/img/unlock.png"; // Import unlock icon
+import lockIcon from "./style/img/lock.png";
+import unlockIcon from "./style/img/unlock.png";
+
+const SidebarContainer = styled.div`
+  overflow-y: auto;
+  height: calc(100vh - 80px); /* Sesuaikan dengan tinggi navbar */
+  &::-webkit-scrollbar {
+    display: none; /* Sembunyikan scrollbar di WebKit */
+  }
+  scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
+`;
 
 const ScrollableList = styled.ul`
-  overflow-y: auto; /* Pastikan overflow-y diatur ke auto */
+  overflow-y: auto;
   &::-webkit-scrollbar {
-    display: none; /* Sembunyikan scrollbar */
+    display: none; /* Sembunyikan scrollbar di WebKit */
   }
   scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
 `;
@@ -28,23 +35,24 @@ const MateriSidebar = ({ completedLessons, progress }) => {
   const location = useLocation();
 
   useEffect(() => {
+    console.log("MateriSidebar - Progress:", progress);
+    console.log("MateriSidebar - Completed Lessons:", completedLessons);
     const currentPath = location.pathname;
     const activeBab = daftarBab.find((bab) =>
       bab.subBab.some((sub) => sub.path === currentPath)
     );
 
     if (activeBab) {
-      setOpenBab(activeBab.id); // Buka dropdown bab yang aktif
+      setOpenBab(activeBab.id);
     } else {
-      setOpenBab(null); // Tutup semua dropdown jika tidak ada bab aktif yang ditemukan
+      setOpenBab(null);
     }
-  }, [location.pathname]);
+  }, [location.pathname, completedLessons, progress]);
 
   const toggleDropdown = (babId) => {
     setOpenBab(openBab === babId ? null : babId);
   };
 
-  // Map icon names to imported images
   const iconMap = {
     pendahuluanIcon,
     variabelIcon,
@@ -55,7 +63,7 @@ const MateriSidebar = ({ completedLessons, progress }) => {
   };
 
   return (
-    <div className="w-full p-4 overflow-hidden text-gray-900 bg-white">
+    <SidebarContainer className="w-full p-4 text-gray-900 bg-white">
       <h2 className="mb-4 text-xl font-bold text-center">DAFTAR MATERI</h2>
       <ProgressBar progress={progress} />
       <ul className="mt-4 space-y-2">
@@ -77,7 +85,7 @@ const MateriSidebar = ({ completedLessons, progress }) => {
             >
               <span>
                 <img
-                  src={iconMap[bab.icon]} // Use the mapping here
+                  src={iconMap[bab.icon]}
                   alt={bab.judul}
                   className="inline-block w-8 h-8 mr-2"
                 />
@@ -104,13 +112,12 @@ const MateriSidebar = ({ completedLessons, progress }) => {
                       if (!completedLessons.includes(sub.path)) {
                         e.preventDefault();
                       } else {
-                        window.scrollTo(0, 0); // Scroll ke atas saat sub-menu diklik
+                        window.scrollTo(0, 0);
                       }
                     }}
                   >
                     {sub.label}
                   </Link>
-                  {/* Tampilkan ikon lock atau unlock berdasarkan status penyelesaian */}
                   <img
                     src={
                       completedLessons.includes(sub.path)
@@ -138,7 +145,7 @@ const MateriSidebar = ({ completedLessons, progress }) => {
           Kembali ke Dashboard
         </Link>
       </div>
-    </div>
+    </SidebarContainer>
   );
 };
 

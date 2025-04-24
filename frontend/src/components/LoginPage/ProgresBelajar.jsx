@@ -13,10 +13,15 @@ const ProgresBelajar = () => {
 
   const getUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/users");
+      const response = await axios.get("http://localhost:5000/users", {
+        withCredentials: true, // Ensure session cookie is sent
+      });
       setUsers(response.data);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error(
+        "Error fetching users:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -116,9 +121,13 @@ const ProgresBelajar = () => {
                         <div className="w-3/4 h-4 overflow-hidden bg-gray-200 rounded">
                           <div
                             className="flex items-center justify-center h-full text-xs font-semibold text-white bg-blue-500"
-                            style={{ width: "75%" }} // Dummy progress width
+                            style={{
+                              width: `${user.progress || 0}%`, // Use actual progress from DB
+                            }}
                           >
-                            75% {/* Dummy progress value */}
+                            {user.progress !== null
+                              ? `${user.progress.toFixed(2)}%`
+                              : "0%"}
                           </div>
                         </div>
                       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -8,6 +8,7 @@ const Quiz = ({ onComplete }) => {
     e.preventDefault();
 
     if (selectedAnswer === "B") {
+      console.log("Correct answer selected, calling onComplete");
       window.scrollTo(0, document.body.scrollHeight);
 
       Swal.fire({
@@ -17,9 +18,9 @@ const Quiz = ({ onComplete }) => {
         confirmButtonText: "OK",
       });
 
-      onComplete(true);
+      onComplete();
     } else {
-      // Scroll ke atas ketika jawaban salah
+      console.log("Incorrect answer selected:", selectedAnswer);
       window.scrollTo(0, 0);
       setSelectedAnswer("");
       Swal.fire({
@@ -32,6 +33,7 @@ const Quiz = ({ onComplete }) => {
   };
 
   const handleReset = () => {
+    console.log("Resetting answer");
     setSelectedAnswer("");
   };
 
