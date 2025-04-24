@@ -1,165 +1,242 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const DataNilai = () => {
-  const [students, setStudents] = useState([]);
+const ScoreList = () => {
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [itemsPerPage, setItemsPerPage] = useState(10); // Set default to 10
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    getStudents();
+    getUsers();
   }, []);
 
-  const getStudents = async () => {
-    const response = await axios.get("http://localhost:5000/users"); // Ganti dengan endpoint yang sesuai
-    setStudents(response.data);
+  const getUsers = async () => {
+    try {
+      const meResponse = await axios.get("http://localhost:5000/me", {
+        withCredentials: true,
+      });
+      console.log("Current user:", meResponse.data); // Debugging
+      const response = await axios.get("http://localhost:5000/users", {
+        withCredentials: true,
+      });
+      const filteredUsers = response.data.filter(
+        (user) => user.role === "user"
+      );
+      const usersWithScores = await Promise.all(
+        filteredUsers.map(async (user) => {
+          try {
+            const scoreResponse = await axios.get(
+              `http://localhost:5000/scores/${user.uuid}`,
+              {
+                withCredentials: true,
+              }
+            );
+            console.log(
+              `Scores for user ${user.nis}:`,
+              scoreResponse.data.scores
+            );
+            return { ...user, scores: scoreResponse.data.scores };
+          } catch (error) {
+            console.error(
+              `Error fetching scores for user ${user.nis}:`,
+              error.response?.data || error.message
+            );
+            return { ...user, scores: [] };
+          }
+        })
+      );
+      console.log("Users with scores:", usersWithScores);
+      setUsers(usersWithScores);
+    } catch (error) {
+      console.error(
+        "Error fetching users:",
+        error.response?.data || error.message
+      );
+    }
   };
 
-  // Filter students based on search term
-  const filteredStudents = students.filter((student) =>
-    student.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsers = users.filter((user) =>
+    [user.name, user.class || ""]
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
-  // Calculate total pages
-  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
-  // Get current students for the current page
-  const currentStudents = filteredStudents.slice(
+  const currentUsers = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
+  const getScore = (scores, type, chapter) => {
+    const score = scores.find(
+      (s) =>
+        s.type === type &&
+        (type === "evaluasi_akhir" ? true : s.chapter === chapter)
+    );
+    return score ? score.score.toFixed(2) : "-";
+  };
+
   return (
-    <div className="bg-white text-gray-800 min-h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen text-gray-800 bg-white">
       <main className="flex flex-1 overflow-hidden">
-        <section className="flex-1 p-6">
-          <h1 className="font-semibold text-3xl mb-5 text-gray-800">
-            Nilai Siswa
+        <section className="flex-1 p-8 overflow-auto">
+          <h1 className="mb-5 text-3xl font-semibold text-gray-800">
+            Daftar Nilai Siswa
           </h1>
-          <p className="text-gray-400 text-sm mb-6 select-none">
-            Klik pada data untuk melihat detail nilai siswa
-          </p>
 
-          <div className="flex flex-col sm:flex-row sm:items-center mb-6 justify-between">
-            <div className="flex items-center space-x-2">
-              <label
-                htmlFor="nilai"
-                className="text-gray-700 text-sm select-none"
-              >
-                Pilih nilai:
-              </label>
-              <select
-                id="nilai"
-                name="nilai"
-                className="border border-gray-300 rounded text-gray-700 text-sm px-2 py-1 cursor-pointer w-24"
-              >
-                <option>---</option>
-                <option>Pendahuluan</option>
-                <option>Variabel</option>
-                <option>Tipe Data</option>
-                <option>Operator</option>
-                <option>Kontrol Alur</option>
-                <option>Method</option>
-              </select>
-            </div>
-            <input
-              type="search"
-              placeholder="Cari..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-300 rounded text-gray-700 text-sm px-3 py-2 w-full sm:w-80 mt-2 sm:mt-0 sm:ml-4" // Menambahkan margin kiri untuk jarak
-              aria-label="Cari"
-            />
-          </div>
-
-          <table className="w-full text-left text-gray-800 text-sm border-collapse border border-gray-200">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="font-semibold px-3 py-2 border-r border-gray-200 select-none">
-                  NIS
-                </th>
-                <th className="font-semibold px-3 py-2 border-r border-gray-200 select-none">
-                  Nama <i className="fas fa-sort-up text-xs"></i>
-                </th>
-                <th className="font-semibold px-3 py-2 border-r border-gray-200 select-none">
-                  Kelas <i className="fas fa-sort text-xs"></i>
-                </th>
-                <th className="font-semibold px-3 py-2 select-none">
-                  Nilai Terakhir <i className="fas fa-sort text-xs"></i>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentStudents.map((student, index) => (
-                <tr key={student.nis} className="border-b border-gray-200">
-                  <td className="px-3 py-2 border-r border-gray-200 font-mono text-xs select-text">
-                    {student.nis}
-                  </td>
-                  <td className="px-3 py-2 border-r border-gray-200 select-text">
-                    {student.name}
-                  </td>
-                  <td className="px-3 py-2 border-r border-gray-200 select-text">
-                    {student.class}
-                  </td>
-                  <td className="px-3 py-2 select-text">-</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className="flex justify-between items-center mt-6 text-gray-700 text-sm select-none">
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-col mb-6 space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+            <div className="flex items-center mt-4 space-x-2 text-sm text-gray-700">
               <span>Menampilkan</span>
               <select
-                className="border border-gray-300 rounded text-gray-700 text-sm px-3 py-1 cursor-pointer w-20"
                 value={itemsPerPage}
                 onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                className="px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-600"
               >
+                <option value={5}>5</option>
                 <option value={10}>10</option>
+                <option value={15}>15</option>
                 <option value={20}>20</option>
-                <option value={30}>30</option>
               </select>
-              <span>Data</span>
+              <span>data</span>
             </div>
-            <nav className="flex space-x-1">
+            <div className="flex space-x-2">
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Cari nama atau kelas..."
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md md:w-64 focus:outline-none focus:ring-1 focus:ring-purple-600"
+              />
               <button
-                onClick={() => setCurrentPage(1)}
-                className="bg-gray-500 text-white px-3 py-1 rounded-l select-none cursor-pointer"
-                disabled={currentPage === 1}
+                onClick={getUsers}
+                className="px-3 py-2 text-sm font-semibold text-white bg-blue-500 rounded hover:bg-blue-600"
               >
-                &laquo;&laquo;
+                Refresh
               </button>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full mt-5 text-base text-center text-gray-700 border">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="px-3 py-2 font-semibold select-none">NIS</th>
+                  <th className="px-3 py-2 font-semibold select-none">Nama</th>
+                  <th className="px-3 py-2 font-semibold select-none">Kelas</th>
+                  {[...Array(6)].map((_, i) => (
+                    <th
+                      key={`latihan-${i + 1}`}
+                      className="px-3 py-2 font-semibold select-none"
+                    >
+                      Latihan {i + 1}
+                    </th>
+                  ))}
+                  {[...Array(6)].map((_, i) => (
+                    <th
+                      key={`evaluasi-${i + 1}`}
+                      className="px-3 py-2 font-semibold select-none"
+                    >
+                      Evaluasi {i + 1}
+                    </th>
+                  ))}
+                  <th className="px-3 py-2 font-semibold select-none">
+                    Evaluasi Akhir
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentUsers.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={15}
+                      className="px-3 py-2 text-base text-center text-gray-500"
+                    >
+                      Tidak ada data
+                    </td>
+                  </tr>
+                ) : (
+                  currentUsers.map((user) => (
+                    <tr key={user.uuid} className="border-b border-gray-200">
+                      <td className="px-3 py-2 font-mono text-base select-text">
+                        {user.nis}
+                      </td>
+                      <td className="px-3 py-2 font-mono text-base select-text">
+                        {user.name}
+                      </td>
+                      <td className="px-3 py-2 font-mono text-base select-text">
+                        {user.class || "-"}
+                      </td>
+                      {[...Array(6)].map((_, i) => (
+                        <td
+                          key={`latihan-${i + 1}`}
+                          className="px-3 py-2 font-mono text-base select-text"
+                        >
+                          {getScore(user.scores, "latihan", i + 1)}
+                        </td>
+                      ))}
+                      {[...Array(6)].map((_, i) => (
+                        <td
+                          key={`evaluasi-${i + 1}`}
+                          className="px-3 py-2 font-mono text-base select-text"
+                        >
+                          {getScore(user.scores, "evaluasi", i + 1)}
+                        </td>
+                      ))}
+                      <td className="px-3 py-2 font-mono text-base select-text">
+                        {getScore(user.scores, "evaluasi_akhir", null)}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="flex justify-end mt-6 space-x-1 select-none">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 rounded-l hover:bg-gray-600"
+              disabled={currentPage === 1}
+            >
+              «
+            </button>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600"
+              disabled={currentPage === 1}
+            >
+              ‹
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
               <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                className="bg-gray-500 text-white px-3 py-1 select-none cursor-pointer"
-                disabled={currentPage === 1}
+                key={index}
+                onClick={() => setCurrentPage(index + 1)}
+                className={`bg-gray-500 text-white text-xs font-semibold px-3 py-1 ${
+                  currentPage === index + 1 ? "bg-gray-700" : ""
+                }`}
               >
-                &laquo;
+                {index + 1}
               </button>
-              <button
-                className="bg-gray-700 text-white px-3 py-1 select-none cursor-default cursor-not-allowed"
-                aria-current="page"
-              >
-                {currentPage}
-              </button>
-              <button
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
-                className="bg-gray-500 text-white px-3 py-1 select-none cursor-pointer"
-                disabled={currentPage === totalPages}
-              >
-                &raquo;
-              </button>
-              <button
-                onClick={() => setCurrentPage(totalPages)}
-                className="bg-gray-500 text-white px-3 py-1 rounded-r select-none cursor-pointer"
-                disabled={currentPage === totalPages}
-              >
-                &raquo;&raquo;
-              </button>
-            </nav>
+            ))}
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600"
+              disabled={currentPage === totalPages}
+            >
+              ›
+            </button>
+            <button
+              onClick={() => setCurrentPage(totalPages)}
+              className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 rounded-r hover:bg-gray-600"
+              disabled={currentPage === totalPages}
+            >
+              »
+            </button>
           </div>
         </section>
       </main>
@@ -167,4 +244,4 @@ const DataNilai = () => {
   );
 };
 
-export default DataNilai;
+export default ScoreList;

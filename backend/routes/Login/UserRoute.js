@@ -5,9 +5,10 @@ import {
   createUsers,
   updateUsers,
   delateUsers,
+  updateProgress,
 } from "../../controller/LOGIN/Users.js";
 import { verifyUser, adminOnly } from "../../middleware/Login/AuthUser.js";
-import { updateProgress } from "../../controller/LOGIN/Users.js";
+
 const router = express.Router();
 
 router.get("/users", verifyUser, adminOnly, getUsers);
@@ -16,4 +17,5 @@ router.post("/users", verifyUser, adminOnly, createUsers);
 router.patch("/users/:id", verifyUser, adminOnly, updateUsers);
 router.delete("/users/:id", verifyUser, adminOnly, delateUsers);
 router.patch("/users/:id/progress", verifyUser, updateProgress);
+
 export default router;

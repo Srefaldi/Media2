@@ -38,7 +38,7 @@ export const Me = async (req, res) => {
 
   try {
     const user = await User.findOne({
-      attributes: ["uuid", "name", "nis", "role", "progress"], // Tambahkan progress
+      attributes: ["uuid", "name", "nis", "role", "progress"],
       where: {
         uuid: req.session.userId,
       },
@@ -102,6 +102,7 @@ export const RegisterGuru = async (req, res) => {
 
 // Controller untuk registrasi siswa
 export const RegisterSiswa = async (req, res) => {
+  console.log("Request body:", req.body); // Log untuk debugging
   const { fullName, nis, password, class: studentClass, token } = req.body;
 
   // Validasi input
@@ -130,7 +131,7 @@ export const RegisterSiswa = async (req, res) => {
       password: hashPassword,
       role: "user",
       class: studentClass,
-      status: "Aktif",
+      status: "BELUM SELESAI",
     });
     res.status(201).json({ msg: "Registrasi siswa berhasil" });
   } catch (error) {

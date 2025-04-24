@@ -14,19 +14,33 @@ const Userlist = () => {
 
   const getUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/users");
-      setUsers(response.data);
+      const response = await axios.get("http://localhost:5000/users", {
+        withCredentials: true, // Ensure session cookie is sent
+      });
+      // Filter only users with role "user"
+      const filteredUsers = response.data.filter(
+        (user) => user.role === "user"
+      );
+      setUsers(filteredUsers);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error(
+        "Error fetching users:",
+        error.response?.data || error.message
+      );
     }
   };
 
   const deleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:5000/users/${userId}`);
+      await axios.delete(`http://localhost:5000/users/${userId}`, {
+        withCredentials: true,
+      });
       getUsers();
     } catch (error) {
-      console.error("Error deleting user:", error);
+      console.error(
+        "Error deleting user:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -83,9 +97,6 @@ const Userlist = () => {
             <thead>
               <tr className="text-center border-b border-gray-200">
                 <th className="px-3 py-2 font-semibold text-center select-none">
-                  No
-                </th>
-                <th className="px-3 py-2 font-semibold text-center select-none">
                   NIS
                 </th>
                 <th className="px-3 py-2 font-semibold text-center select-none">
@@ -108,9 +119,6 @@ const Userlist = () => {
                   key={user.uuid}
                   className="items-center text-center border-b border-gray-200"
                 >
-                  <td className="px-3 py-2 font-mono text-base text-center select-text">
-                    {(currentPage - 1) * itemsPerPage + index + 1}
-                  </td>
                   <td className="px-3 py-2 font-mono text-base text-center select-text">
                     {user.nis}
                   </td>

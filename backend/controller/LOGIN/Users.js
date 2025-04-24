@@ -1,188 +1,174 @@
-import Users from "../../models/LOGIN/UserModel.js";
-import argon2 from "argon2";
+import User from "../../models/LOGIN/UserModel.js";
+import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
 
-// Mendapatkan semua pengguna dengan role user
-export const getUsers = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
-    const response = await Users.findAll({
-      attributes: ["uuid", "name", "nis", "class", "status", "progress"],
-      where: {
-        role: "user",
-      },
+    const users = await User.findAll({
+      attributes: [
+        "uuid",
+        "name",
+        "nis",
+        "role",
+        "school",
+        "class",
+        "status",
+        "progress",
+      ],
     });
-    res.status(200).json(response);
+    res.status(200).json(users);
   } catch (error) {
-    console.error("Error in getUsers:", error.message);
-    res.status(500).json({ msg: error.message });
+    console.error("Error di getUsers:", error.message);
+    res.status(500).json({ msg: "Terjadi kesalahan pada server" });
   }
 };
 
-// Mendapatkan pengguna berdasarkan ID
-export const getUsersById = async (req, res) => {
+const getUsersById = async (req, res) => {
   try {
-    const response = await Users.findOne({
-      attributes: ["uuid", "name", "nis", "class", "status", "progress"],
-      where: {
-        uuid: req.params.id,
-        role: "user",
-      },
+    const user = await User.findOne({
+      attributes: [
+        "uuid",
+        "name",
+        "nis",
+        "role",
+        "school",
+        "class",
+        "status",
+        "progress",
+      ],
+      where: { uuid: req.params.id },
     });
-
-    if (!response) {
-      return res.status(404).json({ msg: "Siswa tidak ditemukan" });
-    }
-
-    res.status(200).json(response);
-  } catch (error) {
-    console.error("Error in getUsersById:", error.message);
-    res.status(500).json({ msg: error.message });
-  }
-};
-
-// Membuat pengguna baru
-export const createUsers = async (req, res) => {
-  const { name, nis, password, confPassword, class: studentClass } = req.body;
-
-  if (password !== confPassword) {
-    return res
-      .status(400)
-      .json({ msg: "Password dan Confirm Password tidak cocok" });
-  }
-
-  const existingUser = await Users.findOne({
-    where: { nis },
-  });
-  if (existingUser) {
-    return res.status(400).json({ msg: "NIS sudah terdaftar" });
-  }
-
-  const hashPassword = await argon2.hash(password);
-  try {
-    await Users.create({
-      name,
-      nis,
-      password: hashPassword,
-      role: "user",
-      class: studentClass,
-      status: "Aktif",
-      progress: null,
-    });
-    res.status(201).json({ msg: "Register berhasil" });
-  } catch (error) {
-    console.error("Error in createUsers:", error.message);
-    res.status(400).json({ msg: error.message });
-  }
-};
-
-// Memperbarui pengguna
-export const updateUsers = async (req, res) => {
-  const user = await Users.findOne({
-    where: {
-      uuid: req.params.id,
-      role: "user",
-    },
-  });
-
-  if (!user) {
-    return res.status(404).json({ msg: "Siswa tidak ditemukan" });
-  }
-
-  const { name, class: studentClass } = req.body;
-
-  try {
-    await Users.update(
-      {
-        name,
-        class: studentClass,
-      },
-      {
-        where: {
-          uuid: user.uuid,
-        },
-      }
-    );
-    res.status(200).json({ msg: "Siswa berhasil diperbarui" });
-  } catch (error) {
-    console.error("Error in updateUsers:", error.message);
-    res.status(400).json({ msg: error.message });
-  }
-};
-
-// Menghapus pengguna
-export const delateUsers = async (req, res) => {
-  try {
-    const user = await Users.findOne({
-      where: { uuid: req.params.id, role: "user" },
-    });
-
     if (!user) {
-      return res.status(404).json({ msg: "Siswa tidak ditemukan" });
+      return res.status(404).json({ msg: "User tidak ditemukan" });
     }
-
-    await Users.destroy({
-      where: { uuid: user.uuid },
-    });
-
-    res.status(200).json({ msg: "Siswa berhasil dihapus" });
+    res.status(200).json(user);
   } catch (error) {
-    console.error("Error in delateUsers:", error.message);
-    res.status(400).json({ msg: error.message });
+    console.error("Error di getUsersById:", error.message);
+    res.status(500).json({ msg: "Terjadi kesalahan pada server" });
   }
 };
 
-// Memperbarui progres pengguna
-export const updateProgress = async (req, res) => {
+const createUsers = async (req, res) => {
+  const {
+    name,
+    email,
+    nis,
+    password,
+    role,
+    school,
+    class: userClass,
+    status,
+    progress,
+  } = req.body;
   try {
-    console.log("updateProgress called with params:", req.params);
-    console.log("Request body:", req.body);
-    console.log("Session userId:", req.session.userId);
-
-    const user = await Users.findOne({
-      where: {
-        uuid: req.params.id,
-        role: "user",
-      },
-    });
-
-    if (!user) {
-      console.log("User not found for uuid:", req.params.id);
-      return res.status(404).json({ msg: "Siswa tidak ditemukan" });
-    }
-
-    // Verifikasi bahwa pengguna hanya memperbarui progres mereka sendiri
-    if (req.session.userId !== user.uuid) {
-      console.log(
-        "Unauthorized: Session userId does not match user uuid",
-        req.session.userId,
-        user.uuid
-      );
+    // Validasi status
+    if (status && !["SELESAI", "BELUM SELESAI"].includes(status)) {
       return res
-        .status(403)
-        .json({ msg: "Tidak diizinkan memperbarui progres pengguna lain" });
+        .status(400)
+        .json({ msg: "Status harus SELESAI atau BELUM SELESAI" });
     }
-
-    const { progress } = req.body;
-
-    if (progress === undefined || progress < 0 || progress > 100) {
-      console.log("Invalid progress value:", progress);
-      return res.status(400).json({ msg: "Progres harus antara 0 dan 100" });
-    }
-
-    await Users.update(
-      {
-        progress,
-      },
-      {
-        where: {
-          uuid: user.uuid,
-        },
-      }
-    );
-
-    console.log("Progress updated successfully for user:", user.uuid);
-    res.status(200).json({ msg: "Progres berhasil diperbarui" });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.create({
+      uuid: uuidv4(),
+      name,
+      email,
+      nis,
+      password: hashedPassword,
+      role,
+      school,
+      class: userClass,
+      status: status || "BELUM SELESAI",
+      progress,
+    });
+    res.status(201).json({ msg: "User berhasil dibuat" });
   } catch (error) {
-    console.error("Error in updateProgress:", error.message);
-    res.status(400).json({ msg: error.message });
+    console.error("Error di createUsers:", error.message);
+    res
+      .status(500)
+      .json({ msg: "Terjadi kesalahan pada server", error: error.message });
   }
+};
+
+const updateUsers = async (req, res) => {
+  const {
+    name,
+    email,
+    nis,
+    password,
+    role,
+    school,
+    class: userClass,
+    status,
+    progress,
+  } = req.body;
+  try {
+    const user = await User.findOne({ where: { uuid: req.params.id } });
+    if (!user) {
+      return res.status(404).json({ msg: "User tidak ditemukan" });
+    }
+    // Validasi status
+    if (status && !["SELESAI", "BELUM SELESAI"].includes(status)) {
+      return res
+        .status(400)
+        .json({ msg: "Status harus SELESAI atau BELUM SELESAI" });
+    }
+    const updatedData = {
+      name,
+      email,
+      nis,
+      role,
+      school,
+      class: userClass,
+      status: status || user.status,
+      progress,
+    };
+    if (password) {
+      updatedData.password = await bcrypt.hash(password, 10);
+    }
+    await User.update(updatedData, { where: { uuid: req.params.id } });
+    res.status(200).json({ msg: "User berhasil diperbarui" });
+  } catch (error) {
+    console.error("Error di updateUsers:", error.message);
+    res
+      .status(500)
+      .json({ msg: "Terjadi kesalahan pada server", error: error.message });
+  }
+};
+
+const delateUsers = async (req, res) => {
+  try {
+    const user = await User.findOne({ where: { uuid: req.params.id } });
+    if (!user) {
+      return res.status(404).json({ msg: "User tidak ditemukan" });
+    }
+    await User.destroy({ where: { uuid: req.params.id } });
+    res.status(200).json({ msg: "User berhasil dihapus" });
+  } catch (error) {
+    console.error("Error di delateUsers:", error.message);
+    res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+  }
+};
+
+const updateProgress = async (req, res) => {
+  const { progress } = req.body;
+  try {
+    const user = await User.findOne({ where: { uuid: req.params.id } });
+    if (!user) {
+      return res.status(404).json({ msg: "User tidak ditemukan" });
+    }
+    await User.update({ progress }, { where: { uuid: req.params.id } });
+    res.status(200).json({ msg: "Progress berhasil diperbarui" });
+  } catch (error) {
+    console.error("Error di updateProgress:", error.message);
+    res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+  }
+};
+
+export {
+  getUsers,
+  getUsersById,
+  createUsers,
+  updateUsers,
+  delateUsers,
+  updateProgress,
 };

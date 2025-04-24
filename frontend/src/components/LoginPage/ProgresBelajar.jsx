@@ -16,7 +16,11 @@ const ProgresBelajar = () => {
       const response = await axios.get("http://localhost:5000/users", {
         withCredentials: true, // Ensure session cookie is sent
       });
-      setUsers(response.data);
+      // Filter only users with role "user"
+      const filteredUsers = response.data.filter(
+        (user) => user.role === "user"
+      );
+      setUsers(filteredUsers);
     } catch (error) {
       console.error(
         "Error fetching users:",
@@ -75,9 +79,6 @@ const ProgresBelajar = () => {
             <thead>
               <tr className="border-b border-gray-200">
                 <th className="px-3 py-2 font-semibold text-center select-none">
-                  No
-                </th>
-                <th className="px-3 py-2 font-semibold text-center select-none">
                   NIS
                 </th>
                 <th className="px-3 py-2 font-semibold text-center select-none">
@@ -95,7 +96,7 @@ const ProgresBelajar = () => {
               {currentUsers.length === 0 ? (
                 <tr>
                   <td
-                    colSpan="5"
+                    colSpan="4"
                     className="px-3 py-2 text-base text-center text-gray-500"
                   >
                     Tidak ada data
@@ -104,9 +105,6 @@ const ProgresBelajar = () => {
               ) : (
                 currentUsers.map((user, index) => (
                   <tr key={user.uuid} className="border-b border-gray-200">
-                    <td className="px-3 py-2 font-mono text-base text-center select-text">
-                      {(currentPage - 1) * itemsPerPage + index + 1}
-                    </td>
                     <td className="px-3 py-2 font-mono text-base text-center select-text">
                       {user.nis}
                     </td>
@@ -122,7 +120,7 @@ const ProgresBelajar = () => {
                           <div
                             className="flex items-center justify-center h-full text-xs font-semibold text-white bg-blue-500"
                             style={{
-                              width: `${user.progress || 0}%`, // Use actual progress from DB
+                              width: `${user.progress || 0}%`,
                             }}
                           >
                             {user.progress !== null

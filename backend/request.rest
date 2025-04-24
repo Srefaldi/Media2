@@ -26,7 +26,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "nis": "1234",
+    "nis": "123",
     "password": "123"
 }
 
@@ -136,11 +136,11 @@ POST http://localhost:5000/register-siswa
 Content-Type: application/json
 
 {
-  "fullName": "Jane Doe",
-  "nis": "123456",
-  "password": "password123",
+  "fullName": "SISWA",
+  "nis": "1234",
+  "password": "123",
   "class": "10A",
-  "token": "SISWA_SECRET_2025"
+  "token": "123"
 }
 
 ###
@@ -150,4 +150,19 @@ Content-Type: application/json
 
 {
   "progress": 0
+}
+
+
+####
+# Latihan 1
+
+POST http://localhost:5000/scores
+Content-Type: application/json
+Cookie: connect.sid=<your_session_cookie>
+
+{
+  "user_id": "8e95e7e8-7345-4db6-98b3-e5f4c27c7395",
+  "type": "latihan",
+  "chapter": 1,
+  "score": 85
 }
