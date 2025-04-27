@@ -26,6 +26,10 @@ import DaftarGuru from "./components/LoginPage/Login Guru/DaftarGuru";
 
 // Siswa
 import DaftarSiswa from "./components/LoginPage/DaftarSIswa/FormDaftarSiswa";
+
+// CRUD
+import AddQuestion from "./components/LoginPage/TambahEvaluasi";
+import EditQuestion from "./components/LoginPage/EditEvaluasi";
 function App() {
   return (
     <BrowserRouter>
@@ -45,6 +49,8 @@ function App() {
         <Route path="/dashboard-guru" element={<DashboardGuru />} />
         <Route path="/pengaturan" element={<Pengaturan />} />
         <Route path="/data-nilai" element={<DataNilai />} />
+        <Route path="/questions/add" element={<AddQuestion />} />
+        <Route path="/questions/edit/:id" element={<EditQuestion />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/add" element={<AddUser />} />
         <Route path="/users/edit/:id" element={<EditUser />} />

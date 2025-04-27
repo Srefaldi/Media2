@@ -26,7 +26,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "nis": "123",
+    "nis": "1234",
     "password": "123"
 }
 
@@ -59,7 +59,7 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "nis": "123",
+    "nis": "1234",
     "password": "123"
 }
 
@@ -77,45 +77,7 @@ Content-Type: application/json
 GET http://localhost:5000/me
 Content-Type: application/json
 
-###
-DELETE http://localhost:5000/logout
 
-
-###
-# Get All product
-GET http://localhost:5000/products
-
-
-###
-# Get single product
-GET http://localhost:5000/products/b9b966c6-816c-468a-89c5-a1d1f423863d
-
-###
-# Menambahkan data produk
-POST http://localhost:5000/products
-Content-Type: application/json
-
-{
-    "name": "Kelas 6",
-    "price": 34
-}
-
-
-###
-# Update Product
-PATCH http://localhost:5000/products/b9b966c6-816c-468a-89c5-a1d1f423863d
-Content-Type: application/json
-
-{
-    "name": "Kelas Update",
-    "price": 341
-}
-
-
-###
-# Delete Product
-
-DELETE http://localhost:5000/products/975fa411-18cf-46f4-90c9-a943f1c96bfa
 
 
 
@@ -158,11 +120,65 @@ Content-Type: application/json
 
 POST http://localhost:5000/scores
 Content-Type: application/json
+
+{
+  "user_id": "8e76e17e-af99-4366-a60f-76d05015a7e9",
+  "type": "latihan",
+  "chapter": 1,
+  "score": 70 
+}
+###
+# Login request
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "nis": "123",
+    "password": "123"
+}
+###
+DELETE http://localhost:5000/logout
+Content-Type: application/json
+
+
+###
+# CRUD
+#BUAT
+POST http://localhost:5000/questions
+Content-Type: application/json
 Cookie: connect.sid=<your_session_cookie>
 
 {
-  "user_id": "8e95e7e8-7345-4db6-98b3-e5f4c27c7395",
-  "type": "latihan",
-  "chapter": 1,
-  "score": 85
+  "evaluation_id": 1,
+  "question_text": "Coba",
+  "option_a": "Jakarta",
+  "option_b": "Bandung",
+  "option_c": "Surabaya",
+  "option_d": "Medan",
+  "option_e": "Makassar",
+  "correct_answer": "A"
 }
+###
+#AMBIL
+GET http://localhost:5000/questions/evaluation/1
+Cookie: connect.sid=<your_session_cookie>
+
+###
+#UPDATE
+PATCH http://localhost:5000/questions/1
+Content-Type: application/json
+Cookie: connect.sid=<your_session_cookie>
+
+{
+  "question_text": "Apa ibu kota negara Indonesia?",
+  "option_a": "Jakarta",
+  "option_b": "Bandung",
+  "option_c": "Surabaya",
+  "option_d": "Medan",
+  "option_e": "Makassar",
+  "correct_answer": "A"
+}
+###
+#HAPUS
+DELETE http://localhost:5000/questions/1
+Cookie: connect.sid=<your_session_cookie>

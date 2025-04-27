@@ -27,11 +27,13 @@ const AdminDashboard = () => {
     setToken(generateToken());
   };
 
-  // Fungsi untuk mengambil jumlah siswa
+  // Fungsi untuk mengambil jumlah siswa (hanya role "user")
   const getStudentCount = async () => {
     try {
       const response = await axios.get("http://localhost:5000/users");
-      setStudentCount(response.data.length);
+      // Filter hanya pengguna dengan role "user"
+      const users = response.data.filter((user) => user.role === "user");
+      setStudentCount(users.length);
     } catch (error) {
       console.error("Error fetching student count:", error);
     }

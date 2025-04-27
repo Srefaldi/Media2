@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.get("/scores", verifyUser, getScores);
 router.get("/scores/:user_id", verifyUser, adminOnly, getScoresByUserId);
-router.post("/scores", verifyUser, adminOnly, createScore);
+router.post("/scores", verifyUser, createScore);
 
 export default router;

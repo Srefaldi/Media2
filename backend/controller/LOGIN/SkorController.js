@@ -74,6 +74,10 @@ const createScore = async (req, res) => {
     return res.status(401).json({ msg: "Mohon login ke akun anda" });
   }
 
+  if (!req.body) {
+    return res.status(400).json({ msg: "Request body tidak ditemukan" });
+  }
+
   const { user_id, type, chapter, score } = req.body;
 
   // Validasi input
@@ -95,11 +99,9 @@ const createScore = async (req, res) => {
     type !== "evaluasi_akhir" &&
     (chapter < 1 || chapter > 6 || !Number.isInteger(chapter))
   ) {
-    return res
-      .status(400)
-      .json({
-        msg: "Chapter harus integer antara 1 dan 6 untuk latihan atau evaluasi",
-      });
+    return res.status(400).json({
+      msg: "Chapter harus integer antara 1 dan 6 untuk latihan atau evaluasi",
+    });
   }
   if (type === "evaluasi_akhir" && chapter !== undefined) {
     return res
@@ -112,7 +114,23 @@ const createScore = async (req, res) => {
     return res.status(400).json({ msg: "Score harus angka antara 0 dan 100" });
   }
 
-  // Validasi user_id
+  // Ambil informasi pengguna yang login
+  const loggedInUser = await User.findOne({
+    where: { uuid: req.session.userId },
+  });
+
+  if (!loggedInUser) {
+    return res.status(404).json({ msg: "Pengguna yang login tidak ditemukan" });
+  }
+
+  // Jika pengguna adalah siswa (role: "user"), mereka hanya boleh membuat skor untuk diri sendiri
+  if (loggedInUser.role === "user" && user_id !== req.session.userId) {
+    return res
+      .status(403)
+      .json({ msg: "Anda hanya dapat menambahkan skor untuk diri sendiri" });
+  }
+
+  // Validasi user_id (harus role "user")
   const user = await User.findOne({
     where: { uuid: user_id, role: "user" },
   });

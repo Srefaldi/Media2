@@ -31,7 +31,10 @@ const ProgresBelajar = () => {
 
   // Filter users based on search term for class
   const filteredUsers = users.filter((user) =>
-    (user.class || "").toLowerCase().includes(searchTerm.toLowerCase())
+    [user.name, user.class || ""]
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
   // Calculate total pages
@@ -70,7 +73,7 @@ const ProgresBelajar = () => {
               type="search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Cari kelas..."
+              placeholder="Cari nama atau kelas..."
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md md:w-64 focus:outline-none focus:ring-1 focus:ring-purple-600"
             />
           </div>

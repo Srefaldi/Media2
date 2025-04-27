@@ -16,7 +16,7 @@ const ScoreList = () => {
       const meResponse = await axios.get("http://localhost:5000/me", {
         withCredentials: true,
       });
-      console.log("Current user:", meResponse.data); // Debugging
+      console.log("Current user:", meResponse.data);
       const response = await axios.get("http://localhost:5000/users", {
         withCredentials: true,
       });
@@ -79,6 +79,159 @@ const ScoreList = () => {
     return score ? score.score.toFixed(2) : "-";
   };
 
+  const renderHeader = () => (
+    <thead>
+      <tr className="border-b border-gray-200">
+        <th
+          rowSpan={2}
+          className="px-3 py-2 text-base font-semibold text-center align-middle select-none"
+        >
+          NIS
+        </th>
+        <th
+          rowSpan={2}
+          className="px-3 py-2 text-base font-semibold text-center align-middle select-none"
+        >
+          Nama
+        </th>
+        <th
+          rowSpan={2}
+          className="px-3 py-2 text-base font-semibold text-center align-middle select-none"
+        >
+          Kelas
+        </th>
+        <th
+          colSpan={6}
+          className="px-3 py-2 text-base font-semibold text-center select-none"
+        >
+          Latihan Bab
+        </th>
+        <th
+          colSpan={4}
+          className="px-3 py-2 text-base font-semibold text-center select-none"
+        >
+          Evaluasi Bab
+        </th>
+        <th
+          rowSpan={2}
+          className="px-3 py-2 text-base font-semibold text-center align-middle select-none"
+        >
+          Evaluasi Akhir
+        </th>
+      </tr>
+      <tr className="border-b border-gray-200">
+        {[...Array(6)].map((_, i) => (
+          <th
+            key={`latihan-sub-${i}`}
+            className="px-3 py-2 text-base font-semibold text-center select-none"
+          >
+            {i + 1}
+          </th>
+        ))}
+        {[...Array(4)].map((_, i) => (
+          <th
+            key={`evaluasi-sub-${i}`}
+            className="px-3 py-2 text-base font-semibold text-center select-none"
+          >
+            {i + 1}
+          </th>
+        ))}
+      </tr>
+    </thead>
+  );
+
+  const renderBody = () => (
+    <tbody>
+      {currentUsers.length === 0 ? (
+        <tr>
+          <td
+            colSpan={14}
+            className="px-3 py-2 text-base text-center text-gray-500"
+          >
+            Tidak ada data
+          </td>
+        </tr>
+      ) : (
+        currentUsers.map((user) => (
+          <tr key={user.uuid} className="border-b border-gray-200">
+            <td className="px-3 py-2 font-mono text-base text-center select-text">
+              {user.nis}
+            </td>
+            <td className="px-3 py-2 font-mono text-base text-center select-text">
+              {user.name}
+            </td>
+            <td className="px-3 py-2 font-mono text-base text-center select-text">
+              {user.class || "-"}
+            </td>
+            {[...Array(6)].map((_, i) => (
+              <td
+                key={`latihan-data-${i}`}
+                className="px-3 py-2 font-mono text-base text-center select-text"
+              >
+                {getScore(user.scores, "latihan", i + 1)}
+              </td>
+            ))}
+            {[...Array(4)].map((_, i) => (
+              <td
+                key={`evaluasi-data-${i}`}
+                className="px-3 py-2 font-mono text-base text-center select-text"
+              >
+                {getScore(user.scores, "evaluasi", i + 1)}
+              </td>
+            ))}
+            <td className="px-3 py-2 font-mono text-base text-center select-text">
+              {getScore(user.scores, "evaluasi_akhir", null)}
+            </td>
+          </tr>
+        ))
+      )}
+    </tbody>
+  );
+
+  const renderPagination = () => (
+    <div className="flex justify-end mt-6 space-x-1 select-none">
+      <button
+        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 rounded-l hover:bg-gray-600"
+        disabled={currentPage === 1}
+      >
+        «
+      </button>
+      <button
+        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600"
+        disabled={currentPage === 1}
+      >
+        ‹
+      </button>
+      {Array.from({ length: totalPages }, (_, index) => (
+        <button
+          key={index}
+          onClick={() => setCurrentPage(index + 1)}
+          className={`px-3 py-1 text-xs font-semibold text-white bg-gray-500 ${
+            currentPage === index + 1 ? "bg-gray-700" : ""
+          }`}
+        >
+          {index + 1}
+        </button>
+      ))}
+      <button
+        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+        className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600"
+        disabled={currentPage === totalPages}
+      >
+        ›
+      </button>
+      <button
+        onClick={() => setCurrentPage(totalPages)}
+        className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 rounded-r hover:bg-gray-600"
+        disabled={currentPage === totalPages}
+      >
+        »
+      </button>
+    </div>
+  );
+
   return (
     <div className="flex flex-col min-h-screen text-gray-800 bg-white">
       <main className="flex flex-1 overflow-hidden">
@@ -110,134 +263,23 @@ const ScoreList = () => {
                 placeholder="Cari nama atau kelas..."
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md md:w-64 focus:outline-none focus:ring-1 focus:ring-purple-600"
               />
-              <button
+              {/* <button
                 onClick={getUsers}
-                className="px-3 py-2 text-sm font-semibold text-white bg-blue-500 rounded hover:bg-blue-600"
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-purple-600"
               >
                 Refresh
-              </button>
+              </button> */}
             </div>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full mt-5 text-base text-center text-gray-700 border">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="px-3 py-2 font-semibold select-none">NIS</th>
-                  <th className="px-3 py-2 font-semibold select-none">Nama</th>
-                  <th className="px-3 py-2 font-semibold select-none">Kelas</th>
-                  {[...Array(6)].map((_, i) => (
-                    <th
-                      key={`latihan-${i + 1}`}
-                      className="px-3 py-2 font-semibold select-none"
-                    >
-                      Latihan {i + 1}
-                    </th>
-                  ))}
-                  {[...Array(6)].map((_, i) => (
-                    <th
-                      key={`evaluasi-${i + 1}`}
-                      className="px-3 py-2 font-semibold select-none"
-                    >
-                      Evaluasi {i + 1}
-                    </th>
-                  ))}
-                  <th className="px-3 py-2 font-semibold select-none">
-                    Evaluasi Akhir
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentUsers.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan={15}
-                      className="px-3 py-2 text-base text-center text-gray-500"
-                    >
-                      Tidak ada data
-                    </td>
-                  </tr>
-                ) : (
-                  currentUsers.map((user) => (
-                    <tr key={user.uuid} className="border-b border-gray-200">
-                      <td className="px-3 py-2 font-mono text-base select-text">
-                        {user.nis}
-                      </td>
-                      <td className="px-3 py-2 font-mono text-base select-text">
-                        {user.name}
-                      </td>
-                      <td className="px-3 py-2 font-mono text-base select-text">
-                        {user.class || "-"}
-                      </td>
-                      {[...Array(6)].map((_, i) => (
-                        <td
-                          key={`latihan-${i + 1}`}
-                          className="px-3 py-2 font-mono text-base select-text"
-                        >
-                          {getScore(user.scores, "latihan", i + 1)}
-                        </td>
-                      ))}
-                      {[...Array(6)].map((_, i) => (
-                        <td
-                          key={`evaluasi-${i + 1}`}
-                          className="px-3 py-2 font-mono text-base select-text"
-                        >
-                          {getScore(user.scores, "evaluasi", i + 1)}
-                        </td>
-                      ))}
-                      <td className="px-3 py-2 font-mono text-base select-text">
-                        {getScore(user.scores, "evaluasi_akhir", null)}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
+            <table className="w-full mt-5 text-base text-center text-gray-700 bg-white border">
+              {renderHeader()}
+              {renderBody()}
             </table>
           </div>
 
-          <div className="flex justify-end mt-6 space-x-1 select-none">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 rounded-l hover:bg-gray-600"
-              disabled={currentPage === 1}
-            >
-              «
-            </button>
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600"
-              disabled={currentPage === 1}
-            >
-              ‹
-            </button>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentPage(index + 1)}
-                className={`bg-gray-500 text-white text-xs font-semibold px-3 py-1 ${
-                  currentPage === index + 1 ? "bg-gray-700" : ""
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
-            <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600"
-              disabled={currentPage === totalPages}
-            >
-              ›
-            </button>
-            <button
-              onClick={() => setCurrentPage(totalPages)}
-              className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 rounded-r hover:bg-gray-600"
-              disabled={currentPage === totalPages}
-            >
-              »
-            </button>
-          </div>
+          {renderPagination()}
         </section>
       </main>
     </div>
