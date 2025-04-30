@@ -255,7 +255,14 @@ Content-Type: application/json
 DELETE http://localhost:5000/logout
 Content-Type: application/json
 
+###
+# Update Progress
+PATCH http://localhost:5000/users/5901973c-6963-4d5c-a285-f04cb6830f28/progress
+Content-Type: application/json
 
+{
+  "progress": 100
+}
 ###
 # CRUD
 #BUAT
