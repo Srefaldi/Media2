@@ -9,6 +9,7 @@ const initialState = {
   message: "",
   evaluations: [],
   questions: [],
+  kkm: [],
 };
 
 export const LoginUser = createAsyncThunk(
@@ -90,6 +91,27 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
 export const LogOut = createAsyncThunk("user/LogOut", async () => {
   await axios.delete("http://localhost:5000/logout");
 });
+
+export const createEvaluation = createAsyncThunk(
+  "evaluations/createEvaluation",
+  async (evaluationData, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/evaluations",
+        evaluationData,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const message = error.response.data.msg;
+        return thunkAPI.rejectWithValue(message);
+      }
+    }
+  }
+);
 
 export const getEvaluations = createAsyncThunk(
   "evaluations/getEvaluations",
@@ -190,6 +212,37 @@ export const deleteQuestion = createAsyncThunk(
   }
 );
 
+export const getKkm = createAsyncThunk("kkm/getKkm", async (_, thunkAPI) => {
+  try {
+    const response = await axios.get("http://localhost:5000/kkm", {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      const message = error.response.data.msg;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+});
+
+export const setKkm = createAsyncThunk(
+  "kkm/setKkm",
+  async (kkmData, thunkAPI) => {
+    try {
+      const response = await axios.post("http://localhost:5000/kkm", kkmData, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const message = error.response.data.msg;
+        return thunkAPI.rejectWithValue(message);
+      }
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -248,6 +301,21 @@ export const authSlice = createSlice({
       state.user = action.payload;
     });
     builder.addCase(getMe.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+    });
+
+    builder.addCase(createEvaluation.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createEvaluation.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.message = action.payload.msg;
+      state.evaluations.push(action.payload.evaluation);
+    });
+    builder.addCase(createEvaluation.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;
@@ -322,6 +390,34 @@ export const authSlice = createSlice({
       );
     });
     builder.addCase(deleteQuestion.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+    });
+
+    builder.addCase(getKkm.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getKkm.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.kkm = action.payload;
+    });
+    builder.addCase(getKkm.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+    });
+
+    builder.addCase(setKkm.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(setKkm.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.message = action.payload.msg;
+    });
+    builder.addCase(setKkm.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;

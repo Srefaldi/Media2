@@ -1,6 +1,55 @@
 import Evaluation from "../../models/EVALUASI/EvaluasiModel.js";
 import Question from "../../models/EVALUASI/Soal.js";
 
+// Create Evaluation
+const createEvaluation = async (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ msg: "Mohon login ke akun anda" });
+  }
+
+  const { type, chapter } = req.body;
+
+  // Validasi input
+  if (!type) {
+    return res.status(400).json({ msg: "Tipe evaluasi wajib diisi" });
+  }
+
+  if (!["bab", "evaluasi_akhir"].includes(type)) {
+    return res
+      .status(400)
+      .json({ msg: "Tipe harus 'bab' atau 'evaluasi_akhir'" });
+  }
+
+  if (
+    type === "bab" &&
+    (!chapter || chapter < 1 || chapter > 6 || !Number.isInteger(chapter))
+  ) {
+    return res
+      .status(400)
+      .json({ msg: "Chapter harus integer antara 1 dan 6 untuk evaluasi bab" });
+  }
+
+  if (type === "evaluasi_akhir" && chapter !== undefined) {
+    return res
+      .status(400)
+      .json({ msg: "Evaluasi akhir tidak memerlukan chapter" });
+  }
+
+  try {
+    const evaluation = await Evaluation.create({
+      type,
+      chapter: type === "bab" ? chapter : null,
+    });
+    console.log("Evaluation created:", evaluation);
+    res.status(201).json({ msg: "Evaluasi berhasil dibuat", evaluation });
+  } catch (error) {
+    console.error("Error di createEvaluation:", error.message);
+    res
+      .status(500)
+      .json({ msg: "Terjadi kesalahan pada server", error: error.message });
+  }
+};
+
 // Create Question
 const createQuestion = async (req, res) => {
   if (!req.session.userId) {
@@ -228,6 +277,7 @@ const getEvaluations = async (req, res) => {
 };
 
 export {
+  createEvaluation,
   createQuestion,
   getQuestionsByEvaluation,
   updateQuestion,

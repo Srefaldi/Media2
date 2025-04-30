@@ -1,3 +1,118 @@
+# Pengujian Fitur KKM
+# Catatan: Ganti <your_session_cookie> dengan cookie sesi yang valid setelah login.
+# Pastikan server backend berjalan di http://localhost:5000.
+
+### 1. Daftar Guru (Admin)
+POST http://localhost:5000/register-guru
+Content-Type: application/json
+
+{
+  "fullName": "Admin KKM",
+  "nip": "123456789",
+  "password": "admin123",
+  "school": "SMA 1 Jakarta"
+}
+
+### 2. Login sebagai Admin
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "nis": "123456789",
+  "password": "admin123"
+}
+
+# Catatan: Salin cookie connect.sid dari header respons untuk digunakan di bawah.
+
+### 3. Ambil Data KKM (Admin)
+GET http://localhost:5000/kkm
+Cookie: connect.sid=<your_session_cookie>
+
+# Harus mengembalikan daftar KKM untuk setiap evaluasi (bab 1-6 dan evaluasi akhir).
+
+### 4. Atur KKM untuk Evaluasi Bab 1 (Admin)
+POST http://localhost:5000/kkm
+Content-Type: application/json
+Cookie: connect.sid=<your_session_cookie>
+
+{
+  "evaluation_id": 1,
+  "kkm": 80
+}
+
+# Harus mengembalikan status 201 (dibuat) atau 200 (diperbarui) dengan pesan sukses.
+
+### 5. Atur KKM untuk Evaluasi Akhir (Admin)
+POST http://localhost:5000/kkm
+Content-Type: application/json
+Cookie: connect.sid=<your_session_cookie>
+
+{
+  "evaluation_id": 7,
+  "kkm": 85
+}
+
+# Harus mengembalikan status 201 (dibuat) atau 200 (diperbarui) dengan pesan sukses.
+
+### 6. Validasi KKM Tidak Valid (Admin)
+POST http://localhost:5000/kkm
+Content-Type: application/json
+Cookie: connect.sid=<your_session_cookie>
+
+{
+  "evaluation_id": 1,
+  "kkm": 101
+}
+
+# Harus mengembalikan status 400 dengan pesan "KKM harus angka antara 0 dan 100".
+
+### 7. Daftar Siswa (Non-Admin)
+POST http://localhost:5000/register-siswa
+Content-Type: application/json
+
+{
+  "fullName": "Siswa Test",
+  "nis": "1234",
+  "password": "siswa123",
+  "class": "10A",
+  "token": "123"
+}
+
+### 8. Login sebagai Siswa
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "nis": "1234",
+  "password": "siswa123"
+}
+
+# Catatan: Salin cookie connect.sid dari header respons untuk digunakan di bawah.
+
+### 9. Coba Ambil KKM sebagai Siswa
+GET http://localhost:5000/kkm
+Cookie: connect.sid=<your_session_cookie>
+
+# Harus mengembalikan status 403 dengan pesan "Hanya admin yang dapat mengakses".
+
+### 10. Coba Atur KKM sebagai Siswa
+POST http://localhost:5000/kkm
+Content-Type: application/json
+Cookie: connect.sid=<your_session_cookie>
+
+{
+  "evaluation_id": 1,
+  "kkm": 80
+}
+
+# Harus mengembalikan status 403 dengan pesan "Hanya admin yang dapat mengakses".
+
+### 11. Logout
+DELETE http://localhost:5000/logout
+Cookie: connect.sid=<your_session_cookie>
+
+
+
 # Create User
 POST http://localhost:5000/users
 Content-Type: application/json
@@ -122,10 +237,10 @@ POST http://localhost:5000/scores
 Content-Type: application/json
 
 {
-  "user_id": "1b72a99a-6991-439a-ae5f-fe82d29834e9",
-  "type": "latihan",
-  "chapter": 2,
-  "score": 90 
+  "user_id": "5901973c-6963-4d5c-a285-f04cb6830f28",
+  "type": "evaluasi_akhir",
+  "chapter": 7,
+  "score": 100
 }
 ###
 # Login request
@@ -133,7 +248,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "nis": "1234",
+    "nis": "12345",
     "password": "123"
 }
 ###

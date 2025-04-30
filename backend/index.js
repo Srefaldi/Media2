@@ -8,11 +8,13 @@ import UserRoute from "./routes/Login/UserRoute.js";
 import AuthRoute from "./routes/Login/AuthRoute.js";
 import ScoreRoute from "./routes/Score/ScoreRoute.js";
 import QuestionRoute from "./routes/Evaluasi/EvaluasiRoute.js";
+import KkmRoute from "./routes/KKM/kkmRoute.js";
 import User from "./models/LOGIN/UserModel.js";
 import Score from "./models/MateriSkor/SkorModel.js";
 import Evaluation from "./models/EVALUASI/EvaluasiModel.js";
 import Question from "./models/EVALUASI/Soal.js";
-import SkorRoute from "./routes/Score/ScoreRoute.js";
+import Kkm from "./models/KKM/kkmModels.js";
+
 dotenv.config();
 const app = express();
 
@@ -23,40 +25,51 @@ const store = new sessionStore({
 
 (async () => {
   try {
-    // Sinkronkan tabel tanpa menghapus data (force: false)
-    await store.sync({ force: false }); // Sinkronkan Sessions
+    await store.sync({ force: false });
     console.log("Sessions table synced");
 
-    await Question.sync({ force: false }); // Sinkronkan Questions
+    await Kkm.sync({ force: false });
+    console.log("KKM table synced");
+
+    await Question.sync({ force: false });
     console.log("Questions table synced");
 
-    await Score.sync({ force: false }); // Sinkronkan Scores
+    await Score.sync({ force: false });
     console.log("Scores table synced");
 
-    await Evaluation.sync({ force: false }); // Sinkronkan Evaluations
+    await Evaluation.sync({ force: false });
     console.log("Evaluations table synced");
 
-    await User.sync({ force: false }); // Sinkronkan Users
+    await User.sync({ force: false });
     console.log("Users table synced");
 
-    // Tidak perlu menonaktifkan foreign key checks karena kita tidak menghapus tabel
     console.log("Database synced successfully");
 
-    // Inisialisasi data evaluasi jika belum ada
     const evaluations = await Evaluation.findAll();
     if (evaluations.length === 0) {
-      // Buat evaluasi untuk bab 1-6
       for (let i = 1; i <= 6; i++) {
         await Evaluation.create({
           type: "bab",
           chapter: i,
         });
       }
-      // Buat evaluasi akhir
       await Evaluation.create({
         type: "evaluasi_akhir",
       });
       console.log("Evaluations initialized");
+    }
+
+    // Inisialisasi KKM default jika belum ada
+    const kkmRecords = await Kkm.findAll();
+    if (kkmRecords.length === 0) {
+      const evaluations = await Evaluation.findAll();
+      for (const evaluation of evaluations) {
+        await Kkm.create({
+          evaluation_id: evaluation.id,
+          kkm: 75, // Nilai KKM default
+        });
+      }
+      console.log("KKM initialized with default value 75");
     }
   } catch (error) {
     console.error("Error syncing database:", error);
@@ -83,11 +96,11 @@ app.use(
 );
 
 app.use(express.json());
-app.use(SkorRoute);
 app.use(UserRoute);
 app.use(AuthRoute);
 app.use(ScoreRoute);
 app.use(QuestionRoute);
+app.use(KkmRoute);
 
 app.listen(process.env.APP_PORT, () => {
   console.log("Server up and running ...");
