@@ -83,7 +83,9 @@ app.use(
     saveUninitialized: true,
     store: store,
     cookie: {
-      secure: "auto",
+      secure: false, // Set ke false untuk pengembangan lokal (HTTP)
+      httpOnly: true,
+      sameSite: "lax",
     },
   })
 );
@@ -91,7 +93,7 @@ app.use(
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000", "http://localhost"],
+    origin: ["http://localhost:3000"],
   })
 );
 
@@ -101,6 +103,12 @@ app.use(AuthRoute);
 app.use(ScoreRoute);
 app.use(QuestionRoute);
 app.use(KkmRoute);
+
+// Logging untuk debugging sesi
+app.use((req, res, next) => {
+  console.log("Session ID:", req.sessionID, "User ID:", req.session.userId);
+  next();
+});
 
 app.listen(process.env.APP_PORT, () => {
   console.log("Server up and running ...");

@@ -13,6 +13,8 @@ import ErrorCSharp from "../src/pages/Materi/Bab-1/ErrorCSharp";
 import Latihan from "../src/pages/Materi/Bab-1/Latihan";
 import Kuis from "../src/pages/Materi/Bab-1/Kuis";
 import Rangkuman from "../src/pages/Materi/Bab-1/Rangkuman";
+import SebelumLatihan1 from "../src/pages/Materi/Bab-1/SebelumLatihan";
+import SebelumKuis1 from "../src/pages/Materi/Bab-1/SebelumKuis";
 
 // BAB 2
 import Variabel from "../src/pages/Materi/Bab-2/variabel";
@@ -94,6 +96,8 @@ const MateriRoutes = () => {
         <Route path="bab1/latihan-bab1" element={<Latihan />} />
         <Route path="bab1/kuis-bab1" element={<Kuis />} />
         <Route path="bab1/rangkuman-bab1" element={<Rangkuman />} />
+        <Route path="bab1/intruksi-latihan1" element={<SebelumLatihan1 />} />
+        <Route path="bab1/intruksi-kuis1" element={<SebelumKuis1 />} />
 
         {/* BAB 2 */}
 

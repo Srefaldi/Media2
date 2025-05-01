@@ -4,7 +4,9 @@ import { verifyUser, adminOnly } from "../../middleware/Login/AuthUser.js";
 
 const router = express.Router();
 
-router.get("/kkm", verifyUser, adminOnly, getKkm);
+// Endpoint untuk mendapatkan semua KKM (semua user terautentikasi)
+router.get("/kkm", verifyUser, getKkm);
+// Endpoint untuk membuat atau memperbarui KKM (hanya admin)
 router.post("/kkm", verifyUser, adminOnly, setKkm);
 
 export default router;

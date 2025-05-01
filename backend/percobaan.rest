@@ -222,11 +222,11 @@ Content-Type: application/json
 
 ###
 # Update Progress
-PATCH http://localhost:5000/users/96a50fbb-f93a-48c3-9194-4943d9d3a9f4/progress
+PATCH http://localhost:5000/users/1b72a99a-6991-439a-ae5f-fe82d29834e9/progress
 Content-Type: application/json
 
 {
-  "progress": 0
+  "progress": 100
 }
 
 
@@ -237,9 +237,9 @@ POST http://localhost:5000/scores
 Content-Type: application/json
 
 {
-  "user_id": "5901973c-6963-4d5c-a285-f04cb6830f28",
-  "type": "evaluasi_akhir",
-  "chapter": 7,
+  "user_id": "1b72a99a-6991-439a-ae5f-fe82d29834e9",
+  "type": "latihan",
+  "chapter": 1,
   "score": 100
 }
 ###
@@ -248,7 +248,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "nis": "12345",
+    "nis": "1234",
     "password": "123"
 }
 ###

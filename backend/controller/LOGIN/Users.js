@@ -156,8 +156,15 @@ const updateProgress = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User tidak ditemukan" });
     }
-    await User.update({ progress }, { where: { uuid: req.params.id } });
-    res.status(200).json({ msg: "Progress berhasil diperbarui" });
+    // Validasi progress
+    if (progress < 0 || progress > 100) {
+      return res.status(400).json({ msg: "Progress harus antara 0 dan 100" });
+    }
+    // Tentukan status berdasarkan progress
+    const status = progress === 100 ? "SELESAI" : "BELUM SELESAI";
+    // Perbarui progress dan status
+    await User.update({ progress, status }, { where: { uuid: req.params.id } });
+    res.status(200).json({ msg: "Progress dan status berhasil diperbarui" });
   } catch (error) {
     console.error("Error di updateProgress:", error.message);
     res.status(500).json({ msg: "Terjadi kesalahan pada server" });

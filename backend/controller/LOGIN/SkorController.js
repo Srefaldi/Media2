@@ -18,7 +18,7 @@ const getScores = async (req, res) => {
 
     const scores = await Score.findAll({
       where: { user_id: req.session.userId },
-      attributes: ["type", "chapter", "score"],
+      attributes: ["type", "chapter", "score", "created_at"],
     });
 
     res.status(200).json({
@@ -54,7 +54,7 @@ const getScoresByUserId = async (req, res) => {
 
     const scores = await Score.findAll({
       where: { user_id },
-      attributes: ["type", "chapter", "score"],
+      attributes: ["type", "chapter", "score", "created_at"],
     });
 
     res.status(200).json({

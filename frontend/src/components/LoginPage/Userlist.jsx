@@ -131,10 +131,12 @@ const Userlist = () => {
                   <td className="px-3 py-2 font-mono text-base text-center select-text">
                     {user.status === "BELUM SELESAI" ? (
                       <span className="px-2 py-1 text-white bg-red-500 rounded">
-                        {user.status}
+                        BELUM SELESAI
                       </span>
                     ) : (
-                      user.status
+                      <span className="px-2 py-1 text-white bg-green-500 rounded">
+                        SELESAI
+                      </span>
                     )}
                   </td>
                   <td className="flex justify-center px-3 py-2 space-x-2 font-mono text-base text-center select-text">

@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import Swal from "sweetalert2"; // Import SweetAlert2
-import "../style/latihan.css";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import Swal from "sweetalert2";
+import nextIcon from "../../../assets/img/selanjutnya.png";
 import IconPetunjuk from "../../../assets/img/informasi.png";
+import "../style/latihan.css";
 
-const Latihan = () => {
+const LatihanBab2 = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
+  const { user } = useSelector((state) => state.auth);
+  const [showLatihan, setShowLatihan] = useState(false); // State untuk beralih antara instruksi dan latihan
 
+  // State untuk instruksi
+  const [riwayat, setRiwayat] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // State untuk latihan
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState(Array(5).fill([""])); // Ubah menjadi array dua dimensi
+  const [answers, setAnswers] = useState(Array(10).fill([""]));
   const [score, setScore] = useState(0);
-  const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null));
-  const [hasAnswered, setHasAnswered] = useState(Array(5).fill(false)); // Track if the question has been answered
-  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
+  const [answerStatus, setAnswerStatus] = useState(Array(10).fill(null));
+  const [hasAnswered, setHasAnswered] = useState(Array(10).fill(false));
+  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 menit dalam detik
 
   const questions = [
     {
       id: 1,
       prompt:
-        "Lengkapilah kode berikut untuk mendeklarasikan dua variabel bertipe integer x dan y, lalu tampilkan hasil penjumlahan keduanya …",
+        "Lengkapilah kode berikut untuk mendeklarasikan dua variabel bertipe integer x dan y, lalu tampilkan hasil penjumlahan keduanya.",
       code: `public class Latihan
 {
     public static void Main(string[] args)
     {
-        int x =  ___ ;
-        int y =  ___ ;
+        int x = _____;
+        int y = _____;
         int hasil = x + y;
 
-        Console.WriteLine("Hasil penjumlahan: " + ___ );
+        Console.WriteLine("Hasil penjumlahan: " + _____);
     }
 }`,
       correctAnswer: ["10", "20", "hasil"],
@@ -36,14 +47,14 @@ const Latihan = () => {
     {
       id: 2,
       prompt:
-        "Berikan tipe data yang sesuai untuk masing-masing variabel berikut …",
+        "Berikan tipe data yang sesuai untuk masing-masing variabel berikut.",
       code: `public class Latihan
 {
     public static void Main(string[] args)
     {
-        ___ nama = "Budi";
-        ___ umur = 25;
-        ___ tinggi = 170.5;
+        _____ nama = "Budi";
+        _____ umur = 25;
+        _____ tinggi = 170.5;
 
         Console.WriteLine("Nama: " + nama);
         Console.WriteLine("Umur: " + umur);
@@ -55,13 +66,13 @@ const Latihan = () => {
     {
       id: 3,
       prompt:
-        "Lengkapilah kode berikut untuk membuat sebuah variabel konstanta PI dengan nilai 3.14 dan cetak nilainya …",
+        "Lengkapilah kode berikut untuk membuat sebuah variabel konstanta PI dengan nilai 3.14 dan cetak nilainya.",
       code: `public class Latihan
 {
     public static void Main(string[] args)
     {
-        ___ ___      PI = 3.14;
-        Console.WriteLine("Nilai PI: " + ___);
+        _____ _____ PI = 3.14;
+        Console.WriteLine("Nilai PI: " + _____);
     }
 }`,
       correctAnswer: ["const", "double", "PI"],
@@ -69,13 +80,13 @@ const Latihan = () => {
     {
       id: 4,
       prompt:
-        "Lengkapilah kode berikut untuk mendeklarasikan variabel lokal angka di dalam metode dan cetak nilainya …",
+        "Lengkapilah kode berikut untuk mendeklarasikan variabel lokal angka di dalam metode dan cetak nilainya.",
       code: `public class Latihan
 {
     public static void CetakAngka()
     {
-        ___ angka = 10;
-        Console.WriteLine("Angka lokal: " + ___);
+        _____ angka = 10;
+        Console.WriteLine("Angka lokal: " + _____);
     }
 
     public static void Main(string[] args)
@@ -88,38 +99,178 @@ const Latihan = () => {
     {
       id: 5,
       prompt:
-        "Lengkapilah kode berikut untuk mencetak variabel nama menggunakan string interpolation …",
+        "Lengkapilah kode berikut untuk mencetak variabel nama menggunakan string interpolation.",
       code: `public class Latihan
 {
     public static void Main(string[] args)
     {
         string nama = "Andi";
-        Console.WriteLine(___);
+        Console.WriteLine(_____);
     }
 }`,
-      correctAnswer: ["nama"],
+      correctAnswer: ['$"Nama: {nama}"'],
+    },
+    {
+      id: 6,
+      prompt:
+        "Lengkapilah kode berikut untuk mendeklarasikan variabel bertipe boolean dan mencetak nilainya.",
+      code: `public class Latihan
+{
+    public static void Main(string[] args)
+    {
+        _____ isActive = true;
+        Console.WriteLine("Status: " + _____);
+    }
+}`,
+      correctAnswer: ["bool", "isActive"],
+    },
+    {
+      id: 7,
+      prompt:
+        "Lengkapilah kode berikut untuk mendeklarasikan variabel bertipe char dan mencetak nilainya.",
+      code: `public class Latihan
+{
+    public static void Main(string[] args)
+    {
+        _____ grade = 'A';
+        Console.WriteLine("Nilai: " + _____);
+    }
+}`,
+      correctAnswer: ["char", "grade"],
+    },
+    {
+      id: 8,
+      prompt:
+        "Lengkapilah kode berikut untuk menghitung luas lingkaran menggunakan konstanta PI dan variabel jari-jari.",
+      code: `public class Latihan
+{
+    public static void Main(string[] args)
+    {
+        const double PI = 3.14;
+        _____ jariJari = 5;
+        double luas = PI * jariJari * jariJari;
+        Console.WriteLine("Luas lingkaran: " + _____);
+    }
+}`,
+      correctAnswer: ["double", "luas"],
+    },
+    {
+      id: 9,
+      prompt:
+        "Lengkapilah kode berikut untuk mendeklarasikan variabel bertipe float dan mencetak nilainya dengan dua angka desimal.",
+      code: `public class Latihan
+{
+    public static void Main(string[] args)
+    {
+        _____ berat = 65.75f;
+        Console.WriteLine("Berat: {0:F2}", _____);
+    }
+}`,
+      correctAnswer: ["float", "berat"],
+    },
+    {
+      id: 10,
+      prompt:
+        "Lengkapilah kode berikut untuk mendeklarasikan variabel bertipe integer dan string, lalu mencetaknya menggunakan string concatenation.",
+      code: `public class Latihan
+{
+    public static void Main(string[] args)
+    {
+        _____ usia = 30;
+        _____ nama = "Siti";
+        Console.WriteLine(_____);
+    }
+}`,
+      correctAnswer: ["int", "string", '"Nama: " + nama + ", Usia: " + usia'],
     },
   ];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          handleTimeUp(); // Call finish function when time is up
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+  // Fungsi untuk memformat tanggal
+  const formatDate = (dateString) => {
+    if (!dateString) {
+      console.warn("Tanggal tidak tersedia:", dateString);
+      return "Tanggal tidak tersedia";
+    }
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      console.warn("Format tanggal tidak valid:", dateString);
+      return "Tanggal tidak valid";
+    }
+    return date.toLocaleString("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
-    return () => clearInterval(timer); // Cleanup on unmount
-  }, []);
+  // Ambil data riwayat dari API
+  useEffect(() => {
+    const fetchRiwayat = async () => {
+      if (!user?.uuid) {
+        setError("Mohon login ke akun Anda");
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const response = await axios.get("http://localhost:5000/scores", {
+          withCredentials: true,
+        });
+        console.log("Data scores dari API:", response.data);
+
+        // Filter hanya skor untuk latihan Bab 2
+        const filteredScores = response.data.scores.filter(
+          (score) => score.type === "latihan" && score.chapter === 2
+        );
+        console.log("Filtered scores (Bab 2):", filteredScores);
+
+        // Format data untuk tabel
+        const formattedRiwayat = filteredScores.map((score) => {
+          console.log("Score item:", score);
+          return {
+            tanggal: formatDate(score.created_at),
+            persentase: `${score.score}%`,
+            status: score.score >= 75 ? "Lulus" : "Tidak Lulus",
+          };
+        });
+        setRiwayat(formattedRiwayat);
+      } catch (error) {
+        const errorMsg =
+          error.response?.data?.msg || "Gagal mengambil data riwayat";
+        console.error("Error fetching scores:", errorMsg);
+        setError(errorMsg);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRiwayat();
+  }, [user]);
+
+  // Timer untuk latihan
+  useEffect(() => {
+    if (showLatihan) {
+      const timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            handleTimeUp();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [showLatihan]);
 
   const handleAnswerChange = (value, inputIndex) => {
     const newAnswers = [...answers];
-    newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]]; // Copy the current answer array
-    newAnswers[currentQuestionIndex][inputIndex] = value; // Simpan jawaban berdasarkan index
+    newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]];
+    newAnswers[currentQuestionIndex][inputIndex] = value;
     setAnswers(newAnswers);
   };
 
@@ -127,7 +278,6 @@ const Latihan = () => {
     const question = questions[currentQuestionIndex];
     const userAnswers = answers[currentQuestionIndex];
 
-    // Cek apakah jawaban kosong
     if (userAnswers.some((answer) => answer === "")) {
       Swal.fire({
         title: "Soal Belum Dijawab!",
@@ -142,48 +292,57 @@ const Latihan = () => {
       (correctAnswer, index) => correctAnswer === userAnswers[index]
     );
 
-    const newAnswerStatus = [...answerStatus];
-    newAnswerStatus[currentQuestionIndex] = isCorrect ? "correct" : "incorrect";
-    setAnswerStatus(newAnswerStatus);
-    setHasAnswered((prev) => {
-      const newHasAnswered = [...prev];
-      newHasAnswered[currentQuestionIndex] = true; // Tandai soal sudah dijawab
-      return newHasAnswered;
-    });
-
     if (isCorrect) {
-      setScore((prevScore) => prevScore + 20); // Tambah 20 poin jika jawaban benar
-      Swal.fire({
-        title: "Jawaban Anda Benar!",
-        text: "Silakan lanjutkan ke soal berikutnya.",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then(() => {
-        handleNextQuestion();
-      });
+      if (!hasAnswered[currentQuestionIndex]) {
+        setScore((prevScore) => prevScore + 10); // 10 poin per soal (100/10 soal)
+        const newAnswerStatus = [...answerStatus];
+        newAnswerStatus[currentQuestionIndex] = "correct";
+        setAnswerStatus(newAnswerStatus);
+        setHasAnswered((prev) => {
+          const newHasAnswered = [...prev];
+          newHasAnswered[currentQuestionIndex] = true;
+          return newHasAnswered;
+        });
+        Swal.fire({
+          title: "Jawaban Anda Benar!",
+          text: "Silakan lanjutkan ke soal berikutnya.",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          setCurrentQuestionIndex((prevIndex) =>
+            Math.min(prevIndex + 1, questions.length - 1)
+          );
+        });
+      } else {
+        Swal.fire({
+          icon: "info",
+          title: "Sudah Menjawab",
+          text: "Anda sudah menjawab soal ini.",
+        });
+      }
     } else {
+      const newAnswerStatus = [...answerStatus];
+      newAnswerStatus[currentQuestionIndex] = "incorrect";
+      setAnswerStatus(newAnswerStatus);
+      setHasAnswered((prev) => {
+        const newHasAnswered = [...prev];
+        newHasAnswered[currentQuestionIndex] = true;
+        return newHasAnswered;
+      });
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Soal ini sudah dijawab. Silakan coba lagi.",
+        text: "Silakan lanjut ke soal berikutnya",
         icon: "error",
         confirmButtonText: "OK",
       }).then(() => {
-        handleNextQuestion();
+        setCurrentQuestionIndex((prevIndex) =>
+          Math.min(prevIndex + 1, questions.length - 1)
+        );
       });
-    }
-  };
-
-  const handleNextQuestion = () => {
-    const nextIndex = currentQuestionIndex + 1;
-    if (nextIndex < questions.length) {
-      setCurrentQuestionIndex(nextIndex);
-    } else {
-      handleFinish(); // Jika sudah tidak ada soal lagi, panggil fungsi selesai
     }
   };
 
   const handleQuestionSelect = (index) => {
-    // Cek jika soal sudah dijawab
     if (hasAnswered[index]) {
       Swal.fire({
         icon: "info",
@@ -192,15 +351,24 @@ const Latihan = () => {
       });
     } else {
       setCurrentQuestionIndex(index);
-      // Reset jawaban untuk soal yang dipilih
       const newAnswers = [...answers];
-      newAnswers[index] = Array(questions[index].correctAnswer.length).fill(""); // Reset jawaban untuk soal yang sedang dipilih
+      newAnswers[index] =
+        index === 0
+          ? ["", "", ""]
+          : index === 1
+          ? ["", "", ""]
+          : index === 2
+          ? ["", "", ""]
+          : index === 3
+          ? ["", ""]
+          : index === 9
+          ? ["", "", ""]
+          : [""];
       setAnswers(newAnswers);
     }
   };
 
-  const handleFinish = () => {
-    // Cek apakah ada soal yang belum dijawab
+  const handleFinish = async () => {
     const hasIncompleteAnswers = answers.some((answer) =>
       answer.some((a) => a === "")
     );
@@ -212,18 +380,32 @@ const Latihan = () => {
         confirmButtonText: "OK",
       });
     } else {
-      // Jika semua soal sudah dijawab, lanjutkan
-      if (score >= 80) {
+      try {
+        await axios.post(
+          "http://localhost:5000/scores",
+          {
+            user_id: user.uuid,
+            type: "latihan",
+            chapter: 2,
+            score: score,
+          },
+          { withCredentials: true }
+        );
+      } catch (error) {
+        console.error("Error saving score:", error);
+      }
+
+      if (score >= 75) {
         Swal.fire({
           title: "Selamat!",
-          text: "Anda telah selesai mengerjakan latihan.",
+          text: `Skor Anda: ${score}. Anda telah selesai mengerjakan latihan.`,
           icon: "success",
           confirmButtonText: "Selanjutnya",
         }).then((result) => {
           if (result.isConfirmed) {
             handleLessonComplete("/materi/bab2/latihan-bab2");
             window.scrollTo(0, 0);
-            navigate("/materi/bab2/kuis-bab2");
+            navigate("/materi/bab2/kuis-bab1");
           }
         });
       } else {
@@ -233,66 +415,166 @@ const Latihan = () => {
   };
 
   const handleTimeUp = () => {
-    clearInterval(); // Stop the timer
     Swal.fire({
       title: "Waktu Habis!",
       text: `Skor Anda: ${score}`,
       icon: "warning",
       confirmButtonText: "OK",
     }).then(() => {
-      showFinalScore(); // Call finish function to show the score
+      showFinalScore();
     });
   };
 
   const showFinalScore = () => {
     Swal.fire({
-      title: "WAKTU HABIS",
-      text: "Skor anda tidak mencukupi, Silahkan Coba Kembali.",
-      icon: score >= 80 ? "success" : "error",
+      title: score >= 75 ? "Latihan Selesai" : "WAKTU HABIS",
+      text:
+        score >= 75
+          ? `Skor Anda: ${score}.`
+          : "Skor anda tidak mencukupi, Silahkan Coba Kembali.",
+      icon: score >= 75 ? "success" : "error",
       showCancelButton: true,
-      confirmButtonText: score >= 80 ? " Selanjutnya" : "Coba Lagi",
+      confirmButtonText: score >= 75 ? "Selanjutnya" : "Coba Lagi",
       cancelButtonText: "Kembali",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (score >= 80) {
+        if (score >= 75) {
           handleLessonComplete("/materi/bab2/latihan-bab2");
           window.scrollTo(0, 0);
           navigate("/materi/bab2/kuis-bab2");
         } else {
-          navigate("/materi/bab2/latihan-bab2");
-          window.location.reload();
+          setShowLatihan(false); // Kembali ke instruksi untuk coba lagi
+          setCurrentQuestionIndex(0);
+          setAnswers(Array(10).fill([""]));
+          setScore(0);
+          setAnswerStatus(Array(10).fill(null));
+          setHasAnswered(Array(10).fill(false));
+          setTimeLeft(20 * 60);
         }
       } else {
-        navigate("/materi/bab2/sintaks-input");
+        setShowLatihan(false); // Kembali ke instruksi untuk coba lagi
+        setCurrentQuestionIndex(0);
+        setAnswers(Array(10).fill([""]));
+        setScore(0);
+        setAnswerStatus(Array(10).fill(null));
+        setHasAnswered(Array(10).fill(false));
+        setTimeLeft(20 * 60);
+        navigate("/materi/bab2/latihan-bab2");
       }
     });
   };
 
-  return (
+  // UI untuk halaman instruksi
+  const renderInstruksi = () => (
+    <div>
+      <div className="p-4 bg-white rounded-lg shadow-md">
+        <h1 className="mb-4 text-2xl font-bold text-center">
+          BAB 2 - VARIABEL DAN TIPE DATA
+        </h1>
+        <section>
+          <h2 className="font-semibold text-gray-800 mb-3">Aturan</h2>
+          <p className="mb-3 leading-relaxed">
+            Latihan ini bertujuan untuk menguji pengetahuan Anda tentang
+            variabel dan tipe data dalam pemrograman C#.
+          </p>
+          <p className="mb-3 leading-relaxed">
+            Terdapat 10 pertanyaan yang harus dikerjakan dalam latihan ini.
+            Beberapa ketentuannya sebagai berikut:
+          </p>
+          <ul className="list-disc list-inside mb-3 leading-relaxed">
+            <li>Syarat nilai kelulusan: 75%</li>
+            <li>Durasi ujian: 20 menit</li>
+          </ul>
+          <p className="mb-3 leading-relaxed">
+            Apabila tidak memenuhi syarat kelulusan, maka Anda harus mengulang
+            pengerjaan latihan kembali.
+          </p>
+          <p className="mb-6 leading-relaxed">Selamat Mengerjakan!</p>
+          <div className="flex justify-end">
+            <button
+              onClick={() => setShowLatihan(true)}
+              className="flex items-center gap-2 text-base px-6 py-3 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+              style={{ backgroundColor: "#6E2A7F" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "#5B1F6A")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "#6E2A7F")
+              }
+            >
+              <span>MULAI</span>
+              <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5" />
+            </button>
+          </div>
+        </section>
+
+        <section className="mt-16">
+          <h3 className="font-semibold text-gray-800 mb-3 border-b border-gray-300 pb-1">
+            Riwayat
+          </h3>
+          {isLoading ? (
+            <p className="text-gray-600">Memuat riwayat...</p>
+          ) : error ? (
+            <p className="text-red-600">{error}</p>
+          ) : riwayat.length === 0 ? (
+            <p className="text-gray-600">Belum ada riwayat</p>
+          ) : (
+            <table className="w-full text-left text-gray-600">
+              <thead>
+                <tr>
+                  <th className="pb-2 font-semibold">Tanggal</th>
+                  <th className="pb-2 font-semibold">Persentase</th>
+                  <th className="pb-2 font-semibold">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {riwayat.map((item, index) => (
+                  <tr key={index}>
+                    <td className="pt-2 pb-3">{item.tanggal}</td>
+                    <td className="pt-2 pb-3">{item.persentase}</td>
+                    <td className="pt-2 pb-3">
+                      <span
+                        className={`text-[10px] font-semibold px-2 py-[2px] rounded ${
+                          item.status === "Lulus"
+                            ? "text-green-600 bg-green-100"
+                            : "text-red-600 bg-red-100"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </section>
+      </div>
+    </div>
+  );
+
+  // UI untuk halaman latihan
+  const renderLatihan = () => (
     <div className="max-w-full p-2 mx-auto bg-white rounded-lg shadow-lg">
       <h2 className="text-lg font-semibold text-center text-gray-800">
         LATIHAN BAB 2
       </h2>
 
-      {/* Petunjuk Mengerjakan Latihan */}
       <div
         className="relative p-4 mt-4 border rounded-lg"
         style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
       >
         <h3
           className="flex items-center p-2 text-lg font-semibold border rounded-lg w-80"
-          style={{
-            outline: "2px solid #6E2A7F",
-            outlineOffset: "2px",
-          }}
+          style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
         >
           <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
           PETUNJUK MENGERJAKAN
         </h3>
         <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside">
           <li>
-            Jawablah soal-soal di bawah ini dengan mengisikannya pada input an
-            yang tersedia.
+            Jawablah soal-soal di bawah ini dengan mengisikannya pada input yang
+            tersedia.
           </li>
           <li>
             Tekan tombol{" "}
@@ -303,7 +585,6 @@ const Latihan = () => {
                 color: "white",
                 padding: "0.5rem 1rem",
                 borderRadius: "0.5rem",
-                transition: "background-color 0.2s",
                 cursor: "not-allowed",
                 opacity: 0.6,
               }}
@@ -325,12 +606,10 @@ const Latihan = () => {
                 color: "#6E2A7F",
                 padding: "0.5rem 1rem",
                 borderRadius: "0.5rem",
-                transition: "background-color 0.2s, border-color 0.2s",
                 border: "2px solid #6E2A7F",
                 cursor: "not-allowed",
                 opacity: 0.6,
               }}
-              className="ml-2"
             >
               Selesai
             </button>{" "}
@@ -349,7 +628,7 @@ const Latihan = () => {
           </div>
           <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
           <div className="flex flex-row">
-            {questions.map((question, index) => (
+            {questions.slice(0, 5).map((question, index) => (
               <button
                 key={question.id}
                 onClick={() => handleQuestionSelect(index)}
@@ -374,7 +653,40 @@ const Latihan = () => {
                     answerStatus[index] === "correct" ||
                     answerStatus[index] === "incorrect"
                       ? "white"
-                      : " black",
+                      : "black",
+                }}
+              >
+                {question.id}
+              </button>
+            ))}
+          </div>
+          <div className="flex flex-row mt-2">
+            {questions.slice(5, 10).map((question, index) => (
+              <button
+                key={question.id}
+                onClick={() => handleQuestionSelect(index + 5)}
+                style={{
+                  width: "2rem",
+                  height: "2rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "0.5rem",
+                  margin: "0.125rem",
+                  backgroundColor:
+                    currentQuestionIndex === index + 5
+                      ? "#6E2A7F"
+                      : answerStatus[index + 5] === "correct"
+                      ? "#10B981"
+                      : answerStatus[index + 5] === "incorrect"
+                      ? "#EF4444"
+                      : "#D1D5DB",
+                  color:
+                    currentQuestionIndex === index + 5 ||
+                    answerStatus[index + 5] === "correct" ||
+                    answerStatus[index + 5] === "incorrect"
+                      ? "white"
+                      : "black",
                 }}
               >
                 {question.id}
@@ -392,7 +704,7 @@ const Latihan = () => {
             <pre className="code-block">
               <code>
                 {questions[currentQuestionIndex].code
-                  .split("___")
+                  .split("_____")
                   .map((part, index) => (
                     <>
                       {part.split(" ").map((word, wordIndex) => {
@@ -401,14 +713,15 @@ const Latihan = () => {
                           word.includes("public") ||
                           word.includes("static") ||
                           word.includes("void") ||
-                          word.includes("Console")
+                          word.includes("Console") ||
+                          word.includes("const")
                         ) {
                           return (
                             <span key={wordIndex} className="keyword">
                               {word}{" "}
                             </span>
                           );
-                        } else if (word.includes('"')) {
+                        } else if (word.includes('"') || word.includes("'")) {
                           return (
                             <span key={wordIndex} className="string">
                               {word}{" "}
@@ -424,12 +737,14 @@ const Latihan = () => {
                         return <span key={wordIndex}>{word} </span>;
                       })}
                       {index <
-                        questions[currentQuestionIndex].code.split("___")
+                        questions[currentQuestionIndex].code.split("_____")
                           .length -
                           1 && (
                         <span>
-                          {questions[currentQuestionIndex].correctAnswer
-                            .length > 1 ? (
+                          {currentQuestionIndex === 0 ||
+                          currentQuestionIndex === 1 ||
+                          currentQuestionIndex === 2 ||
+                          currentQuestionIndex === 9 ? (
                             <input
                               type="text"
                               value={answers[currentQuestionIndex][index] || ""}
@@ -479,9 +794,18 @@ const Latihan = () => {
           <button
             onClick={() => {
               const newAnswers = [...answers];
-              newAnswers[currentQuestionIndex] = Array(
-                questions[currentQuestionIndex].correctAnswer.length
-              ).fill(""); // Reset jawaban untuk soal yang sedang dipilih
+              newAnswers[currentQuestionIndex] =
+                currentQuestionIndex === 0
+                  ? ["", "", ""]
+                  : currentQuestionIndex === 1
+                  ? ["", "", ""]
+                  : currentQuestionIndex === 2
+                  ? ["", "", ""]
+                  : currentQuestionIndex === 3
+                  ? ["", ""]
+                  : currentQuestionIndex === 9
+                  ? ["", "", ""]
+                  : [""];
               setAnswers(newAnswers);
             }}
             className="px-4 py-2 mt-2 ml-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
@@ -514,6 +838,8 @@ const Latihan = () => {
       </div>
     </div>
   );
+
+  return showLatihan ? renderLatihan() : renderInstruksi();
 };
 
-export default Latihan;
+export default LatihanBab2;
