@@ -344,7 +344,7 @@ const KuisBab3 = () => {
     <div>
       <div className="p-4 bg-white rounded-lg shadow-md">
         <h1 className="mb-4 text-2xl font-bold text-center">
-          BAB 3 - OPERATOR
+          BAB 3 - TIPE DATA
         </h1>
         <section>
           <h2 className="font-semibold text-gray-800 mb-3">Aturan</h2>

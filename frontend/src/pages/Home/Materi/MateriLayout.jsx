@@ -13,7 +13,7 @@ const MateriLayout = () => {
   const [completedLessons, setCompletedLessons] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate(); // Tambahkan navigate
-  const totalLessons = 39;
+  const totalLessons = 60;
 
   useEffect(() => {
     console.log("Current user:", user);

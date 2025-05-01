@@ -343,7 +343,7 @@ const KuisBab2 = () => {
     <div>
       <div className="p-4 bg-white rounded-lg shadow-md">
         <h1 className="mb-4 text-2xl font-bold text-center">
-          BAB 2 - VARIABEL DAN TIPE DATA
+          BAB 2 - VARIABEL
         </h1>
         <section>
           <h2 className="font-semibold text-gray-800 mb-3">Aturan</h2>

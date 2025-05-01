@@ -1,20 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import Swal from "sweetalert2"; // Import SweetAlert2
-import "../style/latihan.css";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import Swal from "sweetalert2";
+import nextIcon from "../../../assets/img/selanjutnya.png";
 import IconPetunjuk from "../../../assets/img/informasi.png";
+import "../style/latihan.css";
 
-const Latihan = () => {
+const LatihanBab5 = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
+  const { user } = useSelector((state) => state.auth);
+  const [showLatihan, setShowLatihan] = useState(false);
 
+  // State untuk instruksi
+  const [riwayat, setRiwayat] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // State untuk latihan
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState(Array(5).fill([""])); // Ubah menjadi array dua dimensi
+  const [answers, setAnswers] = useState(Array(5).fill([""]));
   const [score, setScore] = useState(0);
   const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null));
-  const [hasAnswered, setHasAnswered] = useState(Array(5).fill(false)); // Track if the question has been answered
-  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
+  const [hasAnswered, setHasAnswered] = useState(Array(5).fill(false));
+  const [timeLeft, setTimeLeft] = useState(20 * 60);
 
+  // Soal hard-coded
   const questions = [
     {
       id: 1,
@@ -101,25 +113,84 @@ const Latihan = () => {
     },
   ];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          handleTimeUp(); // Call finish function when time is up
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+  // Fungsi untuk memformat tanggal
+  const formatDate = (dateString) => {
+    if (!dateString) {
+      console.warn("Tanggal tidak tersedia:", dateString);
+      return "Tanggal tidak tersedia";
+    }
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      console.warn("Format tanggal tidak valid:", dateString);
+      return "Tanggal tidak valid";
+    }
+    return date.toLocaleString("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
-    return () => clearInterval(timer); // Cleanup on unmount
-  }, []);
+  // Ambil riwayat dari API
+  useEffect(() => {
+    const fetchRiwayat = async () => {
+      if (!user?.uuid) {
+        setError("Mohon login ke akun Anda");
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const response = await axios.get("http://localhost:5000/scores", {
+          withCredentials: true,
+        });
+        const filteredScores = response.data.scores.filter(
+          (score) => score.type === "latihan" && score.chapter === 5
+        );
+        const formattedRiwayat = filteredScores.map((score) => ({
+          tanggal: formatDate(score.created_at),
+          persentase: `${score.score}%`,
+          status: score.score >= 75 ? "Lulus" : "Tidak Lulus",
+        }));
+        setRiwayat(formattedRiwayat);
+      } catch (error) {
+        const errorMsg =
+          error.response?.data?.msg || "Gagal mengambil data riwayat";
+        console.error("Error fetching scores:", errorMsg);
+        setError(errorMsg);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (user?.uuid) {
+      fetchRiwayat();
+    }
+  }, [user]);
+
+  // Timer untuk latihan
+  useEffect(() => {
+    if (showLatihan && timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            handleTimeUp();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [showLatihan, timeLeft]);
 
   const handleAnswerChange = (value, inputIndex) => {
     const newAnswers = [...answers];
-    newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]]; // Copy the current answer array
-    newAnswers[currentQuestionIndex][inputIndex] = value; // Simpan jawaban berdasarkan index
+    newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]];
+    newAnswers[currentQuestionIndex][inputIndex] = value;
     setAnswers(newAnswers);
   };
 
@@ -127,7 +198,6 @@ const Latihan = () => {
     const question = questions[currentQuestionIndex];
     const userAnswers = answers[currentQuestionIndex];
 
-    // Cek apakah jawaban kosong
     if (userAnswers.some((answer) => answer === "")) {
       Swal.fire({
         title: "Soal Belum Dijawab!",
@@ -146,45 +216,39 @@ const Latihan = () => {
     newAnswerStatus[currentQuestionIndex] = isCorrect ? "correct" : "incorrect";
     setAnswerStatus(newAnswerStatus);
 
-    // Tandai soal sudah dijawab
     setHasAnswered((prev) => {
       const newHasAnswered = [...prev];
-      newHasAnswered[currentQuestionIndex] = true; // Tandai soal sudah dijawab
+      newHasAnswered[currentQuestionIndex] = true;
       return newHasAnswered;
     });
 
     if (isCorrect) {
-      setScore((prevScore) => prevScore + 20); // Tambah 20 poin jika jawaban benar
-      Swal.fire({
-        title: "Jawaban Anda Benar!",
-        text: "Silakan lanjutkan ke soal berikutnya.",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      if (!hasAnswered[currentQuestionIndex]) {
+        setScore((prevScore) => prevScore + 20);
+        Swal.fire({
+          title: "Jawaban Anda Benar!",
+          text: "Silakan lanjutkan ke soal berikutnya.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else {
+        Swal.fire({
+          icon: "info",
+          title: "Sudah Menjawab",
+          text: "Anda sudah menjawab soal ini.",
+        });
+      }
     } else {
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Silakan coba lagi.",
+        text: "Silakan lanjut ke soal berikutnya.",
         icon: "error",
         confirmButtonText: "OK",
       });
     }
-
-    // Pindah ke soal berikutnya setelah menjawab
-    const nextQuestionIndex = currentQuestionIndex + 1;
-    if (nextQuestionIndex < questions.length) {
-      setCurrentQuestionIndex(nextQuestionIndex);
-      // Reset jawaban untuk soal yang dipilih
-      const newAnswers = [...answers];
-      newAnswers[nextQuestionIndex] = Array(
-        questions[nextQuestionIndex].correctAnswer.length
-      ).fill(""); // Reset jawaban untuk soal yang baru
-      setAnswers(newAnswers);
-    }
   };
 
   const handleQuestionSelect = (index) => {
-    // Cek jika soal sudah dijawab
     if (hasAnswered[index]) {
       Swal.fire({
         icon: "info",
@@ -193,15 +257,13 @@ const Latihan = () => {
       });
     } else {
       setCurrentQuestionIndex(index);
-      // Reset jawaban untuk soal yang dipilih
       const newAnswers = [...answers];
-      newAnswers[index] = Array(questions[index].correctAnswer.length).fill(""); // Reset jawaban untuk soal yang sedang dipilih
+      newAnswers[index] = Array(questions[index].correctAnswer.length).fill("");
       setAnswers(newAnswers);
     }
   };
 
-  const handleFinish = () => {
-    // Cek apakah ada soal yang belum dijawab
+  const handleFinish = async () => {
     const hasIncompleteAnswers = answers.some((answer) =>
       answer.some((a) => a === "")
     );
@@ -213,11 +275,25 @@ const Latihan = () => {
         confirmButtonText: "OK",
       });
     } else {
-      // Jika semua soal sudah dijawab, lanjutkan
-      if (score >= 80) {
+      try {
+        await axios.post(
+          "http://localhost:5000/scores",
+          {
+            user_id: user.uuid,
+            type: "latihan",
+            chapter: 5,
+            score: score,
+          },
+          { withCredentials: true }
+        );
+      } catch (error) {
+        console.error("Error saving score:", error);
+      }
+
+      if (score >= 75) {
         Swal.fire({
           title: "Selamat!",
-          text: "Anda telah selesai mengerjakan latihan.",
+          text: `Skor Anda: ${score}. Anda telah selesai mengerjakan latihan.`,
           icon: "success",
           confirmButtonText: "Selanjutnya",
         }).then((result) => {
@@ -234,59 +310,158 @@ const Latihan = () => {
   };
 
   const handleTimeUp = () => {
-    clearInterval(); // Stop the timer
     Swal.fire({
       title: "Waktu Habis!",
       text: `Skor Anda: ${score}`,
       icon: "warning",
       confirmButtonText: "OK",
     }).then(() => {
-      showFinalScore(); // Call finish function to show the score
+      showFinalScore();
     });
   };
 
   const showFinalScore = () => {
     Swal.fire({
-      title: "WAKTU HABIS",
-      text: "Skor anda tidak mencukupi, Silahkan Coba Kembali.",
-      icon: score >= 80 ? "success" : "error",
+      title: score >= 75 ? "Latihan Selesai" : "WAKTU HABIS",
+      text:
+        score >= 75
+          ? `Skor Anda: ${score}.`
+          : "Skor anda tidak mencukupi, Silahkan Coba Kembali.",
+      icon: score >= 75 ? "success" : "error",
       showCancelButton: true,
-      confirmButtonText: score >= 80 ? "Selanjutnya" : "Coba Lagi",
+      confirmButtonText: score >= 75 ? "Selanjutnya" : "Coba Lagi",
       cancelButtonText: "Kembali",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (score >= 80) {
+        if (score >= 75) {
           handleLessonComplete("/materi/bab5/latihan-bab5");
           window.scrollTo(0, 0);
           navigate("/materi/bab5/kuis-bab5");
         } else {
-          navigate("/materi/bab5/latihan-bab5");
-          window.location.reload();
+          setShowLatihan(false);
+          setCurrentQuestionIndex(0);
+          setAnswers(Array(5).fill([""]));
+          setScore(0);
+          setAnswerStatus(Array(5).fill(null));
+          setHasAnswered(Array(5).fill(false));
+          setTimeLeft(20 * 60);
         }
       } else {
-        navigate("/materi/bab5/perulangan-bersarang");
+        setShowLatihan(false);
+        setCurrentQuestionIndex(0);
+        setAnswers(Array(5).fill([""]));
+        setScore(0);
+        setAnswerStatus(Array(5).fill(null));
+        setHasAnswered(Array(5).fill(false));
+        setTimeLeft(20 * 60);
+        navigate("/materi/bab5/latihan-bab5");
       }
     });
   };
 
-  return (
+  // UI untuk halaman instruksi
+  const renderInstruksi = () => (
+    <div>
+      <div className="p-4 bg-white rounded-lg shadow-md">
+        <h1 className="mb-4 text-2xl font-bold text-center">
+          BAB 5 - KONTROL ALUR
+        </h1>
+        <section>
+          <h2 className="font-semibold text-gray-800 mb-3">Aturan</h2>
+          <p className="mb-3 leading-relaxed">
+            Latihan ini bertujuan untuk menguji pengetahuan Anda tentang control
+            flow (if, for, switch, break, continue) dalam pemrograman C#.
+          </p>
+          <p className="mb-3 leading-relaxed">
+            Terdapat {questions.length} pertanyaan yang harus dikerjakan dalam
+            latihan ini. Beberapa ketentuannya sebagai berikut:
+          </p>
+          <ul className="list-disc list-inside mb-3 leading-relaxed">
+            <li>Syarat nilai kelulusan: 75%</li>
+            <li>Durasi ujian: 20 menit</li>
+          </ul>
+          <p className="mb-3 leading-relaxed">
+            Apabila tidak memenuhi syarat kelulusan, maka Anda harus mengulang
+            pengerjaan latihan kembali.
+          </p>
+          <p className="mb-6 leading-relaxed">Selamat Mengerjakan!</p>
+          <div className="flex justify-end">
+            <button
+              onClick={() => setShowLatihan(true)}
+              className="flex items-center gap-2 text-base px-6 py-3 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+              style={{ backgroundColor: "#6E2A7F" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "#5B1F6A")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "#6E2A7F")
+              }
+            >
+              <span>MULAI</span>
+              <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5" />
+            </button>
+          </div>
+        </section>
+
+        <section className="mt-16">
+          <h3 className="font-semibold text-gray-800 mb-3 border-b border-gray-300 pb-1">
+            Riwayat
+          </h3>
+          {isLoading ? (
+            <p className="text-gray-600">Memuat riwayat...</p>
+          ) : error ? (
+            <p className="text-red-600">{error}</p>
+          ) : riwayat.length === 0 ? (
+            <p className="text-gray-600">Belum ada riwayat</p>
+          ) : (
+            <table className="w-full text-left text-gray-600">
+              <thead>
+                <tr>
+                  <th className="pb-2 font-semibold">Tanggal</th>
+                  <th className="pb-2 font-semibold">Persentase</th>
+                  <th className="pb-2 font-semibold">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {riwayat.map((item, index) => (
+                  <tr key={index}>
+                    <td className="pt-2 pb-3">{item.tanggal}</td>
+                    <td className="pt-2 pb-3">{item.persentase}</td>
+                    <td className="pt-2 pb-3">
+                      <span
+                        className={`text-[10px] font-semibold px-2 py-[2px] rounded ${
+                          item.status === "Lulus"
+                            ? "text-green-600 bg-green-100"
+                            : "text-red-600 bg-red-100"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </section>
+      </div>
+    </div>
+  );
+
+  // UI untuk halaman latihan
+  const renderLatihan = () => (
     <div className="max-w-full p-2 mx-auto bg-white rounded-lg shadow-lg">
       <h2 className="text-lg font-semibold text-center text-gray-800">
-        {" "}
         LATIHAN BAB 5
       </h2>
 
-      {/* Petunjuk Mengerjakan Latihan */}
       <div
         className="relative p-4 mt-4 border rounded-lg"
         style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
       >
         <h3
           className="flex items-center p-2 text-lg font-semibold border rounded-lg w-80"
-          style={{
-            outline: "2px solid #6E2A7F",
-            outlineOffset: "2px",
-          }}
+          style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
         >
           <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
           PETUNJUK MENGERJAKAN
@@ -305,7 +480,6 @@ const Latihan = () => {
                 color: "white",
                 padding: "0.5rem 1rem",
                 borderRadius: "0.5rem",
-                transition: "background-color 0.2s",
                 cursor: "not-allowed",
                 opacity: 0.6,
               }}
@@ -327,12 +501,10 @@ const Latihan = () => {
                 color: "#6E2A7F",
                 padding: "0.5rem 1rem",
                 borderRadius: "0.5rem",
-                transition: "background-color 0.2s, border-color 0.2s",
                 border: "2px solid #6E2A7F",
                 cursor: "not-allowed",
                 opacity: 0.6,
               }}
-              className="ml-2"
             >
               Selesai
             </button>{" "}
@@ -390,7 +562,7 @@ const Latihan = () => {
           <p className="text-gray-600">
             {questions[currentQuestionIndex].prompt}
           </p>
-          <div className="p-4 mt-2 font-mono text-sm bg-gray-100 rounded -lg">
+          <div className="p-4 mt-2 font-mono text-sm bg-gray-100 rounded-lg">
             <pre className="code-block">
               <code>
                 {questions[currentQuestionIndex].code
@@ -403,14 +575,24 @@ const Latihan = () => {
                           word.includes("public") ||
                           word.includes("static") ||
                           word.includes("void") ||
-                          word.includes("Console")
+                          word.includes("Console") ||
+                          word.includes("bool") ||
+                          word.includes("int") ||
+                          word.includes("string") ||
+                          word.includes("for") ||
+                          word.includes("if") ||
+                          word.includes("switch") ||
+                          word.includes("case") ||
+                          word.includes("break") ||
+                          word.includes("continue") ||
+                          word.includes("default")
                         ) {
                           return (
                             <span key={wordIndex} className="keyword">
                               {word}{" "}
                             </span>
                           );
-                        } else if (word.includes('"')) {
+                        } else if (word.includes('"') || word.includes("'")) {
                           return (
                             <span key={wordIndex} className="string">
                               {word}{" "}
@@ -430,28 +612,15 @@ const Latihan = () => {
                           .length -
                           1 && (
                         <span>
-                          {questions[currentQuestionIndex].correctAnswer
-                            .length > 1 ? (
-                            <input
-                              type="text"
-                              value={answers[currentQuestionIndex][index] || ""}
-                              onChange={(e) =>
-                                handleAnswerChange(e.target.value, index)
-                              }
-                              className="w-20 px-2 py-1 mb-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
-                              placeholder="Jawaban..."
-                            />
-                          ) : (
-                            <input
-                              type="text"
-                              value={answers[currentQuestionIndex][0] || ""}
-                              onChange={(e) =>
-                                handleAnswerChange(e.target.value, 0)
-                              }
-                              className="w-20 px-2 py-1 mb-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
-                              placeholder="Jawaban..."
-                            />
-                          )}
+                          <input
+                            type="text"
+                            value={answers[currentQuestionIndex][index] || ""}
+                            onChange={(e) =>
+                              handleAnswerChange(e.target.value, index)
+                            }
+                            className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
+                            placeholder="Jawaban..."
+                          />
                         </span>
                       )}
                     </>
@@ -483,7 +652,7 @@ const Latihan = () => {
               const newAnswers = [...answers];
               newAnswers[currentQuestionIndex] = Array(
                 questions[currentQuestionIndex].correctAnswer.length
-              ).fill(""); // Reset jawaban untuk soal yang sedang dipilih
+              ).fill("");
               setAnswers(newAnswers);
             }}
             className="px-4 py-2 mt-2 ml-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
@@ -516,6 +685,8 @@ const Latihan = () => {
       </div>
     </div>
   );
+
+  return showLatihan ? renderLatihan() : renderInstruksi();
 };
 
-export default Latihan;
+export default LatihanBab5;
