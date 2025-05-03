@@ -5,18 +5,16 @@ import Footer from "../../components/Landing/Footer";
 
 const Layout = ({ children }) => {
   return (
-    <React.Fragment>
+    <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
-      <div className="mt-1 columns" style={{ minHeight: "100vh" }}>
-        <div className="column is-2">
-          <Sidebar />
-        </div>
-        <div className="column has-background-light">
-          <main>{children}</main>
-        </div>
+      <div className="flex flex-1">
+        <Sidebar />
+        <main className="flex-1 w-full p-4 mx-auto md:p-6 max-w-7xl">
+          {children}
+        </main>
       </div>
       <Footer />
-    </React.Fragment>
+    </div>
   );
 };
 

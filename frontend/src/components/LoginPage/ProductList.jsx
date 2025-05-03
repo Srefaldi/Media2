@@ -200,35 +200,21 @@ const EvaluationList = () => {
 
   const renderHeader = () => (
     <thead>
-      <tr className="border-b border-gray-200">
-        <th className="px-3 py-2 text-base font-semibold text-center align-middle select-none">
-          NO
-        </th>
-        <th className="px-3 py-2 text-base font-semibold text-center align-middle select-none">
-          BAB
-        </th>
-        <th className="px-3 py-2 text-base font-semibold text-center align-middle select-none">
+      <tr className="text-center border-b border-gray-200">
+        <th className="px-3 py-2 font-semibold text-center select-none">NO</th>
+        <th className="px-3 py-2 font-semibold text-center select-none">BAB</th>
+        <th className="px-3 py-2 font-semibold text-center select-none">
           SOAL
         </th>
-        <th className="px-3 py-2 text-base font-semibold text-center align-middle select-none">
-          A
-        </th>
-        <th className="px-3 py-2 text-base font-semibold text-center align-middle select-none">
-          B
-        </th>
-        <th className="px-3 py-2 text-base font-semibold text-center align-middle select-none">
-          C
-        </th>
-        <th className="px-3 py-2 text-base font-semibold text-center align-middle select-none">
-          D
-        </th>
-        <th className="px-3 py-2 text-base font-semibold text-center align-middle select-none">
-          E
-        </th>
-        <th className="px-3 py-2 text-base font-semibold text-center align-middle select-none">
+        <th className="px-3 py-2 font-semibold text-center select-none">A</th>
+        <th className="px-3 py-2 font-semibold text-center select-none">B</th>
+        <th className="px-3 py-2 font-semibold text-center select-none">C</th>
+        <th className="px-3 py-2 font-semibold text-center select-none">D</th>
+        <th className="px-3 py-2 font-semibold text-center select-none">E</th>
+        <th className="px-3 py-2 font-semibold text-center select-none">
           JAWABAN
         </th>
-        <th className="px-3 py-2 text-base font-semibold text-center align-middle select-none">
+        <th className="px-3 py-2 font-semibold text-center select-none">
           AKSI
         </th>
       </tr>
@@ -238,17 +224,20 @@ const EvaluationList = () => {
   const renderBody = () => (
     <tbody>
       {currentQuestions.length === 0 ? (
-        <tr>
+        <tr className="items-center text-center border-b border-gray-200">
           <td
             colSpan="10"
-            className="px-3 py-2 text-base text-center text-gray-500"
+            className="px-3 py-2 font-mono text-base text-center select-text"
           >
             Tidak ada soal untuk bab/evaluasi ini.
           </td>
         </tr>
       ) : (
         currentQuestions.map((question, index) => (
-          <tr key={question.id} className="border-b border-gray-200">
+          <tr
+            key={question.id}
+            className="items-center text-center border-b border-gray-200"
+          >
             <td className="px-3 py-2 font-mono text-base text-center select-text">
               {(currentPage - 1) * itemsPerPage + index + 1}
             </td>
@@ -284,18 +273,18 @@ const EvaluationList = () => {
             <td className="px-3 py-2 font-mono text-base text-center select-text">
               {question.correct_answer}
             </td>
-            <td className="px-3 py-2 font-mono text-base text-center select-text">
+            <td className="flex justify-center px-3 py-2 space-x-2 font-mono text-base text-center select-text">
               <Link
                 to={`/questions/edit/${question.id}`}
-                className="inline-block px-2 py-1 mr-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                className="px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded hover:bg-green-600"
               >
-                PERBARUI
+                Perbarui
               </Link>
               <button
                 onClick={() => handleDeleteQuestion(question.id)}
-                className="inline-block px-2 py-1 text-white bg-red-500 rounded hover:bg-red-600"
+                className="px-3 py-1 text-sm font-semibold text-white bg-red-600 rounded hover:bg-red-700"
               >
-                HAPUS
+                Hapus
               </button>
             </td>
           </tr>
@@ -414,7 +403,7 @@ const EvaluationList = () => {
           {isError && <p className="text-center text-red-500">{message}</p>}
 
           <div className="overflow-x-auto">
-            <table className="w-full mt-5 text-base text-center text-gray-700 bg-white border">
+            <table className="w-full mt-5 text-base text-gray-700 border">
               {renderHeader()}
               {renderBody()}
             </table>

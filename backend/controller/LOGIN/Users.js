@@ -4,6 +4,11 @@ import { v4 as uuidv4 } from "uuid";
 
 const getUsers = async (req, res) => {
   try {
+    const { class: userClass } = req.query;
+    const whereClause = { role: "user" };
+    if (userClass) {
+      whereClause.class = userClass;
+    }
     const users = await User.findAll({
       attributes: [
         "uuid",
@@ -15,10 +20,27 @@ const getUsers = async (req, res) => {
         "status",
         "progress",
       ],
+      where: whereClause,
     });
     res.status(200).json(users);
   } catch (error) {
     console.error("Error di getUsers:", error.message);
+    res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+  }
+};
+
+const getClasses = async (req, res) => {
+  try {
+    const classes = await User.findAll({
+      attributes: ["class"],
+      where: { role: "user" },
+      group: ["class"],
+      order: [["class", "ASC"]],
+    });
+    const classList = classes.map((item) => item.class).filter((cls) => cls); // Filter out null or empty classes
+    res.status(200).json(classList);
+  } catch (error) {
+    console.error("Error di getClasses:", error.message);
     res.status(500).json({ msg: "Terjadi kesalahan pada server" });
   }
 };
@@ -61,7 +83,6 @@ const createUsers = async (req, res) => {
     progress,
   } = req.body;
   try {
-    // Validasi status
     if (status && !["SELESAI", "BELUM SELESAI"].includes(status)) {
       return res
         .status(400)
@@ -106,7 +127,6 @@ const updateUsers = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User tidak ditemukan" });
     }
-    // Validasi status
     if (status && !["SELESAI", "BELUM SELESAI"].includes(status)) {
       return res
         .status(400)
@@ -156,13 +176,10 @@ const updateProgress = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User tidak ditemukan" });
     }
-    // Validasi progress
     if (progress < 0 || progress > 100) {
       return res.status(400).json({ msg: "Progress harus antara 0 dan 100" });
     }
-    // Tentukan status berdasarkan progress
     const status = progress === 100 ? "SELESAI" : "BELUM SELESAI";
-    // Perbarui progress dan status
     await User.update({ progress, status }, { where: { uuid: req.params.id } });
     res.status(200).json({ msg: "Progress dan status berhasil diperbarui" });
   } catch (error) {
@@ -173,6 +190,7 @@ const updateProgress = async (req, res) => {
 
 export {
   getUsers,
+  getClasses,
   getUsersById,
   createUsers,
   updateUsers,

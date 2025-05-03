@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   IoPerson,
@@ -7,51 +7,18 @@ import {
   IoLogOut,
   IoSettings,
   IoSchool,
-  IoPeople, // Import ikon IoPeople
-} from "react-icons/io5"; // Import ikon tambahan
+  IoPeople,
+  IoMenu,
+  IoClose,
+} from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { LogOut, reset } from "../../features/authSlice";
-import styled from "styled-components";
-
-const SidebarContainer = styled.div`
-  width: 256px; /* Set width sesuai dengan yang diinginkan */
-  padding: 16px;
-  background-color: white;
-  color: #1f2937; /* Warna teks */
-`;
-
-const SidebarLink = styled(NavLink)`
-  display: flex; /* Mengubah display menjadi flex */
-  align-items: center; /* Menyelaraskan item di tengah secara vertikal */
-  padding: 12px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-  color: inherit; /* Warna teks mengikuti warna default */
-
-  &:hover {
-    background-color: #e5e7eb; /* Warna latar belakang saat hover */
-  }
-`;
-
-const LogoutButton = styled.button`
-  display: block;
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  background-color: transparent;
-  color: inherit; /* Warna teks mengikuti warna default */
-  text-align: left;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #e5e7eb; /* Warna latar belakang saat hover */
-  }
-`;
 
 const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const [isOpen, setIsOpen] = useState(false);
 
   const logout = () => {
     dispatch(LogOut());
@@ -59,44 +26,142 @@ const Sidebar = () => {
     navigate("/");
   };
 
-  return (
-    <SidebarContainer>
-      <h2 className="mb-4 text-lg font-bold text-center">DAFTAR MENU</h2>
-      <nav>
-        <SidebarLink to={"/dashboard-guru"}>
-          <IoHome className="mr-2" /> Dashboard
-        </SidebarLink>
-        {user && user.role === "admin" && (
-          <SidebarLink to={"/users"}>
-            <IoPeople className="mr-2" /> Data Siswa
-          </SidebarLink>
-        )}
-        {user && user.role === "admin" && (
-          <SidebarLink to={"/progres-belajar"}>
-            <IoSchool className="mr-2" /> Progres Belajar
-          </SidebarLink>
-        )}
-        {user && user.role === "admin" && (
-          <SidebarLink to={"/data-nilai"}>
-            <IoPerson className="mr-2" /> Data Nilai
-          </SidebarLink>
-        )}
-        {user && user.role === "admin" && (
-          <SidebarLink to={"/products"}>
-            <IoPricetag className="mr-2" /> Data Evaluasi
-          </SidebarLink>
-        )}
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
 
-        {user && user.role === "admin" && (
-          <SidebarLink to={"/pengaturan"}>
-            <IoSettings className="mr-2" /> Pengaturan
-          </SidebarLink>
+  // Dynamically set sidebar height to match document height
+  useEffect(() => {
+    const setSidebarHeight = () => {
+      const sidebar = document.querySelector(".sidebar");
+      if (sidebar) {
+        sidebar.style.height = `${document.documentElement.scrollHeight}px`;
+      }
+    };
+
+    setSidebarHeight();
+    window.addEventListener("resize", setSidebarHeight);
+    return () => window.removeEventListener("resize", setSidebarHeight);
+  }, []);
+
+  return (
+    <>
+      {/* Mobile Toggle Button */}
+      <button
+        className="fixed z-50 p-2 text-white transition-shadow duration-200 rounded-lg shadow-md md:hidden top-4 left-4 bg-gradient-to-r from-purple-600 to-blue-500 hover:shadow-lg"
+        onClick={toggleSidebar}
+      >
+        {isOpen ? (
+          <IoClose className="text-2xl" />
+        ) : (
+          <IoMenu className="text-2xl" />
         )}
-        <LogoutButton onClick={logout}>
-          <IoLogOut className="mr-2" /> Logout
-        </LogoutButton>
-      </nav>
-    </SidebarContainer>
+      </button>
+
+      {/* Sidebar */}
+      <div
+        className={`sidebar fixed md:static top-0 left-0 w-64 bg-white shadow-lg pt-8 pb-12 px-4 transform ${
+          isOpen ? "translate-x-0 h-screen" : "-translate-x-full"
+        } md:translate-x-0 transition-transform duration-300 z-40 flex flex-col`}
+      >
+        <h2 className="mb-4 text-3xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">
+          DAFTAR MENU
+        </h2>
+        <nav className="flex flex-col flex-1 gap-4 mt-6">
+          <NavLink
+            to="/dashboard-guru"
+            className={({ isActive }) =>
+              `flex items-center px-4 py-2 text-xl font-medium text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200 ${
+                isActive ? "bg-gradient-to-r from-purple-100 to-blue-100" : ""
+              }`
+            }
+          >
+            <IoHome className="mr-2 text-2xl text-gray-600" />
+            Dashboard
+          </NavLink>
+          {user && user.role === "admin" && (
+            <NavLink
+              to="/users"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 text-xl font-medium text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200 ${
+                  isActive ? "bg-gradient-to-r from-purple-100 to-blue-100" : ""
+                }`
+              }
+            >
+              <IoPeople className="mr-2 text-2xl text-gray-600" />
+              Data Siswa
+            </NavLink>
+          )}
+          {user && user.role === "admin" && (
+            <NavLink
+              to="/progres-belajar"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 text-xl font-medium text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200 ${
+                  isActive ? "bg-gradient-to-r from-purple-100 to-blue-100" : ""
+                }`
+              }
+            >
+              <IoSchool className="mr-2 text-2xl text-gray-600" />
+              Progres Belajar
+            </NavLink>
+          )}
+          {user && user.role === "admin" && (
+            <NavLink
+              to="/data-nilai"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 text-xl font-medium text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200 ${
+                  isActive ? "bg-gradient-to-r from-purple-100 to-blue-100" : ""
+                }`
+              }
+            >
+              <IoPerson className="mr-2 text-2xl text-gray-600" />
+              Data Nilai
+            </NavLink>
+          )}
+          {user && user.role === "admin" && (
+            <NavLink
+              to="/products"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 text-xl font-medium text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200 ${
+                  isActive ? "bg-gradient-to-r from-purple-100 to-blue-100" : ""
+                }`
+              }
+            >
+              <IoPricetag className="mr-2 text-2xl text-gray-600" />
+              Data Evaluasi
+            </NavLink>
+          )}
+          {user && user.role === "admin" && (
+            <NavLink
+              to="/pengaturan"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 text-xl font-medium text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-200 ${
+                  isActive ? "bg-gradient-to-r from-purple-100 to-blue-100" : ""
+                }`
+              }
+            >
+              <IoSettings className="mr-2 text-2xl text-gray-600" />
+              Pengaturan
+            </NavLink>
+          )}
+          <button
+            onClick={logout}
+            className="flex items-center px-4 py-2 text-xl font-medium text-gray-800 transition-colors duration-200 rounded-lg hover:bg-gray-100"
+          >
+            <IoLogOut className="mr-2 text-2xl text-gray-600" />
+            Logout
+          </button>
+        </nav>
+      </div>
+
+      {/* Overlay for Mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black bg-opacity-50 md:hidden"
+          onClick={toggleSidebar}
+        ></div>
+      )}
+    </>
   );
 };
 

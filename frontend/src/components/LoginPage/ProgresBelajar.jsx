@@ -3,38 +3,61 @@ import axios from "axios";
 
 const ProgresBelajar = () => {
   const [users, setUsers] = useState([]);
+  const [classes, setClasses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    getClasses();
     getUsers();
-  }, []);
+  }, [selectedClass]);
+
+  useEffect(() => {
+    if (error === "Mohon login ke akun anda") {
+      window.location.href = "/login";
+    }
+  }, [error]);
+
+  const getClasses = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/classes", {
+        withCredentials: true,
+      });
+      setClasses(response.data.sort()); // Sort classes alphabetically
+      console.log("Daftar kelas unik:", response.data);
+    } catch (error) {
+      console.error(
+        "Gagal mengambil daftar kelas:",
+        error.response?.data?.msg || error.message
+      );
+      setError(error.response?.data?.msg || "Terjadi kesalahan");
+    }
+  };
 
   const getUsers = async () => {
     try {
       const response = await axios.get("http://localhost:5000/users", {
-        withCredentials: true, // Ensure session cookie is sent
+        params: { class: selectedClass || undefined },
+        withCredentials: true,
       });
-      // Filter only users with role "user"
-      const filteredUsers = response.data.filter(
-        (user) => user.role === "user"
-      );
-      setUsers(filteredUsers);
+      console.log("Pengguna dengan role=user:", response.data);
+      setUsers(response.data); // Data sudah difilter di backend
+      setError(null);
     } catch (error) {
       console.error(
-        "Error fetching users:",
-        error.response?.data || error.message
+        "Gagal mengambil pengguna:",
+        error.response?.data?.msg || error.message
       );
+      setError(error.response?.data?.msg || "Terjadi kesalahan");
     }
   };
 
-  // Filter users based on search term for class
+  // Filter users based on search term for name
   const filteredUsers = users.filter((user) =>
-    [user.name, user.class || ""]
-      .join(" ")
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Calculate total pages
@@ -54,12 +77,17 @@ const ProgresBelajar = () => {
             Progres Belajar
           </h1>
 
+          {error && <p className="mb-4 text-center text-red-500">{error}</p>}
+
           <div className="flex flex-col mb-6 space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
-            <div className="flex items-center mt-4 space-x-2 text-sm text-gray-700">
+            <div className="flex items-center space-x-2 text-sm text-gray-700">
               <span>Menampilkan</span>
               <select
                 value={itemsPerPage}
-                onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                onChange={(e) => {
+                  setItemsPerPage(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
                 className="px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-600"
               >
                 <option value={5}>5</option>
@@ -69,13 +97,33 @@ const ProgresBelajar = () => {
               </select>
               <span>data</span>
             </div>
-            <input
-              type="search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Cari nama atau kelas..."
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md md:w-64 focus:outline-none focus:ring-1 focus:ring-purple-600"
-            />
+            <div className="flex flex-col space-y-4 md:flex-row md:items-center md:space-y-0 md:space-x-4">
+              <select
+                value={selectedClass}
+                onChange={(e) => {
+                  setSelectedClass(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="w-full px-2 py-2 text-sm border border-gray-300 rounded-md md:w-40 focus:outline-none focus:ring-1 focus:ring-purple-600"
+              >
+                <option value="">Semua Kelas</option>
+                {classes.map((cls) => (
+                  <option key={cls} value={cls}>
+                    {cls}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1);
+                }}
+                placeholder="Cari nama..."
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md md:w-64 focus:outline-none focus:ring-1 focus:ring-purple-600"
+              />
+            </div>
           </div>
 
           <table className="w-full mt-5 text-base text-center text-gray-700 border">
@@ -106,7 +154,7 @@ const ProgresBelajar = () => {
                   </td>
                 </tr>
               ) : (
-                currentUsers.map((user, index) => (
+                currentUsers.map((user) => (
                   <tr key={user.uuid} className="border-b border-gray-200">
                     <td className="px-3 py-2 font-mono text-base text-center select-text">
                       {user.nis}

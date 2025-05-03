@@ -30,7 +30,7 @@ const ScoreList = () => {
         ...new Set(
           response.data.map((user) => user.class).filter((cls) => cls)
         ),
-      ];
+      ].sort(); // Sort classes alphabetically
       console.log("Daftar kelas unik:", uniqueClasses);
       setClasses(uniqueClasses);
     } catch (error) {
@@ -118,7 +118,7 @@ const ScoreList = () => {
         s.type === type &&
         (type === "evaluasi_akhir" ? true : s.chapter === chapter)
     );
-    return score ? score.score.toFixed(2) : "-";
+    return score ? Math.floor(score.score) : "-";
   };
 
   const renderHeader = () => (
