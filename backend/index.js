@@ -21,6 +21,8 @@ const app = express();
 const sessionStore = SequelizeStore(session.Store);
 const store = new sessionStore({
   db: db,
+  checkExpirationInterval: 15 * 60 * 1000, // Bersihkan sesi kadaluarsa setiap 15 menit
+  expiration: 24 * 60 * 60 * 1000, // Sesi berlaku selama 24 jam
 });
 
 (async () => {
@@ -59,14 +61,13 @@ const store = new sessionStore({
       console.log("Evaluations initialized");
     }
 
-    // Inisialisasi KKM default jika belum ada
     const kkmRecords = await Kkm.findAll();
     if (kkmRecords.length === 0) {
       const evaluations = await Evaluation.findAll();
       for (const evaluation of evaluations) {
         await Kkm.create({
           evaluation_id: evaluation.id,
-          kkm: 75, // Nilai KKM default
+          kkm: 75,
         });
       }
       console.log("KKM initialized with default value 75");
@@ -78,14 +79,15 @@ const store = new sessionStore({
 
 app.use(
   session({
-    secret: process.env.SESS_SECRET,
+    secret: process.env.SESS_SECRET || "your-secret-key",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: store,
     cookie: {
-      secure: false, // Set ke false untuk pengembangan lokal (HTTP)
+      secure: process.env.NODE_ENV === "production", // Gunakan secure di produksi
       httpOnly: true,
       sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000, // 24 jam
     },
   })
 );
@@ -94,6 +96,8 @@ app.use(
   cors({
     credentials: true,
     origin: ["http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -106,10 +110,14 @@ app.use(KkmRoute);
 
 // Logging untuk debugging sesi
 app.use((req, res, next) => {
+  console.log(
+    `[${new Date().toISOString()}] Request: ${req.method} ${req.url}`
+  );
   console.log("Session ID:", req.sessionID, "User ID:", req.session.userId);
   next();
 });
 
-app.listen(process.env.APP_PORT, () => {
-  console.log("Server up and running ...");
+const PORT = process.env.APP_PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

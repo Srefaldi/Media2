@@ -16,16 +16,18 @@ export const LoginUser = createAsyncThunk(
   "user/LoginUser",
   async (user, thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:5000/login", {
-        nis: user.nis,
-        password: user.password,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/login",
+        {
+          nis: user.nis,
+          password: user.password,
+        },
+        { withCredentials: true }
+      );
       return response.data;
     } catch (error) {
-      if (error.response) {
-        const message = error.response.data.msg;
-        return thunkAPI.rejectWithValue(message);
-      }
+      const message = error.response?.data?.msg || "Terjadi kesalahan";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -34,18 +36,20 @@ export const RegisterGuru = createAsyncThunk(
   "user/RegisterGuru",
   async (user, thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:5000/register-guru", {
-        fullName: user.fullName,
-        nip: user.nip,
-        password: user.password,
-        school: user.school,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/register-guru",
+        {
+          fullName: user.fullName,
+          nip: user.nip,
+          password: user.password,
+          school: user.school,
+        },
+        { withCredentials: true }
+      );
       return response.data;
     } catch (error) {
-      if (error.response) {
-        const message = error.response.data.msg;
-        return thunkAPI.rejectWithValue(message);
-      }
+      const message = error.response?.data?.msg || "Terjadi kesalahan";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -62,14 +66,13 @@ export const RegisterSiswa = createAsyncThunk(
           password: user.password,
           class: user.class,
           token: user.token,
-        }
+        },
+        { withCredentials: true }
       );
       return response.data;
     } catch (error) {
-      if (error.response) {
-        const message = error.response.data.msg;
-        return thunkAPI.rejectWithValue(message);
-      }
+      const message = error.response?.data?.msg || "Terjadi kesalahan";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -81,15 +84,13 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
     });
     return response.data;
   } catch (error) {
-    if (error.response) {
-      const message = error.response.data.msg;
-      return thunkAPI.rejectWithValue(message);
-    }
+    const message = error.response?.data?.msg || "Terjadi kesalahan";
+    return thunkAPI.rejectWithValue(message);
   }
 });
 
 export const LogOut = createAsyncThunk("user/LogOut", async () => {
-  await axios.delete("http://localhost:5000/logout");
+  await axios.delete("http://localhost:5000/logout", { withCredentials: true });
 });
 
 export const createEvaluation = createAsyncThunk(
@@ -99,16 +100,12 @@ export const createEvaluation = createAsyncThunk(
       const response = await axios.post(
         "http://localhost:5000/evaluations",
         evaluationData,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       return response.data;
     } catch (error) {
-      if (error.response) {
-        const message = error.response.data.msg;
-        return thunkAPI.rejectWithValue(message);
-      }
+      const message = error.response?.data?.msg || "Terjadi kesalahan";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -122,10 +119,8 @@ export const getEvaluations = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      if (error.response) {
-        const message = error.response.data.msg;
-        return thunkAPI.rejectWithValue(message);
-      }
+      const message = error.response?.data?.msg || "Terjadi kesalahan";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -136,16 +131,12 @@ export const getQuestionsByEvaluation = createAsyncThunk(
     try {
       const response = await axios.get(
         `http://localhost:5000/questions/evaluation/${evaluation_id}`,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       return response.data;
     } catch (error) {
-      if (error.response) {
-        const message = error.response.data.msg;
-        return thunkAPI.rejectWithValue(message);
-      }
+      const message = error.response?.data?.msg || "Terjadi kesalahan";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -157,16 +148,12 @@ export const createQuestion = createAsyncThunk(
       const response = await axios.post(
         "http://localhost:5000/questions",
         questionData,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       return response.data;
     } catch (error) {
-      if (error.response) {
-        const message = error.response.data.msg;
-        return thunkAPI.rejectWithValue(message);
-      }
+      const message = error.response?.data?.msg || "Terjadi kesalahan";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -178,16 +165,12 @@ export const updateQuestion = createAsyncThunk(
       const response = await axios.patch(
         `http://localhost:5000/questions/${id}`,
         questionData,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       return response.data;
     } catch (error) {
-      if (error.response) {
-        const message = error.response.data.msg;
-        return thunkAPI.rejectWithValue(message);
-      }
+      const message = error.response?.data?.msg || "Terjadi kesalahan";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -198,16 +181,12 @@ export const deleteQuestion = createAsyncThunk(
     try {
       const response = await axios.delete(
         `http://localhost:5000/questions/${questionId}`,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       return { questionId, message: response.data.msg };
     } catch (error) {
-      if (error.response) {
-        const message = error.response.data.msg;
-        return thunkAPI.rejectWithValue(message);
-      }
+      const message = error.response?.data?.msg || "Terjadi kesalahan";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -219,10 +198,8 @@ export const getKkm = createAsyncThunk("kkm/getKkm", async (_, thunkAPI) => {
     });
     return response.data;
   } catch (error) {
-    if (error.response) {
-      const message = error.response.data.msg;
-      return thunkAPI.rejectWithValue(message);
-    }
+    const message = error.response?.data?.msg || "Terjadi kesalahan";
+    return thunkAPI.rejectWithValue(message);
   }
 });
 
@@ -235,10 +212,8 @@ export const setKkm = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      if (error.response) {
-        const message = error.response.data.msg;
-        return thunkAPI.rejectWithValue(message);
-      }
+      const message = error.response?.data?.msg || "Terjadi kesalahan";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -252,11 +227,15 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(LoginUser.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(LoginUser.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.user = action.payload;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(LoginUser.rejected, (state, action) => {
       state.isLoading = false;
@@ -266,11 +245,14 @@ export const authSlice = createSlice({
 
     builder.addCase(RegisterGuru.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(RegisterGuru.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
+      state.isError = false;
     });
     builder.addCase(RegisterGuru.rejected, (state, action) => {
       state.isLoading = false;
@@ -280,11 +262,14 @@ export const authSlice = createSlice({
 
     builder.addCase(RegisterSiswa.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(RegisterSiswa.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
+      state.isError = false;
     });
     builder.addCase(RegisterSiswa.rejected, (state, action) => {
       state.isLoading = false;
@@ -294,26 +279,34 @@ export const authSlice = createSlice({
 
     builder.addCase(getMe.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(getMe.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.user = action.payload;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(getMe.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;
+      state.user = null;
     });
 
     builder.addCase(createEvaluation.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(createEvaluation.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
       state.evaluations.push(action.payload.evaluation);
+      state.isError = false;
     });
     builder.addCase(createEvaluation.rejected, (state, action) => {
       state.isLoading = false;
@@ -323,11 +316,15 @@ export const authSlice = createSlice({
 
     builder.addCase(getEvaluations.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(getEvaluations.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.evaluations = action.payload;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(getEvaluations.rejected, (state, action) => {
       state.isLoading = false;
@@ -337,11 +334,15 @@ export const authSlice = createSlice({
 
     builder.addCase(getQuestionsByEvaluation.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(getQuestionsByEvaluation.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.questions = action.payload.questions;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(getQuestionsByEvaluation.rejected, (state, action) => {
       state.isLoading = false;
@@ -351,12 +352,15 @@ export const authSlice = createSlice({
 
     builder.addCase(createQuestion.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(createQuestion.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
       state.questions.push(action.payload.question);
+      state.isError = false;
     });
     builder.addCase(createQuestion.rejected, (state, action) => {
       state.isLoading = false;
@@ -366,11 +370,14 @@ export const authSlice = createSlice({
 
     builder.addCase(updateQuestion.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(updateQuestion.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
+      state.isError = false;
     });
     builder.addCase(updateQuestion.rejected, (state, action) => {
       state.isLoading = false;
@@ -380,6 +387,8 @@ export const authSlice = createSlice({
 
     builder.addCase(deleteQuestion.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(deleteQuestion.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -388,6 +397,7 @@ export const authSlice = createSlice({
       state.questions = state.questions.filter(
         (question) => question.id !== action.payload.questionId
       );
+      state.isError = false;
     });
     builder.addCase(deleteQuestion.rejected, (state, action) => {
       state.isLoading = false;
@@ -397,11 +407,15 @@ export const authSlice = createSlice({
 
     builder.addCase(getKkm.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(getKkm.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.kkm = action.payload;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(getKkm.rejected, (state, action) => {
       state.isLoading = false;
@@ -411,11 +425,14 @@ export const authSlice = createSlice({
 
     builder.addCase(setKkm.pending, (state) => {
       state.isLoading = true;
+      state.isError = false;
+      state.message = "";
     });
     builder.addCase(setKkm.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
+      state.isError = false;
     });
     builder.addCase(setKkm.rejected, (state, action) => {
       state.isLoading = false;

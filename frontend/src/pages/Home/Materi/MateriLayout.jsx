@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom"; // Tambahkan useNavigate
-import { useSelector } from "react-redux";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import MateriSidebar from "./MateriSidebar";
 import Navbar from "./Navbar";
 import Footer from "../../../components/Landing/Footer2";
 import Swal from "sweetalert2";
 import daftarBab from "./daftarBab.json";
+import { getMe } from "../../../features/authSlice";
 
 const MateriLayout = () => {
   const [progress, setProgress] = useState(0);
   const [completedLessons, setCompletedLessons] = useState([]);
-  const { user } = useSelector((state) => state.auth);
-  const navigate = useNavigate(); // Tambahkan navigate
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const { user, isError, isLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const totalLessons = 60;
 
   useEffect(() => {
-    console.log("Current user:", user);
+    if (!user && !isLoading) {
+      dispatch(getMe());
+    }
+  }, [dispatch, user, isLoading]);
+
+  useEffect(() => {
     const fetchProgress = async () => {
-      if (!user?.uuid) {
-        console.log("UUID pengguna tidak ditemukan, melewati fetchProgress");
-        // Jangan tampilkan alert, langsung arahkan ke login
-        navigate("/login");
+      if (!user?.uuid || !isAuthenticated) {
+        console.log("UUID pengguna tidak ditemukan atau tidak terautentikasi");
         return;
       }
       try {
@@ -45,24 +51,33 @@ const MateriLayout = () => {
           "Error mengambil progres:",
           error.response?.data || error.message
         );
-        Swal.fire({
-          icon: "error",
-          title: "Gagal Memuat Progres",
-          text:
-            error.response?.data?.msg ||
-            "Tidak dapat mengambil progres dari server. Silakan coba lagi.",
-        });
+        if (error.response?.status === 401) {
+          setIsAuthenticated(false);
+          dispatch(getMe()); // Coba autentikasi ulang
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Gagal Memuat Progres",
+            text:
+              error.response?.data?.msg ||
+              "Tidak dapat mengambil progres dari server. Silakan coba lagi.",
+          });
+        }
       }
     };
     fetchProgress();
-  }, [user, navigate]);
+  }, [user, dispatch, isAuthenticated]);
+
+  useEffect(() => {
+    if (isError && !isLoading) {
+      console.log("Error autentikasi, mengarahkan ke login");
+      navigate("/login");
+    }
+  }, [isError, isLoading, navigate]);
 
   const updateProgressInBackend = async (newProgress) => {
-    if (!user?.uuid) {
-      console.log(
-        "UUID pengguna tidak ditemukan, tidak dapat memperbarui progres"
-      );
-      navigate("/login"); // Arahkan ke login jika user tidak ada
+    if (!user?.uuid || !isAuthenticated) {
+      console.log("UUID pengguna tidak ditemukan atau tidak terautentikasi");
       return;
     }
     try {
@@ -93,13 +108,18 @@ const MateriLayout = () => {
         "Error memperbarui progres:",
         error.response?.data || error.message
       );
-      Swal.fire({
-        icon: "error",
-        title: "Gagal Memperbarui Progres",
-        text:
-          error.response?.data?.msg ||
-          "Tidak dapat menyimpan progres ke server. Silakan coba lagi.",
-      });
+      if (error.response?.status === 401) {
+        setIsAuthenticated(false);
+        dispatch(getMe());
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal Memperbarui Progres",
+          text:
+            error.response?.data?.msg ||
+            "Tidak dapat menyimpan progres ke server. Silakan coba lagi.",
+        });
+      }
     }
   };
 
