@@ -60,9 +60,9 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`sidebar fixed md:static top-0 left-0 w-64 bg-white shadow-lg pt-8 pb-12 px-4 transform ${
+        className={`sidebar fixed md:static top-0 left-0 w-64 bg-white pt-8 pb-12 px-4 transform border-r border-gray-200 ${
           isOpen ? "translate-x-0 h-screen" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 z-40 flex flex-col`}
+        } md:translate-x-0 transition-transform duration-300 z-10 flex flex-col`}
       >
         <h2 className="mb-4 text-3xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">
           DAFTAR MENU
@@ -128,7 +128,7 @@ const Sidebar = () => {
               }
             >
               <IoPricetag className="mr-2 text-2xl text-gray-600" />
-              Data Evaluasi
+              Data Kuis
             </NavLink>
           )}
           {user && user.role === "admin" && (

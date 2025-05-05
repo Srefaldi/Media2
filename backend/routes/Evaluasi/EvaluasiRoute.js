@@ -2,6 +2,7 @@ import express from "express";
 import {
   createEvaluation,
   createQuestion,
+  getQuestionById,
   getQuestionsByEvaluation,
   updateQuestion,
   deleteQuestion,
@@ -15,6 +16,8 @@ const router = express.Router();
 router.post("/evaluations", verifyUser, adminOnly, createEvaluation);
 // Endpoint untuk membuat soal (hanya admin)
 router.post("/questions", verifyUser, adminOnly, createQuestion);
+// Endpoint untuk mendapatkan soal berdasarkan ID (semua user terautentikasi)
+router.get("/questions/:id", verifyUser, getQuestionById);
 // Endpoint untuk mendapatkan soal berdasarkan evaluation_id (semua user terautentikasi)
 router.get(
   "/questions/evaluation/:evaluation_id",

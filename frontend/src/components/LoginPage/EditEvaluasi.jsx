@@ -198,7 +198,7 @@ const EditQuestion = () => {
             <div className="flex justify-end space-x-2">
               <button
                 type="button"
-                onClick={() => navigate("/evaluations")}
+                onClick={() => navigate("/products")}
                 className="px-4 py-2 text-white bg-gray-500 rounded hover:bg-gray-600"
               >
                 Batal

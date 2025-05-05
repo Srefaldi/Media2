@@ -114,6 +114,44 @@ const createQuestion = async (req, res) => {
   }
 };
 
+// Get Question by ID
+const getQuestionById = async (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ msg: "Mohon login ke akun anda" });
+  }
+
+  const { id } = req.params;
+
+  try {
+    const question = await Question.findOne({
+      where: { id },
+      attributes: [
+        "id",
+        "evaluation_id",
+        "question_text",
+        "option_a",
+        "option_b",
+        "option_c",
+        "option_d",
+        "option_e",
+        "correct_answer",
+      ],
+    });
+
+    if (!question) {
+      return res.status(404).json({ msg: "Soal tidak ditemukan" });
+    }
+
+    console.log("Question fetched:", question);
+    res.status(200).json(question);
+  } catch (error) {
+    console.error("Error di getQuestionById:", error.message);
+    res
+      .status(500)
+      .json({ msg: "Terjadi kesalahan pada server", error: error.message });
+  }
+};
+
 // Get All Questions for an Evaluation
 const getQuestionsByEvaluation = async (req, res) => {
   if (!req.session.userId) {
@@ -279,6 +317,7 @@ const getEvaluations = async (req, res) => {
 export {
   createEvaluation,
   createQuestion,
+  getQuestionById,
   getQuestionsByEvaluation,
   updateQuestion,
   deleteQuestion,

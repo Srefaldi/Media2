@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getEvaluations,
   getQuestionsByEvaluation,
   deleteQuestion,
   createQuestion,
+  updateQuestion,
 } from "../../features/authSlice.js";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const EvaluationList = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,8 @@ const EvaluationList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     evaluation_id: "",
     question_text: "",
@@ -33,6 +35,7 @@ const EvaluationList = () => {
     option_e: "",
     correct_answer: "",
   });
+  const [editQuestionData, setEditQuestionData] = useState(null);
 
   // Filter soal berdasarkan pencarian
   const filteredQuestions = questions.filter((question) =>
@@ -173,7 +176,7 @@ const EvaluationList = () => {
           timer: 1500,
           showConfirmButton: false,
         });
-        setIsModalOpen(false);
+        setIsAddModalOpen(false);
         setFormData({
           evaluation_id: "",
           question_text: "",
@@ -184,7 +187,6 @@ const EvaluationList = () => {
           option_e: "",
           correct_answer: "",
         });
-        // Refresh soal untuk evaluasi yang dipilih
         if (selectedEvaluation) {
           dispatch(getQuestionsByEvaluation(selectedEvaluation));
         }
@@ -192,6 +194,66 @@ const EvaluationList = () => {
         Swal.fire({
           title: "Gagal!",
           text: action.payload || "Terjadi kesalahan saat menambahkan soal.",
+          icon: "error",
+        });
+      }
+    });
+  };
+
+  const handleEditQuestion = (questionId) => {
+    const fetchQuestion = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/questions/${questionId}`,
+          {
+            withCredentials: true,
+          }
+        );
+        setEditQuestionData(response.data);
+        setFormData(response.data);
+        setIsEditModalOpen(true);
+      } catch (error) {
+        Swal.fire({
+          title: "Gagal!",
+          text: "Tidak dapat mengambil data soal.",
+          icon: "error",
+        });
+      }
+    };
+    fetchQuestion();
+  };
+
+  const handleUpdateQuestion = (e) => {
+    e.preventDefault();
+    dispatch(
+      updateQuestion({ id: editQuestionData.id, questionData: formData })
+    ).then((action) => {
+      if (updateQuestion.fulfilled.match(action)) {
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Soal telah diperbarui.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        setIsEditModalOpen(false);
+        setFormData({
+          evaluation_id: "",
+          question_text: "",
+          option_a: "",
+          option_b: "",
+          option_c: "",
+          option_d: "",
+          option_e: "",
+          correct_answer: "",
+        });
+        if (selectedEvaluation) {
+          dispatch(getQuestionsByEvaluation(selectedEvaluation));
+        }
+      } else {
+        Swal.fire({
+          title: "Gagal!",
+          text: action.payload || "Terjadi kesalahan saat memperbarui soal.",
           icon: "error",
         });
       }
@@ -274,12 +336,12 @@ const EvaluationList = () => {
               {question.correct_answer}
             </td>
             <td className="flex justify-center px-3 py-2 space-x-2 font-mono text-base text-center select-text">
-              <Link
-                to={`/questions/edit/${question.id}`}
+              <button
+                onClick={() => handleEditQuestion(question.id)}
                 className="px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded hover:bg-green-600"
               >
                 Perbarui
-              </Link>
+              </button>
               <button
                 onClick={() => handleDeleteQuestion(question.id)}
                 className="px-3 py-1 text-sm font-semibold text-white bg-red-600 rounded hover:bg-red-700"
@@ -365,7 +427,7 @@ const EvaluationList = () => {
                 <span>data</span>
               </div>
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setIsAddModalOpen(true)}
                 className="inline-block px-4 py-2 text-center text-white bg-blue-500 rounded hover:bg-blue-600"
               >
                 TAMBAH SOAL
@@ -412,7 +474,7 @@ const EvaluationList = () => {
           {renderPagination()}
 
           {/* Modal Tambah Soal */}
-          {isModalOpen && (
+          {isAddModalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
               <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
                 <h2 className="mb-4 text-xl font-semibold text-gray-800">
@@ -548,7 +610,161 @@ const EvaluationList = () => {
                   <div className="flex justify-end space-x-2">
                     <button
                       type="button"
-                      onClick={() => setIsModalOpen(false)}
+                      onClick={() => setIsAddModalOpen(false)}
+                      className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                    >
+                      Simpan
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* Modal Edit Soal */}
+          {isEditModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
+                <h2 className="mb-4 text-xl font-semibold text-gray-800">
+                  Edit Soal
+                </h2>
+                <form onSubmit={handleUpdateQuestion} className="space-y-4">
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Pilih Bab/Evaluasi
+                    </label>
+                    <select
+                      name="evaluation_id"
+                      value={formData.evaluation_id}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    >
+                      <option value="">Pilih Bab/Evaluasi</option>
+                      {evaluations.map((evaluation) => (
+                        <option key={evaluation.id} value={evaluation.id}>
+                          {evaluation.type === "bab"
+                            ? `Bab ${evaluation.chapter}`
+                            : "Evaluasi Akhir"}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Teks Soal
+                    </label>
+                    <textarea
+                      name="question_text"
+                      value={formData.question_text}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows="4"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Opsi A
+                    </label>
+                    <input
+                      type="text"
+                      name="option_a"
+                      value={formData.option_a}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Opsi B
+                    </label>
+                    <input
+                      type="text"
+                      name="option_b"
+                      value={formData.option_b}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Opsi C
+                    </label>
+                    <input
+                      type="text"
+                      name="option_c"
+                      value={formData.option_c}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Opsi D
+                    </label>
+                    <input
+                      type="text"
+                      name="option_d"
+                      value={formData.option_d}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Opsi E
+                    </label>
+                    <input
+                      type="text"
+                      name="option_e"
+                      value={formData.option_e}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Jawaban Benar
+                    </label>
+                    <select
+                      name="correct_answer"
+                      value={formData.correct_answer}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    >
+                      <option value="">Pilih Jawaban</option>
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                      <option value="D">D</option>
+                      <option value="E">E</option>
+                    </select>
+                  </div>
+
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsEditModalOpen(false)}
                       className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
                     >
                       Batal

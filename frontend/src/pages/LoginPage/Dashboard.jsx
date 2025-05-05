@@ -85,9 +85,9 @@ const UserDashboard = () => {
                 <img
                   alt="Illustration of a book, glasses, and a cup of coffee"
                   className="mx-auto mb-4"
-                  height="250"
+                  height="350"
                   src={petunjukImage}
-                  width="250"
+                  width="350"
                 />
                 <button
                   className="px-4 py-2 text-gray-600 bg-transparent border border-gray-600 rounded hover:bg-gray-300"

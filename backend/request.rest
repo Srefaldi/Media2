@@ -98,20 +98,20 @@ POST http://localhost:5000/register-siswa
 Content-Type: application/json
 
 {
-  "fullName": "SISWA",
-  "nis": "1234",
+  "fullName": "Sopia Refaldi",
+  "nis": "2110",
   "password": "123",
-  "class": "10A",
+  "class": "A1",
   "token": "123"
 }
 
 ###
 # Update Progress
-PATCH http://localhost:5000/users/96a50fbb-f93a-48c3-9194-4943d9d3a9f4/progress
+PATCH http://localhost:5000/users/07801026-56f4-4a77-a612-73b60b16b3a6/progress
 Content-Type: application/json
 
 {
-  "progress": 0
+  "progress": 20
 }
 
 
@@ -133,7 +133,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "nis": "1234",
+    "nis": "2110",
     "password": "123"
 }
 ###

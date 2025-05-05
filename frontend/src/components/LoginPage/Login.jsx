@@ -47,7 +47,7 @@ const Login = () => {
           </div>
           <div className="flex-1 p-8">
             <h1 className="text-2xl font-bold mb-10 text-[#68217A]">
-              SHARP LEARN
+              MASUK SISWA
             </h1>
             <p className="mb-3 text-gray-600">
               Silahkan masuk dengan akun yang telah terdaftar ...

@@ -146,19 +146,19 @@ const ScoreList = () => {
           colSpan={6}
           className="px-3 py-2 text-base font-semibold text-center select-none"
         >
-          Latihan Bab
+          LATIHAN BAB
         </th>
         <th
           colSpan={6}
           className="px-3 py-2 text-base font-semibold text-center select-none"
         >
-          Evaluasi Bab
+          KUIS BAB
         </th>
         <th
           rowSpan={2}
           className="px-3 py-2 text-base font-semibold text-center align-middle select-none"
         >
-          Evaluasi Akhir
+          EVALUASI AKHIR
         </th>
       </tr>
       <tr className="border-b border-gray-200">

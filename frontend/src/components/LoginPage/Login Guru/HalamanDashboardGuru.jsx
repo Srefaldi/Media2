@@ -5,16 +5,11 @@ import { getMe } from "../../../features/authSlice";
 import Navbar from "../../../components/Landing/NavbarLogin/NavbarLogin";
 import Footer from "../../../components/Landing/Footer";
 import Sidebar from "../../../components/LoginPage/Sidebar";
-import {
-  IoStatsChart,
-  IoArrowUp,
-  IoArrowDown,
-  IoRefresh,
-} from "react-icons/io5";
+import { IoStatsChart, IoArrowUp, IoArrowDown } from "react-icons/io5";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
-  const [token, setToken] = useState("");
+  const [token] = useState("TES1"); // Static token
   const [studentCount, setStudentCount] = useState(0);
   const [completedStudents, setCompletedStudents] = useState(0);
   const [averageScores, setAverageScores] = useState({});
@@ -25,22 +20,7 @@ const AdminDashboard = () => {
   const [selectedClass, setSelectedClass] = useState("");
   const [classes, setClasses] = useState([]);
 
-  // Fungsi untuk menghasilkan token baru
-  const generateToken = () => {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let token = "";
-    for (let i = 0; i < 8; i++) {
-      token += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return token;
-  };
-
-  // Fungsi untuk refresh token
-  const refreshToken = () => {
-    setToken(generateToken());
-  };
-
-  // Fungsi untuk mengambil daftar kelas
+  // Fetch class list
   const getClasses = async () => {
     try {
       const response = await axios.get("http://localhost:5000/classes", {
@@ -56,12 +36,12 @@ const AdminDashboard = () => {
     }
   };
 
-  // Fungsi untuk mengambil jumlah siswa, progres belajar, dan data nilai
+  // Fetch student count, progress, and scores
   const getScoresData = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      // Ambil daftar pengguna dengan filter kelas
+      // Fetch users with class filter
       const usersResponse = await axios.get("http://localhost:5000/users", {
         params: { class: selectedClass || undefined },
         withCredentials: true,
@@ -71,13 +51,13 @@ const AdminDashboard = () => {
       );
       setStudentCount(students.length);
 
-      // Hitung siswa dengan progres 100%
+      // Count students with 100% progress
       const completed = students.filter(
         (student) => student.progress === 100
       ).length;
       setCompletedStudents(completed);
 
-      // Ambil nilai untuk setiap siswa
+      // Fetch scores for each student
       const scoresPromises = students.map(async (student) => {
         try {
           const scoreResponse = await axios.get(
@@ -99,7 +79,7 @@ const AdminDashboard = () => {
 
       const studentsWithScores = await Promise.all(scoresPromises);
 
-      // Proses data untuk rata-rata, tertinggi, dan terendah
+      // Process scores for averages, highest, and lowest
       const averages = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], final: [] };
       const highest = {
         1: null,
@@ -121,7 +101,7 @@ const AdminDashboard = () => {
       };
 
       studentsWithScores.forEach(({ name, scores }) => {
-        // Evaluasi Bab 1-6
+        // Chapters 1-6
         for (let i = 1; i <= 6; i++) {
           const score = scores.find(
             (s) => s.type === "evaluasi" && s.chapter === i
@@ -136,7 +116,7 @@ const AdminDashboard = () => {
             }
           }
         }
-        // Evaluasi Akhir
+        // Final evaluation
         const finalScore = scores.find((s) => s.type === "evaluasi_akhir");
         if (finalScore) {
           averages.final.push(finalScore.score);
@@ -149,7 +129,7 @@ const AdminDashboard = () => {
         }
       });
 
-      // Hitung rata-rata
+      // Calculate averages
       const formattedAverages = {};
       for (let i = 1; i <= 6; i++) {
         formattedAverages[i] =
@@ -168,7 +148,7 @@ const AdminDashboard = () => {
             )
           : "-";
 
-      // Format tertinggi dan terendah
+      // Format highest and lowest scores
       const formattedHighest = {};
       const formattedLowest = {};
       for (let i = 1; i <= 6; i++) {
@@ -202,7 +182,6 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     dispatch(getMe());
-    setToken(generateToken());
     getClasses();
     getScoresData();
   }, [dispatch]);
@@ -256,18 +235,7 @@ const AdminDashboard = () => {
                 <i className="text-2xl text-purple-600 fas fa-key"></i>
                 <span className="text-xl font-bold text-gray-800">TOKEN</span>
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="text-xl font-semibold text-gray-900">
-                  {token}
-                </div>
-                <button
-                  className="flex items-center px-4 py-2 text-white transition-colors duration-200 bg-purple-600 rounded-lg shadow hover:bg-purple-700"
-                  onClick={refreshToken}
-                >
-                  <IoRefresh className="mr-2" />
-                  Refresh
-                </button>
-              </div>
+              <div className="text-xl font-semibold text-gray-900">{token}</div>
             </div>
           </div>
           <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2">
