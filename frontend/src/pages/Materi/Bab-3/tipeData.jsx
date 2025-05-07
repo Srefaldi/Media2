@@ -17,21 +17,13 @@ const TipeData = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleQuizComplete = (isPassed) => {
+    handleLessonComplete("/materi/bab3/klasifikasi-tipedata");
+
     setQuizCompleted(true);
     setQuizPassed(isPassed); // Set status kuis
   };
 
   const handleNext = () => {
-    if (!quizPassed) {
-      // Jika kuis belum dijawab dengan benar, tampilkan peringatan
-      Swal.fire({
-        title: "Oops!",
-        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
-        icon: "warning",
-        confirmButtonText: "OK",
-      });
-      return; // Hentikan eksekusi jika kuis belum benar
-    }
     handleLessonComplete("/materi/bab3/pengertian-tipedata");
     window.scrollTo(0, 0);
     navigate("/materi/bab3/klasifikasi-tipedata");
@@ -86,8 +78,8 @@ const TipeData = () => {
         <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-b-lg">
           <li>Mampu memahami konsep tipe data dan klasifikasinya</li>
           <li>
-            Menerapkan tipe data integer, floating-point, boolean, karakter,
-            string, dan array dalam penulisan program C#.
+            Menerapkan tipe data integer, floating-point, boolean, karakter, dan
+            string dalam penulisan program C#.
           </li>
           <li>
             Menggunakan tipe data yang tepat untuk operasi aritmatika, logika,
@@ -116,8 +108,8 @@ const TipeData = () => {
           <li>3.3.3 Boolean</li>
           <li>3.3.4 Char</li>
           <li>3.3.5 String</li>
-          <li>3.3.6 Array</li>
-          <li>3.4 Rangkuman</li>
+
+          <li>Rangkuman</li>
         </ul>
       </div>
 

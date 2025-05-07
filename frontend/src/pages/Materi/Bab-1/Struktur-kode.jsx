@@ -33,7 +33,7 @@ const StrukturKode = () => {
 
       <div>
         <h2 className="text-2xl font-bold">
-          1.3 Struktur Kode Bahasa Pemrograman C#
+          1.2 Struktur Kode Bahasa Pemrograman C#
         </h2>
 
         <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">

@@ -21,6 +21,7 @@ const OperatorKesetaraan = () => {
     navigate("/materi/bab4/operator-conditional"); // Ganti dengan rute topik sebelumnya
   };
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab4/latihan-bab4");
     setQuizCompleted(true);
   };
 

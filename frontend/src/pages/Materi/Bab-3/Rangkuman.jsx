@@ -8,6 +8,7 @@ const Rangkuman = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleNext = () => {
+    handleLessonComplete("/materi/bab4/pengertian-operator");
     handleLessonComplete("/materi/bab3/rangkuman-bab3");
     window.scrollTo(0, 0);
     navigate("/materi/bab4/pengertian-operator");
@@ -28,19 +29,19 @@ const Rangkuman = () => {
           <p>Pada bab ini, kamu telah mempelajari hal-hal berikut:</p>
         </div>
         <ul className="pl-6 mb-4 list-disc">
-          <li className="text-justify mb-2">
+          <li className="mb-2 text-justify">
             <strong>Tipe data</strong> adalah konsep penting dalam pemrograman
             komputer yang digunakan untuk menentukan jenis nilai atau data apa
             yang dapat disimpan dalam suatu variabel atau objek.
           </li>
-          <li className="text-justify mb-2">
+          <li className="mb-2 text-justify">
             Tipe data dalam C# dibagi menjadi <strong>value types</strong> (int,
             float, double, bool, char) dan
             <strong> reference types</strong> (string, class).
           </li>
-          <li className="text-justify mb-2">
+          <li className="mb-2 text-justify">
             Tipe data nilai meliputi:
-            <ul className="mt-1 list-disc list-inside mb-2">
+            <ul className="mt-1 mb-2 list-disc list-inside">
               <li>
                 <strong>int</strong>: digunakan untuk menyimpan bilangan bulat.
               </li>
@@ -62,16 +63,16 @@ const Rangkuman = () => {
               </li>
             </ul>
           </li>
-          <li className="text-justify mb-2">
+          <li className="mb-2 text-justify">
             Tipe data referensi meliputi:
-            <ul className="mt-1 list-disc list-inside mb-2">
+            <ul className="mt-1 mb-2 list-disc list-inside">
               <li>
                 <strong>string</strong>: digunakan untuk menyimpan kumpulan
                 karakter.
               </li>
             </ul>
           </li>
-          <li className="text-justify mb-2">
+          <li className="mb-2 text-justify">
             Tipe data <strong>string</strong> adalah tipe data yang menampung
             kumpulan karakter, seperti "aku", "kamu" atau "Belajar C#".
           </li>

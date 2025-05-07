@@ -17,7 +17,7 @@ const PengenalanCSharp = () => {
     konten: false,
   });
   const navigate = useNavigate();
-  const { handleLessonComplete } = useOutletContext();
+  const { handleLessonComplete, handleQuizComplete } = useOutletContext();
   const [quizCompleted, setQuizCompleted] = useState(false);
 
   const toggleSection = (section) => {
@@ -27,16 +27,14 @@ const PengenalanCSharp = () => {
     }));
   };
 
-  const handleQuizComplete = () => {
-    console.log("Quiz completed, calling handleLessonComplete");
+  const handleQuizCompleteLocal = () => {
     setQuizCompleted(true);
-    handleLessonComplete("/materi/bab1/pengenalan");
+    handleQuizComplete("/materi/bab1/pengenalan");
   };
 
   const handleNext = () => {
-    console.log("Navigating to next lesson");
-    handleLessonComplete("/materi/bab1/instalasi");
     window.scrollTo(0, 0);
+    handleLessonComplete("/materi/bab1/pengenalan");
     navigate("/materi/bab1/struktur-kode");
   };
 
@@ -116,13 +114,13 @@ const PengenalanCSharp = () => {
 
         <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
           <li>1.1 Pengenalan C#</li>
-          <li>1.2 Instalasi Setup .NET dan Visual Studio Code</li>
-          <li>1.3 Struktur Kode Bahasa Pemrograman C#</li>
-          <li>1.4 Struktur Eksekusi Kode</li>
-          <li>1.5 Sintaks Print</li>
-          <li>1.6 Sintaks Komentar</li>
-          <li>1.7 Error pada C#</li>
-          <li>1.8 Rangkuman</li>
+
+          <li>1.2 Struktur Kode Bahasa Pemrograman C#</li>
+          <li>1.3 Struktur Eksekusi Kode</li>
+          <li>1.4 Sintaks Print</li>
+          <li>1.5 Sintaks Komentar</li>
+          <li>1.6 Error pada C#</li>
+          <li> Rangkuman</li>
         </ul>
       </div>
 
@@ -203,7 +201,7 @@ const PengenalanCSharp = () => {
       </div>
 
       {/* Kuis */}
-      {!quizCompleted && <Quiz onComplete={handleQuizComplete} />}
+      {!quizCompleted && <Quiz onComplete={handleQuizCompleteLocal} />}
 
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">

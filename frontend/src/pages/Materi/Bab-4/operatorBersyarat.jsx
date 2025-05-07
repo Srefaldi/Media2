@@ -22,6 +22,7 @@ const OperatorConditional = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab4/operator-equality");
     setQuizCompleted(true);
   };
 

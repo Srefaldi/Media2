@@ -28,6 +28,7 @@ const PernyataanIfElse = () => {
   };
 
   const handleQuiz2Complete = () => {
+    handleLessonComplete("/materi/bab5/pernyataan-switch");
     setQuiz2Completed(true); // Menandakan Quiz2 selesai
   };
 

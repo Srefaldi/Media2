@@ -21,6 +21,7 @@ const PernyataanSwitch = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab5/pernyataan-perulangan");
     setQuizCompleted(true);
   };
 

@@ -23,6 +23,7 @@ const PernyataanBreakdanContinue = () => {
   };
 
   const handleQuiz2Complete = () => {
+    handleLessonComplete("/materi/bab5/perulangan-bersarang");
     setQuiz2Completed(true); // Menandakan Quiz2 selesai
   };
 
@@ -53,10 +54,10 @@ const PernyataanBreakdanContinue = () => {
           Pernyataan break dapat digunakan dalam skenario berikut:
         </p>
         <ul className="mt-2 text-justify text-gray-600 list-disc list-inside">
-          <li className="ml-4 mb-2">
+          <li className="mb-2 ml-4">
             Perulangan for, foreach, while, dan do while.
           </li>
-          <li className="ml-4 mb-2">Pengkondisian switch case.</li>
+          <li className="mb-2 ml-4">Pengkondisian switch case.</li>
         </ul>
         <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
         <div className="flex justify-center mb-4">

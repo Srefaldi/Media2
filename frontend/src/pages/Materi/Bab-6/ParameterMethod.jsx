@@ -22,6 +22,7 @@ const ParameterMethod = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab6/latihan-bab6");
     setQuizCompleted(true); // Menandakan kuis selesai
   };
 

@@ -22,6 +22,7 @@ const OperatorPerbandingan = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab4/operator-logika");
     setQuizCompleted(true);
   };
 
@@ -30,7 +31,7 @@ const OperatorPerbandingan = () => {
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 4 - OPERATOR</h1>
       <h2 className="mt-2 mb-4 text-2xl font-bold">Operator Perbandingan</h2>
 
-      <div className="mt-2 p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md mb-4">
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mb-2">
           Operator Comparison (Perbandingan) adalah operator untuk membandingkan
           dua buah nilai. Operator ini juga dikenal dengan operator relasi.
@@ -42,11 +43,11 @@ const OperatorPerbandingan = () => {
         <p className="mb-2">
           Berikut adalah daftar <strong>Operator Relasional</strong> dalam C#:
         </p>
-        <p className="text-gray-600 text-sm text-center italic">
+        <p className="text-sm italic text-center text-gray-600">
           Tabel 4.5 Tabel daftar operator perbandingan
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
-          <table className="border border-gray-300 text-center">
+          <table className="text-center border border-gray-300">
             <thead className="bg-[#68217A] text-white text-center">
               <tr>
                 <th className="p-2 text-white border border-gray-300">

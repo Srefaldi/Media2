@@ -23,6 +23,7 @@ const OperatorAritmatika = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab4//operator-increment-decrement");
     setQuizCompleted(true);
   };
 
@@ -30,7 +31,7 @@ const OperatorAritmatika = () => {
     <div className="mt-4 mb-4">
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 4 - OPERATOR</h1>
       <h2 className="mt-2 mb-4 text-2xl font-bold">Operator Aritmatika</h2>
-      <div className="mt-2 p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md mb-4">
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mb-2">
           Operator Arithmetic (Aritmatika) dalam pemrograman, operasi
           menggunakan informasi numerik dan kemudian menggunakan data tersebut
@@ -60,8 +61,8 @@ const OperatorAritmatika = () => {
           itu, bilangan_1 + bilangan_2 merupakan sebuah ekspresi.
         </p>
       </div>
-      <div className="p-4 mt-2 text-justify text-gray-700 bg-white rounded-lg shadow-md mb-4">
-        <h3 className="text-xl font-bold mb-2">Penggunaan Operator</h3>
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h3 className="mb-2 text-xl font-bold">Penggunaan Operator</h3>
         <p className="mb-2">
           Untuk melakukan operasi aritmatika, C# menyediakan beberapa operator
           seperti tanda plus <code>+</code> untuk operasi penambahan, tanda
@@ -75,24 +76,24 @@ const OperatorAritmatika = () => {
           <code>b = 10</code>.
         </p>
       </div>
-      <div className="p-4 mt-2 text-justify text-gray-700 bg-white rounded-lg shadow-md mb-4">
-        <p className="text-gray-600 text-sm text-center italic">
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <p className="text-sm italic text-center text-gray-600">
           Tabel 4.1 Tabel daftar operator aritmatika
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
-          <table className="w-150 border border-gray-300 text-center">
+          <table className="text-center border border-gray-300 w-150">
             <thead className="bg-[#68217A] text-white text-center">
               <tr>
-                <th className="p-2 border text-white border-gray-300">
+                <th className="p-2 text-white border border-gray-300">
                   Operator
                 </th>
-                <th className="p-2 border text-white border-gray-300">
+                <th className="p-2 text-white border border-gray-300">
                   Keterangan
                 </th>
-                <th className="p-2 border text-white border-gray-300">
+                <th className="p-2 text-white border border-gray-300">
                   Contoh
                 </th>
-                <th className="p-2 border text-white border-gray-300">Hasil</th>
+                <th className="p-2 text-white border border-gray-300">Hasil</th>
               </tr>
             </thead>
             <tbody>
@@ -155,8 +156,8 @@ const OperatorAritmatika = () => {
           eksekusi, tanda kurung dapat digunakan.
         </p>
       </div>
-      <div className="p-4 mt-2 text-justify text-gray-700 bg-white rounded-lg shadow-md mb-4">
-        <h3 className="text-xl font-bold mb-2">Contoh Penerapan Operator</h3>
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h3 className="mb-2 text-xl font-bold">Contoh Penerapan Operator</h3>
         <p className="mb-2">
           Penggunaan operator penjumlahan, pengurangan, dan lain-lain:
         </p>
@@ -175,7 +176,7 @@ const OperatorAritmatika = () => {
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}
-          className="flex text-white items-center px-4 py-2 text -white bg-gray-500 rounded-lg hover:bg-gray-600"
+          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg text -white hover:bg-gray-600"
         >
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali

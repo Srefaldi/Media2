@@ -26,6 +26,7 @@ const PernyataanPerulangan = () => {
     setQuizCompleted(true);
   };
   const handleQuiz2Complete = () => {
+    handleLessonComplete("/materi/bab5/pernyataan-break-continue");
     setQuiz2Completed(true); // Menandakan Quiz2 selesai
   };
 
@@ -59,7 +60,7 @@ const PernyataanPerulangan = () => {
 }`}</code>
         </pre>
         <ul className="mt-2 text-justify text-gray-600 list-disc list-inside">
-          <li className="ml-4 mb-2">
+          <li className="mb-2 ml-4">
             <strong>Inisialisasi: </strong>
             <span>
               Inisialisasi biasanya berupa sebuah statemen penugasan yang
@@ -70,17 +71,17 @@ const PernyataanPerulangan = () => {
               </span>
             </span>
           </li>
-          <li className="ml-4 mb-2">
+          <li className="mb-2 ml-4">
             <strong>Kondisi:</strong> Sebuah ekspresi boolean yang menentukan
             apakah sebuah perulangan atau loop akan terus berulang atau
             berhenti.
           </li>
-          <li className="ml-4 mb-2">
+          <li className="mb-2 ml-4">
             <strong>Iterasi:</strong> Sebuah ekspresi yang mendefinisikan jumlah
             perubahan variabel kendali dari sebuah perulangan setiap kali
             perulangan terjadi.
           </li>
-          <li className="ml-4 mb-2">
+          <li className="mb-2 ml-4">
             <strong>Eksekusi:</strong> Perulangan for akan terus mengeksekusi
             runtun statemen sepanjang pengujian kondisi bernilai true. Ketika
             kondisi bernilai false, maka{" "}

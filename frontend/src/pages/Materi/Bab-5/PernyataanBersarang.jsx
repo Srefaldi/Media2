@@ -22,6 +22,7 @@ const PernyataanBersarang = () => {
   };
 
   const handleQuiz2Complete = () => {
+    handleLessonComplete("/materi/bab5/latihan-bab2");
     setQuiz2Completed(true); // Menandakan Quiz2 selesai
   };
 

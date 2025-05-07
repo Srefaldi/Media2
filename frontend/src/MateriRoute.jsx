@@ -77,6 +77,7 @@ import RangkumanBab6 from "./pages/Materi/Bab-6/Rangkuman";
 
 // Evaluasi
 import EvaluasiAkhir from "./pages/Materi/EvaluasiAkhir/EvaluasiAkhir";
+import Kesimpulan from "./pages/Materi/EvaluasiAkhir/KesimpulanAkhir";
 
 const MateriRoutes = () => {
   return (
@@ -199,6 +200,7 @@ const MateriRoutes = () => {
 
         {/* Evaluasi */}
         <Route path="evaluasi/evaluasi-akhir" element={<EvaluasiAkhir />} />
+        <Route path="evaluasi/kesimpulan-akhir" element={<Kesimpulan />} />
       </Route>
     </Routes>
   );

@@ -14,6 +14,7 @@ const Operator = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab4/operator-arithmetic");
     setQuizCompleted(true);
   };
 
@@ -103,7 +104,7 @@ const Operator = () => {
           <li>4.7 Operator Logika</li>
           <li>4.8 Operator Bersyarat</li>
           <li>4.9 Operator Kesetaraan</li>
-          <li>4.10 Rangkuman</li>
+          <li>Rangkuman</li>
         </ul>
       </div>
 
@@ -120,7 +121,7 @@ const Operator = () => {
             <strong>Operand</strong>. Sebagai contoh penulisan operator dalam
             Bahasa pemrograman perhatikan contoh berikut:
           </p>
-          <pre className="font-mono bg-gray-100 p-2 rounded mb-4">
+          <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
             <code>
               {`int x = 5 + 5; 
 int y = 10 + x; 
@@ -140,7 +141,7 @@ int z = x + y;`}
             string.
           </p>
           <p className="mb-4">Contoh penggunaan dalam String :</p>
-          <pre className="font-mono bg-gray-100 p-2 rounded mb-4">
+          <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
             <code>
               {`string kalimat = "Hello " + "World!"; 
 string hasil = greeting + name;`}
@@ -148,20 +149,20 @@ string hasil = greeting + name;`}
           </pre>
         </div>
 
-        <div className="mt-2 p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <div className="p-4 mt-2 text-justify text-gray-700 bg-white rounded-lg shadow-md">
           <h2 className="text-2xl font-bold">Kategori Operator dalam C#</h2>
           <p className="mb-2">
             Didalam Bahasa pemrograman C#, terdapat tiga kategori operator yang
             digunakan untuk melakukan berbagai jenis operasi.
           </p>
-          <ul className="list-disc pl-6">
+          <ul className="pl-6 list-disc">
             <li>
               <strong>Operator Unary:</strong> bekerja pada satu operan, Contoh:
               +7, -9, !true, ~0b1100
               <p className="mt-2 mb-2">
                 Perhatikan contoh kode program berikut :
               </p>
-              <pre className="font-mono bg-gray-100 p-2 rounded mb-4">
+              <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
                 <code>
                   {`int a = 5; 
 int b = -a; // b akan bernilai -5 
@@ -177,7 +178,7 @@ int d = ~0b1100; // d akan bernilai bitwise complement dari 0b1100
               <p className="mt-2 mb-2">
                 Perhatikan contoh kode program berikut :
               </p>
-              <pre className="font-mono bg-gray-100 p-2 rounded mb-4">
+              <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
                 <code>
                   {`int a = 10; 
 int b = 5; 
@@ -197,7 +198,7 @@ hasil = a % b; // Modulus`}
               <p className="mt-2 mb-2">
                 Perhatikan contoh kode program berikut :
               </p>
-              <pre className="font-mono bg-gray-100 p-2 rounded mb-4">
+              <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
                 <code>
                   {`int a = 5; 
 int b = (a == 5) ? 20 : 30; // b akan bernilai 20`}

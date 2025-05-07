@@ -308,8 +308,9 @@ const EvaluasiAkhir = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           handleLessonComplete("/materi/evaluasi/evaluasi-akhir");
+          handleLessonComplete("/materi/evaluasi/kesimpulan");
           window.scrollTo(0, 0);
-          navigate("/materi/evaluasi/sertifikat");
+          navigate("/materi/evaluasi/kesimpulan");
         }
       });
     } else {
@@ -373,7 +374,7 @@ const EvaluasiAkhir = () => {
       <div className="p-4 bg-white rounded-lg shadow-md">
         <h1 className="mb-4 text-2xl font-bold text-center">EVALUASI AKHIR</h1>
         <section>
-          <h2 className="font-semibold text-gray-800 mb-3">Aturan</h2>
+          <h2 className="mb-3 font-semibold text-gray-800">Aturan</h2>
           <p className="mb-3 leading-relaxed">
             Evaluasi ini bertujuan untuk menguji pengetahuan Anda tentang semua
             materi dalam pemrograman C# (Bab 1-6), termasuk variabel, tipe data,
@@ -384,7 +385,7 @@ const EvaluasiAkhir = () => {
             dikerjakan dalam evaluasi ini. Beberapa ketentuannya sebagai
             berikut:
           </p>
-          <ul className="list-disc list-inside mb-3 leading-relaxed">
+          <ul className="mb-3 leading-relaxed list-disc list-inside">
             <li>Syarat nilai kelulusan: {kkm}%</li>
             <li>Durasi ujian: 20 menit</li>
           </ul>
@@ -409,7 +410,7 @@ const EvaluasiAkhir = () => {
                 }
                 setShowEvaluasi(true);
               }}
-              className="flex items-center gap-2 text-base px-6 py-3 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+              className="flex items-center gap-2 px-6 py-3 text-base text-white transition-all duration-200 rounded-lg shadow-sm hover:shadow-md"
               style={{ backgroundColor: "#6E2A7F" }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.backgroundColor = "#5B1F6A")
@@ -425,7 +426,7 @@ const EvaluasiAkhir = () => {
         </section>
 
         <section className="mt-16">
-          <h3 className="font-semibold text-gray-800 mb-3 border-b border-gray-300 pb-1">
+          <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300">
             Riwayat
           </h3>
           {isLoading ? (
@@ -473,7 +474,7 @@ const EvaluasiAkhir = () => {
   const renderEvaluasi = () => {
     if (questions.length === 0 || !questions[currentQuestionIndex]) {
       return (
-        <div className="p-4 bg-white rounded-lg shadow-md text-center">
+        <div className="p-4 text-center bg-white rounded-lg shadow-md">
           <h2 className="text-lg font-semibold text-gray-800">
             EVALUASI AKHIR
           </h2>

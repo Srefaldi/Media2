@@ -22,6 +22,7 @@ const OperatorLogika = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab4/operator-conditional");
     setQuizCompleted(true);
   };
 
@@ -30,7 +31,7 @@ const OperatorLogika = () => {
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 4 - OPERATOR</h1>
       <h2 className="mt-2 mb-4 text-2xl font-bold">Operator Logika</h2>
 
-      <div className="mt-2 p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md mb-4">
+      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mb-2">
           <strong>Operator logika</strong> digunakan untuk membandingkan dua
           buah nilai atau lebih yang menghasilkan{" "}
@@ -39,11 +40,11 @@ const OperatorLogika = () => {
         <p className="mb-2">
           Berikut adalah daftar<strong>Operator Logika</strong> dalam C#:
         </p>
-        <p className="text-gray-600 text-sm text-center italic">
+        <p className="text-sm italic text-center text-gray-600">
           Tabel 4.6 Tabel daftar operator logika
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
-          <table className="border w-150 border-gray-300 text-center">
+          <table className="text-center border border-gray-300 w-150">
             <thead className="bg-[#68217A] text-white text-center">
               <tr>
                 <th className="p-2 text-white border border-gray-300">
@@ -95,11 +96,11 @@ const OperatorLogika = () => {
           hasilnya akan seperti berikut :
         </p>
         <h2 className="font-bold">Operator AND (&&)</h2>
-        <p className="text-gray-600 text-sm text-center italic">
+        <p className="text-sm italic text-center text-gray-600">
           Tabel 4.7 Tabel daftar operator logika AND
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
-          <table className="border w-150 border-gray-300 text-center">
+          <table className="text-center border border-gray-300 w-150">
             <thead className="bg-[#68217A] text-white text-center">
               <tr>
                 <th className="p-2 text-white border border-gray-300">
@@ -146,11 +147,11 @@ const OperatorLogika = () => {
         </p>
 
         <h2 className="font-bold">Operator OR ( | | )</h2>
-        <p className="text-gray-600 text-sm text-center italic">
+        <p className="text-sm italic text-center text-gray-600">
           Tabel 4. 8 Tabel daftar operator logika OR
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
-          <table className="border w-150 border-gray-300 text-center">
+          <table className="text-center border border-gray-300 w-150">
             <thead className="bg-[#68217A] text-white text-center">
               <tr>
                 <th className="p-2 text-white border border-gray-300">
@@ -196,11 +197,11 @@ const OperatorLogika = () => {
         </p>
 
         <h2 className="font-bold">Operator NOT (!)</h2>
-        <p className="text-gray-600 text-sm text-center italic">
+        <p className="text-sm italic text-center text-gray-600">
           Tabel 4. 9 Tabel daftar operator logika NOT
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
-          <table className="border w-150 border-gray-300 text-center">
+          <table className="text-center border border-gray-300 w-150">
             <thead className="bg-[#68217A] text-white text-center">
               <tr>
                 <th className="p-2 text-white border border-gray-300">

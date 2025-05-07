@@ -13,24 +13,16 @@ const String = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleQuizComplete = (isPassed) => {
+    handleLessonComplete("/materi/bab3/latihan-bab3");
+
     setQuizCompleted(true);
     setQuizPassed(isPassed); // Set status kuis
   };
 
   const handleNext = () => {
-    if (!quizPassed) {
-      // Jika kuis belum dijawab dengan benar, tampilkan peringatan
-      Swal.fire({
-        title: "Oops!",
-        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
-        icon: "warning",
-        confirmButtonText: "OK",
-      });
-      return; // Hentikan eksekusi jika kuis belum benar
-    }
     handleLessonComplete("/materi/bab3/string");
     window.scrollTo(0, 0);
-    navigate("/materi/bab3/char");
+    navigate("/materi/bab3/latihan-bab3");
   };
 
   const handleBack = () => {
@@ -53,7 +45,7 @@ const String = () => {
           inisialisasi variabel. String juga dideklarasi dan diinisialisasi
           dengan cara yang sama:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>{`string greeting = "Hello"; `}</code>
         </pre>
       </div>
@@ -66,7 +58,7 @@ const String = () => {
           Misalnya, panjang dari sebuah string dapat ditemukan dengan properti{" "}
           <code>Length</code>:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`string txt = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
 Console.WriteLine("Panjang dari string txt adalah : " + txt.Length); 
@@ -85,7 +77,7 @@ Panjang dari string txt adalah : 26 `}
           menjadi huruf besar atau kecil. Contoh penggunaan fungsi/method
           <code>ToUpper()</code> dan <code>ToLower()</code> :
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`string txt = "Hello World"; 
 Console.WriteLine(txt.ToUpper());   // Output "HELLO WORLD" 
@@ -101,7 +93,7 @@ Console.WriteLine(txt.ToLower());   // Output "hello world `}
           satu string. Ini disebut concatenation. Contoh penggunaan string
           <code>concatenation:</code>
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`string firstName = "John "; 
 string lastName = "Doe"; 
@@ -113,7 +105,7 @@ Console.WriteLine(name); // Output "John Doe" `}
           Kita juga dapat menggunakan method/fungsi{" "}
           <code>string.Concat() </code>untuk menggabungkan dua string :
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`string firstName = "John "; 
 string lastName = "Doe"; 
@@ -131,7 +123,7 @@ Console.WriteLine(name); // Output "John Doe" `}
           nilai-nilai variabel ke dalam placeholder dalam sebuah string. Contoh
           penggunaan <code>string interpolation</code> :
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`string firstName = "John"; 
 string lastName = "Doe"; 
@@ -154,7 +146,7 @@ My full name is: John Doe `}
           tanda kurung siku [ ]. Contoh mencetak karakter pertama di{" "}
           <code>myString</code>:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`string myString = "Hello"; 
 Console.WriteLine(myString[0]);  // Output "H" `}
@@ -166,7 +158,7 @@ Console.WriteLine(myString[0]);  // Output "H" `}
           pertama. [1] adalah karakter kedua, dan seterusnya. Contoh mencetak
           karakter kedua [1] di myString:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`string myString = "Hello"; 
 Console.WriteLine(myString[1]);  // Output "e"  `}
@@ -180,7 +172,7 @@ Console.WriteLine(myString[1]);  // Output "e"  `}
           Anda juga dapat menemukan posisi indeks karakter tertentu dalam
           string, dengan menggunakan method/fungsi <code>IndexOf()</code>:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`string myString = "Hello"; 
 Console.WriteLine(myString.IndexOf("e"));  // Output "1" `}
@@ -193,7 +185,7 @@ Console.WriteLine(myString.IndexOf("e"));  // Output "1" `}
           sering digunakan bersama dengan <code>IndexOf()</code> untuk
           mendapatkan posisi karakter tertentu.
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`// Full name 
 string name = "John Doe"; 
@@ -250,7 +242,7 @@ Console.WriteLine(lastName);
           </table>
         </div>
         <p>Contoh :</p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`// backslash ditambahkan pada double quote didalam sebuah string ( \" ): 
 string txt = "We are the so-called \"Vikings\" from the north."; 
@@ -300,7 +292,7 @@ string txt = "The character \\ is called backslash."; `}
           perlu diingat adalah angka ditambahkan sedangkan string digabungkan.
           Contoh, jika Anda menambahkan dua angka, hasilnya akan menjadi angka:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`int x = 10; 
  int y = 20; 
@@ -311,7 +303,7 @@ int z = x + y;  // z akan menjadi 30 (sebuah integer/angka) `}
           Namun, jika menambahkan dua buah string, hasilnya akan menjadi
           rangkaian string:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`string x = "10"; 
 string y = "20"; 

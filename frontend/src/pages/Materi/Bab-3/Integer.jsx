@@ -13,21 +13,13 @@ const Integer = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleQuizComplete = (isPassed) => {
+    handleLessonComplete("/materi/bab3/floating-point");
+
     setQuizCompleted(true);
     setQuizPassed(isPassed); // Set status kuis
   };
 
   const handleNext = () => {
-    if (!quizPassed) {
-      // Jika kuis belum dijawab dengan benar, tampilkan peringatan
-      Swal.fire({
-        title: "Oops!",
-        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
-        icon: "warning",
-        confirmButtonText: "OK",
-      });
-      return; // Hentikan eksekusi jika kuis belum benar
-    }
     handleLessonComplete("/materi/bab3/integer");
     window.scrollTo(0, 0);
     navigate("/materi/bab3/floating-point");

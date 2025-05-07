@@ -22,6 +22,7 @@ const MethodDenganTipeData = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab6/parameter-method");
     setQuizCompleted(true); // Menandakan kuis selesai
   };
 

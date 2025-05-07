@@ -9,9 +9,9 @@ import "../style/latihan.css";
 
 const LatihanBab2 = () => {
   const navigate = useNavigate();
-  const { handleLessonComplete } = useOutletContext();
+  const { handleQuizComplete } = useOutletContext();
   const { user } = useSelector((state) => state.auth);
-  const [showLatihan, setShowLatihan] = useState(false); // State untuk beralih antara instruksi dan latihan
+  const [showLatihan, setShowLatihan] = useState(false);
 
   // State untuk instruksi
   const [riwayat, setRiwayat] = useState([]);
@@ -24,13 +24,13 @@ const LatihanBab2 = () => {
   const [score, setScore] = useState(0);
   const [answerStatus, setAnswerStatus] = useState(Array(10).fill(null));
   const [hasAnswered, setHasAnswered] = useState(Array(10).fill(false));
-  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 menit dalam detik
+  const [timeLeft, setTimeLeft] = useState(20 * 60);
 
   const questions = [
     {
       id: 1,
       prompt:
-        "Lengkapilah kode berikut untuk mendeklarasikan dua variabel bertipe integer x dan y, lalu tampilkan hasil penjumlahan keduanya.",
+        "Lengkapilah kode berikut untuk mendeklarasikan dua variabel bertipe integer x dengan nilai 10 dan y 20, lalu tampilkan hasil penjumlahan keduanya.",
       code: `public class Latihan
 {
     public static void Main(string[] args)
@@ -185,7 +185,6 @@ const LatihanBab2 = () => {
     },
   ];
 
-  // Fungsi untuk memformat tanggal
   const formatDate = (dateString) => {
     if (!dateString) {
       console.warn("Tanggal tidak tersedia:", dateString);
@@ -205,7 +204,6 @@ const LatihanBab2 = () => {
     });
   };
 
-  // Ambil data riwayat dari API
   useEffect(() => {
     const fetchRiwayat = async () => {
       if (!user?.uuid) {
@@ -220,13 +218,11 @@ const LatihanBab2 = () => {
         });
         console.log("Data scores dari API:", response.data);
 
-        // Filter hanya skor untuk latihan Bab 2
         const filteredScores = response.data.scores.filter(
           (score) => score.type === "latihan" && score.chapter === 2
         );
         console.log("Filtered scores (Bab 2):", filteredScores);
 
-        // Format data untuk tabel
         const formattedRiwayat = filteredScores.map((score) => {
           console.log("Score item:", score);
           return {
@@ -238,8 +234,9 @@ const LatihanBab2 = () => {
         setRiwayat(formattedRiwayat);
       } catch (error) {
         const errorMsg =
-          error.response?.data?.msg || "Gagal mengambil data riwayat";
-        console.error("Error fetching scores:", errorMsg);
+          error.response?.data?.msg ||
+          `Gagal mengambil data riwayat: ${error.message}`;
+        console.error("Error fetching scores:", error);
         setError(errorMsg);
       } finally {
         setIsLoading(false);
@@ -249,7 +246,6 @@ const LatihanBab2 = () => {
     fetchRiwayat();
   }, [user]);
 
-  // Timer untuk latihan
   useEffect(() => {
     if (showLatihan) {
       const timer = setInterval(() => {
@@ -294,7 +290,7 @@ const LatihanBab2 = () => {
 
     if (isCorrect) {
       if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 10); // 10 poin per soal (100/10 soal)
+        setScore((prevScore) => prevScore + 10);
         const newAnswerStatus = [...answerStatus];
         newAnswerStatus[currentQuestionIndex] = "correct";
         setAnswerStatus(newAnswerStatus);
@@ -353,16 +349,14 @@ const LatihanBab2 = () => {
       setCurrentQuestionIndex(index);
       const newAnswers = [...answers];
       newAnswers[index] =
-        index === 0
+        index === 0 || index === 1 || index === 2 || index === 9
           ? ["", "", ""]
-          : index === 1
-          ? ["", "", ""]
-          : index === 2
-          ? ["", "", ""]
-          : index === 3
+          : index === 3 ||
+            index === 5 ||
+            index === 6 ||
+            index === 7 ||
+            index === 8
           ? ["", ""]
-          : index === 9
-          ? ["", "", ""]
           : [""];
       setAnswers(newAnswers);
     }
@@ -375,27 +369,27 @@ const LatihanBab2 = () => {
     if (hasIncompleteAnswers) {
       Swal.fire({
         title: "Masih Ada Soal Belum Dijawab!",
-        text: "Silakan periksa kembali jawaban anda.",
+        text: "Silakan periksa kembali jawaban Anda.",
         icon: "warning",
         confirmButtonText: "OK",
       });
-    } else {
-      try {
-        await axios.post(
-          "http://localhost:5000/scores",
-          {
-            user_id: user.uuid,
-            type: "latihan",
-            chapter: 2,
-            score: score,
-          },
-          { withCredentials: true }
-        );
-      } catch (error) {
-        console.error("Error saving score:", error);
-      }
+      return;
+    }
+
+    try {
+      await axios.post(
+        "http://localhost:5000/scores",
+        {
+          user_id: user.uuid,
+          type: "latihan",
+          chapter: 2,
+          score: score,
+        },
+        { withCredentials: true }
+      );
 
       if (score >= 75) {
+        handleQuizComplete("/materi/bab2/latihan-bab2");
         Swal.fire({
           title: "Selamat!",
           text: `Skor Anda: ${score}. Anda telah selesai mengerjakan latihan.`,
@@ -403,48 +397,75 @@ const LatihanBab2 = () => {
           confirmButtonText: "Selanjutnya",
         }).then((result) => {
           if (result.isConfirmed) {
-            handleLessonComplete("/materi/bab2/latihan-bab2");
-            handleLessonComplete("/materi/bab2/kuis-bab2");
             window.scrollTo(0, 0);
-            navigate("/materi/bab2/kuis-bab1");
+            navigate("/materi/bab2/kuis-bab2");
           }
         });
       } else {
-        showFinalScore();
+        Swal.fire({
+          title: "Skor Tidak Mencukupi",
+          text: `Skor Anda: ${score}. Skor Anda tidak mencukupi, silakan coba kembali.`,
+          icon: "error",
+          showCancelButton: true,
+          confirmButtonText: "Coba Lagi",
+          cancelButtonText: "Kembali",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            setShowLatihan(false);
+            setCurrentQuestionIndex(0);
+            setAnswers(Array(10).fill([""]));
+            setScore(0);
+            setAnswerStatus(Array(10).fill(null));
+            setHasAnswered(Array(10).fill(false));
+            setTimeLeft(20 * 60);
+          } else {
+            setShowLatihan(false);
+            navigate("/materi/bab2/latihan-bab2");
+          }
+        });
       }
+    } catch (error) {
+      console.error("Error saving score:", error);
+      Swal.fire({
+        title: "Gagal!",
+        text: "Terjadi kesalahan saat menyimpan skor.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
-  const handleTimeUp = () => {
+  const handleTimeUp = async () => {
+    try {
+      await axios.post(
+        "http://localhost:5000/scores",
+        {
+          user_id: user.uuid,
+          type: "latihan",
+          chapter: 2,
+          score: score,
+        },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.error("Error saving score:", error);
+    }
+
     Swal.fire({
       title: "Waktu Habis!",
-      text: `Skor Anda: ${score}`,
+      text: `Skor Anda: ${score}.`,
       icon: "warning",
-      confirmButtonText: "OK",
-    }).then(() => {
-      showFinalScore();
-    });
-  };
-
-  const showFinalScore = () => {
-    Swal.fire({
-      title: score >= 75 ? "Latihan Selesai" : "WAKTU HABIS",
-      text:
-        score >= 75
-          ? `Skor Anda: ${score}.`
-          : "Skor anda tidak mencukupi, Silahkan Coba Kembali.",
-      icon: score >= 75 ? "success" : "error",
       showCancelButton: true,
       confirmButtonText: score >= 75 ? "Selanjutnya" : "Coba Lagi",
       cancelButtonText: "Kembali",
     }).then((result) => {
       if (result.isConfirmed) {
         if (score >= 75) {
-          handleLessonComplete("/materi/bab2/latihan-bab2");
+          handleQuizComplete("/materi/bab2/latihan-bab2");
           window.scrollTo(0, 0);
           navigate("/materi/bab2/kuis-bab2");
         } else {
-          setShowLatihan(false); // Kembali ke instruksi untuk coba lagi
+          setShowLatihan(false);
           setCurrentQuestionIndex(0);
           setAnswers(Array(10).fill([""]));
           setScore(0);
@@ -453,19 +474,12 @@ const LatihanBab2 = () => {
           setTimeLeft(20 * 60);
         }
       } else {
-        setShowLatihan(false); // Kembali ke instruksi untuk coba lagi
-        setCurrentQuestionIndex(0);
-        setAnswers(Array(10).fill([""]));
-        setScore(0);
-        setAnswerStatus(Array(10).fill(null));
-        setHasAnswered(Array(10).fill(false));
-        setTimeLeft(20 * 60);
+        setShowLatihan(false);
         navigate("/materi/bab2/latihan-bab2");
       }
     });
   };
 
-  // UI untuk halaman instruksi
   const renderInstruksi = () => (
     <div>
       <div className="p-4 bg-white rounded-lg shadow-md">
@@ -554,7 +568,6 @@ const LatihanBab2 = () => {
     </div>
   );
 
-  // UI untuk halaman latihan
   const renderLatihan = () => (
     <div className="max-w-full p-2 mx-auto bg-white rounded-lg shadow-lg">
       <h2 className="text-lg font-semibold text-center text-gray-800">
@@ -742,30 +755,15 @@ const LatihanBab2 = () => {
                           .length -
                           1 && (
                         <span>
-                          {currentQuestionIndex === 0 ||
-                          currentQuestionIndex === 1 ||
-                          currentQuestionIndex === 2 ||
-                          currentQuestionIndex === 9 ? (
-                            <input
-                              type="text"
-                              value={answers[currentQuestionIndex][index] || ""}
-                              onChange={(e) =>
-                                handleAnswerChange(e.target.value, index)
-                              }
-                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
-                              placeholder="Jawaban..."
-                            />
-                          ) : (
-                            <input
-                              type="text"
-                              value={answers[currentQuestionIndex][0] || ""}
-                              onChange={(e) =>
-                                handleAnswerChange(e.target.value, 0)
-                              }
-                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
-                              placeholder="Jawaban..."
-                            />
-                          )}
+                          <input
+                            type="text"
+                            value={answers[currentQuestionIndex][index] || ""}
+                            onChange={(e) =>
+                              handleAnswerChange(e.target.value, index)
+                            }
+                            className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
+                            placeholder="Jawaban..."
+                          />
                         </span>
                       )}
                     </>
@@ -796,16 +794,17 @@ const LatihanBab2 = () => {
             onClick={() => {
               const newAnswers = [...answers];
               newAnswers[currentQuestionIndex] =
-                currentQuestionIndex === 0
+                currentQuestionIndex === 0 ||
+                currentQuestionIndex === 1 ||
+                currentQuestionIndex === 2 ||
+                currentQuestionIndex === 9
                   ? ["", "", ""]
-                  : currentQuestionIndex === 1
-                  ? ["", "", ""]
-                  : currentQuestionIndex === 2
-                  ? ["", "", ""]
-                  : currentQuestionIndex === 3
+                  : currentQuestionIndex === 3 ||
+                    currentQuestionIndex === 5 ||
+                    currentQuestionIndex === 6 ||
+                    currentQuestionIndex === 7 ||
+                    currentQuestionIndex === 8
                   ? ["", ""]
-                  : currentQuestionIndex === 9
-                  ? ["", "", ""]
                   : [""];
               setAnswers(newAnswers);
             }}

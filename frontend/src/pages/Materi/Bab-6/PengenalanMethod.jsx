@@ -14,6 +14,7 @@ const MethodMateri = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab6/method-void");
     setQuizCompleted(true);
   };
 
@@ -114,7 +115,7 @@ const MethodMateri = () => {
           <p className="mb-4">
             Method memiliki banyak kelebihan diantaranya adalah :
           </p>
-          <ul className="mb-4 list-disc pl-6">
+          <ul className="pl-6 mb-4 list-disc">
             <li>
               Kode bersifat <strong>reusable</strong> yang artinya kode tersebut
               dapat digunakan kembali.
@@ -140,7 +141,7 @@ const MethodMateri = () => {
 }`}</code>
           </pre>
           <p className="mb-4">Dari struktur di atas:</p>
-          <ul className="mb-4 list-disc pl-6">
+          <ul className="pl-6 mb-4 list-disc">
             <li>
               <strong>Access modifier</strong>, untuk saat ini, gunakan saja
               access modifier public.

@@ -14,6 +14,7 @@ const KontrolAlur = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab5/pernyataan-if-else");
     setQuizCompleted(true);
   };
 
@@ -105,7 +106,7 @@ const KontrolAlur = () => {
           <li>5.4 Perulangan (for, while, do-while)</li>
           <li>5.5 Pernyataan Break dan Continue</li>
           <li>5.6 Perulangan Bersarang</li>
-          <li>5.7 Rangkuman</li>
+          <li>Rangkuman</li>
         </ul>
       </div>
 

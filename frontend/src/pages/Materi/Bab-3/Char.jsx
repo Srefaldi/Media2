@@ -13,21 +13,13 @@ const Char = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleQuizComplete = (isPassed) => {
+    handleLessonComplete("/materi/bab3/string");
+
     setQuizCompleted(true);
     setQuizPassed(isPassed); // Set status kuis
   };
 
   const handleNext = () => {
-    if (!quizPassed) {
-      // Jika kuis belum dijawab dengan benar, tampilkan peringatan
-      Swal.fire({
-        title: "Oops!",
-        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
-        icon: "warning",
-        confirmButtonText: "OK",
-      });
-      return; // Hentikan eksekusi jika kuis belum benar
-    }
     handleLessonComplete("/materi/bab3/char");
     window.scrollTo(0, 0);
     navigate("/materi/bab3/string");
@@ -64,7 +56,7 @@ const Char = () => {
           karakter yang ingin disimpan di dalam tanda petik satu. Berikut adalah
           contoh kode untuk mendeklarasikan dan menginisialisasi variabel char:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`char var1 = 'a';\nchar var2 = 'Z';\n\nConsole.WriteLine(var1);  // Output: a\nConsole.WriteLine(var2);  // Output: Z`}
           </code>
@@ -84,7 +76,7 @@ const Char = () => {
           Tipe data <code>char</code> juga bisa digunakan untuk menyimpan
           karakter angka dan karakter non-alfanumerik. Berikut adalah contohnya:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`char var1 = '5';\nchar var2 = '$';\n\nConsole.WriteLine(var1);  // Output: 5\nConsole.WriteLine(var2);  // Output: $`}
           </code>
@@ -105,7 +97,7 @@ const Char = () => {
           diikuti dengan empat digit nomor Unicode heksadesimal. Berikut adalah
           contoh kode yang menggunakan karakter Unicode:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`char var1 = '\\u0041';\nchar var2 = '\\u00B5'; \nchar var3 = '\\u00C6'; \n\nConsole.WriteLine(var1);  // Output: A\nConsole.WriteLine(var2);  // Output: µ\nConsole.WriteLine(var3);  // Output: Æ`}
           </code>
@@ -126,7 +118,7 @@ const Char = () => {
           backslash <code>\\</code>, yang disebut sebagai escape character.
           Berikut adalah contoh kode yang menggunakan karakter khusus:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`char var1 = '\''; \nchar var2 = '\\n'; \nchar var3 = '\"'; \n\nConsole.Write(var1); \nConsole.Write(var2); \nConsole.Write(var3);`}
           </code>{" "}
@@ -151,7 +143,7 @@ const Char = () => {
           karakter pertama. Berikut adalah contoh penggunaan{" "}
           <code>Console.ReadKey()</code>:
         </p>
-        <pre className="font-mono bg-gray-100 p-2 rounded">
+        <pre className="p-2 font-mono bg-gray-100 rounded">
           <code>
             {`Console.Write("Masukkan sebuah karakter: ");\nchar var1 = Console.ReadKey().KeyChar;\n\nConsole.WriteLine();\nConsole.WriteLine("Karakter yang dimasukkan: " + var1);`}
           </code>

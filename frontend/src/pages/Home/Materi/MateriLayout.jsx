@@ -53,7 +53,7 @@ const MateriLayout = () => {
         );
         if (error.response?.status === 401) {
           setIsAuthenticated(false);
-          dispatch(getMe()); // Coba autentikasi ulang
+          dispatch(getMe());
         } else {
           Swal.fire({
             icon: "error",
@@ -123,6 +123,17 @@ const MateriLayout = () => {
     }
   };
 
+  const getNextLesson = (currentLessonId) => {
+    const allLessons = daftarBab.flatMap((bab) =>
+      bab.subBab.map((sub) => sub.path)
+    );
+    const currentIndex = allLessons.indexOf(currentLessonId);
+    if (currentIndex === -1 || currentIndex === allLessons.length - 1) {
+      return null; // Tidak ada lesson berikutnya
+    }
+    return allLessons[currentIndex + 1];
+  };
+
   const handleLessonComplete = (lessonId) => {
     console.log("handleLessonComplete dipanggil dengan lessonId:", lessonId);
     if (!completedLessons.includes(lessonId)) {
@@ -143,6 +154,41 @@ const MateriLayout = () => {
     }
   };
 
+  const handleQuizComplete = (currentLessonId) => {
+    console.log(
+      "handleQuizComplete dipanggil dengan currentLessonId:",
+      currentLessonId
+    );
+    const nextLessonId = getNextLesson(currentLessonId);
+    const newLessonsToComplete = [currentLessonId];
+
+    if (nextLessonId && !completedLessons.includes(nextLessonId)) {
+      newLessonsToComplete.push(nextLessonId);
+    }
+
+    const newCompletedLessons = [
+      ...new Set([...completedLessons, ...newLessonsToComplete]),
+    ];
+
+    if (newCompletedLessons.length > completedLessons.length) {
+      setCompletedLessons(newCompletedLessons);
+      const newProgress = (newCompletedLessons.length / totalLessons) * 100;
+      const roundedProgress = parseFloat(newProgress.toFixed(2));
+      console.log(
+        "New completedLessons setelah kuis:",
+        newCompletedLessons,
+        "New progress:",
+        roundedProgress
+      );
+      updateProgressInBackend(roundedProgress);
+    } else {
+      console.log(
+        "Tidak ada perubahan pada completedLessons:",
+        currentLessonId
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
@@ -154,7 +200,7 @@ const MateriLayout = () => {
           />
         </div>
         <div className="flex-1 p-6 overflow-y-auto ml-80">
-          <Outlet context={{ handleLessonComplete }} />
+          <Outlet context={{ handleLessonComplete, handleQuizComplete }} />
           <Footer />
         </div>
       </div>

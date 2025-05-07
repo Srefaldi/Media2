@@ -22,6 +22,7 @@ const OperatorInD = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab4/operator-assignment");
     setQuizCompleted(true);
   };
 

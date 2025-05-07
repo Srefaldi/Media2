@@ -22,6 +22,7 @@ const MethodVoid = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab6method-tipe-data");
     setQuizCompleted(true); // Menandakan kuis selesai
   };
 
@@ -89,7 +90,7 @@ const MethodVoid = () => {
     Console.WriteLine(10 + 20); 
 } `}</code>
         </pre>
-        <ul className="list-disc pl-6 mb-4">
+        <ul className="pl-6 mb-4 list-disc">
           <li className="mb-2">
             Potongan kode program di atas inilah yang kita sebut dengan{" "}
             <strong>method</strong>.

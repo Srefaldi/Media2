@@ -22,6 +22,7 @@ const OperatorAssignment = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab4/operator-comparison");
     setQuizCompleted(true);
   };
 
