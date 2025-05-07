@@ -22,6 +22,7 @@ const StrukturEksekusi = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab1/sintaks-print");
     setQuizCompleted(true);
   };
 

@@ -21,6 +21,7 @@ const SintaksKomentar = () => {
   };
 
   const handleQuizCompletion = () => {
+    handleLessonComplete("/materi/bab1/error-csharp");
     setQuizCompleted(true);
   };
 

@@ -11,6 +11,8 @@ const DeklarasiBanyakVariabel = () => {
   const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
 
   const handleQuizComplete = (isPassed) => {
+    handleLessonComplete("/materi/bab2/variabel-konstanta");
+
     setQuizCompleted(true);
     setQuizPassed(isPassed); // Set status kuis
   };

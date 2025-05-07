@@ -9,7 +9,7 @@ import { IoStatsChart, IoArrowUp, IoArrowDown } from "react-icons/io5";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
-  const [token] = useState("TES1"); // Static token
+  const [token] = useState("123"); // Static token
   const [studentCount, setStudentCount] = useState(0);
   const [completedStudents, setCompletedStudents] = useState(0);
   const [averageScores, setAverageScores] = useState({});

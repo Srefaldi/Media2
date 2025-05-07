@@ -21,6 +21,7 @@ const ErrorCSharp = () => {
   };
 
   const handleQuizCompletion = () => {
+    handleLessonComplete("/materi/bab1/latihan-bab1");
     setQuizCompleted(true);
   };
 

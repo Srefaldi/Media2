@@ -277,6 +277,7 @@ const KuisBab2 = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             handleLessonComplete("/materi/bab2/kuis-bab2");
+            handleLessonComplete("/materi/bab2/rangkuman-bab2");
             window.scrollTo(0, 0);
             navigate("/materi/bab2/rangkuman-bab2");
           }
@@ -346,7 +347,7 @@ const KuisBab2 = () => {
           BAB 2 - VARIABEL
         </h1>
         <section>
-          <h2 className="font-semibold text-gray-800 mb-3">Aturan</h2>
+          <h2 className="mb-3 font-semibold text-gray-800">Aturan</h2>
           <p className="mb-3 leading-relaxed">
             Kuis ini bertujuan untuk menguji pengetahuan Anda tentang variabel
             dan tipe data dalam pemrograman C#.
@@ -355,7 +356,7 @@ const KuisBab2 = () => {
             Terdapat {questions.length} pertanyaan pilihan ganda yang harus
             dikerjakan dalam kuis ini. Beberapa ketentuannya sebagai berikut:
           </p>
-          <ul className="list-disc list-inside mb-3 leading-relaxed">
+          <ul className="mb-3 leading-relaxed list-disc list-inside">
             <li>Syarat nilai kelulusan: {kkm}%</li>
             <li>Durasi ujian: 20 menit</li>
           </ul>
@@ -380,7 +381,7 @@ const KuisBab2 = () => {
                 }
                 setShowKuis(true);
               }}
-              className="flex items-center gap-2 text-base px-6 py-3 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+              className="flex items-center gap-2 px-6 py-3 text-base text-white transition-all duration-200 rounded-lg shadow-sm hover:shadow-md"
               style={{ backgroundColor: "#6E2A7F" }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.backgroundColor = "#5B1F6A")
@@ -396,7 +397,7 @@ const KuisBab2 = () => {
         </section>
 
         <section className="mt-16">
-          <h3 className="font-semibold text-gray-800 mb-3 border-b border-gray-300 pb-1">
+          <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300">
             Riwayat
           </h3>
           {isLoading ? (
@@ -444,7 +445,7 @@ const KuisBab2 = () => {
   const renderKuis = () => {
     if (questions.length === 0 || !questions[currentQuestionIndex]) {
       return (
-        <div className="p-4 bg-white rounded-lg shadow-md text-center">
+        <div className="p-4 text-center bg-white rounded-lg shadow-md">
           <h2 className="text-lg font-semibold text-gray-800">KUIS BAB 2</h2>
           <p className="mt-4 text-red-600">
             {error || "Gagal memuat soal. Silakan coba lagi nanti."}

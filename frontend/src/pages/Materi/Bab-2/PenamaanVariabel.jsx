@@ -3,15 +3,20 @@ import { useNavigate } from "react-router-dom";
 import QuizPenamaanVariabel from "./Quiz-bab2/Quiz2";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import { useOutletContext } from "react-router-dom";
 
 const PenamaanVariabel = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const navigate = useNavigate();
+  const { handleLessonComplete } = useOutletContext();
+
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab2/kategori-variabel");
     setQuizCompleted(true);
   };
 
   const handleNext = () => {
+    handleLessonComplete("/materi/bab2/penamaan-variabel");
     // Logika untuk menyelesaikan pelajaran dan navigasi ke halaman berikutnya
     window.scrollTo(0, 0);
     navigate("/materi/bab2/kategori-variabel");

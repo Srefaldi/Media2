@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { getMe } from "../../features/authSlice";
+import { getMe } from "../../features/authSlice.js";
 import Navbar from "../../components/Landing/NavbarLogin/NavbarLogin";
 import Footer from "../../components/Landing/Footer";
 import InfoModal from "../../components/Home/Dashboard/InfoModal";

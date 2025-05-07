@@ -11,7 +11,7 @@ const StrukturKode = () => {
 
   const handleBack = () => {
     window.scrollTo(0, 0);
-    navigate("/materi/bab1/instalasi");
+    navigate("/materi/bab1/pengenalan");
   };
 
   const handleNext = () => {
@@ -21,6 +21,7 @@ const StrukturKode = () => {
   };
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab1/struktur-eksekusi");
     setQuizCompleted(true);
   };
 

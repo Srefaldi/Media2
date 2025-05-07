@@ -10,6 +10,7 @@ const KategoriVariabel = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab2/deklarasi-inialisasi");
     setQuizCompleted(true);
   };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getEvaluations, updateQuestion } from "../../features/authSlice.js";
+import { getEvaluations, updateQuestion } from "../../features/authSlice";
 import axios from "axios";
 
 const EditQuestion = () => {

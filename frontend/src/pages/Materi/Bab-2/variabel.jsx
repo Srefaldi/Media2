@@ -17,6 +17,7 @@ const Variabel = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleQuizComplete = () => {
+    handleLessonComplete("/materi/bab2/penamaan-variabel");
     setQuizCompleted(true);
   };
 

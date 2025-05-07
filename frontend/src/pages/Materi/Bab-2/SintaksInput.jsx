@@ -18,6 +18,7 @@ const SintaksInput = () => {
   const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
 
   const handleQuizComplete = (isPassed) => {
+    handleLessonComplete("/materi/bab2/latihan-bab2");
     setQuizCompleted(true);
     setQuizPassed(isPassed); // Set status kuis
   };

@@ -210,8 +210,9 @@ const LatihanBab1 = () => {
         setRiwayat(formattedRiwayat);
       } catch (error) {
         const errorMsg =
-          error.response?.data?.msg || "Gagal mengambil data riwayat";
-        console.error("Error fetching scores:", errorMsg);
+          error.response?.data?.msg ||
+          `Gagal mengambil data riwayat: ${error.message}`;
+        console.error("Error fetching scores:", error);
         setError(errorMsg);
       } finally {
         setIsLoading(false);
@@ -352,30 +353,51 @@ const LatihanBab1 = () => {
           },
           { withCredentials: true }
         );
+        if (score >= 75) {
+          handleLessonComplete("/materi/bab1/latihan-bab1"); // Mark latihan as complete
+          handleLessonComplete("/materi/bab1/kuis-bab1"); // Mark kuis as complete
+          Swal.fire({
+            title: "Selamat!",
+            text: `Skor Anda: ${score}. Anda telah selesai mengerjakan latihan.`,
+            icon: "success",
+            confirmButtonText: "Selanjutnya",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.scrollTo(0, 0);
+              navigate("/materi/bab1/kuis-bab1");
+            }
+          });
+        } else {
+          showFinalScore();
+        }
       } catch (error) {
         console.error("Error saving score:", error);
-      }
-
-      if (score >= 75) {
         Swal.fire({
-          title: "Selamat!",
-          text: `Skor Anda: ${score}. Anda telah selesai mengerjakan latihan.`,
-          icon: "success",
-          confirmButtonText: "Selanjutnya",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleLessonComplete("/materi/bab1/latihan-bab1");
-            window.scrollTo(0, 0);
-            navigate("/materi/bab1/kuis-bab1");
-          }
+          title: "Gagal!",
+          text: "Terjadi kesalahan saat menyimpan skor.",
+          icon: "error",
+          confirmButtonText: "OK",
         });
-      } else {
-        showFinalScore();
       }
     }
   };
 
-  const handleTimeUp = () => {
+  const handleTimeUp = async () => {
+    try {
+      await axios.post(
+        "http://localhost:5000/scores",
+        {
+          user_id: user.uuid,
+          type: "latihan",
+          chapter: 1,
+          score: score,
+        },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.error("Error saving score:", error);
+    }
+
     Swal.fire({
       title: "Waktu Habis!",
       text: `Skor Anda: ${score}`,
@@ -400,9 +422,10 @@ const LatihanBab1 = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         if (score >= 75) {
-          handleLessonComplete("/materi/bab1/latihan-bab1");
+          handleLessonComplete("/materi/bab1/latihan-bab1"); // Mark latihan as complete
+          handleLessonComplete("/materi/bab1/kuis-bab1"); // Mark kuis as complete
           window.scrollTo(0, 0);
-          navigate("/materi/bab1/intruksi-kuis1");
+          navigate("/materi/bab1/kuis-bab1");
         } else {
           setShowLatihan(false); // Kembali ke instruksi untuk coba lagi
           setCurrentQuestionIndex(0);
@@ -413,7 +436,7 @@ const LatihanBab1 = () => {
           setTimeLeft(20 * 60);
         }
       } else {
-        setShowLatihan(false); // Kembali ke instruksi untuk coba lagi
+        setShowLatihan(false); // Kembali ke instruksi
         setCurrentQuestionIndex(0);
         setAnswers(Array(10).fill([""]));
         setScore(0);
@@ -421,7 +444,6 @@ const LatihanBab1 = () => {
         setHasAnswered(Array(10).fill(false));
         setTimeLeft(20 * 60);
         navigate("/materi/bab1/latihan-bab1");
-        setShowLatihan(false); // Kembali ke instruksi
       }
     });
   };

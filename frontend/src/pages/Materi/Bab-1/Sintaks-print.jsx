@@ -140,6 +140,7 @@ const SintaksPrint = () => {
   };
 
   const handleQuizCompletion = () => {
+    handleLessonComplete("/materi/bab1/sintaks-komentar");
     setQuizCompleted(true); // Set quiz as completed
   };
 

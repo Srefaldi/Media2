@@ -3,7 +3,7 @@ import Layout from "./Layout";
 import DataNilaii from "../../components/LoginPage/DataNilai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMe } from "../../features/authSlice";
+import { getMe } from "../../features/authSlice.js";
 
 const DataNilai = () => {
   const dispatch = useDispatch();

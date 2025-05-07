@@ -277,6 +277,7 @@ const KuisBab1 = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             handleLessonComplete("/materi/bab1/kuis-bab1");
+            handleLessonComplete("/materi/bab1/rangkuman-bab1");
             window.scrollTo(0, 0);
             navigate("/materi/bab1/rangkuman-bab1");
           }

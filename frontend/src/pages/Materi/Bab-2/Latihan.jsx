@@ -404,6 +404,7 @@ const LatihanBab2 = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             handleLessonComplete("/materi/bab2/latihan-bab2");
+            handleLessonComplete("/materi/bab2/kuis-bab2");
             window.scrollTo(0, 0);
             navigate("/materi/bab2/kuis-bab1");
           }
@@ -472,7 +473,7 @@ const LatihanBab2 = () => {
           BAB 2 - VARIABEL
         </h1>
         <section>
-          <h2 className="font-semibold text-gray-800 mb-3">Aturan</h2>
+          <h2 className="mb-3 font-semibold text-gray-800">Aturan</h2>
           <p className="mb-3 leading-relaxed">
             Latihan ini bertujuan untuk menguji pengetahuan Anda tentang
             variabel dan tipe data dalam pemrograman C#.
@@ -481,7 +482,7 @@ const LatihanBab2 = () => {
             Terdapat 10 pertanyaan yang harus dikerjakan dalam latihan ini.
             Beberapa ketentuannya sebagai berikut:
           </p>
-          <ul className="list-disc list-inside mb-3 leading-relaxed">
+          <ul className="mb-3 leading-relaxed list-disc list-inside">
             <li>Syarat nilai kelulusan: 75%</li>
             <li>Durasi ujian: 20 menit</li>
           </ul>
@@ -493,7 +494,7 @@ const LatihanBab2 = () => {
           <div className="flex justify-end">
             <button
               onClick={() => setShowLatihan(true)}
-              className="flex items-center gap-2 text-base px-6 py-3 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+              className="flex items-center gap-2 px-6 py-3 text-base text-white transition-all duration-200 rounded-lg shadow-sm hover:shadow-md"
               style={{ backgroundColor: "#6E2A7F" }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.backgroundColor = "#5B1F6A")
@@ -509,7 +510,7 @@ const LatihanBab2 = () => {
         </section>
 
         <section className="mt-16">
-          <h3 className="font-semibold text-gray-800 mb-3 border-b border-gray-300 pb-1">
+          <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300">
             Riwayat
           </h3>
           {isLoading ? (

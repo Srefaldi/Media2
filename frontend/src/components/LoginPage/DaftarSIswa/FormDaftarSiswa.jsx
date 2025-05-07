@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RegisterSiswa, reset } from "../../../features/authSlice";
+import { RegisterSiswa, reset } from "../../../features/authSlice.js";
 import Navbar from "../../Landing/Navbar";
 import Footer from "../../Landing/Footer";
 import loginImage from "../../../assets/img/daftarfoto.png";
