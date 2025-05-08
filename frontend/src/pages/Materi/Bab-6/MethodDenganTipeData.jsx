@@ -29,11 +29,12 @@ const MethodDenganTipeData = () => {
   return (
     <div className="mt-4 mb-4">
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 6 - METHOD</h1>
-      <h2 className="mt-2 mb-4 text-2xl font-bold">
-        6.3 Method Dengan Tipe Data
-      </h2>
+
       {/* Pendahuluan Materi */}
-      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="mt-2 mb-4 text-2xl font-bold">
+          6.3 Method Dengan Tipe Data
+        </h2>
         <p className="mb-3 text-xl font-bold">
           Mendefinisikan dan Memanggil Method dengan Nilai Balik
         </p>
@@ -96,52 +97,53 @@ const MethodDenganTipeData = () => {
           karena nilai balik dari method PenjumlahanTigaAngka() juga bertipe
           int.
         </p>
-      </div>
 
-      {/* Menyederhanakan Definisi Method */}
-      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <h3 className="mb-3 text-xl font-bold">
-          Menyederhanakan Definisi Method
-        </h3>
-        <p className="mb-4">
-          Di dalam method <code>PenjumlahanTigaAngka()</code> sebelumnya, kita
-          mendeklarasikan variabel lokal <code>hasil</code> untuk menampung
-          hasil operasi <code>angka1 + angka2 + angka3</code>. Lalu memberikan
-          variabel tersebut ke pernyataan <code>return</code> sebagai nilai
-          balik dari method tersebut.
-        </p>
-        <p className="mb-4">
-          Karena operasi <code>angka1 + angka2 + angka3</code> sendiri
-          menghasilkan nilai dengan tipe <code>int</code>, kita sama sekali
-          tidak memerlukan variabel <code>hasil</code> untuk menampung hasil
-          operasi tersebut. Sebagai gantinya, kita bisa langsung memberikan
-          operasi <code>angka1 + angka2 + angka3</code> ke pernyataan{" "}
-          <code>return</code>. seperti pada definisi baru method
-          PenjumlahanTigaAngka() yang lebih ringkas pada contoh di bawah ini:
-        </p>
-        <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
-          <code>{`static int PenjumlahanTigaAngka() 
+        {/* Menyederhanakan Definisi Method */}
+        <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+          <h3 className="mb-3 text-xl font-bold">
+            Menyederhanakan Definisi Method
+          </h3>
+          <p className="mb-4">
+            Di dalam method <code>PenjumlahanTigaAngka()</code> sebelumnya, kita
+            mendeklarasikan variabel lokal <code>hasil</code> untuk menampung
+            hasil operasi <code>angka1 + angka2 + angka3</code>. Lalu memberikan
+            variabel tersebut ke pernyataan <code>return</code> sebagai nilai
+            balik dari method tersebut.
+          </p>
+          <p className="mb-4">
+            Karena operasi <code>angka1 + angka2 + angka3</code> sendiri
+            menghasilkan nilai dengan tipe <code>int</code>, kita sama sekali
+            tidak memerlukan variabel <code>hasil</code> untuk menampung hasil
+            operasi tersebut. Sebagai gantinya, kita bisa langsung memberikan
+            operasi <code>angka1 + angka2 + angka3</code> ke pernyataan{" "}
+            <code>return</code>. seperti pada definisi baru method
+            PenjumlahanTigaAngka() yang lebih ringkas pada contoh di bawah ini:
+          </p>
+          <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
+            <code>{`static int PenjumlahanTigaAngka() 
 { 
     int angka1 = 3, angka2 = 4, angka3 = 5; 
     return angka1 + angka2 + angka3; 
 }`}</code>
-        </pre>
-        <p className="mb-4">
-          Pada C#, kita bahkan bisa meringkasnya lebih jauh dengan menggunakan
-          konstruksi yang dinamakan <strong>expression-embodied member</strong>{" "}
-          seperti yang ditunjukkan oleh kode program di bawah ini:
-        </p>
-        <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
-          <code>{`static int PenjumlahanTigaAngka() => angka1 + angka2 + angka3;`}</code>
-        </pre>
-        <p className="mb-4">
-          Tanda <code>=> </code> disebut dengan <strong>operator lambda</strong>
-          . Operator yang mirip dengan anak panah ini menyatakan bahwa nilai
-          balik dari method di sebelah kirinya adalah hasil dari operasi yang
-          “ditunjuk” oleh anak panah di sebelah kanannya.
-        </p>
+          </pre>
+          <p className="mb-4">
+            Pada C#, kita bahkan bisa meringkasnya lebih jauh dengan menggunakan
+            konstruksi yang dinamakan{" "}
+            <strong>expression-embodied member</strong> seperti yang ditunjukkan
+            oleh kode program di bawah ini:
+          </p>
+          <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
+            <code>{`static int PenjumlahanTigaAngka() => angka1 + angka2 + angka3;`}</code>
+          </pre>
+          <p className="mb-4">
+            Tanda <code>=> </code> disebut dengan{" "}
+            <strong>operator lambda</strong>. Operator yang mirip dengan anak
+            panah ini menyatakan bahwa nilai balik dari method di sebelah
+            kirinya adalah hasil dari operasi yang “ditunjuk” oleh anak panah di
+            sebelah kanannya.
+          </p>
+        </div>
       </div>
-
       {/* Kuis Method Dengan Tipe Data */}
       <QuizMethodData onComplete={handleQuizComplete} />
 

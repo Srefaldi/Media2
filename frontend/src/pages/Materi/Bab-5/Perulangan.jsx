@@ -35,11 +35,11 @@ const PernyataanPerulangan = () => {
       <h1 className="mb-4 text-2xl font-bold text-center">
         BAB 5 - KONTROL ALUR
       </h1>
-      <h2 className="mt-2 mb-4 text-2xl font-bold">
-        5.4 Pernyataan Perulangan
-      </h2>
 
-      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="mt-2 mb-4 text-2xl font-bold">
+          5.4 Pernyataan Perulangan
+        </h2>
         <p className="mb-3 text-xl font-bold">Perintah For</p>
         <p className="mb-3">
           <strong>

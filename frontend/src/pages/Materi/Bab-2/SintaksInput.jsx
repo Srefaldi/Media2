@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import Swal from "sweetalert2"; // Import SweetAlert2
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
+import Swal from "sweetalert2";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
+import iconBook from "../../../assets/img/book.png";
+import iconTujuan from "../../../assets/img/tujuan.png";
+import iconKonten from "../../../assets/img/konten.png";
 import QuizSintaksInput from "./Quiz-bab2/Quiz7";
 import image1 from "./img-bab2/sintaks-input1.png";
 import image2 from "./img-bab2/sintaks-input2.png";
@@ -15,24 +18,15 @@ const SintaksInput = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
+  const [quizPassed, setQuizPassed] = useState(false);
 
   const handleQuizComplete = (isPassed) => {
     handleLessonComplete("/materi/bab2/latihan-bab2");
     setQuizCompleted(true);
-    setQuizPassed(isPassed); // Set status kuis
+    setQuizPassed(isPassed);
   };
 
   const handleNext = () => {
-    if (!quizPassed) {
-      Swal.fire({
-        title: "Oops!",
-        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
-        icon: "warning",
-        confirmButtonText: "OK",
-      });
-      return; // Hentikan eksekusi jika kuis belum benar
-    }
     handleLessonComplete("/materi/bab2/sintaks-input");
     window.scrollTo(0, 0);
     navigate("/materi/bab2/latihan-bab2");
@@ -44,12 +38,85 @@ const SintaksInput = () => {
   };
 
   return (
-    <div>
-      <h1 className="mb-6 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
-      <h2 className="mt-4 mb-2 text-2xl font-bold">2.7 Sintaks Input</h2>
+    <div className="p-4">
+      <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
 
-      <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <p className="mt-2 text-xl font-bold">
+      {/* Pendahuluan Materi */}
+      <div className="w-full mb-2 border border-gray-300 rounded-lg shadow-md">
+        <h3
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
+          style={{ backgroundColor: "#68217A" }}
+        >
+          <img src={iconBook} alt="Icon" className="w-8 h-8 mr-2" />
+          PENDAHULUAN MATERI
+          <span className="ml-2">▼</span>
+        </h3>
+        <div className="p-4 text-justify text-gray-700 bg-white rounded-b-lg">
+          <p>
+            Pada bab ini, kita akan mempelajari tentang sintaks input dalam
+            bahasa pemrograman C#. Sintaks input memungkinkan program untuk
+            menerima data dari pengguna, yang kemudian dapat diproses untuk
+            menghasilkan output. Memahami cara menggunakan fungsi input seperti{" "}
+            <code>ReadLine()</code>,<code>Read()</code>, dan{" "}
+            <code>ReadKey()</code> sangat penting untuk membangun program
+            interaktif. Setelah mempelajari materi ini, diharapkan pembaca dapat
+            menggunakan sintaks input dengan benar dan memahami konsep
+            penyimpanan data input ke dalam variabel.
+          </p>
+        </div>
+      </div>
+
+      {/* Tujuan Pembelajaran */}
+      <div className="w-full mb-2 border border-gray-300 rounded-lg shadow-md">
+        <h3
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
+          style={{ backgroundColor: "#68217A" }}
+        >
+          <img src={iconTujuan} alt="Icon" className="w-8 h-8 mr-2" />
+          TUJUAN PEMBELAJARAN
+          <span className="ml-2">▼</span>
+        </h3>
+        <ul className="p-4 pl-6 text-justify text-gray-700 list-disc bg-white rounded-b-lg">
+          <li>Mampu memahami fungsi dan penggunaan sintaks input dalam C#</li>
+          <li>
+            Dapat menggunakan <code>ReadLine()</code>, <code>Read()</code>, dan{" "}
+            <code>ReadKey()</code> dengan benar
+          </li>
+          <li>Memahami cara menyimpan data input ke dalam variabel</li>
+          <li>
+            Mampu menggunakan placeholder dan string interpolation untuk
+            menampilkan output
+          </li>
+        </ul>
+      </div>
+
+      {/* Konten Materi */}
+      <div className="w-full mb-2 border border-gray-300 rounded-lg shadow-md">
+        <h3
+          className="flex items-center p-4 font-bold text-white cursor-pointer"
+          style={{ backgroundColor: "#68217A" }}
+        >
+          <img src={iconKonten} alt="Icon" className="w-8 h-8 mr-2" />
+          KONTEN MATERI
+          <span className="ml-2">▼</span>
+        </h3>
+        <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
+          <li>2.1 Pengertian Variabel</li>
+          <li>2.2 Penamaan Variabel</li>
+          <li>2.3 Kategori Variabel</li>
+          <li>2.4 Deklarasi dan Inisialisasi Variabel</li>
+          <li>2.5 Deklarasi Banyak Variabel</li>
+          <li>2.6 Variabel Konstanta</li>
+          <li>2.7 Sintaks Input</li>
+          <li>Rangkuman</li>
+        </ul>
+      </div>
+
+      {/* Sintaks Input */}
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold">2.7 Sintaks Input</h2>
+
+        <p className="mt-4 text-xl font-bold">
           Memasukan Data Menggunakan Sintaks Input
         </p>
         <p className="mt-1 mb-6">
@@ -72,115 +139,121 @@ const SintaksInput = () => {
           src="https://dotnetfiddle.net/Widget/wAhlLN"
           frameBorder="0"
         ></iframe>
-        <div className="ml-5">
-          <p className="mt-4 mb-2 italic">
-            Dari program di atas, maka berikut hasilnya:
-          </p>
+        <p className="mt-4 mb-2 italic">
+          Dari program di atas, maka berikut hasilnya:
+        </p>
 
-          <figure className="mb-4">
-            <img
-              src={image1}
-              alt="Deskripsi Gambar"
-              className="w-full max-w-md mx-auto"
-            />
-            <figcaption className="text-center">
-              Gambar 2.3 Output program
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full mt-4">
+          <img
+            src={image1}
+            alt="Gambar 2.3 Output program"
+            className="w-full max-w-md mx-auto rounded-lg"
+          />
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 2.3. Output program
             </figcaption>
-          </figure>
+          </div>
+        </figure>
 
-          <p className="mb-4">
-            Jika kita perhatikan kode program di atas, di sana kita menggunakan
-            variabel <code>nama</code> untuk menyimpan teks yang diinputkan.
-          </p>
+        <p className="mt-4">
+          Jika kita perhatikan kode program di atas, di sana kita menggunakan
+          variabel <code>nama</code> untuk menyimpan teks yang diinputkan.
+        </p>
 
-          <figure className="mb-4">
-            <img
-              src={image2}
-              alt="Deskripsi Gambar"
-              className="w-full max-w-md mx-auto"
-            />
-            <figcaption className="text-center">
-              Gambar 2.4 Variabel nama dari kode program
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full mt-4">
+          <img
+            src={image2}
+            alt="Gambar 2.4 Variabel nama dari kode program"
+            className="w-full max-w-md mx-auto rounded-lg"
+          />
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 2.4. Variabel nama dari kode program
             </figcaption>
-          </figure>
+          </div>
+        </figure>
 
-          <p className="mb-4">
-            Kemudian menampilkannya dengan cara seperti ini :
-          </p>
+        <p className="mt-4">Kemudian menampilkannya dengan cara seperti ini:</p>
 
-          <figure className="mb-4">
-            <img
-              src={image3}
-              alt="Deskripsi Gambar"
-              className="w-full max-w-md mx-auto"
-            />
-            <figcaption className="text-center">
-              Gambar 2.5 Kode perintah cetak dari kode program
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full mt-4">
+          <img
+            src={image3}
+            alt="Gambar 2.5 Kode perintah cetak dari kode program"
+            className="w-full max-w-md mx-auto rounded-lg"
+          />
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 2.5. Kode perintah cetak dari kode program
             </figcaption>
-          </figure>
+          </div>
+        </figure>
 
-          <p className="mb-4">
-            Selain dengan cara di atas, kita dapat menggunakan sebuah
-            placeholder untuk menampilkan sebuah variabel seperti ini:
-          </p>
+        <p className="mt-4">
+          Selain dengan cara di atas, kita dapat menggunakan sebuah placeholder
+          untuk menampilkan sebuah variabel seperti ini:
+        </p>
 
-          <figure className="mb-4">
-            <img
-              src={image4}
-              alt="Deskripsi Gambar"
-              className="w-full max-w-md mx-auto"
-            />
-            <figcaption className="text-center">
-              Gambar 2.6 Cara menggunakan placeholder
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full mt-4">
+          <img
+            src={image4}
+            alt="Gambar 2.6 Cara menggunakan placeholder"
+            className="w-full max-w-md mx-auto rounded-lg"
+          />
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 2.6. Cara menggunakan placeholder
             </figcaption>
-          </figure>
+          </div>
+        </figure>
 
-          <p className="mb-4">
-            Simbol <code>{`{0}`}</code> pada baris kode di atas adalah sebuah
-            placeholder yang nantinya akan digantikan dengan isi dari variabel.
-          </p>
+        <p className="mt-4">
+          Simbol <code>{`{0}`}</code> pada baris kode di atas adalah sebuah
+          placeholder yang nantinya akan digantikan dengan isi dari variabel.
+        </p>
 
-          <p className="mb-4">
-            Selain itu terdapat juga teknik yang disebut dengan string
-            interpolation, yang menggunakan sebuah placeholder dan diawali
-            dengan simbol <code>$</code> seperti ini:
-          </p>
+        <p className="mt-4">
+          Selain itu terdapat juga teknik yang disebut dengan string
+          interpolation, yang menggunakan sebuah placeholder dan diawali dengan
+          simbol <code>$</code> seperti ini:
+        </p>
 
-          <figure className="mb-4">
-            <img
-              src={image5}
-              alt="Deskripsi Gambar"
-              className="w-full max-w-md mx-auto"
-            />
-            <figcaption className="text-center">
-              Gambar 2.7 Cara menggunakan string interpolation
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full mt-4">
+          <img
+            src={image5}
+            alt="Gambar 2.7 Cara menggunakan string interpolation"
+            className="w-full max-w-md mx-auto rounded-lg"
+          />
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 2.7. Cara menggunakan string interpolation
             </figcaption>
-          </figure>
+          </div>
+        </figure>
 
-          <p className="mb-4">
-            Mengapa harus menggunakan variabel? Jika kita lihat dari konsep
-            dasar sebuah program komputer, di sana terdapat input, process, dan
-            output.
-          </p>
+        <p className="mt-4">
+          Mengapa harus menggunakan variabel? Jika kita lihat dari konsep dasar
+          sebuah program komputer, di sana terdapat input, process, dan output.
+        </p>
 
-          <figure className="mb-4">
-            <img
-              src={image6}
-              alt="Deskripsi Gambar"
-              className="w-full max-w-md mx-auto"
-            />
-            <figcaption className="text-center">
-              Gambar 2.8 Konsep program komputer
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full mt-4">
+          <img
+            src={image6}
+            alt="Gambar 2.8 Konsep program komputer"
+            className="w-full max-w-md mx-auto rounded-lg"
+          />
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 2.8. Konsep program komputer
             </figcaption>
-          </figure>
+          </div>
+        </figure>
 
-          <p className="mb-4">
-            Variabel berperan sebagai penampung data yang akan kita proses di
-            dalam sebuah program. Pada contoh program sebelumnya, kita
-            membutuhkan sebuah variabel karena kita akan menampilkannya ke
-            layar.
-          </p>
-        </div>
+        <p className="mt-4">
+          Variabel berperan sebagai penampung data yang akan kita proses di
+          dalam sebuah program. Pada contoh program sebelumnya, kita membutuhkan
+          sebuah variabel karena kita akan menampilkannya ke layar.
+        </p>
       </div>
 
       {/* Kuis Sintaks Input */}

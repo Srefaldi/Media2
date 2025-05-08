@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Quiz from "./Quiz-bab2/Quiz1"; // Pastikan path ini sesuai
+import { useNavigate, useOutletContext } from "react-router-dom";
+import Quiz from "./Quiz-bab2/Quiz1";
 import alur from "./img-bab2/ilustrasi.png";
-import logoc from "./img-bab2/script.png";
+import logoc from "./img-bab2/script.png"; // Note: This import is unused in the code
 import memori from "./img-bab2/memori.png";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
 import iconBook from "../../../assets/img/book.png";
 import iconTujuan from "../../../assets/img/tujuan.png";
 import iconKonten from "../../../assets/img/konten.png";
-import { useOutletContext } from "react-router-dom";
 
 const Variabel = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -47,7 +46,7 @@ const Variabel = () => {
           <span className="ml-2">▼</span>
         </h3>
 
-        <div className="p-4 text-justify text-gray-700 rounded-b-lg">
+        <div className="p-4 text-justify text-gray-700 bg-white rounded-b-lg">
           <p>
             Pada bab ini, kita akan mempelajari tentang variabel dalam bahasa
             pemrograman C#. Variabel merupakan elemen penting dalam pemrograman
@@ -106,63 +105,65 @@ const Variabel = () => {
       </div>
 
       {/* Pengertian Variabel */}
-      <div className="mb-6">
-        <h2 className="mt-2 text-2xl font-bold">2.1 Pengertian Variabel</h2>
-        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <p>
-            Variabel adalah suatu data yang nilainya dapat berubah-ubah.
-            Variabel sangat erat kaitannya dengan tipe data. Karena keberadaan
-            suatu data perlu ditentukan tipe datanya untuk pengenalan jenis dari
-            data dan penentuan cara pengolahan data tersebut. Contohnya dari
-            variabel seperti script di bawah ini.
-          </p>
-        </div>
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold">2.1 Pengertian Variabel</h2>
 
-        <pre className="p-2 bg-gray-100 rounded-lg">
+        <p className="mt-4">
+          Variabel adalah suatu data yang nilainya dapat berubah-ubah. Variabel
+          sangat erat kaitannya dengan tipe data. Karena keberadaan suatu data
+          perlu ditentukan tipe datanya untuk pengenalan jenis dari data dan
+          penentuan cara pengolahan data tersebut. Contohnya dari variabel
+          seperti script di bawah ini.
+        </p>
+
+        <pre className="mt-4 p-2 bg-gray-100 rounded-lg">
           <code className="text-gray-800">int s;</code>
         </pre>
-        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <p>
-            Maksud dari satu baris script di atas ialah memberi instruksi untuk
-            membuat variabel "s" yang dialokasikan pada memori sebesar bit tipe
-            data integer dengan nilai NULL (tidak terisi apapun). Dalam
-            mempelajari bahasa pemrograman selain Assembly, kita tidak perlu
-            memikirkan dimana alamat memori untuk menyimpan variabel tersebut.
-            Namun yang perlu dipahami ialah kapan dan untuk apa kita memilih
-            tipe data untuk suatu variabel. Dengan kata lain, kita harus tahu
-            dan paham dalam penggunaan tipe data pada variabel.
-          </p>
-        </div>
 
-        <div className="flex justify-center p-4">
+        <p className="mt-4">
+          Maksud dari satu baris script di atas ialah memberi instruksi untuk
+          membuat variabel "s" yang dialokasikan pada memori sebesar bit tipe
+          data integer dengan nilai NULL (tidak terisi apapun). Dalam
+          mempelajari bahasa pemrograman selain Assembly, kita tidak perlu
+          memikirkan dimana alamat memori untuk menyimpan variabel tersebut.
+          Namun yang perlu dipahami ialah kapan dan untuk apa kita memilih tipe
+          data untuk suatu variabel. Dengan kata lain, kita harus tahu dan paham
+          dalam penggunaan tipe data pada variabel.
+        </p>
+
+        {/* Ilustrasi Data ke Variabel */}
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full mt-4">
           <img
             src={alur}
-            alt="Gambar 2.2 Ilustrasi Data ke Variabel"
-            className="h-100 w-100"
+            alt="Gambar 2.1 Ilustrasi Data ke Variabel"
+            className="w-full max-w-md mx-auto rounded-lg"
           />
-        </div>
-        <p className="font-bold text-center">
-          Gambar 2.1 Ilustrasi Data ke Variabel
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 2.1. Ilustrasi Data ke Variabel
+            </figcaption>
+          </div>
+        </figure>
+
+        <p className="mt-4">
+          Data atau nilai yang disimpan pada sebuah variabel akan disimpan ke
+          dalam memori (RAM). Semakin banyak variabel atau nilai yang dibuat,
+          semakin banyak ruang memori yang digunakan.
         </p>
 
-        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <p>
-            Data atau nilai yang disimpan pada sebuah variabel akan disimpan ke
-            dalam memori (RAM). Semakin banyak variabel atau nilai yang dibuat,
-            semakin banyak ruang memori yang digunakan.
-          </p>
-        </div>
-
-        <div className="flex justify-center p-4">
+        {/* String CsharpLearn di Memori */}
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full mt-4">
           <img
             src={memori}
-            alt="Gambar 2.3 Contoh Bagaimana String 'CsharpLearn' Disimpan di Memori Komputer"
-            className="h-150 w-150"
+            alt="Gambar 2.2 String 'CsharpLearn' Disimpan di Memori Komputer"
+            className="w-full max-w-3xl mx-auto rounded-lg"
           />
-        </div>
-        <p className="font-bold text-center">
-          Gambar 2.2 String "CsharpLearn" Disimpan di Memori Komputer
-        </p>
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 2.2. String "CsharpLearn" Disimpan di Memori Komputer
+            </figcaption>
+          </div>
+        </figure>
       </div>
 
       {/* Kuis */}

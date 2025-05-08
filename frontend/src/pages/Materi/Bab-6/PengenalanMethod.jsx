@@ -43,7 +43,6 @@ const MethodMateri = () => {
           PENDAHULUAN MATERI
           <span className="ml-2">▼</span>
         </h3>
-
         <div className="p-4 text-justify text-gray-700 rounded-b-lg">
           <p>
             Pada bab ini, kita akan membahas tentang Method dalam pemrograman
@@ -98,116 +97,118 @@ const MethodMateri = () => {
       </div>
 
       {/* Pengenalan Method */}
-      <div className="mt-6 mb-6">
-        {" "}
-        {/* Menambahkan margin atas dan bawah */}
-        <h2 className="mt-2 text-2xl font-bold">6.1 Pengenalan Method</h2>
-        <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <p className="mb-4">
-            <strong>Method</strong> (Metode) merupakan{" "}
-            <strong>
-              kumpulan dari beberapa pernyataan yang digabungkan menjadi satu
-              yang bertujuan untuk melakukan suatu tugas tertentu
-            </strong>
-            . Method juga merupakan sekumpulan pernyataan yang akan dijalankan
-            ketika dipanggil pada suatu program.
-          </p>
-          <p className="mb-4">
-            Method memiliki banyak kelebihan diantaranya adalah :
-          </p>
-          <ul className="pl-6 mb-4 list-disc">
-            <li>
-              Kode bersifat <strong>reusable</strong> yang artinya kode tersebut
-              dapat digunakan kembali.
-            </li>
-            <li>
-              <strong>Mudah untuk menguji</strong>
-            </li>
-            <li>
-              Modifikasi method{" "}
-              <strong>tidak mempengaruhi program pemanggil</strong>
-            </li>
-            <li>
-              Method dapat{" "}
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <div className=" mb-6">
+          {" "}
+          {/* Menambahkan margin atas dan bawah */}
+          <h2 className="mt-2 text-2xl font-bold">6.1 Pengenalan Method</h2>
+          <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+            <p className="mb-4">
+              <strong>Method</strong> (Metode) merupakan{" "}
               <strong>
-                menerima lebih dari satu masukan/argumen yang berbeda
+                kumpulan dari beberapa pernyataan yang digabungkan menjadi satu
+                yang bertujuan untuk melakukan suatu tugas tertentu
               </strong>
-            </li>
-          </ul>
-          <p className="mb-4">Untuk mendefiniskan suatu method pada C# :</p>
-          <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
-            <code>{`[Access modifier][tipe data][nama method](parameter1, parameter2, ...) { 
+              . Method juga merupakan sekumpulan pernyataan yang akan dijalankan
+              ketika dipanggil pada suatu program.
+            </p>
+            <p className="mb-4">
+              Method memiliki banyak kelebihan diantaranya adalah :
+            </p>
+            <ul className="pl-6 mb-4 list-disc">
+              <li>
+                Kode bersifat <strong>reusable</strong> yang artinya kode
+                tersebut dapat digunakan kembali.
+              </li>
+              <li>
+                <strong>Mudah untuk menguji</strong>
+              </li>
+              <li>
+                Modifikasi method{" "}
+                <strong>tidak mempengaruhi program pemanggil</strong>
+              </li>
+              <li>
+                Method dapat{" "}
+                <strong>
+                  menerima lebih dari satu masukan/argumen yang berbeda
+                </strong>
+              </li>
+            </ul>
+            <p className="mb-4">Untuk mendefiniskan suatu method pada C# :</p>
+            <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
+              <code>{`[Access modifier][tipe data][nama method](parameter1, parameter2, ...) { 
     // Statements 
 }`}</code>
-          </pre>
-          <p className="mb-4">Dari struktur di atas:</p>
-          <ul className="pl-6 mb-4 list-disc">
-            <li>
-              <strong>Access modifier</strong>, untuk saat ini, gunakan saja
-              access modifier public.
-            </li>
-            <li>
-              <strong>Tipe data</strong> merupakan tipe data yang dihasilkan
-              method. Bisa berupa void atau tipe data C# lainnya, termasuk enum
-              atau class custom.
-            </li>
-            <li>
-              <strong>Nama method</strong> berupa suatu identifier yang valid.
-            </li>
-            <li>
-              <strong>Parameter</strong> sekumpulan variabel pada method untuk
-              berkomunikasi dengan program di luar method. Method juga bisa
-              tidak memiliki parameter.
-            </li>
-            <li>
-              <strong>Statements</strong>, kumpulan perintah yang akan
-              dijalankan ketika method dipanggil.
-            </li>
-          </ul>
-          <p className="mb-4">
-            Suatu method harus ditempatkan di dalam suatu class. Method adalah
-            salah satu bentuk dari member suatu class. Suatu method dipanggil
-            atau dijalankan dengan menuliskan namanya. Sebagai catatan, program
-            dengan bahasa pemrograman C# paling tidak memiliki satu method,
-            yaitu method Main.
-          </p>
+            </pre>
+            <p className="mb-4">Dari struktur di atas:</p>
+            <ul className="pl-6 mb-4 list-disc">
+              <li>
+                <strong>Access modifier</strong>, untuk saat ini, gunakan saja
+                access modifier public.
+              </li>
+              <li>
+                <strong>Tipe data</strong> merupakan tipe data yang dihasilkan
+                method. Bisa berupa void atau tipe data C# lainnya, termasuk
+                enum atau class custom.
+              </li>
+              <li>
+                <strong>Nama method</strong> berupa suatu identifier yang valid.
+              </li>
+              <li>
+                <strong>Parameter</strong> sekumpulan variabel pada method untuk
+                berkomunikasi dengan program di luar method. Method juga bisa
+                tidak memiliki parameter.
+              </li>
+              <li>
+                <strong>Statements</strong>, kumpulan perintah yang akan
+                dijalankan ketika method dipanggil.
+              </li>
+            </ul>
+            <p className="mb-4">
+              Suatu method harus ditempatkan di dalam suatu class. Method adalah
+              salah satu bentuk dari member suatu class. Suatu method dipanggil
+              atau dijalankan dengan menuliskan namanya. Sebagai catatan,
+              program dengan bahasa pemrograman C# paling tidak memiliki satu
+              method, yaitu method Main.
+            </p>
+          </div>
         </div>
-      </div>
 
-      {/* Kuis */}
-      {!quizCompleted && <QuizMethod onComplete={handleQuizComplete} />}
+        {/* Kuis */}
+        {!quizCompleted && <QuizMethod onComplete={handleQuizComplete} />}
 
-      {/* Tombol Navigasi */}
-      <div className="flex justify-between mt-6">
-        <button
-          onClick={handleBack}
-          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-        >
-          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-          Kembali
-        </button>
-        {quizCompleted && (
+        {/* Tombol Navigasi */}
+        <div className="flex justify-between mt-6">
           <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
           >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
+            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+            Kembali
           </button>
-        )}
+          {quizCompleted && (
+            <button
+              onClick={handleNext}
+              className="flex items-center justify-between"
+              style={{
+                backgroundColor: "#6E2A7F",
+                color: "white",
+                padding: "0.5rem 1rem",
+                borderRadius: "0.5rem",
+                transition: "background-color 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "#5B1F6A")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "#6E2A7F")
+              }
+            >
+              <span>Selanjutnya</span>
+              <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

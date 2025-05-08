@@ -1,32 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import Swal from "sweetalert2"; // Import SweetAlert2
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import QuizDeklarasiVariabel from "./Quiz-bab2/Quiz4"; // Pastikan path ini sesuai
+import Swal from "sweetalert2";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
+import QuizDeklarasiVariabel from "./Quiz-bab2/Quiz4";
 
-const DeklarasiBanyak = () => {
+const DeklarasiInisialisasi = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
+  const [quizPassed, setQuizPassed] = useState(false);
 
   const handleQuizComplete = (isPassed) => {
-    handleLessonComplete("/materi/bab2/deklarasi-banyak");
+    handleLessonComplete("/materi/bab2/deklarasi-inialisasi");
     setQuizCompleted(true);
-    setQuizPassed(isPassed); // Set status kuis
+    setQuizPassed(isPassed);
   };
 
   const handleNext = () => {
-    if (!quizPassed) {
-      Swal.fire({
-        title: "Oops!",
-        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
-        icon: "warning",
-        confirmButtonText: "OK",
-      });
-      return;
-    }
     handleLessonComplete("/materi/bab2/deklarasi-inialisasi");
     window.scrollTo(0, 0);
     navigate("/materi/bab2/deklarasi-banyak");
@@ -40,93 +31,96 @@ const DeklarasiBanyak = () => {
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
-      <h2 className="mt-2 text-2xl font-bold">
-        2.4 Deklarasi dan Inisialisasi Variabel
-      </h2>
 
-      <div className="p-4 mt-1 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <p className="mb-4">
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold">
+          2.4 Deklarasi dan Inisialisasi Variabel
+        </h2>
+
+        <p className="mt-4">
           Deklarasi variabel adalah suatu proses yang dimaksudkan untuk
           memberitahu kompiler tentang nama variabel dan tipe data yang
           diwakili. Compiler mengalokasikan ruang memori berdasarkan tipe data
           yang diwakili.
         </p>
-        <p className="mb-4">
+
+        <p className="mt-4">
           Inisialisasi variabel adalah proses pemberian nilai awal pada sebuah
           variabel yang dapat dilakukan saat deklarasi variabel atau pada baris
           kode lainnya.
         </p>
+
         <h3 className="mt-4 text-xl font-bold">Cara Deklarasi Variabel</h3>
-        <p className="mb-4">
+
+        <p className="mt-4">
           Terdapat dua cara untuk mendeklarasikan variabel di C# :
         </p>
-        <ul className="pl-6 list-decimal">
+
+        <ol className="mt-4 pl-6 list-decimal">
           <li>
-            <strong className="list-decimal">Eksplisit:</strong> dengan
-            menuliskan tipe data lalu diikuti nama variabel.
-            <pre className="p-2 bg-gray-200 rounded">
+            <strong>Eksplisit:</strong> dengan menuliskan tipe data lalu diikuti
+            nama variabel.
+            <pre className="mt-2 p-2 bg-gray-200 rounded">
               <code>int namaVariabel;</code>
             </pre>
+            <ul className="mt-2 ml-4 list-disc">
+              <li>
+                <strong>Mendeklarasikan Variabel Kosong:</strong>
+                <pre className="mt-2 p-2 bg-gray-200 rounded">
+                  <code>
+                    string alamat;
+                    <br />
+                    int umur;
+                    <br />
+                    float beratBadan;
+                    <br />
+                    bool isMenikah;
+                  </code>
+                </pre>
+              </li>
+              <li>
+                <strong>Inisialisasi Variabel:</strong>
+                <pre className="mt-2 p-2 bg-gray-200 rounded">
+                  <code>
+                    alamat = "Handil Bakti No. 26";
+                    <br />
+                    umur = 18;
+                    <br />
+                    beratBadan = 49.5;
+                    <br />
+                    isMenikah = false;
+                  </code>
+                </pre>
+              </li>
+              <li>
+                <strong>Deklarasi Sekaligus Inisialisasi:</strong>
+                <pre className="mt-2 p-2 bg-gray-200 rounded">
+                  <code>
+                    string nama = "Sopia Refaldi";
+                    <br />
+                    int angkatan = 10;
+                    <br />
+                    float nilaiAkademik = 3.84;
+                  </code>
+                </pre>
+              </li>
+            </ul>
           </li>
-        </ul>
-        <ul className="mt-2 mb-4 ml-20 list-disc">
-          <li>
-            <strong>Mendeklarasikan Variabel Kosong:</strong>
-            <pre className="p-2 bg-gray-200 rounded">
-              <code>
-                string alamat;
-                <br />
-                int umur;
-                <br />
-                float beratBadan;
-                <br />
-                bool isMenikah;
-              </code>
-            </pre>
-          </li>
-          <li>
-            <strong>Inisialisasi Variabel:</strong>
-            <pre className="p-2 bg-gray-200 rounded">
-              <code>
-                alamat = "Handil Bakti No. 26";
-                <br />
-                umur = 18;
-                <br />
-                beratBadan = 49.5;
-                <br />
-                isMenikah = false;
-              </code>
-            </pre>
-          </li>
-          <li>
-            <strong>Deklarasi Sekaligus Inisialisasi:</strong>
-            <pre className="p-2 bg-gray-200 rounded">
-              <code>
-                string nama = "Sopia Refaldi";
-                <br />
-                int angkatan = 10;
-                <br />
-                float nilaiAkademik = 3.84;
-              </code>
-            </pre>
-          </li>
-        </ul>
-        <ol className="pl-6 list-decimal" start={2}>
-          <li>
+          <li className="mt-4">
             <strong>Implisit:</strong> apabila kita tidak mengetahui tipe data
             yang akan digunakan, maka membuat variabel dapat menggunakan kata
             kunci <code>var</code>.
-            <pre className="p-2 bg-gray-200 rounded">
+            <pre className="mt-2 p-2 bg-gray-200 rounded">
               <code>var namaVariabel = 10;</code>
             </pre>
-            <p className="mb-2">
+            <p className="mt-4">
               Perlu diingat, untuk pembuatan variabel dengan <code>var</code>{" "}
               harus kita isi nilainya, karena kalau tidak akan terjadi error.
             </p>
-            <p className="mb-2">
+            <p className="mt-4">
               Contoh penggunaan <code>var</code> dalam mendeklarasikan variabel:
             </p>
-            <pre className="p-2 bg-gray-200 rounded">
+            <pre className="mt-2 p-2 bg-gray-200 rounded">
               <code>
                 var nama = "Sopia Refaldi";
                 <br />
@@ -135,7 +129,7 @@ const DeklarasiBanyak = () => {
                 var nilaiAkademik = 3.84;
               </code>
             </pre>
-            <p className="mb-4">
+            <p className="mt-4">
               Dalam contoh di atas, kita menggunakan <code>var</code> untuk
               mendeklarasikan variabel <code>nama</code>, <code>umur</code>, dan{" "}
               <code>nilaiAkademik</code> tanpa perlu menyebutkan tipe datanya
@@ -144,10 +138,11 @@ const DeklarasiBanyak = () => {
           </li>
         </ol>
 
-        <h3 className="mt-4 text-xl font-bold">
+        <h2 className="mt-4 text-xl font-bold">
           Mencetak Variabel Menggunakan Sintaks Print
-        </h3>
-        <p className="mb-4">
+        </h2>
+
+        <p className="mt-4">
           Pada pemrograman, mencetak data ke layar merupakan salah satu fungsi
           dasar yang sangat penting untuk menampilkan hasil proses dari program
           kita. Dalam bahasa C#, kita dapat mencetak data yang tersimpan dalam
@@ -157,12 +152,16 @@ const DeklarasiBanyak = () => {
           angka, atau data lainnya. Materi ini akan membahas bagaimana mencetak
           variabel dengan cara yang mudah dan praktis.
         </p>
-        <p className="mb-4 font-bold">Cobalah Kode Program Pada Compiler:</p>
+
+        <p className="mt-4 font-bold">Cobalah Kode Program Pada Compiler:</p>
+
         <iframe
           width="100%"
           height="400"
           src="https://dotnetfiddle.net/Widget/ZDE2kr"
           frameBorder="0"
+          className="mt-4"
+          title="C# Variable Declaration and Printing Example"
         ></iframe>
       </div>
 
@@ -207,4 +206,4 @@ const DeklarasiBanyak = () => {
   );
 };
 
-export default DeklarasiBanyak;
+export default DeklarasiInisialisasi;

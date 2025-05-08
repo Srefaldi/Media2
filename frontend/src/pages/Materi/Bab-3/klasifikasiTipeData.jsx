@@ -1,21 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import QuizKlasifikasiTipeData from "./Quiz-bab3/Quiz2"; // Import komponen kuis
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import QuizKlasifikasiTipeData from "./Quiz-bab3/Quiz2";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
 
 const KlasifikasiTipeData = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
+  const [quizPassed, setQuizPassed] = useState(false);
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
 
   const handleQuizComplete = (isPassed) => {
     setQuizCompleted(true);
     handleLessonComplete("/materi/bab3/tipe-data-dasar");
-
-    setQuizPassed(isPassed); // Set status kuis
+    setQuizPassed(isPassed);
   };
 
   const handleNext = () => {
@@ -30,40 +28,34 @@ const KlasifikasiTipeData = () => {
   };
 
   return (
-    <div>
+    <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 3 - TIPE DATA</h1>
       <h2 className="text-2xl font-bold">3.2 Klasifikasi Tipe Data</h2>
+      <p className="mt-4">
+        Klasifikasi tipe data dalam C# merujuk pada pengelompokan berbagai jenis
+        data yang dapat digunakan dalam program. Tipe data menentukan jenis
+        nilai yang dapat disimpan dalam variabel, serta operasi yang dapat
+        dilakukan pada nilai tersebut.
+      </p>
 
-      <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <p>
-          Klasifikasi tipe data dalam C# merujuk pada pengelompokan berbagai
-          jenis data yang dapat digunakan dalam program. Tipe data menentukan
-          jenis nilai yang dapat disimpan dalam variabel, serta operasi yang
-          dapat dilakukan pada nilai tersebut.
-        </p>
-      </div>
-
-      <div className="p-4 mt-2 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <h3 className="text-xl font-bold">
-          Predefined Types (Tipe Data Bawaan)
-        </h3>
-        <p>
-          Tipe data yang telah disebutkan pada topik sebelumnya seperti{" "}
-          <code>int</code> dan <code>string</code> sendiri sebenarnya merupakan
-          alias yang diberikan oleh C# untuk format umum tipe data yang
-          disediakan di lingkungan .NET. Format .NET untuk tipe data{" "}
-          <code>int</code> atau integer di C# adalah <code>System.Int32</code>.
-          Sedangkan untuk tipe data <code>string</code> di C# adalah{" "}
-          <code>System.String</code> di .NET. Oleh karena itu, kita juga bisa
-          mengganti <code>int</code> dengan <code>System.Int32</code> untuk
-          mendeklarasikan sebuah variabel bertipe integer.
-        </p>
-        <p>
-          C# menyediakan beberapa tipe data bawaan yang bisa langsung kita
-          gunakan yang biasa disebut dengan built-in data types atau predefined
-          types.
-        </p>
-      </div>
+      <h3 className="mt-4 text-xl font-bold">
+        Predefined Types (Tipe Data Bawaan)
+      </h3>
+      <p className="mt-2">
+        Tipe data yang telah disebutkan pada topik sebelumnya seperti{" "}
+        <code>int</code> dan <code>string</code> sendiri sebenarnya merupakan
+        alias yang diberikan oleh C# untuk format umum tipe data yang disediakan
+        di lingkungan .NET. Format .NET untuk tipe data <code>int</code> atau
+        integer di C# adalah <code>System.Int32</code>. Sedangkan untuk tipe
+        data <code>string</code> di C# adalah <code>System.String</code> di
+        .NET. Oleh karena itu, kita juga bisa mengganti <code>int</code> dengan{" "}
+        <code>System.Int32</code> untuk mendeklarasikan sebuah variabel bertipe
+        integer.
+      </p>
+      <p className="mt-2">
+        C# menyediakan beberapa tipe data bawaan yang bisa langsung kita gunakan
+        yang biasa disebut dengan built-in data types atau predefined types.
+      </p>
       <p className="mt-4 mb-4 font-bold">
         Pada tabel berikut adalah daftar tipe data bawaan C# :
       </p>
@@ -114,7 +106,11 @@ const KlasifikasiTipeData = () => {
             </tr>
             <tr>
               <td className="p-2 border border-gray-300">ulong</td>
-              <td className="p-2 border border-gray-300">
+              <td
+                className="
+
+p-2 border border-gray-300"
+              >
                 0 ~ 18.446.744.073.709.551.615
               </td>
             </tr>
@@ -159,27 +155,22 @@ const KlasifikasiTipeData = () => {
           </tbody>
         </table>
       </div>
+      <p className="mt-4">
+        Semua tipe data pada tabel di atas merupakan tipe nilai (value type)
+        kecuali <code>object</code> dan <code>string</code> yang merupakan tipe
+        referensi (reference type).
+      </p>
 
-      <div className="p-4 mt-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <p>
-          Semua tipe data pada tabel di atas merupakan tipe nilai (value type)
-          kecuali <code>object</code> dan <code>string</code> yang merupakan
-          tipe referensi (reference type).
-        </p>
-      </div>
-
-      <div className="p-4 mt-2 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <h3 className="text-xl font-bold">
-          User-defined Types (Tipe Data yang Didefinisikan Sendiri)
-        </h3>
-        <p>
-          Selain dari tipe data bawaan / predefined types, kita juga bisa
-          mendefinisikan tipe data kita sendiri yang biasa disebut dengan
-          user-defined types dengan menggunakan <code>class</code>,{" "}
-          <code>struct</code>, <code>interface</code>, <code>enum</code>, dan{" "}
-          <code>delegate</code>.
-        </p>
-      </div>
+      <h3 className="mt-4 text-xl font-bold">
+        User-defined Types (Tipe Data yang Didefinisikan Sendiri)
+      </h3>
+      <p className="mt-2">
+        Selain dari tipe data bawaan / predefined types, kita juga bisa
+        mendefinisikan tipe data kita sendiri yang biasa disebut dengan
+        user-defined types dengan menggunakan <code>class</code>,{" "}
+        <code>struct</code>, <code>interface</code>, <code>enum</code>, dan{" "}
+        <code>delegate</code>.
+      </p>
 
       {/* Kuis */}
       {!quizCompleted && (

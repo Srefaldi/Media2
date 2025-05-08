@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import alur from "./img-bab1/alur.png";
 import logoc from "./img-bab1/logo.png";
-import { useOutletContext } from "react-router-dom";
 import Quiz from "./Quiz-bab1/Quiz1";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
@@ -55,6 +54,7 @@ const PengenalanCSharp = () => {
           PENDAHULUAN MATERI
           <span className="ml-2">▼</span>
         </h3>
+
         <div className="p-4 text-justify text-gray-700 bg-white rounded-b-lg">
           <p>
             Pada bab ini, kita akan mempelajari pendahuluan bahasa pemrograman
@@ -114,90 +114,92 @@ const PengenalanCSharp = () => {
 
         <ul className="p-4 pl-6 text-justify text-gray-700 list-none bg-white rounded-b-lg">
           <li>1.1 Pengenalan C#</li>
-
           <li>1.2 Struktur Kode Bahasa Pemrograman C#</li>
           <li>1.3 Struktur Eksekusi Kode</li>
           <li>1.4 Sintaks Print</li>
           <li>1.5 Sintaks Komentar</li>
           <li>1.6 Error pada C#</li>
-          <li> Rangkuman</li>
+          <li>Rangkuman</li>
         </ul>
       </div>
 
       {/* Pengertian C# */}
-      <div>
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold">1.1 Pengenalan C#</h2>
 
-        <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <p>
-            C# (“See-Sharp”) adalah bahasa pemrograman modern yang dikembangkan
-            oleh Microsoft sebagai bagian dari inisiatif .NET mereka. Bahasa ini
-            pertama kali dirilis pada tahun 2000 dan dirancang di bawah
-            kepemimpinan Anders Hejlsberg, seorang tokoh terkemuka dalam
-            pengembangan bahasa pemrograman, yang juga dikenal sebagai
-            pengembang Borland Turbo C++ dan Borland Delphi. C# merupakan bahasa
-            yang dikompilasi dan sangat kuat, fleksibel, serta mendukung
-            pemrograman berorientasi objek.
-          </p>
-        </div>
+        <p className="mt-4">
+          C# (“See-Sharp”) adalah bahasa pemrograman modern yang dikembangkan
+          oleh Microsoft sebagai bagian dari inisiatif .NET mereka. Bahasa ini
+          pertama kali dirilis pada tahun 2000 dan dirancang di bawah
+          kepemimpinan Anders Hejlsberg, seorang tokoh terkemuka dalam
+          pengembangan bahasa pemrograman, yang juga dikenal sebagai pengembang
+          Borland Turbo C++ dan Borland Delphi. C# merupakan bahasa yang
+          dikompilasi dan sangat kuat, fleksibel, serta mendukung pemrograman
+          berorientasi objek.
+        </p>
 
-        <div className="flex justify-center p-4 mb-6">
-          <img src={logoc} alt="Gambar 1.1 Logo C#" className="h-auto w-60" />
-        </div>
-        <p className="mb-6 font-bold text-center">Gambar 1.1 Logo C#</p>
+        {/* Logo C# Image and Caption */}
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full">
+          <img
+            src={logoc}
+            alt="Gambar 1.1 Logo C#"
+            className="w-full max-w-sm mx-auto rounded-lg"
+          />
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 1.1. Logo C#
+            </figcaption>
+          </div>
+        </figure>
 
-        <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <p>
-            Seperti halnya bahasa pemrograman yang lain, C# bisa digunakan untuk
-            membangun berbagai macam jenis aplikasi, seperti aplikasi berbasis
-            windows (desktop) dan aplikasi berbasis web serta aplikasi berbasis
-            web services. <br />
-          </p>
-        </div>
-        <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <p>
-            C# dikembangkan sebagai respons terhadap kebutuhan akan bahasa
-            pemrograman yang kuat namun sederhana untuk mengembangkan aplikasi
-            pada platform Microsoft. Bahasa ini dipengaruhi oleh beberapa bahasa
-            pemrograman lain seperti C++, Java, dan Delphi, mengambil elemen
-            terbaik dari masing-masing bahasa untuk menciptakan bahasa yang
-            efisien dan mudah digunakan. Pada tahun 2002, versi pertama C#
-            diperkenalkan sebagai bagian dari .NET Framework 1.0. Sejak saat
-            itu, C# telah mengalami beberapa pembaruan dan perbaikan yang
-            signifikan.
-          </p>
-        </div>
-        <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <p>
-            Pada tahun 2003, C# diakui sebagai standar oleh ECMA (European
-            Computer Manufacturers Association) dan ISO (International
-            Organization for Standardization), yang membantu dalam penyebaran
-            bahasa ini secara global.
-          </p>
-        </div>
-        <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          <p>
-            Program C# tidak seperti program C dan C++ yang di-compile menjadi
-            binary yang bisa dieksekusi langsung oleh prosesor. Program C#
-            di-compile menjadi CIL (Common Intermediate Language). Komunitas
-            Visual Studio hanya mengubah program Bahasa C# menjadi MIL, yang
-            merupakan singkatan dari Microsoft Intermediate Language. Kode MIL
-            ini kemudian diubah menjadi bahasa mesin oleh sistem eksekusi
-            virtual yang dikenal sebagai Common Language Runtime. Seperti Gambar
-            dibawah ini.
-          </p>
-        </div>
+        <p className="mt-4">
+          Seperti halnya bahasa pemrograman yang lain, C# bisa digunakan untuk
+          membangun berbagai macam jenis aplikasi, seperti aplikasi berbasis
+          windows (desktop) dan aplikasi berbasis web serta aplikasi berbasis
+          web services.
+        </p>
 
-        <div className="flex justify-center p-4 mb-6">
+        <p className="mt-4">
+          C# dikembangkan sebagai respons terhadap kebutuhan akan bahasa
+          pemrograman yang kuat namun sederhana untuk mengembangkan aplikasi
+          pada platform Microsoft. Bahasa ini dipengaruhi oleh beberapa bahasa
+          pemrograman lain seperti C++, Java, dan Delphi, mengambil elemen
+          terbaik dari masing-masing bahasa untuk menciptakan bahasa yang
+          efisien dan mudah digunakan. Pada tahun 2002, versi pertama C#
+          diperkenalkan sebagai bagian dari .NET Framework 1.0. Sejak saat itu,
+          C# telah mengalami beberapa pembaruan dan perbaikan yang signifikan.
+        </p>
+
+        <p className="mt-4">
+          Pada tahun 2003, C# diakui sebagai standar oleh ECMA (European
+          Computer Manufacturers Association) dan ISO (International
+          Organization for Standardization), yang membantu dalam penyebaran
+          bahasa ini secara global.
+        </p>
+
+        <p className="mt-4">
+          Program C# tidak seperti program C dan C++ yang di-compile menjadi
+          binary yang bisa dieksekusi langsung oleh prosesor. Program C#
+          di-compile menjadi CIL (Common Intermediate Language). Komunitas
+          Visual Studio hanya mengubah program Bahasa C# menjadi MIL, yang
+          merupakan singkatan dari Microsoft Intermediate Language. Kode MIL ini
+          kemudian diubah menjadi bahasa mesin oleh sistem eksekusi virtual yang
+          dikenal sebagai Common Language Runtime. Seperti Gambar dibawah ini.
+        </p>
+
+        {/* Alur Eksekusi Image and Caption */}
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full">
           <img
             src={alur}
             alt="Gambar 1.2 Alur eksekusi Common Language Runtime"
-            className="h-auto w-100"
+            className="w-full max-w-xl mx-auto rounded-lg"
           />
-        </div>
-        <p className="mb-6 font-bold text-center">
-          Gambar 1.2 Alur eksekusi Common Language Runtime
-        </p>
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 1.2. Alur Eksekusi Common Language Runtime
+            </figcaption>
+          </div>
+        </figure>
       </div>
 
       {/* Kuis */}

@@ -1,33 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import Swal from "sweetalert2"; // Import SweetAlert2
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
+import Swal from "sweetalert2";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
 import Quiz6 from "./Quiz-bab2/Quiz6";
 
 const VariabelKonstanta = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
+  const [quizPassed, setQuizPassed] = useState(false);
 
   const handleQuizComplete = (isPassed) => {
     handleLessonComplete("/materi/bab2/sintaks-input");
-
     setQuizCompleted(true);
-    setQuizPassed(isPassed); // Set status kuis
+    setQuizPassed(isPassed);
   };
 
   const handleNext = () => {
-    if (!quizPassed) {
-      Swal.fire({
-        title: "Oops!",
-        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
-        icon: "warning",
-        confirmButtonText: "OK",
-      });
-      return; // Hentikan eksekusi jika kuis belum benar
-    }
     handleLessonComplete("/materi/bab2/variabel-konstanta");
     window.scrollTo(0, 0);
     navigate("/materi/bab2/sintaks-input");
@@ -41,10 +31,11 @@ const VariabelKonstanta = () => {
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
-      <h2 className="mt-2 text-2xl font-bold">2.6 Variabel Konstanta</h2>
 
-      <div className="p-4 mt-1 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <p className="mb-4">
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold">2.6 Variabel Konstanta</h2>
+
+        <p className="mt-4">
           Variabel konstanta adalah variabel yang nilainya tidak dapat diubah
           setelah dideklarasikan. Dalam bahasa pemrograman C#, kita dapat
           mendeklarasikan variabel konstanta dengan menggunakan keyword{" "}
@@ -53,17 +44,21 @@ const VariabelKonstanta = () => {
           nilai konversi atau nilai yang dipakai sebagai batas atas atau batas
           bawah.
         </p>
+
         <h3 className="mt-4 text-xl font-bold">Pembuatan Konstanta dalam C#</h3>
-        <p className="mt-2 ml-5">
+
+        <p className="mt-4">
           Untuk membuat konstanta dalam bahasa C#, kita menggunakan format
           berikut:
         </p>
-        <p className="mt-2 mb-3 ml-5">
+
+        <p className="mt-4">
           <code>
             access_modifier const tipe_data NAMA_KONSTANTA = nilai_konstanta;
           </code>
         </p>
-        <blockquote className="mb-4 ml-6">
+
+        <blockquote className="mt-4 ml-6">
           <p>
             • <code>access_modifier</code>: Adalah salah satu dari keyword
             public, protected, atau private.
@@ -79,17 +74,18 @@ const VariabelKonstanta = () => {
             konstanta.
           </p>
         </blockquote>
-        <h3 className="mt-4 mb-4 font-bold">
-          Cobalah Kode Program Pada Compiler:
-        </h3>
+
+        <p className="mt-4 font-bold">Cobalah Kode Program Pada Compiler:</p>
 
         <iframe
           width="100%"
-          height="475"
+          className="mt-4 w-full aspect-[4/3]"
           src="https://dotnetfiddle.net/Widget/9rDToN"
           frameBorder="0"
+          title="C# Constant Variable Example"
         ></iframe>
-        <p className="mt-4 mb-2 italic">
+
+        <p className="mt-4 italic">
           Pada kode di atas ini terdapat tiga buah konstanta, yakni{" "}
           <code>KURS_DOLLAR</code>, <code>PI</code>, dan <code>WEBSITE</code>.
           Setiap konstanta harus dideklarasikan dengan tipe data yang sesuai,
@@ -107,6 +103,7 @@ const VariabelKonstanta = () => {
         <button
           onClick={handleBack}
           className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+          aria-label="Kembali ke materi sebelumnya"
         >
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
@@ -128,6 +125,7 @@ const VariabelKonstanta = () => {
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
             }
+            aria-label="Lanjut ke materi berikutnya"
           >
             <span>Selanjutnya</span>
             <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />

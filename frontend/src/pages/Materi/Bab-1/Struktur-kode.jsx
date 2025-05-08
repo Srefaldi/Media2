@@ -31,12 +31,12 @@ const StrukturKode = () => {
         BAB 1 - PENDAHULUAN
       </h1>
 
-      <div>
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold">
           1.2 Struktur Kode Bahasa Pemrograman C#
         </h2>
 
-        <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <p className="mt-4">
           Sebelum memulai pembelajaran pemrograman kita perlu mengetahui
           struktur dasar dari kode bahasa pemrograman C#. Kita dapat melihat
           struktur kode bahasa pemrograman C# yang paling dasar dengan contoh
@@ -45,7 +45,7 @@ const StrukturKode = () => {
           Cobalah kode pada compiler:
         </p>
 
-        <pre className="p-4 bg-gray-100 rounded-lg overflow-x -auto">
+        <pre className="mt-4 p-4 bg-gray-100 rounded-lg overflow-x-auto">
           <iframe
             width="100%"
             height="475"
@@ -54,11 +54,9 @@ const StrukturKode = () => {
           ></iframe>
         </pre>
 
-        <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-          Penjelasan Kode:
-        </p>
+        <p className="mt-4">Penjelasan Kode:</p>
 
-        <ul className="p-4 pl-6 list-disc bg-white rounded-lg shadow-md">
+        <ul className="mt-4 pl-6 list-disc">
           <li>
             <strong>using System;</strong> - Digunakan untuk mengimpor namespace
             System, sehingga kita dapat menggunakan kelas seperti Console tanpa

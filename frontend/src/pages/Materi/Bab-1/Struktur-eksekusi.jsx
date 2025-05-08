@@ -8,7 +8,7 @@ import backIcon from "../../../assets/img/kembali.png";
 const StrukturEksekusi = () => {
   const navigate = useNavigate();
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const { handleLessonComplete } = useOutletContext(); // Ambil fungsi dari konteks
+  const { handleLessonComplete } = useOutletContext();
 
   const handleBack = () => {
     window.scrollTo(0, 0);
@@ -31,39 +31,52 @@ const StrukturEksekusi = () => {
       <h1 className="mb-4 text-2xl font-bold text-center">
         BAB 1 - PENDAHULUAN
       </h1>
-      <h2 className="mb-4 text-2xl font-bold">1.4 Struktur Eksekusi Kode</h2>
-      <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        Bahasa pemrograman C# memiliki struktur eksekusi kode yang sekuensial,
-        yang berarti kode yang ditulis terlebih dahulu akan dieksekusi terlebih
-        dahulu. Struktur eksekusi sekuensial adalah struktur umum yang digunakan
-        sebagian besar bahasa pemrograman termasuk C#.
-      </p>
-      <h3 className="mt-4 text-xl font-semibold">
-        Contoh Struktur Eksekusi Kode
-      </h3>
-      <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        Dapat diketahui lebih lanjut mengenai struktur eksekusi sekuensial
-        menggunakan sampel kode di bawah ini. <br />
-        Cobalah kode program pada compiler:
-      </p>
-      <p className="p-4 italic text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <iframe
-          width="100%"
-          height="475"
-          src="https://dotnetfiddle.net/Widget/DuCLpB"
-        ></iframe>
-        Pada kode di atas, program yang mencetak tiga baris string yang berisi
-        nama jenis Pakaian yang akan dicetak pada sampel kode di atas akan
-        ditampilkan dimulai dari "Ini Baju", "Ini Celana", hingga "Ini Topi"
-        yang akan dicetak terakhir.
-      </p>
 
-      <h3 className="mt-4 text-xl font-semibold">Control Structures</h3>
-      <p className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        Di dalam struktur eksekusi kode terdapat control structures yang berguna
-        untuk mengatur proses eksekusi sebuah kode program. Terdapat 3 tipe
-        control structures dalam bahasa pemrograman:
-        <ul className="p-4 list-disc list-inside bg-white rounded-lg shadow-md">
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold">1.4 Struktur Eksekusi Kode</h2>
+
+        <p className="mt-4">
+          Bahasa pemrograman C# memiliki struktur eksekusi kode yang sekuensial,
+          yang berarti kode yang ditulis terlebih dahulu akan dieksekusi
+          terlebih dahulu. Struktur eksekusi sekuensial adalah struktur umum
+          yang digunakan sebagian besar bahasa pemrograman termasuk C#.
+        </p>
+
+        <h3 className="mt-4 text-xl font-semibold">
+          Contoh Struktur Eksekusi Kode
+        </h3>
+
+        <p className="mt-4">
+          Dapat diketahui lebih lanjut mengenai struktur eksekusi sekuensial
+          menggunakan sampel kode di bawah ini. <br />
+          Cobalah kode program pada compiler:
+        </p>
+
+        <div className="mt-4 italic">
+          <iframe
+            width="100%"
+            height="475"
+            src="https://dotnetfiddle.net/Widget/DuCLpB"
+            frameBorder="0"
+            title="C# Sequential Execution Example"
+          ></iframe>
+          <p className="mt-2">
+            Pada kode di atas, program yang mencetak tiga baris string yang
+            berisi nama jenis Pakaian yang akan dicetak pada sampel kode di atas
+            akan ditampilkan dimulai dari "Ini Baju", "Ini Celana", hingga "Ini
+            Topi" yang akan dicetak terakhir.
+          </p>
+        </div>
+
+        <h3 className="mt-4 text-xl font-semibold">Control Structures</h3>
+
+        <p className="mt-4">
+          Di dalam struktur eksekusi kode terdapat control structures yang
+          berguna untuk mengatur proses eksekusi sebuah kode program. Terdapat 3
+          tipe control structures dalam bahasa pemrograman:
+        </p>
+
+        <ul className="mt-4 pl-6 list-disc">
           <li>
             <strong>Sequence</strong> - struktur dimana perintah dieksekusi
             secara berurutan.
@@ -77,21 +90,21 @@ const StrukturEksekusi = () => {
             dieksekusi berulang kali.
           </li>
         </ul>
-      </p>
 
-      <p className="p-4 italic text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <div className="flex justify-center">
+        {/* Tipe Control Structures Image and Caption */}
+        <figure className="p-0 md:p-4 my-3 md:my-0 text-center w-full mt-4">
           <img
             src={gambar118}
-            alt="Gambar 1.2 Alur eksekusi Common Language Runtime"
-            className="h-auto w-170"
+            alt="Gambar 1.18 Tipe control structures"
+            className="w-full max-w-3xl mx-auto rounded-lg"
           />
-        </div>
-
-        <p className="font-bold text-center">
-          Gambar 1.18 Tipe control structures
-        </p>
-      </p>
+          <div className="mt-3">
+            <figcaption className="text-gray-600 text-sm sm:text-base">
+              Gambar 1.3. Tipe Control Structures
+            </figcaption>
+          </div>
+        </figure>
+      </div>
 
       {/* Kuis */}
       {!quizCompleted && <Quiz onComplete={handleQuizComplete} />}

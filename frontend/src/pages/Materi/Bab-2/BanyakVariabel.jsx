@@ -1,32 +1,32 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import QuizDeklarasiBanyakVariabel from "./Quiz-bab2/Quiz5"; // Pastikan path ini sesuai
+import Swal from "sweetalert2";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
+import QuizDeklarasiBanyakVariabel from "./Quiz-bab2/Quiz5";
 
 const DeklarasiBanyakVariabel = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [quizPassed, setQuizPassed] = useState(false); // Menyimpan status apakah kuis sudah benar
+  const [quizPassed, setQuizPassed] = useState(false);
 
   const handleQuizComplete = (isPassed) => {
     handleLessonComplete("/materi/bab2/variabel-konstanta");
-
     setQuizCompleted(true);
-    setQuizPassed(isPassed); // Set status kuis
+    setQuizPassed(isPassed);
   };
 
   const handleNext = () => {
     if (!quizPassed) {
-      // Jika kuis belum dijawab dengan benar, tampilkan peringatan
       Swal.fire({
         title: "Oops!",
         text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
         icon: "warning",
         confirmButtonText: "OK",
+        confirmButtonColor: "#68217A",
       });
-      return; // Hentikan eksekusi jika kuis belum benar
+      return;
     }
     handleLessonComplete("/materi/bab2/deklarasi-banyak");
     window.scrollTo(0, 0);
@@ -41,10 +41,11 @@ const DeklarasiBanyakVariabel = () => {
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
-      <h2 className="mt-2 text-2xl font-bold">2.5 Deklarasi Banyak Variabel</h2>
 
-      <div className="p-4 mt-1 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <p className="mb-4">
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold">2.5 Deklarasi Banyak Variabel</h2>
+
+        <p className="mt-4">
           Deklarasi banyak variabel dalam bahasa pemrograman C# adalah proses
           mendeklarasikan beberapa variabel dengan tipe data yang sama dalam
           satu baris kode. Ini memungkinkan kita untuk menghemat baris kode
@@ -52,14 +53,18 @@ const DeklarasiBanyakVariabel = () => {
           memiliki tipe data yang sama. Pada deklarasi banyak variabel, setiap
           variabel dipisahkan dengan tanda koma ( , ).
         </p>
-        <p className="mb-4 font-bold">Cobalah Kode Program Pada Compiler:</p>
+
+        <p className="mt-4 font-bold">Cobalah Kode Program Pada Compiler:</p>
+
         <iframe
           width="100%"
-          height="475"
+          className="mt-4 w-full aspect-[4/3]"
           src="https://dotnetfiddle.net/Widget/Wdy3Z5"
           frameBorder="0"
+          title="C# Multiple Variable Declaration Example"
         ></iframe>
-        <p className="mb-4 italic">
+
+        <p className="mt-4 italic">
           Pada kode di atas, kita mendeklarasikan tiga variabel bertipe int A,
           B, dan C dalam satu baris kode. Variabel-variabel ini diinisialisasi
           dengan nilai 10, 40, dan 13, masing-masing. Kemudian, kita menggunakan
@@ -79,6 +84,7 @@ const DeklarasiBanyakVariabel = () => {
         <button
           onClick={handleBack}
           className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+          aria-label="Kembali ke materi sebelumnya"
         >
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
@@ -100,6 +106,7 @@ const DeklarasiBanyakVariabel = () => {
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
             }
+            aria-label="Lanjut ke materi berikutnya"
           >
             <span>Selanjutnya</span>
             <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />

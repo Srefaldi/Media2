@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import QuizEquality from "./Quiz-bab4/Quiz8"; // Import komponen kuis
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import QuizEquality from "./Quiz-bab4/Quiz8";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
 
 const OperatorKesetaraan = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -13,13 +12,14 @@ const OperatorKesetaraan = () => {
   const handleNext = () => {
     handleLessonComplete("/materi/bab4/operator-equality");
     window.scrollTo(0, 0);
-    navigate("/materi/bab4/latihan-bab4"); // Ganti dengan rute topik berikutnya
+    navigate("/materi/bab4/latihan-bab4");
   };
 
   const handleBack = () => {
     window.scrollTo(0, 0);
-    navigate("/materi/bab4/operator-conditional"); // Ganti dengan rute topik sebelumnya
+    navigate("/materi/bab4/operator-conditional");
   };
+
   const handleQuizComplete = () => {
     handleLessonComplete("/materi/bab4/latihan-bab4");
     setQuizCompleted(true);
@@ -32,23 +32,21 @@ const OperatorKesetaraan = () => {
         Operator Equality (Kesetaraan)
       </h2>
 
-      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mb-2">
           <strong>
-            {" "}
             Cara paling umum untuk membandingkan sebuah objek atau variabel
           </strong>{" "}
           di C# adalah equality operator. Operator <code>==</code>{" "}
-          <strong>(equality) </strong>
-          dan <code>!=</code> <strong>(inequality)</strong> memeriksa{" "}
+          <strong>(equality)</strong> dan <code>!=</code>{" "}
+          <strong>(inequality)</strong> memeriksa{" "}
           <strong>apakah kedua operan bernilai sama atau tidak.</strong>
         </p>
         <h1 className="font-bold">Equality Operator (==)</h1>
         <p className="mb-2">
           Equality operator atau operator kesetaraan <code>==</code>{" "}
-          mengembalikan nilai <strong>true </strong>
-          jika kedua operannya sama, dan akan mengembalikan nilai{" "}
-          <strong>false</strong> jika sebaliknya.
+          mengembalikan nilai <strong>true</strong> jika kedua operannya sama,
+          dan akan mengembalikan nilai <strong>false</strong> jika sebaliknya.
         </p>
         <h4 className="font-bold">Value types equality</h4>
         <p className="mb-2">
@@ -64,7 +62,6 @@ const OperatorKesetaraan = () => {
             frameborder="0"
           ></iframe>
         </div>
-        {/* Ganti dengan path gambar yang sesuai */}
         <h4 className="font-bold">String equality</h4>
         <p className="mb-2">
           Dua operan string adalah setara jika kedua nilai nya null atau kedua
@@ -80,16 +77,14 @@ const OperatorKesetaraan = () => {
             frameborder="0"
           ></iframe>
         </div>
-        {/* Ganti dengan path gambar yang sesuai */}
         <h3 className="font-bold">Inequality operator (!=)</h3>
         <p className="mb-2">
           Inequality operator atau operator ketidaksetaraan <code>!=</code>{" "}
-          mengembalikan nilai <strong>true</strong>
-          jika operannya tidak sama, <strong>false</strong> jika sebaliknya.
-          Untuk operan dari built-in types (tipe bawaan), ekspresi{" "}
-          <code>x != y</code> menghasilkan hasil yang sama dengan ekspresi{" "}
-          <code>!(x == y)</code>. Contoh berikut menunjukkan penggunaan operator{" "}
-          <code>!=</code>:
+          mengembalikan nilai <strong>true</strong> jika operannya tidak sama,{" "}
+          <strong>false</strong> jika sebaliknya. Untuk operan dari built-in
+          types (tipe bawaan), ekspresi <code>x != y</code> menghasilkan hasil
+          yang sama dengan ekspresi <code>!(x == y)</code>. Contoh berikut
+          menunjukkan penggunaan operator <code>!=</code>:
         </p>
         <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
@@ -102,10 +97,8 @@ const OperatorKesetaraan = () => {
         </div>
       </div>
 
-      {/* Kuis */}
       {!quizCompleted && <QuizEquality onComplete={handleQuizComplete} />}
 
-      {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}

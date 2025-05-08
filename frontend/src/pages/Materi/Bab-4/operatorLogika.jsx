@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import QuizLogic from "./Quiz-bab4/Quiz6"; // Import komponen kuis
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import QuizLogic from "./Quiz-bab4/Quiz6";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
 
 const OperatorLogika = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -13,12 +12,12 @@ const OperatorLogika = () => {
   const handleNext = () => {
     handleLessonComplete("/materi/bab4/operator-logika");
     window.scrollTo(0, 0);
-    navigate("/materi/bab4/operator-conditional"); // Ganti dengan rute topik berikutnya
+    navigate("/materi/bab4/operator-conditional");
   };
 
   const handleBack = () => {
     window.scrollTo(0, 0);
-    navigate("/materi/bab4/operator-comparison"); // Ganti dengan rute topik sebelumnya
+    navigate("/materi/bab4/operator-comparison");
   };
 
   const handleQuizComplete = () => {
@@ -31,7 +30,7 @@ const OperatorLogika = () => {
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 4 - OPERATOR</h1>
       <h2 className="mt-2 mb-4 text-2xl font-bold">Operator Logika</h2>
 
-      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mb-2">
           <strong>Operator logika</strong> digunakan untuk membandingkan dua
           buah nilai atau lebih yang menghasilkan{" "}
@@ -88,7 +87,7 @@ const OperatorLogika = () => {
         <p className="mb-2">
           Hasil operasi dari operator logika sama seperti operator perbandingan,
           yakni boolean True dan False. Namun perlu diingat{" "}
-          <strong> Operand</strong> harus bertipe boolean. Karena jika tidak,
+          <strong>Operand</strong> harus bertipe boolean. Karena jika tidak,
           maka akan terjadi error.
         </p>
         <p className="mb-2">
@@ -116,25 +115,21 @@ const OperatorLogika = () => {
               <tr>
                 <td className="p-2 border border-gray-300">true</td>
                 <td className="p-2 border border-gray-300">true</td>
-
-                <td className="p-2 border border-gray-300">True</td>
+                <td className="p-2 border border-gray-300">true</td>
               </tr>
               <tr>
                 <td className="p-2 border border-gray-300">true</td>
-                <td className="p-2 border border-gray-300">true</td>
-
+                <td className="p-2 border border-gray-300">false</td>
                 <td className="p-2 border border-gray-300">false</td>
               </tr>
               <tr>
                 <td className="p-2 border border-gray-300">false</td>
                 <td className="p-2 border border-gray-300">true</td>
-
                 <td className="p-2 border border-gray-300">false</td>
               </tr>
               <tr>
                 <td className="p-2 border border-gray-300">false</td>
                 <td className="p-2 border border-gray-300">false</td>
-
                 <td className="p-2 border border-gray-300">false</td>
               </tr>
             </tbody>
@@ -145,10 +140,9 @@ const OperatorLogika = () => {
           <strong>true </strong>jika dan hanya jika kedua operan bernilai{" "}
           <strong>true.</strong>
         </p>
-
         <h2 className="font-bold">Operator OR ( | | )</h2>
         <p className="text-sm italic text-center text-gray-600">
-          Tabel 4. 8 Tabel daftar operator logika OR
+          Tabel 4.8 Tabel daftar operator logika OR
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
           <table className="text-center border border-gray-300 w-150">
@@ -166,39 +160,34 @@ const OperatorLogika = () => {
             <tbody>
               <tr>
                 <td className="p-2 border border-gray-300">true</td>
-                <td className="p-2 border border-gray-300">True</td>
-
+                <td className="p-2 border border-gray-300">true</td>
                 <td className="p-2 border border-gray-300">true</td>
               </tr>
               <tr>
                 <td className="p-2 border border-gray-300">true</td>
-                <td className="p-2 border border-gray-300">False</td>
-
+                <td className="p-2 border border-gray-300">false</td>
                 <td className="p-2 border border-gray-300">true</td>
               </tr>
               <tr>
                 <td className="p-2 border border-gray-300">false</td>
-                <td className="p-2 border border-gray-300">True</td>
-
+                <td className="p-2 border border-gray-300">true</td>
                 <td className="p-2 border border-gray-300">true</td>
               </tr>
               <tr>
                 <td className="p-2 border border-gray-300">false</td>
-                <td className="p-2 border border-gray-300">False</td>
-
+                <td className="p-2 border border-gray-300">false</td>
                 <td className="p-2 border border-gray-300">false</td>
               </tr>
             </tbody>
           </table>
         </div>
         <p className="mb-2">
-          Operator OR akan menghasilkan nilai <strong> true</strong> jika salah
+          Operator OR akan menghasilkan nilai <strong>true</strong> jika salah
           satu atau kedua operan bernilai <strong>true.</strong>
         </p>
-
         <h2 className="font-bold">Operator NOT (!)</h2>
         <p className="text-sm italic text-center text-gray-600">
-          Tabel 4. 9 Tabel daftar operator logika NOT
+          Tabel 4.9 Tabel daftar operator logika NOT
         </p>
         <div className="flex justify-center p-4 mt-2 mb-4">
           <table className="text-center border border-gray-300 w-150">
@@ -207,7 +196,6 @@ const OperatorLogika = () => {
                 <th className="p-2 text-white border border-gray-300">
                   Pernyataan 1
                 </th>
-
                 <th className="p-2 text-white border border-gray-300">Hasil</th>
               </tr>
             </thead>
@@ -228,7 +216,6 @@ const OperatorLogika = () => {
           operan bernilai <strong>true</strong>, maka hasilnya{" "}
           <strong>false</strong>, dan sebaliknya.
         </p>
-
         <p className="mt-4 mb-2 font-bold">
           Cobalah kode program tersebut pada compiler:
         </p>
@@ -242,10 +229,8 @@ const OperatorLogika = () => {
         </div>
       </div>
 
-      {/* Kuis */}
       {!quizCompleted && <QuizLogic onComplete={handleQuizComplete} />}
 
-      {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}

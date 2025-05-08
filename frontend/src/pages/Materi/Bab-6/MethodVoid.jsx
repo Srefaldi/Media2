@@ -29,9 +29,10 @@ const MethodVoid = () => {
   return (
     <div className="mt-4 mb-4">
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 6 - METHOD</h1>
-      <h2 className="mt-2 mb-4 text-2xl font-bold">6.2 Method Void</h2>
-      {/* Pendahuluan Materi */}
-      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="mt-2 mb-4 text-2xl font-bold">6.2 Method Void</h2>
+        {/* Pendahuluan Materi */}
+
         <p className="mb-4">
           Method void adalah jenis method yang menjalankan sekumpulan perintah
           tanpa mengembalikan nilai. Method ini berguna untuk melakukan operasi

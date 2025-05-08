@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import QuizPenamaanVariabel from "./Quiz-bab2/Quiz2";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
-import { useOutletContext } from "react-router-dom";
 
 const PenamaanVariabel = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -17,13 +16,11 @@ const PenamaanVariabel = () => {
 
   const handleNext = () => {
     handleLessonComplete("/materi/bab2/penamaan-variabel");
-    // Logika untuk menyelesaikan pelajaran dan navigasi ke halaman berikutnya
     window.scrollTo(0, 0);
     navigate("/materi/bab2/kategori-variabel");
   };
 
   const handleBack = () => {
-    // Navigasi kembali ke halaman sebelumnya
     window.scrollTo(0, 0);
     navigate("/materi/bab2/variabel");
   };
@@ -31,10 +28,11 @@ const PenamaanVariabel = () => {
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
-      <h2 className="mt-2 text-2xl font-bold">2.2 Penamaan Variabel</h2>
 
-      <div className="p-4 mt-3 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <p className="mb-4">
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold">2.2 Penamaan Variabel</h2>
+
+        <p className="mt-4">
           Penamaan variabel adalah aspek penting dalam pemrograman karena
           membantu membuat kode lebih mudah dibaca, dipahami, dan dikelola.
           Dalam bahasa pemrograman C#, ada beberapa aturan dan konvensi yang
@@ -42,7 +40,8 @@ const PenamaanVariabel = () => {
           variabel yang baik tidak hanya mematuhi aturan sintaksis tetapi juga
           mencerminkan tujuan dan makna dari variabel tersebut.
         </p>
-        <ul className="pl-6 mb-4 list-disc">
+
+        <ul className="mt-4 pl-6 list-disc">
           <li>Nama variabel terdiri dari huruf, angka dan under score (_).</li>
           <li>
             Nama harus diawali dengan huruf. Under score juga dapat digunakan
@@ -57,11 +56,13 @@ const PenamaanVariabel = () => {
             keyword ini diawali dengan karakter @.
           </li>
         </ul>
-        <p className="mb-4 font-bold">
+
+        <p className="mt-4 font-bold">
           Pada tabel berikut adalah contoh penulisan variabel yang benar dan
           salah.
         </p>
-        <div className="flex justify-center mb-4">
+
+        <div className="mt-4 flex justify-center">
           <table className="border border-gray-300">
             <thead className="bg-[#68217A] text-white text-center">
               <tr>
@@ -113,7 +114,8 @@ const PenamaanVariabel = () => {
             </tbody>
           </table>
         </div>
-        <p className="mb-4">
+
+        <p className="mt-4">
           Banyak konvensi yang digunakan untuk memformat penamaan variabel ini.
           Ada yang disebut dengan notasi Pascal, dimana setiap kata yang
           digunakan sebagai nama variabel akan selalu dimulai dengan huruf
@@ -123,7 +125,8 @@ const PenamaanVariabel = () => {
           variabel akan dimulai dengan kode yang menyatakan tipe data dari
           variabel tersebut.
         </p>
-        <p className="mb-4">
+
+        <p className="mt-4">
           Penggunaan konvensi dalam penamaan variabel ini bisa disesuai dengan
           selera masing-masing, belakangan ini yang banyak digunakan adalah
           notasi Camel. Yang terpenting dari penamaan variabel ini adalah

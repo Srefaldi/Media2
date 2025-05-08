@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import Quiz from "./Quiz-bab1/Quiz6"; // Import komponen Quiz
+import Quiz from "./Quiz-bab1/Quiz6";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
 
@@ -30,36 +30,40 @@ const SintaksKomentar = () => {
       <h1 className="mb-4 text-2xl font-bold text-center">
         BAB 1 - PENDAHULUAN
       </h1>
-      <h2 className="mb-4 text-2xl font-bold">1.6 Sintaks Komentar</h2>
-      <div className="p-4 bg-white rounded-lg shadow-md">
-        <p className="mb-4 text-justify text-gray-700">
+
+      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold">1.6 Sintaks Komentar</h2>
+
+        <p className="mt-4">
           Komentar dalam bahasa pemrograman merupakan bagian yang cukup penting
           untuk memberi tahu maksud dan tujuan dari kode program tersebut.
           Komentar merupakan bagian dari program yang tidak akan dieksekusi oleh
           sistem. Dalam bahasa pemrograman C#, terdapat dua tipe komentar:
-          <ul className="pl-6 mb-4 list-disc">
-            <li>Single line comment</li>
-            <li>Multiple line comment</li>
-          </ul>
         </p>
-        <p className="mb-4 text-justify text-gray-700">
+
+        <ul className="mt-4 pl-6 list-disc">
+          <li>Single line comment</li>
+          <li>Multiple line comment</li>
+        </ul>
+
+        <p className="mt-4">
           Untuk memberi komentar, kita dapat menggunakan sintaks <code>//</code>{" "}
           untuk single-line comment atau <code>/* */</code> untuk multi-line
           comment.
         </p>
 
-        <p className="mb-2 text-justify text-gray-700">
-          Cobalah kode program pada compiler:
-        </p>
+        <p className="mt-4">Cobalah kode program pada compiler:</p>
+
+        <pre className="mt-4 p-4 overflow-x-auto bg-gray-100 rounded-lg">
+          <iframe
+            width="100%"
+            height="475"
+            src="https://dotnetfiddle.net/Widget/wpjyVs"
+            frameBorder="0"
+            title="C# Comment Example"
+          ></iframe>
+        </pre>
       </div>
-      <pre className="p-4 mt-2 overflow-x-auto bg-gray-100 rounded-lg">
-        <iframe
-          width="100%"
-          height="475"
-          src="https://dotnetfiddle.net/Widget/wpjyVs"
-          frameBorder="0"
-        ></iframe>
-      </pre>
 
       {/* Komponen Kuis */}
       {!quizCompleted && <Quiz onComplete={handleQuizCompletion} />}
