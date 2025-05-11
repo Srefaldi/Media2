@@ -9,7 +9,7 @@ const EditQuestion = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { evaluations, isLoading, isError, message } = useSelector(
+  const { evaluations, isLoading, isError, message, user } = useSelector(
     (state) => state.auth
   );
 
@@ -47,12 +47,42 @@ const EditQuestion = () => {
     fetchQuestion();
   }, [dispatch, id]);
 
-  // Redirect ke login jika sesi kadaluarsa
+  // Periksa peran pengguna
   useEffect(() => {
-    if (isError && message === "Mohon login ke akun anda") {
+    if (user && user.role !== "guru" && user.role !== "admin") {
+      Swal.fire({
+        title: "Akses Ditolak",
+        text: "Halaman ini hanya dapat diakses oleh guru atau admin.",
+        icon: "error",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
+
+  // Tangani error tanpa redirect untuk admin/guru
+  useEffect(() => {
+    if (isError && message !== "Mohon login ke akun anda") {
+      if (user && (user.role === "guru" || user.role === "admin")) {
+        // Tetap di halaman edit, hanya tampilkan notifikasi
+        Swal.fire({
+          title: "Gagal!",
+          text: message || "Terjadi kesalahan.",
+          icon: "error",
+        });
+      }
+    } else if (isError && message === "Mohon login ke akun anda") {
+      Swal.fire({
+        title: "Sesi Berakhir",
+        text: "Silakan login kembali.",
+        icon: "warning",
+        timer: 1500,
+        showConfirmButton: false,
+      });
       window.location.href = "/login";
     }
-  }, [isError, message]);
+  }, [isError, message, user]);
 
   const handleChange = (e) => {
     setFormData({
@@ -121,7 +151,9 @@ const EditQuestion = () => {
           </h1>
 
           {isLoading && <p className="text-center">Loading...</p>}
-          {isError && <p className="text-center text-red-500">{message}</p>}
+          {isError && message !== "Mohon login ke akun anda" && (
+            <p className="text-center text-red-500">{message}</p>
+          )}
 
           <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-4">
             <div>

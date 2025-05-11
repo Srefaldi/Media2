@@ -79,29 +79,33 @@ const Pengaturan = () => {
   return (
     <div className="flex flex-col min-h-screen text-gray-800 bg-white">
       <main className="flex flex-1 overflow-hidden">
-        <section className="flex-1 p-8 overflow-auto">
-          <h1 className="mb-5 text-3xl font-semibold text-gray-800">
+        <section className="flex-1 p-4 overflow-auto sm:p-6 md:p-8">
+          <h1 className="mb-4 text-2xl font-semibold text-gray-800 sm:mb-5 sm:text-3xl">
             Pengaturan KKM
           </h1>
 
           {isError && (
-            <p className="mb-4 text-center text-red-500">{message}</p>
+            <p className="mb-4 text-sm text-center text-red-500 sm:text-base">
+              {message}
+            </p>
           )}
           {isLoading && (
-            <p className="mb-4 text-center text-gray-500">Memuat...</p>
+            <p className="mb-4 text-sm text-center text-gray-500 sm:text-base">
+              Memuat...
+            </p>
           )}
 
           <div className="overflow-x-auto">
-            <table className="w-full mt-5 text-base text-center text-gray-700 bg-white border">
-              <thead>
+            <table className="w-full mt-4 text-sm text-center text-gray-700 bg-white border sm:mt-5 sm:text-base">
+              <thead className="hidden sm:table-header-group">
                 <tr className="border-b border-gray-200">
-                  <th className="px-3 py-2 text-base font-semibold text-center select-none">
+                  <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
                     Evaluasi
                   </th>
-                  <th className="px-3 py-2 text-base font-semibold text-center select-none">
+                  <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
                     KKM
                   </th>
-                  <th className="px-3 py-2 text-base font-semibold text-center select-none">
+                  <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
                     Aksi
                   </th>
                 </tr>
@@ -111,7 +115,7 @@ const Pengaturan = () => {
                   <tr>
                     <td
                       colSpan={3}
-                      className="px-3 py-2 text-base text-center text-gray-500"
+                      className="px-2 py-1 text-sm text-center text-gray-500 sm:px-3 sm:py-2 sm:text-base"
                     >
                       Tidak ada data evaluasi
                     </td>
@@ -120,12 +124,18 @@ const Pengaturan = () => {
                   evaluations.map((evaluation) => (
                     <tr
                       key={evaluation.id}
-                      className="border-b border-gray-200"
+                      className="flex flex-col border-b border-gray-200 sm:table-row sm:border-b"
                     >
-                      <td className="px-3 py-2 font-mono text-base text-center select-text">
+                      <td className="flex items-center px-2 py-1 font-mono text-sm text-center select-text sm:table-cell sm:px-3 sm:py-2 sm:text-base sm:align-middle">
+                        <span className="inline-block w-24 font-semibold text-center sm:hidden">
+                          Evaluasi:
+                        </span>
                         {renderEvaluationLabel(evaluation)}
                       </td>
-                      <td className="px-3 py-2 font-mono text-base text-center select-text">
+                      <td className="flex items-center px-2 py-1 font-mono text-sm text-center select-text sm:table-cell sm:px-3 sm:py-2 sm:text-base sm:align-middle">
+                        <span className="inline-block w-24 font-semibold text-center sm:hidden">
+                          KKM:
+                        </span>
                         <input
                           type="number"
                           min="0"
@@ -134,13 +144,16 @@ const Pengaturan = () => {
                           onChange={(e) =>
                             handleKkmChange(evaluation.id, e.target.value)
                           }
-                          className="w-20 px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-600"
+                          className="w-16 px-1 text-center py-0.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-600 sm:w-12 sm:px-2 sm:py-1"
                         />
                       </td>
-                      <td className="px-3 py-2 font-mono text-base text-center select-text">
+                      <td className="flex items-center justify-center px-2 py-1 font-mono text-sm text-center select-text sm:table-cell sm:px-3 sm:py-2 sm:text-base sm:align-middle">
+                        <span className="inline-block w-24 font-semibold text-center sm:hidden">
+                          Aksi:
+                        </span>
                         <button
                           onClick={() => handleSubmit(evaluation.id)}
-                          className="px-3 py-1 text-xs font-semibold text-white bg-purple-600 rounded hover:bg-purple-700"
+                          className="px-2 py-0.5 text-xs font-semibold text-white bg-purple-600 rounded hover:bg-purple-700 sm:px-3 sm:py-1"
                         >
                           Simpan
                         </button>

@@ -18,6 +18,10 @@ const initialState = {
 export const LoginUser = createAsyncThunk(
   "user/LoginUser",
   async (user, thunkAPI) => {
+    console.log("Mengirim login request:", {
+      nis: user.nis,
+      endpoint: `${import.meta.env.VITE_API_ENDPOINT}/login`,
+    });
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_ENDPOINT}/login`,
@@ -27,8 +31,10 @@ export const LoginUser = createAsyncThunk(
         },
         { withCredentials: true }
       );
+      console.log("Login response:", response.data);
       return response.data;
     } catch (error) {
+      console.error("Login error:", error.message, error.response?.data);
       const message = error.response?.data?.msg || "Terjadi kesalahan";
       return thunkAPI.rejectWithValue(message);
     }
@@ -151,7 +157,9 @@ export const getQuestionsByEvaluation = createAsyncThunk(
   async (evaluation_id, thunkAPI) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_ENDPOINT}/questions?evaluation_id=${evaluation_id}`,
+        `${
+          import.meta.env.VITE_API_ENDPOINT
+        }/questions/evaluation/${evaluation_id}`,
         { withCredentials: true }
       );
       console.log("getQuestionsByEvaluation response:", response.data); // Debugging
@@ -185,15 +193,17 @@ export const updateQuestion = createAsyncThunk(
   "questions/updateQuestion",
   async ({ id, questionData }, thunkAPI) => {
     try {
-      const response = await axios.put(
+      const response = await axios.patch(
+        // Ubah dari put ke patch
         `${import.meta.env.VITE_API_ENDPOINT}/questions/${id}`,
         questionData,
         { withCredentials: true }
       );
       console.log("updateQuestion response:", response.data); // Debugging
       return response.data;
-    } buckle (error) {
+    } catch (error) {
       const message = error.response?.data?.msg || "Terjadi kesalahan";
+      console.error("updateQuestion error:", error.response?.data); // Debugging
       return thunkAPI.rejectWithValue(message);
     }
   }

@@ -5,7 +5,14 @@ import { getMe } from "../../../features/authSlice";
 import Navbar from "../../../components/Landing/NavbarLogin/NavbarLogin";
 import Footer from "../../../components/Landing/Footer";
 import Sidebar from "../../../components/LoginPage/Sidebar";
-import { IoStatsChart, IoArrowUp, IoArrowDown } from "react-icons/io5";
+import {
+  IoStatsChart,
+  IoArrowUp,
+  IoArrowDown,
+  IoKey,
+  IoPeople,
+  IoPieChart,
+} from "react-icons/io5";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
@@ -201,31 +208,31 @@ const AdminDashboard = () => {
       <Navbar />
       <div className="flex flex-1">
         <Sidebar />
-        <div className="flex flex-col flex-1 w-full p-6 mx-auto md:p-8 max-w-7xl">
-          <h2 className="mb-6 text-3xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">
+        <div className="flex flex-col flex-1 w-full p-4 mx-auto sm:p-6 md:p-8 max-w-7xl">
+          <h2 className="mb-6 text-2xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 sm:text-3xl md:text-4xl">
             DASHBOARD GURU
           </h2>
           {isLoading && (
             <div className="flex justify-center mb-6">
               <div className="flex items-center space-x-2 text-gray-600">
-                <div className="w-6 h-6 border-4 border-purple-600 rounded-full border-t-transparent animate-spin"></div>
-                <p className="text-lg">Memuat data...</p>
+                <div className="w-5 h-5 border-purple-600 rounded-full border-3 border-t-transparent animate-spin sm:w-6 sm:h-6"></div>
+                <p className="text-base sm:text-lg">Memuat data...</p>
               </div>
             </div>
           )}
           {error && (
-            <p className="p-4 mb-6 text-lg text-center text-red-700 bg-red-100 rounded-lg shadow">
+            <p className="p-3 mb-6 text-base text-center text-red-700 bg-red-100 rounded-lg shadow sm:p-4 sm:text-lg">
               {error}
             </p>
           )}
-          <div className="mb-8">
-            <label className="block mb-2 text-lg font-semibold text-gray-800">
+          <div className="mb-6 sm:mb-8">
+            <label className="block mb-2 text-base font-semibold text-gray-800 sm:text-lg">
               Pilih Kelas
             </label>
             <select
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
-              className="w-full md:w-80 px-4 py-3 text-lg bg-white border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:scale-[1.02] transform"
+              className="w-full px-3 py-2 text-base bg-white border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 hover:scale-[1.02] transform sm:px-4 sm:py-3 sm:text-lg md:w-80"
             >
               <option value="">Semua Kelas</option>
               {classes.map((cls) => (
@@ -235,54 +242,62 @@ const AdminDashboard = () => {
               ))}
             </select>
           </div>
-          <div className="p-6 mb-8 rounded-lg shadow-lg bg-gradient-to-br from-purple-100 to-blue-100">
-            <div className="flex items-center justify-between p-6 bg-white rounded-lg shadow-md">
+          <div className="p-4 mb-6 rounded-lg shadow-lg bg-gradient-to-br from-purple-100 to-blue-100 sm:p-6 sm:mb-8">
+            <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md sm:p-6">
               <div className="flex items-center space-x-3">
-                <i className="text-2xl text-purple-600 fas fa-key"></i>
-                <span className="text-xl font-bold text-gray-800">TOKEN</span>
+                <IoKey className="text-xl text-purple-600 sm:text-2xl" />
+                <span className="text-lg font-bold text-gray-800 sm:text-xl">
+                  TOKEN
+                </span>
               </div>
-              <div className="text-xl font-semibold text-gray-900">{token}</div>
+              <div className="text-lg font-semibold text-gray-900 sm:text-xl">
+                {token}
+              </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-6 mb-8 sm:grid-cols-2">
-            <div className="flex items-center justify-between p-6 text-white transition-shadow duration-200 rounded-lg shadow-lg bg-gradient-to-r from-purple-600 to-purple-800 hover:shadow-xl">
+          <div className="grid grid-cols-1 gap-6 mb-6 sm:grid-cols-2 sm:mb-8">
+            <div className="flex items-center justify-between p-4 text-white transition-shadow duration-200 rounded-lg shadow-lg bg-gradient-to-r from-purple-600 to-purple-800 hover:shadow-xl sm:p-6">
               <div>
-                <div className="text-xl font-bold">JUMLAH SISWA</div>
-                <div className="mt-3 text-2xl">
+                <div className="text-lg font-bold sm:text-xl">JUMLAH SISWA</div>
+                <div className="mt-2 text-xl sm:mt-3 sm:text-2xl">
                   {studentCount > 0
                     ? `${studentCount} SISWA`
                     : "Tidak ada siswa"}
                 </div>
               </div>
-              <i className="text-4xl fas fa-users"></i>
+              <IoPeople className="text-3xl sm:text-4xl" />
             </div>
-            <div className="flex items-center justify-between p-6 text-white transition-shadow duration-200 rounded-lg shadow-lg bg-gradient-to-r from-yellow-500 to-yellow-700 hover:shadow-xl">
+            <div className="flex items-center justify-between p-4 text-white transition-shadow duration-200 rounded-lg shadow-lg bg-gradient-to-r from-yellow-500 to-yellow-700 hover:shadow-xl sm:p-6">
               <div>
-                <div className="text-xl font-bold">PROGRES BELAJAR</div>
-                <div className="mt-3 text-2xl">
+                <div className="text-lg font-bold sm:text-xl">
+                  PROGRES BELAJAR
+                </div>
+                <div className="mt-2 text-xl sm:mt-3 sm:text-2xl">
                   {studentCount > 0
                     ? `${completedStudents} SISWA SELESAI`
                     : "Tidak ada data"}
                 </div>
               </div>
-              <i className="text-4xl fas fa-chart-pie"></i>
+              <IoPieChart className="text-3xl sm:text-4xl" />
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <div className="p-6 text-white transition-shadow duration-200 rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-blue-700 hover:shadow-xl">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+            <div className="p-4 text-white transition-shadow duration-200 rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-blue-700 hover:shadow-xl sm:p-6">
               <div className="flex items-center">
-                <IoStatsChart className="mr-3 text-2xl" />
-                <div className="text-xl font-bold">NILAI RATA-RATA</div>
+                <IoStatsChart className="mr-2 text-xl sm:mr-3 sm:text-2xl" />
+                <div className="text-lg font-bold sm:text-xl">
+                  NILAI RATA-RATA
+                </div>
               </div>
-              <div className="mt-4 text-lg">
+              <div className="mt-3 text-base sm:mt-4 sm:text-lg">
                 {studentCount > 0 ? (
                   <>
-                    <p className="mb-2">Kuis 1: {averageScores[1]}</p>
-                    <p className="mb-2">Kuis 2: {averageScores[2]}</p>
-                    <p className="mb-2">Kuis 3: {averageScores[3]}</p>
-                    <p className="mb-2">Kuis 4: {averageScores[4]}</p>
-                    <p className="mb-2">Kuis 5: {averageScores[5]}</p>
-                    <p className="mb-2">Kuis 6: {averageScores[6]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 1: {averageScores[1]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 2: {averageScores[2]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 3: {averageScores[3]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 4: {averageScores[4]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 5: {averageScores[5]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 6: {averageScores[6]}</p>
                     <p>Evaluasi: {averageScores.final}</p>
                   </>
                 ) : (
@@ -290,20 +305,22 @@ const AdminDashboard = () => {
                 )}
               </div>
             </div>
-            <div className="p-6 text-white transition-shadow duration-200 rounded-lg shadow-lg bg-gradient-to-r from-green-500 to-green-700 hover:shadow-xl">
+            <div className="p-4 text-white transition-shadow duration-200 rounded-lg shadow-lg bg-gradient-to-r from-green-500 to-green-700 hover:shadow-xl sm:p-6">
               <div className="flex items-center">
-                <IoArrowUp className="mr-3 text-2xl" />
-                <div className="text-xl font-bold">NILAI TERTINGGI</div>
+                <IoArrowUp className="mr-2 text-xl sm:mr-3 sm:text-2xl" />
+                <div className="text-lg font-bold sm:text-xl">
+                  NILAI TERTINGGI
+                </div>
               </div>
-              <div className="mt-4 text-lg">
+              <div className="mt-3 text-base sm:mt-4 sm:text-lg">
                 {studentCount > 0 ? (
                   <>
-                    <p className="mb-2">Kuis 1: {highestScores[1]}</p>
-                    <p className="mb-2">Kuis 2: {highestScores[2]}</p>
-                    <p className="mb-2">Kuis 3: {highestScores[3]}</p>
-                    <p className="mb-2">Kuis 4: {highestScores[4]}</p>
-                    <p className="mb-2">Kuis 5: {highestScores[5]}</p>
-                    <p className="mb-2">Kuis 6: {highestScores[6]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 1: {highestScores[1]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 2: {highestScores[2]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 3: {highestScores[3]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 4: {highestScores[4]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 5: {highestScores[5]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 6: {highestScores[6]}</p>
                     <p>Evaluasi: {highestScores.final}</p>
                   </>
                 ) : (
@@ -311,20 +328,22 @@ const AdminDashboard = () => {
                 )}
               </div>
             </div>
-            <div className="p-6 text-white transition-shadow duration-200 rounded-lg shadow-lg bg-gradient-to-r from-red-500 to-red-700 hover:shadow-xl">
+            <div className="p-4 text-white transition-shadow duration-200 rounded-lg shadow-lg bg-gradient-to-r from-red-500 to-red-700 hover:shadow-xl sm:p-6">
               <div className="flex items-center">
-                <IoArrowDown className="mr-3 text-2xl" />
-                <div className="text-xl font-bold">NILAI TERENDAH</div>
+                <IoArrowDown className="mr-2 text-xl sm:mr-3 sm:text-2xl" />
+                <div className="text-lg font-bold sm:text-xl">
+                  NILAI TERENDAH
+                </div>
               </div>
-              <div className="mt-4 text-lg">
+              <div className="mt-3 text-base sm:mt-4 sm:text-lg">
                 {studentCount > 0 ? (
                   <>
-                    <p className="mb-2">Kuis 1: {lowestScores[1]}</p>
-                    <p className="mb-2">Kuis 2: {lowestScores[2]}</p>
-                    <p className="mb-2">Kuis 3: {lowestScores[3]}</p>
-                    <p className="mb-2">Kuis 4: {lowestScores[4]}</p>
-                    <p className="mb-2">Kuis 5: {lowestScores[5]}</p>
-                    <p className="mb-2">Kuis 6: {lowestScores[6]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 1: {lowestScores[1]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 2: {lowestScores[2]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 3: {lowestScores[3]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 4: {lowestScores[4]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 5: {lowestScores[5]}</p>
+                    <p className="mb-1 sm:mb-2">Kuis 6: {lowestScores[6]}</p>
                     <p>Evaluasi: {lowestScores.final}</p>
                   </>
                 ) : (

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { saveAs } from "file-saver";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const ScoreList = () => {
   const [users, setUsers] = useState([]);
@@ -97,31 +99,101 @@ const ScoreList = () => {
   const exportToPDF = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_ENDPOINT}/scores/export/pdf`,
+        `${import.meta.env.VITE_API_ENDPOINT}/scores/export/json`,
         {
           params: { class: selectedClass || undefined },
-          responseType: "blob",
           withCredentials: true,
         }
       );
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      saveAs(blob, `Daftar_Nilai_${selectedClass || "Semua_Kelas"}.pdf`);
+
+      const usersWithScores = response.data;
+
+      if (!usersWithScores.length) {
+        throw new Error(
+          `Tidak ada siswa ditemukan untuk kelas ${
+            selectedClass || "semua kelas"
+          }`
+        );
+      }
+
+      const doc = new jsPDF({ orientation: "landscape" });
+      doc.setFontSize(16);
+      doc.text(
+        `Daftar Nilai Siswa ${selectedClass ? `- Kelas ${selectedClass}` : ""}`,
+        14,
+        10
+      );
+
+      const tableData = usersWithScores.map((user) => {
+        const getScore = (scores, type, chapter) => {
+          const score = scores.find(
+            (s) =>
+              s.type === type &&
+              (type === "evaluasi_akhir" ? true : s.chapter === chapter)
+          );
+          return score ? Math.floor(score.score) : "-";
+        };
+
+        return [
+          user.nis,
+          user.name,
+          user.class || "-",
+          getScore(user.scores, "latihan", 1),
+          getScore(user.scores, "latihan", 2),
+          getScore(user.scores, "latihan", 3),
+          getScore(user.scores, "latihan", 4),
+          getScore(user.scores, "latihan", 5),
+          getScore(user.scores, "latihan", 6),
+          getScore(user.scores, "evaluasi", 1),
+          getScore(user.scores, "evaluasi", 2),
+          getScore(user.scores, "evaluasi", 3),
+          getScore(user.scores, "evaluasi", 4),
+          getScore(user.scores, "evaluasi", 5),
+          getScore(user.scores, "evaluasi", 6),
+          getScore(user.scores, "evaluasi_akhir", null),
+        ];
+      });
+
+      autoTable(doc, {
+        head: [
+          [
+            "NIS",
+            "Nama",
+            "Kelas",
+            "Latihan Bab 1",
+            "Latihan Bab 2",
+            "Latihan Bab 3",
+            "Latihan Bab 4",
+            "Latihan Bab 5",
+            "Latihan Bab 6",
+            "Kuis Bab 1",
+            "Kuis Bab 2",
+            "Kuis Bab 3",
+            "Kuis Bab 4",
+            "Kuis Bab 5",
+            "Kuis Bab 6",
+            "Evaluasi Akhir",
+          ],
+        ],
+        body: tableData,
+        theme: "grid",
+        styles: { fontSize: 8, cellPadding: 2 },
+        headStyles: { fillColor: [200, 200, 200], textColor: [0, 0, 0] },
+        margin: { top: 20 },
+        columnStyles: {
+          0: { cellWidth: 20 }, // NIS
+          1: { cellWidth: 40 }, // Nama
+          2: { cellWidth: 15 }, // Kelas
+        },
+      });
+
+      doc.save(`Daftar_Nilai_${selectedClass || "Semua_Kelas"}.pdf`);
       setError(null);
     } catch (error) {
-      let errorMsg = "Gagal mengekspor ke PDF";
-      let latexLog = "";
-      if (error.response?.data) {
-        try {
-          const text = await error.response.data.text();
-          const json = JSON.parse(text);
-          errorMsg = json.msg || errorMsg;
-          latexLog = json.latexLog || "";
-        } catch (e) {
-          errorMsg = error.response?.data?.msg || errorMsg;
-        }
-      }
-      console.error("Error exporting to PDF:", errorMsg, { error, latexLog });
-      setError(latexLog ? `${errorMsg}: ${latexLog}` : errorMsg);
+      const errorMsg =
+        error.response?.data?.msg || error.message || "Gagal mengekspor ke PDF";
+      console.error("Error exporting to PDF:", errorMsg);
+      setError(errorMsg);
     }
   };
 
@@ -175,41 +247,41 @@ const ScoreList = () => {
   };
 
   const renderHeader = () => (
-    <thead>
+    <thead className="hidden sm:table-header-group">
       <tr className="border-b border-gray-200">
         <th
           rowSpan={2}
-          className="px-3 py-2 text-base font-semibold text-center align-middle select-none"
+          className="w-[10%] px-2 py-1 text-sm font-semibold text-center align-middle select-none sm:px-3 sm:py-2 sm:text-base"
         >
           NIS
         </th>
         <th
           rowSpan={2}
-          className="px-3 py-2 text-base font-semibold text-center align-middle select-none"
+          className="w-[20%] px-2 py-1 text-sm font-semibold text-center align-middle select-none sm:px-3 sm:py-2 sm:text-base"
         >
           Nama
         </th>
         <th
           rowSpan={2}
-          className="px-3 py-2 text-base font-semibold text-center align-middle select-none"
+          className="w-[10%] px-2 py-1 text-sm font-semibold text-center align-middle select-none sm:px-3 sm:py-2 sm:text-base"
         >
           Kelas
         </th>
         <th
           colSpan={6}
-          className="px-3 py-2 text-base font-semibold text-center select-none"
+          className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base"
         >
           LATIHAN BAB
         </th>
         <th
           colSpan={6}
-          className="px-3 py-2 text-base font-semibold text-center select-none"
+          className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base"
         >
           KUIS BAB
         </th>
         <th
           rowSpan={2}
-          className="px-3 py-2 text-base font-semibold text-center align-middle select-none"
+          className="w-[10%] px-2 py-1 text-sm font-semibold text-center align-middle select-none sm:px-3 sm:py-2 sm:text-base"
         >
           EVALUASI AKHIR
         </th>
@@ -218,7 +290,7 @@ const ScoreList = () => {
         {[...Array(6)].map((_, i) => (
           <th
             key={`latihan-sub-${i}`}
-            className="px-3 py-2 text-base font-semibold text-center select-none"
+            className="w-[6.25%] px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base"
           >
             {i + 1}
           </th>
@@ -226,7 +298,7 @@ const ScoreList = () => {
         {[...Array(6)].map((_, i) => (
           <th
             key={`evaluasi-sub-${i}`}
-            className="px-3 py-2 text-base font-semibold text-center select-none"
+            className="w-[6.25%] px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base"
           >
             {i + 1}
           </th>
@@ -241,40 +313,61 @@ const ScoreList = () => {
         <tr>
           <td
             colSpan={16}
-            className="px-3 py-2 text-base text-center text-gray-500"
+            className="px-2 py-1 text-sm text-center text-gray-500 sm:px-3 sm:py-2 sm:text-base"
           >
             Tidak ada data
           </td>
         </tr>
       ) : (
         currentUsers.map((user) => (
-          <tr key={user.uuid} className="border-b border-gray-200">
-            <td className="px-3 py-2 font-mono text-base text-center select-text">
+          <tr
+            key={user.uuid}
+            className="flex flex-col border-b border-gray-200 sm:table-row sm:border-b"
+          >
+            <td className="flex items-center px-2 py-1 text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+              <span className="inline-block w-24 font-semibold text-center sm:hidden">
+                NIS:
+              </span>
               {user.nis}
             </td>
-            <td className="px-3 py-2 font-mono text-base text-center select-text">
+            <td className="flex items-center px-2 py-1 text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+              <span className="inline-block w-24 font-semibold text-center sm:hidden">
+                Nama:
+              </span>
               {user.name}
             </td>
-            <td className="px-3 py-2 font-mono text-base text-center select-text">
+            <td className="flex items-center px-2 py-1 text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+              <span className="inline-block w-24 font-semibold text-center sm:hidden">
+                Kelas:
+              </span>
               {user.class || "-"}
             </td>
             {[...Array(6)].map((_, i) => (
               <td
                 key={`latihan-data-${i}`}
-                className="px-3 py-2 font-mono text-base text-center select-text"
+                className="flex items-center px-2 py-1 text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle"
               >
+                <span className="inline-block w-24 font-semibold text-center sm:hidden">
+                  Latihan Bab {i + 1}:
+                </span>
                 {getScore(user.scores, "latihan", i + 1)}
               </td>
             ))}
             {[...Array(6)].map((_, i) => (
               <td
                 key={`evaluasi-data-${i}`}
-                className="px-3 py-2 font-mono text-base text-center select-text"
+                className="flex items-center px-2 py-1 text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle"
               >
+                <span className="inline-block w-24 font-semibold text-center sm:hidden">
+                  Kuis Bab {i + 1}:
+                </span>
                 {getScore(user.scores, "evaluasi", i + 1)}
               </td>
             ))}
-            <td className="px-3 py-2 font-mono text-base text-center select-text">
+            <td className="flex items-center px-2 py-1 text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+              <span className="inline-block w-24 font-semibold text-center sm:hidden">
+                Evaluasi Akhir:
+              </span>
               {getScore(user.scores, "evaluasi_akhir", null)}
             </td>
           </tr>
@@ -284,17 +377,17 @@ const ScoreList = () => {
   );
 
   const renderPagination = () => (
-    <div className="flex justify-end mt-6 space-x-1 select-none">
+    <div className="flex flex-wrap justify-end mt-4 space-x-1 select-none sm:mt-6">
       <button
         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-        className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 rounded-l hover:bg-gray-600"
+        className="px-2 py-1 text-xs font-semibold text-white bg-gray-500 rounded-l hover:bg-gray-600 sm:px-3"
         disabled={currentPage === 1}
       >
         «
       </button>
       <button
         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-        className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600"
+        className="px-2 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600 sm:px-3"
         disabled={currentPage === 1}
       >
         ‹
@@ -303,23 +396,23 @@ const ScoreList = () => {
         <button
           key={index}
           onClick={() => setCurrentPage(index + 1)}
-          className={`px-3 py-1 text-xs font-semibold text-white bg-gray-500 ${
+          className={`px-2 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600 sm:px-3 ${
             currentPage === index + 1 ? "bg-gray-700" : ""
-          } hover:bg-gray-600`}
+          }`}
         >
           {index + 1}
         </button>
       ))}
       <button
         onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-        className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600"
+        className="px-2 py-1 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600 sm:px-3"
         disabled={currentPage === totalPages}
       >
         ›
       </button>
       <button
         onClick={() => setCurrentPage(totalPages)}
-        className="px-3 py-1 text-xs font-semibold text-white bg-gray-500 rounded-r hover:bg-gray-600"
+        className="px-2 py-1 text-xs font-semibold text-white bg-gray-500 rounded-r hover:bg-gray-600 sm:px-3"
         disabled={currentPage === totalPages}
       >
         »
@@ -330,15 +423,19 @@ const ScoreList = () => {
   return (
     <div className="flex flex-col min-h-screen text-gray-800 bg-white">
       <main className="flex flex-1 overflow-hidden">
-        <section className="flex-1 p-8 overflow-auto">
-          <h1 className="mb-5 text-3xl font-semibold text-gray-800">
+        <section className="flex-1 p-4 overflow-auto sm:p-6 md:p-8">
+          <h1 className="mb-4 text-2xl font-semibold text-gray-800 sm:mb-5 sm:text-3xl">
             Daftar Nilai Siswa
           </h1>
 
-          {error && <p className="mb-4 text-center text-red-500">{error}</p>}
+          {error && (
+            <p className="mb-4 text-sm text-center text-red-500 sm:text-base">
+              {error}
+            </p>
+          )}
 
-          <div className="flex flex-col mb-6 space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
-            <div className="flex items-center mt-4 space-x-2 text-sm text-gray-700">
+          <div className="flex flex-col mb-4 space-y-4 sm:mb-6 md:flex-row md:items-center md:justify-between md:space-y-0">
+            <div className="flex items-center space-x-2 text-sm text-gray-700">
               <span>Menampilkan</span>
               <select
                 value={itemsPerPage}
@@ -346,7 +443,7 @@ const ScoreList = () => {
                   setItemsPerPage(Number(e.target.value));
                   setCurrentPage(1);
                 }}
-                className="px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-600"
+                className="px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-600 sm:px-3 sm:py-2"
               >
                 <option value={5}>5</option>
                 <option value={10}>10</option>
@@ -355,14 +452,14 @@ const ScoreList = () => {
               </select>
               <span>data</span>
             </div>
-            <div className="flex space-x-2">
+            <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
               <select
                 value={selectedClass}
                 onChange={(e) => {
                   setSelectedClass(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md md:w-64 focus:outline-none focus:ring-1 focus:ring-purple-600"
+                className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-600 sm:px-3 sm:py-2 sm:w-40"
               >
                 <option value="">Semua Kelas</option>
                 {classes.map((cls) => (
@@ -379,7 +476,7 @@ const ScoreList = () => {
                   setCurrentPage(1);
                 }}
                 placeholder="Cari nama atau kelas..."
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md md:w-64 focus:outline-none focus:ring-1 focus:ring-purple-600"
+                className="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-600 sm:px-3 sm:py-2 sm:w-64"
               />
             </div>
           </div>
@@ -387,18 +484,18 @@ const ScoreList = () => {
           <div className="relative mb-4">
             <button
               onClick={() => setIsExportOpen(!isExportOpen)}
-              className="px-4 py-2 text-sm font-semibold text-white bg-purple-500 rounded hover:bg-purple-600 focus:outline-none"
+              className="px-3 py-1 text-sm font-semibold text-white bg-purple-500 rounded hover:bg-purple-600 focus:outline-none sm:px-4 sm:py-2"
             >
               EXPORT
             </button>
             {isExportOpen && (
-              <div className="absolute z-10 w-48 mt-2 bg-white border border-gray-300 rounded-md shadow-lg">
+              <div className="absolute z-10 w-32 mt-2 bg-white border border-gray-300 rounded-md shadow-lg sm:w-48">
                 <button
                   onClick={() => {
                     exportToPDF();
                     setIsExportOpen(false);
                   }}
-                  className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+                  className="block w-full px-3 py-1 text-sm text-left text-gray-700 hover:bg-gray-100 sm:px-4 sm:py-2"
                 >
                   PDF
                 </button>
@@ -407,7 +504,7 @@ const ScoreList = () => {
                     exportToExcel();
                     setIsExportOpen(false);
                   }}
-                  className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+                  className="block w-full px-3 py-1 text-sm text-left text-gray-700 hover:bg-gray-100 sm:px-4 sm:py-2"
                 >
                   Excel
                 </button>
@@ -416,7 +513,7 @@ const ScoreList = () => {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full mt-5 text-base text-center text-gray-700 bg-white border">
+            <table className="w-full mt-4 text-sm text-gray-700 bg-white border table-fixed sm:mt-5 sm:text-base">
               {renderHeader()}
               {renderBody()}
             </table>
