@@ -6,6 +6,7 @@ import Navbar from "../../Landing/Navbar";
 import Footer from "../../Landing/Footer";
 import loginImage from "../../../assets/img/daftarfoto.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import Swal from "sweetalert2";
 
 const RegisterGuruu = () => {
   const [fullName, setFullName] = useState("");
@@ -32,11 +33,32 @@ const RegisterGuruu = () => {
   };
 
   useEffect(() => {
+    // Tampilkan alert saat pendaftaran berhasil
     if (isSuccess) {
-      navigate("/login-guru");
+      Swal.fire({
+        icon: "success",
+        title: "Pendaftaran Berhasil!",
+        text: message || "Akun guru Anda berhasil dibuat. Silakan login.",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        navigate("/login-guru");
+      });
     }
+
+    // Tampilkan alert saat pendaftaran gagal
+    if (isError) {
+      Swal.fire({
+        icon: "error",
+        title: "Pendaftaran Gagal",
+        text: message || "Terjadi kesalahan. Silakan coba lagi.",
+        showConfirmButton: true,
+      });
+    }
+
+    // Reset state setelah pendaftaran
     dispatch(reset());
-  }, [isSuccess, dispatch, navigate]);
+  }, [isSuccess, isError, message, dispatch, navigate]);
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -63,7 +85,7 @@ const RegisterGuruu = () => {
           <div className="items-center justify-center hidden md:flex md:flex-1">
             <img
               alt="Illustration"
-              className="h-auto max-w-[300px]" // Sesuaikan max-w-300
+              className="h-auto max-w-[300px]"
               src={loginImage}
             />
           </div>
@@ -74,7 +96,6 @@ const RegisterGuruu = () => {
             <p className="mb-3 text-gray-600">
               Silahkan daftar untuk membuat akun guru ...
             </p>
-            {isError && <p className="text-red-500">{message}</p>}
             {passwordError && <p className="text-red-500">{passwordError}</p>}
             <form onSubmit={handleRegister}>
               <div className="mb-4">
@@ -97,7 +118,6 @@ const RegisterGuruu = () => {
                   required
                 />
               </div>
-              {/* Grup Password dan Konfirmasi Password dalam satu baris */}
               <div className="flex flex-col gap-4 mb-4 md:flex-row">
                 <div className="relative flex-1">
                   <input
@@ -154,6 +174,7 @@ const RegisterGuruu = () => {
                 type="submit"
                 style={{ backgroundColor: "#68217A" }}
                 className="w-full py-2 text-white rounded-md hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                disabled={isLoading}
               >
                 {isLoading ? "Memuat..." : "DAFTAR"}
               </button>

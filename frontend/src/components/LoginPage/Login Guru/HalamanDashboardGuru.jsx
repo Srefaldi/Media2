@@ -23,9 +23,12 @@ const AdminDashboard = () => {
   // Fetch class list
   const getClasses = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/classes", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/classes`,
+        {
+          withCredentials: true,
+        }
+      );
       setClasses(response.data);
     } catch (error) {
       console.error("Error fetching classes:", error.message);
@@ -42,10 +45,13 @@ const AdminDashboard = () => {
     setError(null);
     try {
       // Fetch users with class filter
-      const usersResponse = await axios.get("http://localhost:5000/users", {
-        params: { class: selectedClass || undefined },
-        withCredentials: true,
-      });
+      const usersResponse = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/users`,
+        {
+          params: { class: selectedClass || undefined },
+          withCredentials: true,
+        }
+      );
       const students = usersResponse.data.filter(
         (user) => user.role === "user"
       );
@@ -61,7 +67,7 @@ const AdminDashboard = () => {
       const scoresPromises = students.map(async (student) => {
         try {
           const scoreResponse = await axios.get(
-            `http://localhost:5000/scores/${student.uuid}`,
+            `${import.meta.env.VITE_API_ENDPOINT}/scores/${student.uuid}`,
             { withCredentials: true }
           );
           return {

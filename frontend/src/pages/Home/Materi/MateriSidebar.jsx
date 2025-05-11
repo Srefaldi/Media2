@@ -12,25 +12,26 @@ import kontrolAlurIcon from "./style/img/kontrol.png";
 import methodIcon from "./style/img/method.png";
 import lockIcon from "./style/img/lock.png";
 import unlockIcon from "./style/img/unlock.png";
+import { HiX } from "react-icons/hi";
 
 const SidebarContainer = styled.div`
   overflow-y: auto;
-  height: calc(100vh - 80px); /* Sesuaikan dengan tinggi navbar */
+  height: calc(100vh - 80px);
   &::-webkit-scrollbar {
-    display: none; /* Sembunyikan scrollbar di WebKit */
+    display: none;
   }
-  scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
+  scrollbar-width: none;
 `;
 
 const ScrollableList = styled.ul`
   overflow-y: auto;
   &::-webkit-scrollbar {
-    display: none; /* Sembunyikan scrollbar di WebKit */
+    display: none;
   }
-  scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
+  scrollbar-width: none;
 `;
 
-const MateriSidebar = ({ completedLessons, progress }) => {
+const MateriSidebar = ({ completedLessons, progress, toggleSidebar }) => {
   const [openBab, setOpenBab] = useState(null);
   const location = useLocation();
 
@@ -49,7 +50,7 @@ const MateriSidebar = ({ completedLessons, progress }) => {
     }
   }, [location.pathname, completedLessons, progress]);
 
-  const toggleDropdown = (babId) => {
+  const handleToggleDropdown = (babId) => {
     setOpenBab(openBab === babId ? null : babId);
   };
 
@@ -63,15 +64,23 @@ const MateriSidebar = ({ completedLessons, progress }) => {
   };
 
   return (
-    <SidebarContainer className="w-full p-4 text-gray-900 bg-white">
-      <h2 className="mb-4 text-xl font-bold text-center">DAFTAR MATERI</h2>
+    <SidebarContainer className="relative p-3 text-gray-900 bg-white sm:p-4 max-w-80 md:max-w-80">
+      <button
+        className="fixed z-50 p-2 text-white bg-gray-500 rounded-lg md:hidden top-4 right-4"
+        onClick={toggleSidebar}
+      >
+        <HiX size={24} />
+      </button>
+      <h2 className="mb-4 text-lg font-bold text-center sm:text-xl">
+        DAFTAR MATERI
+      </h2>
       <ProgressBar progress={progress} />
       <ul className="mt-4 space-y-2">
         {daftarBab.map((bab) => (
           <li key={bab.id}>
             <button
-              onClick={() => toggleDropdown(bab.id)}
-              className="flex items-center justify-between w-full p-4 text-left transition duration-200 rounded"
+              onClick={() => handleToggleDropdown(bab.id)}
+              className="flex items-center justify-between w-full p-3 text-sm text-left transition duration-200 rounded sm:p-4 sm:text-base"
               style={{
                 backgroundColor: "#68217A",
                 color: "white",
@@ -87,7 +96,7 @@ const MateriSidebar = ({ completedLessons, progress }) => {
                 <img
                   src={iconMap[bab.icon]}
                   alt={bab.judul}
-                  className="inline-block w-8 h-8 mr-2"
+                  className="inline-block w-6 h-6 mr-2 sm:w-8 sm:h-8"
                 />
                 {bab.judul}
               </span>
@@ -95,7 +104,8 @@ const MateriSidebar = ({ completedLessons, progress }) => {
             </button>
             <ScrollableList
               className={classNames("pl-4 transition-all duration-300", {
-                "max-h-[300px] overflow-y-auto": openBab === bab.id,
+                "max-h-[200px] sm:max-h-[300px] overflow-y-auto":
+                  openBab === bab.id,
                 "max-h-0 overflow-hidden": openBab !== bab.id,
               })}
             >
@@ -103,7 +113,7 @@ const MateriSidebar = ({ completedLessons, progress }) => {
                 <li key={index} className="flex items-center justify-between">
                   <Link
                     to={sub.path}
-                    className={`text-gray-900 block p-2 hover:bg-gray-300 rounded ${
+                    className={`text-gray-900 block p-1.5 sm:p-2 hover:bg-gray-300 rounded text-sm sm:text-base ${
                       completedLessons.includes(sub.path)
                         ? ""
                         : "opacity-50 cursor-not-allowed"
@@ -129,7 +139,7 @@ const MateriSidebar = ({ completedLessons, progress }) => {
                         ? "Unlocked"
                         : "Locked"
                     }
-                    className="w-5 h-5 mb-5"
+                    className="w-4 h-4 mb-5 sm:w-5 sm:h-5"
                   />
                 </li>
               ))}
@@ -140,7 +150,7 @@ const MateriSidebar = ({ completedLessons, progress }) => {
       <div className="mt-6">
         <Link
           to="/dashboard"
-          className="block text-center bg-[#68217A] text-white py-2 px-4 rounded-full hover:bg-[#4A5B6D] transition"
+          className="block text-center bg-[#68217A] text-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-full hover:bg-[#4A5B6D] transition text-sm sm:text-base"
         >
           Kembali ke Dashboard
         </Link>

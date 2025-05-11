@@ -20,9 +20,12 @@ const Userlist = () => {
 
   const getClasses = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/classes", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/classes`,
+        {
+          withCredentials: true,
+        }
+      );
       setClasses(response.data);
     } catch (error) {
       console.error(
@@ -34,10 +37,13 @@ const Userlist = () => {
 
   const getUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/users", {
-        params: { class: selectedClass },
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/users`,
+        {
+          params: { class: selectedClass },
+          withCredentials: true,
+        }
+      );
       setUsers(response.data); // Data sudah difilter di backend
     } catch (error) {
       console.error(
@@ -49,9 +55,12 @@ const Userlist = () => {
 
   const deleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:5000/users/${userId}`, {
-        withCredentials: true,
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_ENDPOINT}/users/${userId}`,
+        {
+          withCredentials: true,
+        }
+      );
       await Swal.fire({
         icon: "success",
         title: "Berhasil!",
@@ -94,10 +103,16 @@ const Userlist = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://localhost:5000/users/${editUser.uuid}`, {
-        name: editUser.name,
-        class: editUser.class,
-      });
+      await axios.patch(
+        `${import.meta.env.VITE_API_ENDPOINT}/users/${editUser.uuid}`,
+        {
+          name: editUser.name,
+          class: editUser.class,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       await Swal.fire({
         icon: "success",
         title: "Berhasil!",

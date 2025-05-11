@@ -6,6 +6,7 @@ import Navbar from "../../Landing/Navbar";
 import Footer from "../../Landing/Footer";
 import loginImage from "../../../assets/img/daftarfoto.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import Swal from "sweetalert2";
 
 const RegisterSiswaa = () => {
   const [fullName, setFullName] = useState("");
@@ -33,11 +34,32 @@ const RegisterSiswaa = () => {
   };
 
   useEffect(() => {
+    // Tampilkan alert saat pendaftaran berhasil
     if (isSuccess) {
-      navigate("/login");
+      Swal.fire({
+        icon: "success",
+        title: "Pendaftaran Berhasil!",
+        text: message || "Akun Anda berhasil dibuat. Silakan login.",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        navigate("/login");
+      });
     }
+
+    // Tampilkan alert saat pendaftaran gagal
+    if (isError) {
+      Swal.fire({
+        icon: "error",
+        title: "Pendaftaran Gagal",
+        text: message || "Terjadi kesalahan. Silakan coba lagi.",
+        showConfirmButton: true,
+      });
+    }
+
+    // Reset state setelah pendaftaran
     dispatch(reset());
-  }, [isSuccess, dispatch, navigate]);
+  }, [isSuccess, isError, message, dispatch, navigate]);
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -76,7 +98,6 @@ const RegisterSiswaa = () => {
             <p className="mb-3 text-gray-600">
               Silahkan daftar untuk membuat akun siswa ...
             </p>
-            {isError && <p className="text-red-500">{message}</p>}
             {passwordError && <p className="text-red-500">{passwordError}</p>}
             <form onSubmit={handleRegister}>
               <div className="mb-4">
@@ -165,6 +186,7 @@ const RegisterSiswaa = () => {
                 type="submit"
                 style={{ backgroundColor: "#68217A" }}
                 className="w-full py-2 text-white rounded-md hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                disabled={isLoading}
               >
                 {isLoading ? "Memuat..." : "DAFTAR"}
               </button>

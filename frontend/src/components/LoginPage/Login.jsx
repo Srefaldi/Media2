@@ -5,7 +5,7 @@ import { LoginUser, reset } from "../../features/authSlice";
 import Navbar from "../Landing/Navbar";
 import Footer from "../Landing/Footer";
 import loginImage from "../../assets/img/hero-login.png";
-import Tooltip from "./Tooltip";
+import Swal from "sweetalert2";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const Login = () => {
@@ -18,15 +18,38 @@ const Login = () => {
   const { user, isError, isSuccess, isLoading, message } = useSelector(
     (state) => state.auth
   );
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   useEffect(() => {
-    if (user || isSuccess) {
-      navigate("/dashboard");
+    // Tampilkan alert saat login berhasil
+    if (isSuccess) {
+      Swal.fire({
+        icon: "success",
+        title: "Login Berhasil!",
+        text: message || "Selamat datang! Anda berhasil masuk.",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        navigate("/dashboard");
+      });
     }
+
+    // Tampilkan alert saat login gagal
+    if (isError) {
+      Swal.fire({
+        icon: "error",
+        title: "Login Gagal",
+        text: message || "Terjadi kesalahan. Silakan coba lagi.",
+        showConfirmButton: true,
+      });
+    }
+
+    // Reset state setelah login
     dispatch(reset());
-  }, [user, isSuccess, dispatch, navigate]);
+  }, [isSuccess, isError, message, dispatch, navigate, user]);
 
   const Auth = (e) => {
     e.preventDefault();
@@ -36,7 +59,7 @@ const Login = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="flex items-center justify-center flex-1 bg-gray-100">
+      <div className="flex items-center justify-center flex-1">
         <div className="flex flex-col w-full max-w-4xl overflow-hidden bg-white rounded-lg shadow-lg md:flex-row">
           <div className="items-center justify-center hidden md:flex md:flex-1">
             <img
@@ -52,7 +75,6 @@ const Login = () => {
             <p className="mb-3 text-gray-600">
               Silahkan masuk dengan akun yang telah terdaftar ...
             </p>
-            {isError && <p className="text-red-500">{message}</p>}
             <form onSubmit={Auth}>
               <div className="mb-4">
                 <input
@@ -88,6 +110,7 @@ const Login = () => {
                 type="submit"
                 style={{ backgroundColor: "#68217A" }}
                 className="w-full py-2 text-white rounded-md hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                disabled={isLoading}
               >
                 {isLoading ? "Memuat..." : "MASUK"}
               </button>

@@ -8,15 +8,19 @@ import Footer from "../../../components/Landing/Footer2";
 import Swal from "sweetalert2";
 import daftarBab from "./daftarBab.json";
 import { getMe } from "../../../features/authSlice";
+import { HiMenuAlt3 } from "react-icons/hi";
 
 const MateriLayout = () => {
   const [progress, setProgress] = useState(0);
   const [completedLessons, setCompletedLessons] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user, isError, isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const totalLessons = 60;
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   useEffect(() => {
     if (!user && !isLoading) {
@@ -32,9 +36,12 @@ const MateriLayout = () => {
       }
       try {
         console.log("Mengambil progres untuk pengguna:", user.uuid);
-        const response = await axios.get("http://localhost:5000/me", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/me`,
+          {
+            withCredentials: true,
+          }
+        );
         console.log("Respon progres:", response.data);
         const fetchedProgress = response.data.progress ?? 0;
         setProgress(fetchedProgress);
@@ -88,7 +95,7 @@ const MateriLayout = () => {
         newProgress
       );
       const response = await axios.patch(
-        `http://localhost:5000/users/${user.uuid}/progress`,
+        `${import.meta.env.VITE_API_ENDPOINT}/users/${user.uuid}/progress`,
         { progress: newProgress },
         { withCredentials: true }
       );
@@ -129,7 +136,7 @@ const MateriLayout = () => {
     );
     const currentIndex = allLessons.indexOf(currentLessonId);
     if (currentIndex === -1 || currentIndex === allLessons.length - 1) {
-      return null; // Tidak ada lesson berikutnya
+      return null;
     }
     return allLessons[currentIndex + 1];
   };
@@ -190,16 +197,54 @@ const MateriLayout = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <Navbar />
-      <div className="flex flex-1 mt-20">
-        <div className="fixed top-20 left-0 w-80 h-[calc(100vh-80px)] bg-white">
+      <div style={{ display: "flex", flex: 1, marginTop: "80px" }}>
+        <div
+          style={{
+            position: "fixed",
+            top: "80px",
+            left: 0,
+            height: "calc(100vh - 80px)",
+            backgroundColor: "white",
+            transition: "transform 0.3s",
+            zIndex: 50,
+            width: isSidebarOpen ? "100%" : "320px",
+            transform: isSidebarOpen
+              ? "translateX(0)"
+              : window.innerWidth >= 768
+              ? "translateX(0)"
+              : "translateX(-100%)",
+            maxWidth: "320px",
+          }}
+        >
           <MateriSidebar
             completedLessons={completedLessons}
             progress={progress}
+            toggleSidebar={toggleSidebar}
           />
         </div>
-        <div className="flex-1 p-6 overflow-y-auto ml-80">
+        <div
+          style={{
+            flex: 1,
+            padding: window.innerWidth >= 640 ? "24px" : "16px",
+            marginLeft: window.innerWidth >= 768 ? "320px" : "0px",
+            overflowY: "auto",
+          }}
+        >
+          <button
+            style={{
+              padding: "8px",
+              marginBottom: "16px",
+              color: "white",
+              backgroundColor: "#6b7280",
+              borderRadius: "8px",
+              display: window.innerWidth >= 768 ? "none" : "block",
+            }}
+            onClick={toggleSidebar}
+          >
+            <HiMenuAlt3 size={24} />
+          </button>
           <Outlet context={{ handleLessonComplete, handleQuizComplete }} />
           <Footer />
         </div>

@@ -23,9 +23,12 @@ const ProgresBelajar = () => {
 
   const getClasses = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/classes", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/classes`,
+        {
+          withCredentials: true,
+        }
+      );
       setClasses(response.data.sort()); // Sort classes alphabetically
       console.log("Daftar kelas unik:", response.data);
     } catch (error) {
@@ -39,10 +42,13 @@ const ProgresBelajar = () => {
 
   const getUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/users", {
-        params: { class: selectedClass || undefined },
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/users`,
+        {
+          params: { class: selectedClass || undefined },
+          withCredentials: true,
+        }
+      );
       console.log("Pengguna dengan role=user:", response.data);
       setUsers(response.data); // Data sudah difilter di backend
       setError(null);

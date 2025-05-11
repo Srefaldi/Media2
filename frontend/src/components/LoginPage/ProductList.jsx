@@ -204,7 +204,7 @@ const EvaluationList = () => {
     const fetchQuestion = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/questions/${questionId}`,
+          `${import.meta.env.VITE_API_ENDPOINT}/questions/${questionId}`,
           {
             withCredentials: true,
           }
@@ -215,7 +215,7 @@ const EvaluationList = () => {
       } catch (error) {
         Swal.fire({
           title: "Gagal!",
-          text: "Tidak dapat mengambil data soal.",
+          text: error.response?.data?.msg || "Tidak dapat mengambil data soal.",
           icon: "error",
         });
       }

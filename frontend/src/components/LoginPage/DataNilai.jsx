@@ -25,9 +25,12 @@ const ScoreList = () => {
 
   const getClasses = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/users", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/users`,
+        {
+          withCredentials: true,
+        }
+      );
       const uniqueClasses = [
         ...new Set(
           response.data.map((user) => user.class).filter((cls) => cls)
@@ -44,14 +47,20 @@ const ScoreList = () => {
 
   const getUsers = async () => {
     try {
-      const meResponse = await axios.get("http://localhost:5000/me", {
-        withCredentials: true,
-      });
+      const meResponse = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/me`,
+        {
+          withCredentials: true,
+        }
+      );
 
-      const response = await axios.get("http://localhost:5000/users", {
-        params: { class: selectedClass || undefined },
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/users`,
+        {
+          params: { class: selectedClass || undefined },
+          withCredentials: true,
+        }
+      );
 
       const filteredUsers = response.data.filter(
         (user) => user.role === "user"
@@ -61,7 +70,7 @@ const ScoreList = () => {
         filteredUsers.map(async (user) => {
           try {
             const scoreResponse = await axios.get(
-              `http://localhost:5000/scores/${user.uuid}`,
+              `${import.meta.env.VITE_API_ENDPOINT}/scores/${user.uuid}`,
               {
                 withCredentials: true,
               }
@@ -88,7 +97,7 @@ const ScoreList = () => {
   const exportToPDF = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/scores/export/pdf",
+        `${import.meta.env.VITE_API_ENDPOINT}/scores/export/pdf`,
         {
           params: { class: selectedClass || undefined },
           responseType: "blob",
@@ -119,7 +128,7 @@ const ScoreList = () => {
   const exportToExcel = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/scores/export/excel",
+        `${import.meta.env.VITE_API_ENDPOINT}/scores/export/excel`,
         {
           params: { class: selectedClass || undefined },
           responseType: "blob",
@@ -383,7 +392,7 @@ const ScoreList = () => {
               EXPORT
             </button>
             {isExportOpen && (
-              <div className="absolute z-10 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
+              <div className="absolute z-10 w-48 mt-2 bg-white border border-gray-300 rounded-md shadow-lg">
                 <button
                   onClick={() => {
                     exportToPDF();

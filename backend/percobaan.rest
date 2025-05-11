@@ -14,14 +14,16 @@ Content-Type: application/json
 }
 
 ### 2. Login sebagai Admin
-POST http://localhost:5000/login
+POST host-backend-production.up.railway.app/login
 Content-Type: application/json
 
 {
-  "nis": "123456789",
-  "password": "admin123"
+  "nis": "2110",
+  "password": "123"
 }
-
+###
+GET host-backend-production.up.railway.app/me
+Content-Type: application/json
 # Catatan: Salin cookie connect.sid dari header respons untuk digunakan di bawah.
 
 ### 3. Ambil Data KKM (Admin)

@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// Debugging: Log variabel lingkungan untuk memastikan VITE_API_ENDPOINT tersedia
+console.log("VITE_API_ENDPOINT:", import.meta.env.VITE_API_ENDPOINT);
+
 const initialState = {
   user: null,
   isError: false,
@@ -17,7 +20,7 @@ export const LoginUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/login",
+        `${import.meta.env.VITE_API_ENDPOINT}/login`,
         {
           nis: user.nis,
           password: user.password,
@@ -37,7 +40,7 @@ export const RegisterGuru = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/register-guru",
+        `${import.meta.env.VITE_API_ENDPOINT}/register-guru`,
         {
           fullName: user.fullName,
           nip: user.nip,
@@ -59,7 +62,7 @@ export const RegisterSiswa = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/register-siswa",
+        `${import.meta.env.VITE_API_ENDPOINT}/register-siswa`,
         {
           fullName: user.fullName,
           nis: user.nis,
@@ -79,9 +82,12 @@ export const RegisterSiswa = createAsyncThunk(
 
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   try {
-    const response = await axios.get("http://localhost:5000/me", {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_ENDPOINT}/me`,
+      {
+        withCredentials: true,
+      }
+    );
     return response.data;
   } catch (error) {
     const message = error.response?.data?.msg || "Terjadi kesalahan";
@@ -89,8 +95,19 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   }
 });
 
-export const LogOut = createAsyncThunk("user/LogOut", async () => {
-  await axios.delete("http://localhost:5000/logout", { withCredentials: true });
+export const LogOut = createAsyncThunk("user/LogOut", async (_, thunkAPI) => {
+  try {
+    const response = await axios.delete(
+      `${import.meta.env.VITE_API_ENDPOINT}/logout`,
+      {
+        withCredentials: true,
+      }
+    );
+    return { message: "Logout berhasil" };
+  } catch (error) {
+    const message = error.response?.data?.msg || "Gagal logout";
+    return thunkAPI.rejectWithValue(message);
+  }
 });
 
 export const createEvaluation = createAsyncThunk(
@@ -98,7 +115,7 @@ export const createEvaluation = createAsyncThunk(
   async (evaluationData, thunkAPI) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/evaluations",
+        `${import.meta.env.VITE_API_ENDPOINT}/evaluations`,
         evaluationData,
         { withCredentials: true }
       );
@@ -114,9 +131,13 @@ export const getEvaluations = createAsyncThunk(
   "evaluations/getEvaluations",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get("http://localhost:5000/evaluations", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/evaluations`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("getEvaluations response:", response.data); // Debugging
       return response.data;
     } catch (error) {
       const message = error.response?.data?.msg || "Terjadi kesalahan";
@@ -130,9 +151,10 @@ export const getQuestionsByEvaluation = createAsyncThunk(
   async (evaluation_id, thunkAPI) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/questions/evaluation/${evaluation_id}`,
+        `${import.meta.env.VITE_API_ENDPOINT}/questions?evaluation_id=${evaluation_id}`,
         { withCredentials: true }
       );
+      console.log("getQuestionsByEvaluation response:", response.data); // Debugging
       return response.data;
     } catch (error) {
       const message = error.response?.data?.msg || "Terjadi kesalahan";
@@ -146,10 +168,11 @@ export const createQuestion = createAsyncThunk(
   async (questionData, thunkAPI) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/questions",
+        `${import.meta.env.VITE_API_ENDPOINT}/questions`,
         questionData,
         { withCredentials: true }
       );
+      console.log("createQuestion response:", response.data); // Debugging
       return response.data;
     } catch (error) {
       const message = error.response?.data?.msg || "Terjadi kesalahan";
@@ -162,13 +185,14 @@ export const updateQuestion = createAsyncThunk(
   "questions/updateQuestion",
   async ({ id, questionData }, thunkAPI) => {
     try {
-      const response = await axios.patch(
-        `http://localhost:5000/questions/${id}`,
+      const response = await axios.put(
+        `${import.meta.env.VITE_API_ENDPOINT}/questions/${id}`,
         questionData,
         { withCredentials: true }
       );
+      console.log("updateQuestion response:", response.data); // Debugging
       return response.data;
-    } catch (error) {
+    } buckle (error) {
       const message = error.response?.data?.msg || "Terjadi kesalahan";
       return thunkAPI.rejectWithValue(message);
     }
@@ -180,9 +204,10 @@ export const deleteQuestion = createAsyncThunk(
   async (questionId, thunkAPI) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/questions/${questionId}`,
+        `${import.meta.env.VITE_API_ENDPOINT}/questions/${questionId}`,
         { withCredentials: true }
       );
+      console.log("deleteQuestion response:", response.data); // Debugging
       return { questionId, message: response.data.msg };
     } catch (error) {
       const message = error.response?.data?.msg || "Terjadi kesalahan";
@@ -193,9 +218,13 @@ export const deleteQuestion = createAsyncThunk(
 
 export const getKkm = createAsyncThunk("kkm/getKkm", async (_, thunkAPI) => {
   try {
-    const response = await axios.get("http://localhost:5000/kkm", {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_ENDPOINT}/kkm`,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log("getKkm response:", response.data); // Debugging
     return response.data;
   } catch (error) {
     const message = error.response?.data?.msg || "Terjadi kesalahan";
@@ -207,9 +236,14 @@ export const setKkm = createAsyncThunk(
   "kkm/setKkm",
   async (kkmData, thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:5000/kkm", kkmData, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_ENDPOINT}/kkm`,
+        kkmData,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("setKkm response:", response.data); // Debugging
       return response.data;
     } catch (error) {
       const message = error.response?.data?.msg || "Terjadi kesalahan";
@@ -296,6 +330,24 @@ export const authSlice = createSlice({
       state.user = null;
     });
 
+    builder.addCase(LogOut.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+      state.message = "";
+    });
+    builder.addCase(LogOut.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.user = null;
+      state.isError = false;
+      state.message = action.payload.message;
+    });
+    builder.addCase(LogOut.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+    });
+
     builder.addCase(createEvaluation.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
@@ -340,7 +392,7 @@ export const authSlice = createSlice({
     builder.addCase(getQuestionsByEvaluation.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
-      state.questions = action.payload.questions;
+      state.questions = action.payload.questions || action.payload;
       state.isError = false;
       state.message = "";
     });
@@ -359,7 +411,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
-      state.questions.push(action.payload.question);
+      state.questions.push(action.payload.question || action.payload);
       state.isError = false;
     });
     builder.addCase(createQuestion.rejected, (state, action) => {
@@ -377,6 +429,11 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
+      state.questions = state.questions.map((question) =>
+        question.id === action.payload.question?.id
+          ? action.payload.question
+          : question
+      );
       state.isError = false;
     });
     builder.addCase(updateQuestion.rejected, (state, action) => {

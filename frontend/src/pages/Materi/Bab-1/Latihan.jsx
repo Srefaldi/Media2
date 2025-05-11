@@ -26,6 +26,7 @@ const LatihanBab1 = () => {
   const [hasAnswered, setHasAnswered] = useState(Array(10).fill(false));
   const [timeLeft, setTimeLeft] = useState(20 * 60);
 
+  // Daftar pertanyaan
   const questions = [
     {
       id: 1,
@@ -84,7 +85,7 @@ const LatihanBab1 = () => {
     {
       id: 5,
       prompt:
-        "Lengkapilan kode program berikut agar mencetak output String “Hello” dan Integer Angka 10.",
+        "Lengkapilah kode program berikut agar mencetak output String “Hello” dan Integer Angka 10.",
       code: `class Latihan 
 { 
     public static void Main(string[] args) 
@@ -132,7 +133,7 @@ const LatihanBab1 = () => {
     {
       id: 9,
       prompt:
-        " Lengkapi kode berikut agar program dapat mencetak angka 10 dan 5.5.",
+        "Lengkapi kode berikut agar program dapat mencetak angka 10 dan 5.5.",
       code: `class Program {
     public static void Main(string[] args) {
         Console.WriteLine(_____);
@@ -155,6 +156,7 @@ const LatihanBab1 = () => {
     },
   ];
 
+  // Format tanggal untuk riwayat
   const formatDate = (dateString) => {
     if (!dateString) {
       console.warn("Tanggal tidak tersedia:", dateString);
@@ -176,6 +178,7 @@ const LatihanBab1 = () => {
     });
   };
 
+  // Ambil riwayat nilai dari API
   useEffect(() => {
     const fetchRiwayat = async () => {
       if (!user?.uuid) {
@@ -185,9 +188,12 @@ const LatihanBab1 = () => {
 
       setIsLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/scores", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+          {
+            withCredentials: true,
+          }
+        );
         console.log("Data scores dari API:", response.data);
 
         const filteredScores = response.data.scores.filter(
@@ -218,6 +224,7 @@ const LatihanBab1 = () => {
     fetchRiwayat();
   }, [user]);
 
+  // Timer untuk latihan
   useEffect(() => {
     if (showLatihan) {
       const timer = setInterval(() => {
@@ -235,6 +242,7 @@ const LatihanBab1 = () => {
     }
   }, [showLatihan]);
 
+  // Fungsi untuk mengubah jawaban pengguna
   const handleAnswerChange = (value, inputIndex) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]];
@@ -242,8 +250,9 @@ const LatihanBab1 = () => {
     setAnswers(newAnswers);
   };
 
+  // Fungsi untuk memeriksa jawaban
   const checkAnswer = () => {
-    const question = questions[currentQuestionIndex];
+    const question = questions[currentQuestionIndex]; // Perbaikan typo
     const userAnswers = answers[currentQuestionIndex];
 
     if (userAnswers.some((answer) => answer === "")) {
@@ -310,6 +319,7 @@ const LatihanBab1 = () => {
     }
   };
 
+  // Fungsi untuk memilih soal
   const handleQuestionSelect = (index) => {
     if (hasAnswered[index]) {
       Swal.fire({
@@ -325,6 +335,7 @@ const LatihanBab1 = () => {
     }
   };
 
+  // Fungsi untuk menyelesaikan latihan
   const handleFinish = async () => {
     const hasIncompleteAnswers = answers.some((answer) =>
       answer.some((a) => a === "")
@@ -341,7 +352,7 @@ const LatihanBab1 = () => {
 
     try {
       await axios.post(
-        "http://localhost:5000/scores",
+        `${import.meta.env.VITE_API_ENDPOINT}/scores`,
         {
           user_id: user.uuid,
           type: "latihan",
@@ -398,10 +409,11 @@ const LatihanBab1 = () => {
     }
   };
 
+  // Fungsi ketika waktu habis
   const handleTimeUp = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/scores",
+        `${import.meta.env.VITE_API_ENDPOINT}/scores`,
         {
           user_id: user.uuid,
           type: "latihan",
@@ -443,60 +455,61 @@ const LatihanBab1 = () => {
     });
   };
 
+  // Render halaman instruksi
   const renderInstruksi = () => (
-    <div>
-      <div className="p-4 bg-white rounded-lg shadow-md">
-        <h1 className="mb-4 text-2xl font-bold text-center">
-          BAB 1 - PENDAHULUAN
-        </h1>
-        <section>
-          <h2 className="mb-3 font-semibold text-gray-800">Aturan</h2>
-          <p className="mb-3 leading-relaxed">
-            Latihan ini bertujuan untuk menguji pengetahuan Anda tentang materi
-            pendahuluan pada pemrograman C#.
-          </p>
-          <p className="mb-3 leading-relaxed">
-            Terdapat 10 pertanyaan yang harus dikerjakan dalam latihan ini.
-            Beberapa ketentuannya sebagai berikut:
-          </p>
-          <ul className="mb-3 leading-relaxed list-disc list-inside">
-            <li>Syarat nilai kelulusan: 75%</li>
-            <li>Durasi ujian: 20 menit</li>
-          </ul>
-          <p className="mb-3 leading-relaxed">
-            Apabila tidak memenuhi syarat kelulusan, maka Anda harus mengulang
-            pengerjaan latihan kembali.
-          </p>
-          <p className="mb-6 leading-relaxed">Selamat Mengerjakan!</p>
-          <div className="flex justify-end">
-            <button
-              onClick={() => setShowLatihan(true)}
-              className="flex items-center gap-2 px-6 py-3 text-base text-white transition-all duration-200 rounded-lg shadow-sm hover:shadow-md"
-              style={{ backgroundColor: "#6E2A7F" }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.backgroundColor = "#5B1F6A")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.backgroundColor = "#6E2A7F")
-              }
-            >
-              <span>MULAI</span>
-              <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5" />
-            </button>
-          </div>
-        </section>
+    <div className="max-w-4xl p-4 mx-auto bg-white rounded-lg shadow-md sm:p-6 lg:p-8">
+      <h1 className="mb-4 text-2xl font-bold text-center">
+        BAB 1 - PENDAHULUAN
+      </h1>
+      <section>
+        <h2 className="mb-3 font-semibold text-gray-800">Aturan</h2>
+        <p className="mb-3 leading-relaxed">
+          Latihan ini bertujuan untuk menguji pengetahuan Anda tentang materi
+          pendahuluan pada pemrograman C#.
+        </p>
+        <p className="mb-3 leading-relaxed">
+          Terdapat 10 pertanyaan yang harus dikerjakan dalam latihan ini.
+          Beberapa ketentuannya sebagai berikut:
+        </p>
+        <ul className="mb-3 leading-relaxed list-disc list-inside">
+          <li>Syarat nilai kelulusan: 75%</li>
+          <li>Durasi ujian: 20 menit</li>
+        </ul>
+        <p className="mb-6 leading-relaxed">
+          Apabila tidak memenuhi syarat kelulusan, maka Anda harus mengulang
+          pengerjaan latihan kembali.
+        </p>
+        <p className="mb-6 leading-relaxed">Selamat Mengerjakan!</p>
+        <div className="flex justify-end">
+          <button
+            onClick={() => setShowLatihan(true)}
+            className="flex items-center gap-2 px-6 py-3 text-base text-white transition-all duration-200 rounded-lg shadow-sm hover:shadow-md sm:px-8"
+            style={{ backgroundColor: "#6E2A7F" }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
+          >
+            <span>MULAI</span>
+            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5" />
+          </button>
+        </div>
+      </section>
 
-        <section className="mt-16">
-          <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300">
-            Riwayat
-          </h3>
-          {isLoading ? (
-            <p className="text-gray-600">Memuat riwayat...</p>
-          ) : error ? (
-            <p className="text-red-600">{error}</p>
-          ) : riwayat.length === 0 ? (
-            <p className="text-gray-600">Belum ada riwayat</p>
-          ) : (
+      <section className="mt-16">
+        <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300">
+          Riwayat
+        </h3>
+        {isLoading ? (
+          <p className="text-gray-600">Memuat riwayat...</p>
+        ) : error ? (
+          <p className="text-red-600">{error}</p>
+        ) : riwayat.length === 0 ? (
+          <p className="text-gray-600">Belum ada riwayat</p>
+        ) : (
+          <div className="overflow-x-auto">
             <table className="w-full text-left text-gray-600">
               <thead>
                 <tr>
@@ -525,24 +538,25 @@ const LatihanBab1 = () => {
                 ))}
               </tbody>
             </table>
-          )}
-        </section>
-      </div>
+          </div>
+        )}
+      </section>
     </div>
   );
 
+  // Render halaman latihan
   const renderLatihan = () => (
-    <div className="max-w-full p-2 mx-auto bg-white rounded-lg shadow-lg">
+    <div className="max-w-6xl p-4 mx-auto bg-white rounded-lg shadow-lg sm:p-6 lg:p-8">
       <h2 className="text-lg font-semibold text-center text-gray-800">
         LATIHAN BAB 1
       </h2>
 
       <div
-        className="relative p-4 mt-4 border rounded-lg"
+        className="relative p-4 mt-4 border rounded-lg sm:p-6"
         style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
       >
         <h3
-          className="flex items-center p-2 text-lg font-semibold border rounded-lg w-80"
+          className="flex items-center w-full p-2 text-lg font-semibold border rounded-lg sm:w-80 md:w-96"
           style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
         >
           <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
@@ -595,84 +609,88 @@ const LatihanBab1 = () => {
         </ol>
       </div>
 
-      <div className="flex mt-6">
-        <div className="flex flex-col mr-3">
-          <div className="p-4 mt-5 text-center text-red-600 bg-gray-100 border rounded-lg">
+      <div className="flex flex-col mt-6 lg:flex-row lg:items-start">
+        <div className="flex flex-col mr-3 lg:mr-6">
+          <div className="p-4 mt-5 text-center text-red-600 bg-gray-100 border rounded-lg sm:p-5">
             <h3 className="font-semibold">
               Waktu Tersisa: {Math.floor(timeLeft / 60)}:
               {(timeLeft % 60).toString().padStart(2, "0")}
             </h3>
           </div>
           <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
-          <div className="flex flex-row">
-            {questions.slice(0, 5).map((question, index) => (
-              <button
-                key={question.id}
-                onClick={() => handleQuestionSelect(index)}
-                style={{
-                  width: "2rem",
-                  height: "2rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "0.5rem",
-                  margin: "0.125rem",
-                  backgroundColor:
-                    currentQuestionIndex === index
-                      ? "#6E2A7F"
-                      : answerStatus[index] === "correct"
-                      ? "#10B981"
-                      : answerStatus[index] === "incorrect"
-                      ? "#EF4444"
-                      : "#D1D5DB",
-                  color:
-                    currentQuestionIndex === index ||
-                    answerStatus[index] === "correct" ||
-                    answerStatus[index] === "incorrect"
-                      ? "white"
-                      : "black",
-                }}
-              >
-                {question.id}
-              </button>
-            ))}
-          </div>
-          <div className="flex flex-row mt-2">
-            {questions.slice(5, 10).map((question, index) => (
-              <button
-                key={question.id}
-                onClick={() => handleQuestionSelect(index + 5)}
-                style={{
-                  width: "2rem",
-                  height: "2rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "0.5rem",
-                  margin: "0.125rem",
-                  backgroundColor:
-                    currentQuestionIndex === index + 5
-                      ? "#6E2A7F"
-                      : answerStatus[index + 5] === "correct"
-                      ? "#10B981"
-                      : answerStatus[index + 5] === "incorrect"
-                      ? "#EF4444"
-                      : "#D1D5DB",
-                  color:
-                    currentQuestionIndex === index + 5 ||
-                    answerStatus[index + 5] === "correct" ||
-                    answerStatus[index + 5] === "incorrect"
-                      ? "white"
-                      : "black",
-                }}
-              >
-                {question.id}
-              </button>
-            ))}
+          <div className="flex flex-col items-center">
+            <div className="flex flex-row justify-center mb-2">
+              {questions.slice(0, 5).map((question, index) => (
+                <button
+                  key={question.id}
+                  onClick={() => handleQuestionSelect(index)}
+                  style={{
+                    width: "2rem",
+                    height: "2rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "0.5rem",
+                    margin: "0.125rem",
+                    backgroundColor:
+                      currentQuestionIndex === index
+                        ? "#6E2A7F"
+                        : answerStatus[index] === "correct"
+                        ? "#10B981"
+                        : answerStatus[index] === "incorrect"
+                        ? "#EF4444"
+                        : "#D1D5DB",
+                    color:
+                      currentQuestionIndex === index ||
+                      answerStatus[index] === "correct" ||
+                      answerStatus[index] === "incorrect"
+                        ? "white"
+                        : "black",
+                  }}
+                  className="sm:w-8 sm:h-8"
+                >
+                  {question.id}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-row justify-center">
+              {questions.slice(5, 10).map((question, index) => (
+                <button
+                  key={question.id}
+                  onClick={() => handleQuestionSelect(index + 5)}
+                  style={{
+                    width: "2rem",
+                    height: "2rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "0.5rem",
+                    margin: "0.125rem",
+                    backgroundColor:
+                      currentQuestionIndex === index + 5
+                        ? "#6E2A7F"
+                        : answerStatus[index + 5] === "correct"
+                        ? "#10B981"
+                        : answerStatus[index + 5] === "incorrect"
+                        ? "#EF4444"
+                        : "#D1D5DB",
+                    color:
+                      currentQuestionIndex === index + 5 ||
+                      answerStatus[index + 5] === "correct" ||
+                      answerStatus[index + 5] === "incorrect"
+                        ? "white"
+                        : "black",
+                  }}
+                  className="sm:w-8 sm:h-8"
+                >
+                  {question.id}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="w-full p-4 border rounded-lg">
+        <div className="w-full p-4 border rounded-lg lg:p-6">
           <h3 className="font-semibold">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
           <p className="text-gray-600">
             {questions[currentQuestionIndex].prompt}
@@ -683,7 +701,7 @@ const LatihanBab1 = () => {
                 {questions[currentQuestionIndex].code
                   .split("_____")
                   .map((part, index) => (
-                    <>
+                    <React.Fragment key={index}>
                       {part.split(" ").map((word, wordIndex) => {
                         if (
                           word.includes("class") ||
@@ -725,7 +743,7 @@ const LatihanBab1 = () => {
                               onChange={(e) =>
                                 handleAnswerChange(e.target.value, index)
                               }
-                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
+                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
                               placeholder="Jawaban..."
                             />
                           ) : (
@@ -735,71 +753,74 @@ const LatihanBab1 = () => {
                               onChange={(e) =>
                                 handleAnswerChange(e.target.value, 0)
                               }
-                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
+                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
                               placeholder="Jawaban..."
                             />
                           )}
                         </span>
                       )}
-                    </>
+                    </React.Fragment>
                   ))}
               </code>
             </pre>
           </div>
 
-          <button
-            onClick={checkAnswer}
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
-          >
-            Cek Jawaban
-          </button>
-          <button
-            onClick={() => {
-              const newAnswers = [...answers];
-              newAnswers[currentQuestionIndex] =
-                currentQuestionIndex === 2 || currentQuestionIndex === 8
-                  ? ["", ""]
-                  : [""];
-              setAnswers(newAnswers);
-            }}
-            className="px-4 py-2 mt-2 ml-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
-          >
-            Hapus Jawaban
-          </button>
-          <button
-            onClick={handleFinish}
-            style={{
-              backgroundColor: "white",
-              color: "#6E2A7F",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s, border-color 0.2s",
-              border: "2px solid #6E2A7F",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#e0e0e0";
-              e.currentTarget.style.borderColor = "#5B1F6A";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "white";
-              e.currentTarget.style.borderColor = "#6E2A7F";
-            }}
-            className="ml-2"
-          >
-            Selesai
-          </button>
+          <div className="flex flex-col mt-4 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
+            <button
+              onClick={checkAnswer}
+              style={{
+                backgroundColor: "#6E2A7F",
+                color: "white",
+                padding: "0.5rem 1rem",
+                borderRadius: "0.5rem",
+                transition: "background-color 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "#5B1F6A")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "#6E2A7F")
+              }
+              className="w-full sm:w-auto"
+            >
+              Cek Jawaban
+            </button>
+            <button
+              onClick={() => {
+                const newAnswers = [...answers];
+                newAnswers[currentQuestionIndex] =
+                  currentQuestionIndex === 2 || currentQuestionIndex === 8
+                    ? ["", ""]
+                    : [""];
+                setAnswers(newAnswers);
+              }}
+              className="w-full px-4 py-2 mt-2 text-white bg-red-500 rounded-lg hover:bg-red-600 sm:w-auto sm:mt-0"
+            >
+              Hapus Jawaban
+            </button>
+            <button
+              onClick={handleFinish}
+              style={{
+                backgroundColor: "white",
+                color: "#6E2A7F",
+                padding: "0.5rem 1rem",
+                borderRadius: "0.5rem",
+                transition: "background-color 0.2s, border-color 0.2s",
+                border: "2px solid #6E2A7F",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#e0e0e0";
+                e.currentTarget.style.borderColor = "#5B1F6A";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "white";
+                e.currentTarget.style.borderColor = "#6E2A7F";
+              }}
+              className="w-full sm:w-auto"
+            >
+              Selesai
+            </button>
+          </div>
         </div>
       </div>
     </div>

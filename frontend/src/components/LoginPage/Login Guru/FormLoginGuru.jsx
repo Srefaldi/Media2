@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginUser, reset, getMe } from "../../../features/authSlice";
@@ -6,6 +6,7 @@ import Navbar from "../../Landing/Navbar";
 import Footer from "../../Landing/Footer";
 import loginImage from "../../../assets/img/hero-login.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [nis, setNis] = useState("");
@@ -40,6 +41,34 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    // Tampilkan alert saat login berhasil
+    if (user || (isError === false && message)) {
+      Swal.fire({
+        icon: "success",
+        title: "Login Berhasil!",
+        text: message || "Selamat datang! Anda berhasil masuk.",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        // Navigasi sudah dilakukan di Auth, jadi tidak perlu ulang di sini
+      });
+    }
+
+    // Tampilkan alert saat login gagal
+    if (isError) {
+      Swal.fire({
+        icon: "error",
+        title: "Login Gagal",
+        text: message || "Terjadi kesalahan. Silakan coba lagi.",
+        showConfirmButton: true,
+      });
+    }
+
+    // Reset state setelah login
+    dispatch(reset());
+  }, [user, isError, message, dispatch]);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -59,7 +88,6 @@ const Login = () => {
             <p className="mb-3 text-gray-600">
               Silahkan masuk dengan akun yang telah terdaftar ...
             </p>
-            {isError && <p className="text-red-500">{message}</p>}
             <form onSubmit={Auth}>
               <div className="mb-4">
                 <input
@@ -95,6 +123,7 @@ const Login = () => {
                 type="submit"
                 style={{ backgroundColor: "#68217A" }}
                 className="w-full py-2 text-white rounded-md hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                disabled={isLoading}
               >
                 {isLoading ? "Memuat..." : "MASUK"}
               </button>
