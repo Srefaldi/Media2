@@ -379,27 +379,33 @@ const LatihanBab3 = () => {
   };
 
   const renderInstruksi = () => (
-    <div className="p-4 mx-auto bg-white rounded-lg shadow-md max-w-4xl sm:p-6 lg:p-8">
-      <h1 className="mb-4 text-2xl font-bold text-center">BAB 3 - TIPE DATA</h1>
+    <div className="mx-auto max-w-4xl p-2 sm:p-4 lg:p-6 bg-white rounded-lg shadow-md">
+      <h1 className="mb-4 text-xl sm:text-2xl font-bold text-center">
+        BAB 3 - TIPE DATA
+      </h1>
       <section>
-        <h2 className="mb-3 font-semibold text-gray-800">Aturan</h2>
-        <p className="mb-3 leading-relaxed">
+        <h2 className="mb-3 font-semibold text-gray-800 text-base sm:text-lg">
+          Aturan
+        </h2>
+        <p className="mb-3 leading-relaxed text-sm sm:text-base">
           Latihan ini bertujuan untuk menguji pengetahuan Anda tentang operator
           dalam pemrograman C#.
         </p>
-        <p className="mb-3 leading-relaxed">
+        <p className="mb-3 leading-relaxed text-sm sm:text-base">
           Terdapat 5 pertanyaan yang harus dikerjakan dalam latihan ini.
           Beberapa ketentuannya sebagai berikut:
         </p>
-        <ul className="mb-3 leading-relaxed list-disc list-inside">
+        <ul className="mb-3 leading-relaxed list-disc list-inside text-sm sm:text-base">
           <li>Syarat nilai kelulusan: 75%</li>
           <li>Durasi ujian: 10 menit</li>
         </ul>
-        <p className="mb-3 leading-relaxed">
+        <p className="mb-3 leading-relaxed text-sm sm:text-base">
           Apabila tidak memenuhi syarat kelulusan, maka Anda harus mengulang
           pengerjaan latihan kembali.
         </p>
-        <p className="mb-6 leading-relaxed">Selamat Mengerjakan!</p>
+        <p className="mb-6 leading-relaxed text-sm sm:text-base">
+          Selamat Mengerjakan!
+        </p>
         <div className="flex justify-end">
           <button
             onClick={() => setShowLatihan(true)}
@@ -413,24 +419,32 @@ const LatihanBab3 = () => {
             }
           >
             <span>MULAI</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5" />
+            <img
+              src={nextIcon}
+              alt="Selanjutnya"
+              className="w-4 sm:w-5 h-4 sm:h-5"
+            />
           </button>
         </div>
       </section>
 
-      <section className="mt-16">
-        <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300">
+      <section className="mt-8 sm:mt-16">
+        <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300 text-base sm:text-lg">
           Riwayat
         </h3>
         {isLoading ? (
-          <p className="text-gray-600">Memuat riwayat...</p>
+          <p className="text-gray-600 text-sm sm:text-base">
+            Memuat riwayat...
+          </p>
         ) : error ? (
-          <p className="text-red-600">{error}</p>
+          <p className="text-red-600 text-sm sm:text-base">{error}</p>
         ) : riwayat.length === 0 ? (
-          <p className="text-gray-600">Belum ada riwayat</p>
+          <p className="text-gray-600 text-sm sm:text-base">
+            Belum ada riwayat
+          </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-gray-600">
+            <table className="w-full text-left text-gray-600 text-sm sm:text-base">
               <thead>
                 <tr>
                   <th className="pb-2 font-semibold">Tanggal</th>
@@ -445,7 +459,7 @@ const LatihanBab3 = () => {
                     <td className="pt-2 pb-3">{item.persentase}</td>
                     <td className="pt-2 pb-3">
                       <span
-                        className={`text-[10px] font-semibold px-2 py-[2px] rounded ${
+                        className={`text-[10px] sm:text-xs font-semibold px-2 py-[2px] rounded ${
                           item.status === "Lulus"
                             ? "text-green-600 bg-green-100"
                             : "text-red-600 bg-red-100"
@@ -465,23 +479,27 @@ const LatihanBab3 = () => {
   );
 
   const renderLatihan = () => (
-    <div className="max-w-6xl p-4 mx-auto bg-white rounded-lg shadow-lg sm:p-6 lg:p-8">
-      <h2 className="text-lg font-semibold text-center text-gray-800">
+    <div className="max-w-6xl p-2 sm:p-4 lg:p-6 mx-auto bg-white rounded-lg shadow-lg">
+      <h2 className="text-base sm:text-lg font-semibold text-center text-gray-800">
         LATIHAN BAB 3
       </h2>
 
       <div
-        className="relative p-4 mt-4 border rounded-lg sm:p-6"
+        className="relative p-2 sm:p-4 mt-4 border rounded-lg"
         style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
       >
         <h3
-          className="flex items-center p-2 text-lg font-semibold border rounded-lg w-full sm:w-80 md:w-96"
+          className="flex items-center p-2 text-base sm:text-lg font-semibold border rounded-lg w-full sm:w-80 md:w-96"
           style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
         >
-          <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
+          <img
+            src={IconPetunjuk}
+            alt="Icon"
+            className="w-5 sm:w-6 h-5 sm:h-6 mr-2"
+          />
           PETUNJUK MENGERJAKAN
         </h3>
-        <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside">
+        <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside text-sm sm:text-base">
           <li>
             Jawablah soal-soal di bawah ini dengan mengisikannya pada input yang
             tersedia.
@@ -518,7 +536,7 @@ const LatihanBab3 = () => {
                 borderRadius: "0.5rem",
                 border: "2px solid #6E2A7F",
                 cursor: "not-allowed",
-                opacity: "0.6",
+                opacity: 0.6,
               }}
             >
               Selesai
@@ -528,16 +546,18 @@ const LatihanBab3 = () => {
         </ol>
       </div>
 
-      <div className="flex flex-col mt-6 lg:flex-row lg:items-start">
-        <div className="flex flex-col mr-3 lg:mr-6">
-          <div className="p-4 mt-5 text-center text-red-600 bg-gray-100 border rounded-lg sm:p-5">
-            <h3 className="font-semibold">
+      <div className="flex flex-col lg:flex-row mt-6 gap-2 sm:gap-4 lg:items-start">
+        <div className="flex flex-col mr-0 lg:mr-6 w-full lg:w-auto">
+          <div className="p-2 sm:p-4 mt-2 sm:mt-5 text-center text-red-600 bg-gray-100 border rounded-lg">
+            <h3 className="font-semibold text-sm sm:text-base">
               Waktu Tersisa: {Math.floor(timeLeft / 60)}:
               {(timeLeft % 60).toString().padStart(2, "0")}
             </h3>
           </div>
-          <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
-          <div className="flex flex-row flex-wrap justify-center">
+          <h3 className="mt-4 sm:mt-8 text-base sm:text-lg font-semibold text-center">
+            SOAL
+          </h3>
+          <div className="flex flex-wrap gap-2 justify-center">
             {questions.map((question, index) => (
               <button
                 key={question.id}
@@ -565,7 +585,7 @@ const LatihanBab3 = () => {
                       ? "white"
                       : "black",
                 }}
-                className="sm:w-8 sm:h-8"
+                className="w-8 h-8 sm:w-8 sm:h-8"
               >
                 {question.id}
               </button>
@@ -573,12 +593,12 @@ const LatihanBab3 = () => {
           </div>
         </div>
 
-        <div className="w-full p-4 border rounded-lg lg:p-6">
-          <h3 className="font-semibold">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
-          <p className="text-gray-600">
+        <div className="w-full p-2 sm:p-4 lg:p-6 border rounded-lg">
+          <h3 className="font-semibold text-sm sm:text-base">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
+          <p className="text-gray-600 text-sm sm:text-base">
             {questions[currentQuestionIndex].prompt}
           </p>
-          <div className="p-4 mt-2 font-mono text-sm bg-gray-100 rounded-lg">
+          <div className="p-2 sm:p-4 mt-2 font-mono text-xs sm:text-sm bg-gray-100 rounded-lg">
             <pre className="code-block">
               <code>
                 {questions[currentQuestionIndex].code
@@ -626,7 +646,7 @@ const LatihanBab3 = () => {
                             onChange={(e) =>
                               handleAnswerChange(e.target.value, index)
                             }
-                            className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
+                            className="w-20 sm:w-24 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
                             placeholder="Jawaban..."
                           />
                         </span>
@@ -665,7 +685,7 @@ const LatihanBab3 = () => {
                 ).fill("");
                 setAnswers(newAnswers);
               }}
-              className="w-full px-4 py-2 mt-2 text-white bg-red-500 rounded-lg hover:bg-red-600 sm:w-auto sm:mt-0"
+              className="w-full px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 sm:w-auto sm:mt-0"
             >
               Hapus Jawaban
             </button>
@@ -687,7 +707,7 @@ const LatihanBab3 = () => {
                 e.currentTarget.style.backgroundColor = "white";
                 e.currentTarget.style.borderColor = "#6E2A7F";
               }}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto sm:mt-0"
             >
               Selesai
             </button>

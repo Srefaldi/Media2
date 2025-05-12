@@ -63,7 +63,7 @@ const EvaluasiAkhir = () => {
       try {
         // Ambil evaluasi untuk Evaluasi Akhir
         const evalResponse = await axios.get(
-          "http://localhost:5000/evaluations",
+          `${import.meta.env.VITE_API_ENDPOINT}/evaluations`,
           { withCredentials: true }
         );
         const evaluasiAkhir = evalResponse.data.find(
@@ -76,9 +76,10 @@ const EvaluasiAkhir = () => {
         setEvaluationId(evaluasiAkhir.id);
 
         // Ambil KKM
-        const kkmResponse = await axios.get("http://localhost:5000/kkm", {
-          withCredentials: true,
-        });
+        const kkmResponse = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/kkm`,
+          { withCredentials: true }
+        );
         const evaluasiKkm = kkmResponse.data.find(
           (k) => k.evaluation_id === evaluasiAkhir.id
         );
@@ -88,7 +89,9 @@ const EvaluasiAkhir = () => {
 
         // Ambil soal
         const questionsResponse = await axios.get(
-          `http://localhost:5000/questions/evaluation/${evaluasiAkhir.id}`,
+          `${import.meta.env.VITE_API_ENDPOINT}/questions/evaluation/${
+            evaluasiAkhir.id
+          }`,
           { withCredentials: true }
         );
         const fetchedQuestions = questionsResponse.data.questions.map(
@@ -114,9 +117,10 @@ const EvaluasiAkhir = () => {
         setHasAnswered(Array(fetchedQuestions.length).fill(false));
 
         // Ambil riwayat skor
-        const scoresResponse = await axios.get("http://localhost:5000/scores", {
-          withCredentials: true,
-        });
+        const scoresResponse = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+          { withCredentials: true }
+        );
         const filteredScores = scoresResponse.data.scores.filter(
           (score) => score.type === "evaluasi_akhir"
         );
@@ -265,135 +269,135 @@ const EvaluasiAkhir = () => {
       return;
     }
 
-    const payload = {
-      user_id: user.uuid,
-      type: "evaluasi_akhir",
+    Swal.fire({
+      title: "Konfirmasi Pengiriman",
+      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+      confirmButtonColor: "#6E2A7F",
+      cancelButtonColor: "#EF4444",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+            {
+              user_id: user.uuid,
+              type: "evaluasi_akhir",
+              score: score,
+            },
+            {
+              withCredentials: true,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
-      score: score,
-    };
-    console.log("Sending score payload:", payload);
+          if (score >= kkm) {
+            handleLessonComplete("/materi/evaluasi/evaluasi-akhir");
+            handleLessonComplete("/materi/evaluasi/kesimpulan");
+          }
 
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/scores",
-        payload,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
+          navigate("/materi/evaluasi/hasil-evaluasi-akhir", {
+            state: { score, totalQuestions: questions.length, kkm },
+          });
+        } catch (error) {
+          console.error("Error saving score:", error);
+          const errorMsg =
+            error.response?.data?.msg ||
+            "Gagal menyimpan skor. Silakan coba lagi.";
+          Swal.fire({
+            title: "Gagal Menyimpan Skor",
+            text: errorMsg,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
-      );
-      console.log("Score saved successfully:", response.data);
-    } catch (error) {
-      console.error("Error saving score:", error);
-      console.error("Error response:", error.response?.data);
-      const errorMsg =
-        error.response?.data?.msg || "Gagal menyimpan skor. Silakan coba lagi.";
-      Swal.fire({
-        title: "Gagal Menyimpan Skor",
-        text: errorMsg,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-      return; // Stop execution to prevent navigation
-    }
-
-    if (score >= kkm) {
-      Swal.fire({
-        title: "Selamat!",
-        text: `Skor Anda: ${score}. Anda telah selesai mengerjakan evaluasi akhir.`,
-        icon: "success",
-        confirmButtonText: "Selanjutnya",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          handleLessonComplete("/materi/evaluasi/evaluasi-akhir");
-          handleLessonComplete("/materi/evaluasi/kesimpulan");
-          window.scrollTo(0, 0);
-          navigate("/materi/evaluasi/kesimpulan");
-        }
-      });
-    } else {
-      showFinalScore();
-    }
+      }
+    });
   };
 
   const handleTimeUp = () => {
     Swal.fire({
       title: "Waktu Habis!",
-      text: `Skor Anda: ${score}`,
+      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
       icon: "warning",
-      confirmButtonText: "OK",
-    }).then(() => {
-      showFinalScore();
-    });
-  };
-
-  const showFinalScore = () => {
-    Swal.fire({
-      title: score >= kkm ? "Evaluasi Selesai" : "WAKTU HABIS",
-      text:
-        score >= kkm
-          ? `Skor Anda: ${score}.`
-          : `Skor Anda tidak mencukupi (KKM: ${kkm}). Silakan coba lagi.`,
-      icon: score >= kkm ? "success" : "error",
       showCancelButton: true,
-      confirmButtonText: score >= kkm ? "Selanjutnya" : "Coba Lagi",
-      cancelButtonText: "Kembali",
-    }).then((result) => {
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+      confirmButtonColor: "#6E2A7F",
+      cancelButtonColor: "#EF4444",
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        if (score >= kkm) {
-          handleLessonComplete("/materi/evaluasi/evaluasi-akhir");
-          window.scrollTo(0, 0);
-          navigate("/materi/evaluasi/sertifikat");
-        } else {
-          setShowEvaluasi(false);
-          setCurrentQuestionIndex(0);
-          setSelectedAnswers(Array(questions.length).fill(""));
-          setScore(0);
-          setAnswerStatus(Array(questions.length).fill(null));
-          setHasAnswered(Array(questions.length).fill(false));
-          setTimeLeft(20 * 60);
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+            {
+              user_id: user.uuid,
+              type: "evaluasi_akhir",
+              score: score,
+            },
+            {
+              withCredentials: true,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (score >= kkm) {
+            handleLessonComplete("/materi/evaluasi/evaluasi-akhir");
+            handleLessonComplete("/materi/evaluasi/kesimpulan");
+          }
+
+          navigate("/materi/evaluasi/hasil-evaluasi-akhir", {
+            state: { score, totalQuestions: questions.length, kkm },
+          });
+        } catch (error) {
+          console.error("Error saving score:", error);
+          const errorMsg =
+            error.response?.data?.msg ||
+            "Gagal menyimpan skor. Silakan coba lagi.";
+          Swal.fire({
+            title: "Gagal Menyimpan Skor",
+            text: errorMsg,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
-      } else {
-        setShowEvaluasi(false);
-        setCurrentQuestionIndex(0);
-        setSelectedAnswers(Array(questions.length).fill(""));
-        setScore(0);
-        setAnswerStatus(Array(questions.length).fill(null));
-        setHasAnswered(Array(questions.length).fill(false));
-        setTimeLeft(20 * 60);
-        navigate("/materi/evaluasi/evaluasi-akhir");
       }
     });
   };
 
   // UI untuk halaman instruksi
   const renderInstruksi = () => (
-    <div>
+    <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
       <div className="p-4 bg-white rounded-lg shadow-md">
         <h1 className="mb-4 text-2xl font-bold text-center">EVALUASI AKHIR</h1>
         <section>
-          <h2 className="mb-3 font-semibold text-gray-800">Aturan</h2>
-          <p className="mb-3 leading-relaxed">
+          <h2 className="mb-3 font-semibold text-gray-800 text-lg">Aturan</h2>
+          <p className="mb-3 leading-relaxed text-base">
             Evaluasi ini bertujuan untuk menguji pengetahuan Anda tentang semua
             materi dalam pemrograman C# (Bab 1-6), termasuk variabel, tipe data,
             kontrol alur, dan method.
           </p>
-          <p className="mb-3 leading-relaxed">
+          <p className="mb-3 leading-relaxed text-base">
             Terdapat {questions.length} pertanyaan pilihan ganda yang harus
             dikerjakan dalam evaluasi ini. Beberapa ketentuannya sebagai
             berikut:
           </p>
-          <ul className="mb-3 leading-relaxed list-disc list-inside">
+          <ul className="mb-3 leading-relaxed list-disc list-inside text-base">
             <li>Syarat nilai kelulusan: {kkm}%</li>
             <li>Durasi ujian: 20 menit</li>
           </ul>
-          <p className="mb-3 leading-relaxed">
+          <p className="mb-3 leading-relaxed text-base">
             Apabila tidak memenuhi syarat kelulusan, Anda harus mengulang
             pengerjaan evaluasi kembali.
           </p>
-          <p className="mb-6 leading-relaxed">Selamat Mengerjakan!</p>
+          <p className="mb-6 leading-relaxed text-base">Selamat Mengerjakan!</p>
           <div className="flex justify-end">
             <button
               onClick={() => {
@@ -410,7 +414,7 @@ const EvaluasiAkhir = () => {
                 }
                 setShowEvaluasi(true);
               }}
-              className="flex items-center gap-2 px-6 py-3 text-base text-white transition-all duration-200 rounded-lg shadow-sm hover:shadow-md"
+              className="flex items-center gap-2 px-6 py-3 text-base text-white transition-all duration-200 rounded-lg shadow-sm hover:shadow-md w-full sm:w-auto"
               style={{ backgroundColor: "#6E2A7F" }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.backgroundColor = "#5B1F6A")
@@ -426,44 +430,46 @@ const EvaluasiAkhir = () => {
         </section>
 
         <section className="mt-16">
-          <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300">
+          <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300 text-lg">
             Riwayat
           </h3>
           {isLoading ? (
-            <p className="text-gray-600">Memuat riwayat...</p>
+            <p className="text-gray-600 text-base">Memuat riwayat...</p>
           ) : error ? (
-            <p className="text-red-600">{error}</p>
+            <p className="text-red-600 text-base">{error}</p>
           ) : riwayat.length === 0 ? (
-            <p className="text-gray-600">Belum ada riwayat</p>
+            <p className="text-gray-600 text-base">Belum ada riwayat</p>
           ) : (
-            <table className="w-full text-left text-gray-600">
-              <thead>
-                <tr>
-                  <th className="pb-2 font-semibold">Tanggal</th>
-                  <th className="pb-2 font-semibold">Persentase</th>
-                  <th className="pb-2 font-semibold">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {riwayat.map((item, index) => (
-                  <tr key={index}>
-                    <td className="pt-2 pb-3">{item.tanggal}</td>
-                    <td className="pt-2 pb-3">{item.persentase}</td>
-                    <td className="pt-2 pb-3">
-                      <span
-                        className={`text-[10px] font-semibold px-2 py-[2px] rounded ${
-                          item.status === "Lulus"
-                            ? "text-green-600 bg-green-100"
-                            : "text-red-600 bg-red-100"
-                        }`}
-                      >
-                        {item.status}
-                      </span>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-gray-600 text-base min-w-[300px]">
+                <thead>
+                  <tr>
+                    <th className="pb-2 font-semibold">Tanggal</th>
+                    <th className="pb-2 font-semibold">Persentase</th>
+                    <th className="pb-2 font-semibold">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {riwayat.map((item, index) => (
+                    <tr key={index}>
+                      <td className="pt-2 pb-3">{item.tanggal}</td>
+                      <td className="pt-2 pb-3">{item.persentase}</td>
+                      <td className="pt-2 pb-3">
+                        <span
+                          className={`text-xs font-semibold px-2 py-[2px] rounded ${
+                            item.status === "Lulus"
+                              ? "text-green-600 bg-green-100"
+                              : "text-red-600 bg-red-100"
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </section>
       </div>
@@ -474,11 +480,11 @@ const EvaluasiAkhir = () => {
   const renderEvaluasi = () => {
     if (questions.length === 0 || !questions[currentQuestionIndex]) {
       return (
-        <div className="p-4 text-center bg-white rounded-lg shadow-md">
+        <div className="mx-auto max-w-4xl p-4 text-center bg-white rounded-lg shadow-md">
           <h2 className="text-lg font-semibold text-gray-800">
             EVALUASI AKHIR
           </h2>
-          <p className="mt-4 text-red-600">
+          <p className="mt-4 text-red-600 text-base">
             {error || "Gagal memuat soal. Silakan coba lagi nanti."}
           </p>
         </div>
@@ -486,192 +492,211 @@ const EvaluasiAkhir = () => {
     }
 
     return (
-      <div className="max-w-full p-4 mx-auto bg-white rounded-lg shadow-lg">
-        <h2 className="text-lg font-semibold text-center text-gray-800">
-          EVALUASI AKHIR
-        </h2>
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="p-4 bg-white rounded-lg shadow-lg">
+          <h2 className="text-lg font-semibold text-center text-gray-800">
+            EVALUASI AKHIR
+          </h2>
 
-        <div
-          className="relative p-4 mt-4 border rounded-lg"
-          style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
-        >
-          <h3
-            className="flex items-center p-2 text-lg font-semibold border rounded-lg w-80"
-            style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
+          <div
+            className="relative p-4 mt-4 border rounded-lg"
+            style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
           >
-            <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
-            PETUNJUK MENGERJAKAN
-          </h3>
-          <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside">
-            <li>
-              Jawablah pertanyaan berikut dengan memilih salah satu jawaban yang
-              paling tepat.
-            </li>
-            <li>
-              Tekan tombol{" "}
-              <button
-                disabled
-                style={{
-                  backgroundColor: "#6E2A7F",
-                  color: "white",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "0.5rem",
-                  cursor: "not-allowed",
-                  opacity: 0.6,
-                }}
-              >
-                Cek Jawaban
-              </button>{" "}
-              untuk mengecek jawaban.
-            </li>
-            <li>
-              Apabila notifikasi berwarna Merah jawaban salah, dan apabila
-              berwarna Hijau jawaban benar.
-            </li>
-            <li>
-              Tekan tombol{" "}
-              <button
-                disabled
-                style={{
-                  backgroundColor: "white",
-                  color: "#6E2A7F",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "0.5rem",
-                  border: "2px solid #6E2A7F",
-                  cursor: "not-allowed",
-                  opacity: 0.6,
-                }}
-              >
-                Selesai
-              </button>{" "}
-              untuk mengirim semua jawaban.
-            </li>
-          </ol>
-        </div>
-
-        <div className="flex mt-6">
-          <div className="flex flex-col mr-3">
-            <div className="p-4 mt-5 text-center text-red-600 bg-gray-100 border rounded-lg">
-              <h3 className="font-semibold">
-                Waktu Tersisa: {Math.floor(timeLeft / 60)}:
-                {(timeLeft % 60).toString().padStart(2, "0")}
-              </h3>
-            </div>
-            <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
-            <div className="flex flex-col">
-              {Array.from({ length: Math.ceil(questions.length / 5) }).map(
-                (_, rowIndex) => (
-                  <div className="flex flex-row mb-2" key={rowIndex}>
-                    {questions
-                      .slice(rowIndex * 5, rowIndex * 5 + 5)
-                      .map((question, index) => (
-                        <button
-                          key={question.id}
-                          onClick={() =>
-                            handleQuestionSelect(rowIndex * 5 + index)
-                          }
-                          style={{
-                            width: "2rem",
-                            height: "2rem",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            borderRadius: "0.5rem",
-                            margin: "0.125rem",
-                            backgroundColor:
-                              currentQuestionIndex === rowIndex * 5 + index
-                                ? "#6E2A7F"
-                                : answerStatus[rowIndex * 5 + index] ===
-                                  "correct"
-                                ? "#10B981"
-                                : answerStatus[rowIndex * 5 + index] ===
-                                  "incorrect"
-                                ? "#EF4444"
-                                : "#D1D5DB",
-                            color:
-                              currentQuestionIndex === rowIndex * 5 + index ||
-                              answerStatus[rowIndex * 5 + index] ===
-                                "correct" ||
-                              answerStatus[rowIndex * 5 + index] === "incorrect"
-                                ? "white"
-                                : "black",
-                          }}
-                        >
-                          {rowIndex * 5 + index + 1}
-                        </button>
-                      ))}
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-
-          <div className="w-full p-4 border rounded-lg">
-            <div className="p-4 mb-4 text-center bg-gray-100 border rounded-lg">
-              <h3 className="font-semibold">SKOR: {score}</h3>
-            </div>
-
-            <h3 className="font-semibold">
-              {questions[currentQuestionIndex]?.id &&
-              questions[currentQuestionIndex]?.question
-                ? `${questions[currentQuestionIndex].id}. ${questions[currentQuestionIndex].question}`
-                : "Memuat soal..."}
+            <h3
+              className="flex items-center p-2 text-lg font-semibold border rounded-lg w-full"
+              style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
+            >
+              <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
+              PETUNJUK MENGERJAKAN
             </h3>
-            <div className="mt-2 mb-4">
-              {questions[currentQuestionIndex]?.options?.map((option) => (
-                <div key={option} className="mb-2">
-                  <label
-                    className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 ${
-                      selectedAnswers[currentQuestionIndex] === option
-                        ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
-                        : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      value={option}
-                      checked={selectedAnswers[currentQuestionIndex] === option}
-                      onChange={() => handleAnswerChange(option)}
-                      className="hidden"
-                    />
-                    {option}
-                  </label>
-                </div>
-              )) || <p>Memuat opsi...</p>}
-              <div className="flex justify-start mt-4">
+            <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside text-base">
+              <li>
+                Jawablah pertanyaan berikut dengan memilih salah satu jawaban
+                yang paling tepat.
+              </li>
+              <li>
+                Tekan tombol{" "}
                 <button
-                  onClick={checkAnswers}
-                  className="px-4 py-2 text-white bg-purple-700 rounded-lg hover:bg-purple-800"
+                  disabled
                   style={{
                     backgroundColor: "#6E2A7F",
                     color: "white",
                     padding: "0.5rem 1rem",
                     borderRadius: "0.5rem",
-                    transition: "background-color 0.2s",
+                    cursor: "not-allowed",
+                    opacity: 0.6,
                   }}
                 >
                   Cek Jawaban
-                </button>
+                </button>{" "}
+                untuk mengecek jawaban.
+              </li>
+              <li>
+                Apabila notifikasi berwarna Merah jawaban salah, dan apabila
+                berwarna Hijau jawaban benar.
+              </li>
+              <li>
+                Tekan tombol{" "}
                 <button
-                  onClick={resetAnswerForCurrentQuestion}
-                  className="px-4 py-2 mt-2 ml-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
-                >
-                  Hapus Jawaban
-                </button>
-                <button
-                  onClick={handleFinish}
-                  className="px-4 py-2 mt-2 ml-2 text-purple-700 border-2 border-purple-700 rounded-lg hover:bg-gray-100"
+                  disabled
                   style={{
                     backgroundColor: "white",
                     color: "#6E2A7F",
                     padding: "0.5rem 1rem",
                     borderRadius: "0.5rem",
-                    transition: "background-color 0.2s, border-color 0.2s",
                     border: "2px solid #6E2A7F",
+                    cursor: "not-allowed",
+                    opacity: 0.6,
                   }}
                 >
                   Selesai
-                </button>
+                </button>{" "}
+                untuk mengirim semua jawaban.
+              </li>
+            </ol>
+          </div>
+
+          <div className="flex flex-col lg:flex-row mt-6 gap-4 lg:items-start">
+            <div className="flex flex-col mr-0 lg:mr-6 w-full lg:w-auto">
+              <div className="p-4 mt-5 text-center text-red-600 bg-gray-100 border rounded-lg">
+                <h3 className="font-semibold text-base">
+                  Waktu Tersisa: {Math.floor(timeLeft / 60)}:
+                  {(timeLeft % 60).toString().padStart(2, "0")}
+                </h3>
+              </div>
+              <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {Array.from({ length: Math.ceil(questions.length / 5) }).map(
+                  (_, rowIndex) => (
+                    <div className="flex flex-row mb-2" key={rowIndex}>
+                      {questions
+                        .slice(rowIndex * 5, rowIndex * 5 + 5)
+                        .map((question, index) => (
+                          <button
+                            key={question.id}
+                            onClick={() =>
+                              handleQuestionSelect(rowIndex * 5 + index)
+                            }
+                            style={{
+                              width: "2rem",
+                              height: "2rem",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              borderRadius: "0.5rem",
+                              margin: "0.125rem",
+                              backgroundColor:
+                                currentQuestionIndex === rowIndex * 5 + index
+                                  ? "#6E2A7F"
+                                  : answerStatus[rowIndex * 5 + index] ===
+                                    "correct"
+                                  ? "#10B981"
+                                  : answerStatus[rowIndex * 5 + index] ===
+                                    "incorrect"
+                                  ? "#EF4444"
+                                  : "#D1D5DB",
+                              color:
+                                currentQuestionIndex === rowIndex * 5 + index ||
+                                answerStatus[rowIndex * 5 + index] ===
+                                  "correct" ||
+                                answerStatus[rowIndex * 5 + index] ===
+                                  "incorrect"
+                                  ? "white"
+                                  : "black",
+                            }}
+                          >
+                            {rowIndex * 5 + index + 1}
+                          </button>
+                        ))}
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+
+            <div className="w-full p-4 border rounded-lg">
+              <div className="p-4 mb-4 text-center bg-gray-100 border rounded-lg">
+                <h3 className="font-semibold text-base">SKOR: {score}</h3>
+              </div>
+
+              <h3 className="font-semibold text-base">
+                {questions[currentQuestionIndex]?.id &&
+                questions[currentQuestionIndex]?.question
+                  ? `${questions[currentQuestionIndex].id}. ${questions[currentQuestionIndex].question}`
+                  : "Memuat soal..."}
+              </h3>
+              <div className="mt-2 mb-4">
+                {questions[currentQuestionIndex]?.options?.map((option) => (
+                  <div key={option} className="mb-2">
+                    <label
+                      className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 text-base w-full ${
+                        selectedAnswers[currentQuestionIndex] === option
+                          ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
+                          : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        value={option}
+                        checked={
+                          selectedAnswers[currentQuestionIndex] === option
+                        }
+                        onChange={() => handleAnswerChange(option)}
+                        className="hidden"
+                      />
+                      {option}
+                    </label>
+                  </div>
+                )) || <p className="text-base">Memuat opsi...</p>}
+                <div className="flex flex-col mt-4 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 justify-start">
+                  <button
+                    onClick={checkAnswers}
+                    style={{
+                      backgroundColor: "#6E2A7F",
+                      color: "white",
+                      padding: "0.5rem 1rem",
+                      borderRadius: "0.5rem",
+                      transition: "background-color 0.2s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#5B1F6A")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#6E2A7F")
+                    }
+                    className="px-4 py-2 text-base w-full sm:w-auto"
+                  >
+                    Cek Jawaban
+                  </button>
+                  <button
+                    onClick={resetAnswerForCurrentQuestion}
+                    className="px-4 py-2 text-base text-white bg-red-500 rounded-lg hover:bg-red-600 w-full sm:w-auto"
+                  >
+                    Hapus Jawaban
+                  </button>
+                  <button
+                    onClick={handleFinish}
+                    style={{
+                      backgroundColor: "white",
+                      color: "#6E2A7F",
+                      padding: "0.5rem 1rem",
+                      borderRadius: "0.5rem",
+                      transition: "background-color 0.2s, border-color 0.2s",
+                      border: "2px solid #6E2A7F",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#e0e0e0";
+                      e.currentTarget.style.borderColor = "#5B1F6A";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "white";
+                      e.currentTarget.style.borderColor = "#6E2A7F";
+                    }}
+                    className="px-4 py-2 text-base w-full sm:w-auto"
+                  >
+                    Selesai
+                  </button>
+                </div>
               </div>
             </div>
           </div>

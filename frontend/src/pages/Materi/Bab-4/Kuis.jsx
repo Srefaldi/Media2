@@ -334,30 +334,34 @@ const KuisBab4 = () => {
   };
 
   const renderInstruksi = () => (
-    <div>
-      <div className="p-4 bg-white rounded-lg shadow-md">
-        <h1 className="mb-4 text-2xl font-bold text-center">
+    <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div className="p-2 sm:p-4 bg-white rounded-lg shadow-md">
+        <h1 className="mb-4 text-xl sm:text-2xl font-bold text-center">
           BAB 4 - OPERATOR
         </h1>
         <section>
-          <h2 className="mb-3 font-semibold text-gray-800">Aturan</h2>
-          <p className="mb-3 leading-relaxed">
+          <h2 className="mb-3 font-semibold text-gray-800 text-base sm:text-lg">
+            Aturan
+          </h2>
+          <p className="mb-3 leading-relaxed text-sm sm:text-base">
             Kuis ini bertujuan untuk menguji pengetahuan Anda tentang operator
             equality dan conditional dalam pemrograman C#.
           </p>
-          <p className="mb-3 leading-relaxed">
+          <p className="mb-3 leading-relaxed text-sm sm:text-base">
             Terdapat {questions.length} pertanyaan pilihan ganda yang harus
             dikerjakan dalam kuis ini. Beberapa ketentuannya sebagai berikut:
           </p>
-          <ul className="mb-3 leading-relaxed list-disc list-inside">
+          <ul className="mb-3 leading-relaxed list-disc list-inside text-sm sm:text-base">
             <li>Syarat nilai kelulusan: {kkm}%</li>
             <li>Durasi ujian: 20 menit</li>
           </ul>
-          <p className="mb-3 leading-relaxed">
+          <p className="mb-3 leading-relaxed text-sm sm:text-base">
             Apabila tidak memenuhi syarat kelulusan, Anda harus mengulang
             pengerjaan kuis kembali.
           </p>
-          <p className="mb-6 leading-relaxed">Selamat Mengerjakan!</p>
+          <p className="mb-6 leading-relaxed text-sm sm:text-base">
+            Selamat Mengerjakan!
+          </p>
           <div className="flex justify-end">
             <button
               onClick={() => {
@@ -374,7 +378,7 @@ const KuisBab4 = () => {
                 }
                 setShowKuis(true);
               }}
-              className="flex items-center gap-2 px-6 py-3 text-base text-white transition-all duration-200 rounded-lg shadow-sm hover:shadow-md"
+              className="flex items-center gap-2 px-6 py-3 text-base text-white transition-all duration-200 rounded-lg shadow-sm hover:shadow-md sm:px-8"
               style={{ backgroundColor: "#6E2A7F" }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.backgroundColor = "#5B1F6A")
@@ -384,50 +388,60 @@ const KuisBab4 = () => {
               }
             >
               <span>MULAI</span>
-              <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5" />
+              <img
+                src={nextIcon}
+                alt="Selanjutnya"
+                className="w-4 sm:w-5 h-4 sm:h-5"
+              />
             </button>
           </div>
         </section>
 
-        <section className="mt-16">
-          <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300">
+        <section className="mt-8 sm:mt-16">
+          <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300 text-base sm:text-lg">
             Riwayat
           </h3>
           {isLoading ? (
-            <p className="text-gray-600">Memuat riwayat...</p>
+            <p className="text-gray-600 text-sm sm:text-base">
+              Memuat riwayat...
+            </p>
           ) : error ? (
-            <p className="text-red-600">{error}</p>
+            <p className="text-red-600 text-sm sm:text-base">{error}</p>
           ) : riwayat.length === 0 ? (
-            <p className="text-gray-600">Belum ada riwayat</p>
+            <p className="text-gray-600 text-sm sm:text-base">
+              Belum ada riwayat
+            </p>
           ) : (
-            <table className="w-full text-left text-gray-600">
-              <thead>
-                <tr>
-                  <th className="pb-2 font-semibold">Tanggal</th>
-                  <th className="pb-2 font-semibold">Persentase</th>
-                  <th className="pb-2 font-semibold">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {riwayat.map((item, index) => (
-                  <tr key={index}>
-                    <td className="pt-2 pb-3">{item.tanggal}</td>
-                    <td className="pt-2 pb-3">{item.persentase}</td>
-                    <td className="pt-2 pb-3">
-                      <span
-                        className={`text-[10px] font-semibold px-2 py-[2px] rounded ${
-                          item.status === "Lulus"
-                            ? "text-green-600 bg-green-100"
-                            : "text-red-600 bg-red-100"
-                        }`}
-                      >
-                        {item.status}
-                      </span>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-gray-600 text-sm sm:text-base">
+                <thead>
+                  <tr>
+                    <th className="pb-2 font-semibold">Tanggal</th>
+                    <th className="pb-2 font-semibold">Persentase</th>
+                    <th className="pb-2 font-semibold">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {riwayat.map((item, index) => (
+                    <tr key={index}>
+                      <td className="pt-2 pb-3">{item.tanggal}</td>
+                      <td className="pt-2 pb-3">{item.persentase}</td>
+                      <td className="pt-2 pb-3">
+                        <span
+                          className={`text-[10px] sm:text-xs font-semibold px-2 py-[2px] rounded ${
+                            item.status === "Lulus"
+                              ? "text-green-600 bg-green-100"
+                              : "text-red-600 bg-red-100"
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </section>
       </div>
@@ -437,9 +451,11 @@ const KuisBab4 = () => {
   const renderKuis = () => {
     if (questions.length === 0 || !questions[currentQuestionIndex]) {
       return (
-        <div className="p-4 text-center bg-white rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold text-gray-800">KUIS BAB 4</h2>
-          <p className="mt-4 text-red-600">
+        <div className="mx-auto max-w-4xl p-2 sm:p-4 text-center bg-white rounded-lg shadow-md">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+            KUIS BAB 4
+          </h2>
+          <p className="mt-4 text-red-600 text-sm sm:text-base">
             {error || "Gagal memuat soal. Silakan coba lagi nanti."}
           </p>
         </div>
@@ -447,220 +463,235 @@ const KuisBab4 = () => {
     }
 
     return (
-      <div className="max-w-full p-4 mx-auto bg-white rounded-lg shadow-lg">
-        <h2 className="text-lg font-semibold text-center text-gray-800">
-          KUIS BAB 4
-        </h2>
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="p-2 sm:p-4 bg-white rounded-lg shadow-lg">
+          <h2 className="text-base sm:text-lg font-semibold text-center text-gray-800">
+            KUIS BAB 4
+          </h2>
 
-        <div
-          className="relative p-4 mt-4 border rounded-lg"
-          style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
-        >
-          <h3
-            className="flex items-center p-2 text-lg font-semibold border rounded-lg w-80"
-            style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
+          <div
+            className="relative p-2 sm:p-4 mt-4 border rounded-lg"
+            style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
           >
-            <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
-            PETUNJUK MENGERJAKAN
-          </h3>
-          <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside">
-            <li>
-              Jawablah pertanyaan berikut dengan memilih salah satu jawaban yang
-              paling tepat.
-            </li>
-            <li>
-              Tekan tombol{" "}
-              <button
-                disabled
-                style={{
-                  backgroundColor: "#6E2A7F",
-                  color: "white",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "0.5rem",
-                  cursor: "not-allowed",
-                  opacity: 0.6,
-                }}
-              >
-                Cek Jawaban
-              </button>{" "}
-              untuk mengecek jawaban.
-            </li>
-            <li>
-              Apabila notifikasi berwarna Merah jawaban salah, dan apabila
-              berwarna Hijau jawaban benar.
-            </li>
-            <li>
-              Tekan tombol{" "}
-              <button
-                disabled
-                style={{
-                  backgroundColor: "white",
-                  color: "#6E2A7F",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "0.5rem",
-                  border: "2px solid #6E2A7F",
-                  cursor: "not-allowed",
-                  opacity: 0.6,
-                }}
-              >
-                Selesai
-              </button>{" "}
-              untuk mengirim semua jawaban.
-            </li>
-          </ol>
-        </div>
-
-        <div className="flex mt-6">
-          <div className="flex flex-col mr-3">
-            <div className="p-4 mt-5 text-center text-red-600 bg-gray-100 border rounded-lg">
-              <h3 className="font-semibold">
-                Waktu Tersisa: {Math.floor(timeLeft / 60)}:
-                {(timeLeft % 60).toString().padStart(2, "0")}
-              </h3>
-            </div>
-            <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
-            <div className="flex flex-row">
-              {questions.slice(0, 5).map((question, index) => (
+            <h3
+              className="flex items-center p-2 text-base sm:text-lg font-semibold border rounded-lg w-full sm:w-80 md:w-96"
+              style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
+            >
+              <img
+                src={IconPetunjuk}
+                alt="Icon"
+                className="w-5 sm:w-6 h-5 sm:h-6 mr-2"
+              />
+              PETUNJUK MENGERJAKAN
+            </h3>
+            <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside text-sm sm:text-base">
+              <li>
+                Jawablah pertanyaan berikut dengan memilih salah satu jawaban
+                yang paling tepat.
+              </li>
+              <li>
+                Tekan tombol{" "}
                 <button
-                  key={question.id}
-                  onClick={() => handleQuestionSelect(index)}
-                  style={{
-                    width: "2rem",
-                    height: "2rem",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: "0.5rem",
-                    margin: "0.125rem",
-                    backgroundColor:
-                      currentQuestionIndex === index
-                        ? "#6E2A7F"
-                        : answerStatus[index] === "correct"
-                        ? "#10B981"
-                        : answerStatus[index] === "incorrect"
-                        ? "#EF4444"
-                        : "#D1D5DB",
-                    color:
-                      currentQuestionIndex === index ||
-                      answerStatus[index] === "correct" ||
-                      answerStatus[index] === "incorrect"
-                        ? "white"
-                        : "black",
-                  }}
-                >
-                  {question.id}
-                </button>
-              ))}
-            </div>
-            <div className="flex flex-row mt-2">
-              {questions.slice(5, 10).map((question, index) => (
-                <button
-                  key={question.id}
-                  onClick={() => handleQuestionSelect(index + 5)}
-                  style={{
-                    width: "2rem",
-                    height: "2rem",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: "0.5rem",
-                    margin: "0.125rem",
-                    backgroundColor:
-                      currentQuestionIndex === index + 5
-                        ? "#6E2A7F"
-                        : answerStatus[index + 5] === "correct"
-                        ? "#10B981"
-                        : answerStatus[index + 5] === "incorrect"
-                        ? "#EF4444"
-                        : "#D1D5DB",
-                    color:
-                      currentQuestionIndex === index + 5 ||
-                      answerStatus[index + 5] === "correct" ||
-                      answerStatus[index + 5] === "incorrect"
-                        ? "white"
-                        : "black",
-                  }}
-                >
-                  {question.id}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="w-full p-4 border rounded-lg">
-            <div className="p-4 mb-4 text-center bg-gray-100 border rounded-lg">
-              <h3 className="font-semibold">SKOR: {score}</h3>
-            </div>
-
-            <h3 className="font-semibold">{`${questions[currentQuestionIndex].id}. ${questions[currentQuestionIndex].question}`}</h3>
-            <div className="mt-2 mb-4">
-              {questions[currentQuestionIndex].options.map((option) => (
-                <div key={option} className="mb-2">
-                  <label
-                    className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 ${
-                      selectedAnswers[currentQuestionIndex] === option
-                        ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
-                        : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      value={option}
-                      checked={selectedAnswers[currentQuestionIndex] === option}
-                      onChange={() => handleAnswerChange(option)}
-                      className="hidden"
-                    />
-                    {option}
-                  </label>
-                </div>
-              ))}
-              <div className="flex justify-start mt-4">
-                <button
-                  onClick={checkAnswers}
+                  disabled
                   style={{
                     backgroundColor: "#6E2A7F",
                     color: "white",
                     padding: "0.5rem 1rem",
                     borderRadius: "0.5rem",
-                    transition: "background-color 0.2s",
+                    cursor: "not-allowed",
+                    opacity: 0.6,
                   }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#5B1F6A")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#6E2A7F")
-                  }
                 >
                   Cek Jawaban
-                </button>
+                </button>{" "}
+                untuk mengecek jawaban.
+              </li>
+              <li>
+                Apabila notifikasi berwarna Merah jawaban salah, dan apabila
+                berwarna Hijau jawaban benar.
+              </li>
+              <li>
+                Tekan tombol{" "}
                 <button
-                  onClick={resetAnswerForCurrentQuestion}
-                  className="px-4 py-2 mt-2 ml-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
-                >
-                  Hapus Jawaban
-                </button>
-                <button
-                  onClick={handleFinish}
+                  disabled
                   style={{
                     backgroundColor: "white",
                     color: "#6E2A7F",
                     padding: "0.5rem 1rem",
                     borderRadius: "0.5rem",
-                    transition: "background-color 0.2s, border-color 0.2s",
                     border: "2px solid #6E2A7F",
+                    cursor: "not-allowed",
+                    opacity: 0.6,
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#e0e0e0";
-                    e.currentTarget.style.borderColor = "#5B1F6A";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "white";
-                    e.currentTarget.style.borderColor = "#6E2A7F";
-                  }}
-                  className="ml-2"
                 >
                   Selesai
-                </button>
+                </button>{" "}
+                untuk mengirim semua jawaban.
+              </li>
+            </ol>
+          </div>
+
+          <div className="flex flex-col lg:flex-row mt-6 gap-2 sm:gap-4 lg:items-start">
+            <div className="flex flex-col mr-0 lg:mr-6 w-full lg:w-auto">
+              <div className="p-2 sm:p-4 mt-2 sm:mt-5 text-center text-red-600 bg-gray-100 border rounded-lg">
+                <h3 className="font-semibold text-sm sm:text-base">
+                  Waktu Tersisa: {Math.floor(timeLeft / 60)}:
+                  {(timeLeft % 60).toString().padStart(2, "0")}
+                </h3>
+              </div>
+              <h3 className="mt-4 sm:mt-8 text-base sm:text-lg font-semibold text-center">
+                SOAL
+              </h3>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {questions.slice(0, 5).map((question, index) => (
+                  <button
+                    key={question.id}
+                    onClick={() => handleQuestionSelect(index)}
+                    style={{
+                      width: "2rem",
+                      height: "2rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "0.5rem",
+                      margin: "0.125rem",
+                      backgroundColor:
+                        currentQuestionIndex === index
+                          ? "#6E2A7F"
+                          : answerStatus[index] === "correct"
+                          ? "#10B981"
+                          : answerStatus[index] === "incorrect"
+                          ? "#EF4444"
+                          : "#D1D5DB",
+                      color:
+                        currentQuestionIndex === index ||
+                        answerStatus[index] === "correct" ||
+                        answerStatus[index] === "incorrect"
+                          ? "white"
+                          : "black",
+                    }}
+                    className="w-8 h-8 sm:w-8 sm:h-8"
+                  >
+                    {question.id}
+                  </button>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2 justify-center mt-2">
+                {questions.slice(5, 10).map((question, index) => (
+                  <button
+                    key={question.id}
+                    onClick={() => handleQuestionSelect(index + 5)}
+                    style={{
+                      width: "2rem",
+                      height: "2rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "0.5rem",
+                      margin: "0.125rem",
+                      backgroundColor:
+                        currentQuestionIndex === index + 5
+                          ? "#6E2A7F"
+                          : answerStatus[index + 5] === "correct"
+                          ? "#10B981"
+                          : answerStatus[index + 5] === "incorrect"
+                          ? "#EF4444"
+                          : "#D1D5DB",
+                      color:
+                        currentQuestionIndex === index + 5 ||
+                        answerStatus[index + 5] === "correct" ||
+                        answerStatus[index + 5] === "incorrect"
+                          ? "white"
+                          : "black",
+                    }}
+                    className="w-8 h-8 sm:w-8 sm:h-8"
+                  >
+                    {question.id}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="w-full p-2 sm:p-4 border rounded-lg">
+              <div className="p-2 sm:p-4 mb-4 text-center bg-gray-100 border rounded-lg">
+                <h3 className="font-semibold text-sm sm:text-base">
+                  SKOR: {score}
+                </h3>
+              </div>
+
+              <h3 className="font-semibold text-sm sm:text-base">{`${questions[currentQuestionIndex].id}. ${questions[currentQuestionIndex].question}`}</h3>
+              <div className="mt-2 mb-4">
+                {questions[currentQuestionIndex].options.map((option) => (
+                  <div key={option} className="mb-2">
+                    <label
+                      className={`flex items-center cursor-pointer p-2 sm:p-3 rounded-lg border-2 transition duration-200 text-sm sm:text-base ${
+                        selectedAnswers[currentQuestionIndex] === option
+                          ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
+                          : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        value={option}
+                        checked={
+                          selectedAnswers[currentQuestionIndex] === option
+                        }
+                        onChange={() => handleAnswerChange(option)}
+                        className="hidden"
+                      />
+                      {option}
+                    </label>
+                  </div>
+                ))}
+                <div className="flex flex-col mt-4 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 justify-start">
+                  <button
+                    onClick={checkAnswers}
+                    style={{
+                      backgroundColor: "#6E2A7F",
+                      color: "white",
+                      padding: "0.5rem 1rem",
+                      borderRadius: "0.5rem",
+                      transition: "background-color 0.2s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#5B1F6A")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#6E2A7F")
+                    }
+                    className="w-full sm:w-auto"
+                  >
+                    Cek Jawaban
+                  </button>
+                  <button
+                    onClick={resetAnswerForCurrentQuestion}
+                    className="w-full px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 sm:w-auto"
+                  >
+                    Hapus Jawaban
+                  </button>
+                  <button
+                    onClick={handleFinish}
+                    style={{
+                      backgroundColor: "white",
+                      color: "#6E2A7F",
+                      padding: "0.5rem 1rem",
+                      borderRadius: "0.5rem",
+                      transition: "background-color 0.2s, border-color 0.2s",
+                      border: "2px solid #6E2A7F",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#e0e0e0";
+                      e.currentTarget.style.borderColor = "#5B1F6A";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "white";
+                      e.currentTarget.style.borderColor = "#6E2A7F";
+                    }}
+                    className="w-full sm:w-auto"
+                  >
+                    Selesai
+                  </button>
+                </div>
               </div>
             </div>
           </div>

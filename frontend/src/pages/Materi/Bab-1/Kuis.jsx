@@ -7,19 +7,17 @@ import nextIcon from "../../../assets/img/selanjutnya.png";
 import IconPetunjuk from "../../../assets/img/informasi.png";
 import "../style/latihan.css";
 
-const KuisBab1 = () => {
+const KuisBab2 = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
   const { user } = useSelector((state) => state.auth);
   const [showKuis, setShowKuis] = useState(false);
 
-  // State untuk instruksi
   const [riwayat, setRiwayat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [kkm, setKkm] = useState(75);
 
-  // State untuk kuis
   const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -30,7 +28,6 @@ const KuisBab1 = () => {
 
   const [evaluationId, setEvaluationId] = useState(null);
 
-  // Fungsi untuk memformat tanggal
   const formatDate = (dateString) => {
     if (!dateString) {
       console.warn("Tanggal tidak tersedia:", dateString);
@@ -50,7 +47,6 @@ const KuisBab1 = () => {
     });
   };
 
-  // Ambil data evaluasi, KKM, soal, dan riwayat
   useEffect(() => {
     const fetchInitialData = async () => {
       if (!user?.uuid) {
@@ -60,40 +56,37 @@ const KuisBab1 = () => {
 
       setIsLoading(true);
       try {
-        // Ambil evaluasi untuk Bab 1
         const evalResponse = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/evaluations`,
           {
             withCredentials: true,
           }
         );
-        const bab1Evaluation = evalResponse.data.find(
-          (evaluation) => evaluation.type === "bab" && evaluation.chapter === 1
+        const bab2Evaluation = evalResponse.data.find(
+          (evaluation) => evaluation.type === "bab" && evaluation.chapter === 2
         );
-        if (!bab1Evaluation) {
-          setError("Evaluasi untuk Bab 1 tidak ditemukan");
+        if (!bab2Evaluation) {
+          setError("Evaluasi untuk Bab 2 tidak ditemukan");
           return;
         }
-        setEvaluationId(bab1Evaluation.id);
+        setEvaluationId(bab2Evaluation.id);
 
-        // Ambil KKM
         const kkmResponse = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/kkm`,
           {
             withCredentials: true,
           }
         );
-        const bab1Kkm = kkmResponse.data.find(
-          (k) => k.evaluation_id === bab1Evaluation.id
+        const bab2Kkm = kkmResponse.data.find(
+          (k) => k.evaluation_id === bab2Evaluation.id
         );
-        if (bab1Kkm) {
-          setKkm(bab1Kkm.kkm);
+        if (bab2Kkm) {
+          setKkm(bab2Kkm.kkm);
         }
 
-        // Ambil soal
         const questionsResponse = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/questions/evaluation/${
-            bab1Evaluation.id
+            bab2Evaluation.id
           }`,
           { withCredentials: true }
         );
@@ -107,7 +100,7 @@ const KuisBab1 = () => {
               q.option_c,
               q.option_d,
               q.option_e,
-            ],
+            ].filter(Boolean),
             correctAnswer: q[`option_${q.correct_answer.toLowerCase()}`],
           })
         );
@@ -115,6 +108,22 @@ const KuisBab1 = () => {
         setSelectedAnswers(Array(fetchedQuestions.length).fill(""));
         setAnswerStatus(Array(fetchedQuestions.length).fill(null));
         setHasAnswered(Array(fetchedQuestions.length).fill(false));
+
+        const scoresResponse = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+          {
+            withCredentials: true,
+          }
+        );
+        const filteredScores = scoresResponse.data.scores.filter(
+          (score) => score.type === "evaluasi" && score.chapter === 2
+        );
+        const formattedRiwayat = filteredScores.map((score) => ({
+          tanggal: formatDate(score.created_at),
+          persentase: `${score.score}%`,
+          status: score.score >= kkm ? "Lulus" : "Tidak Lulus",
+        }));
+        setRiwayat(formattedRiwayat);
       } catch (error) {
         const errorMsg =
           error.response?.data?.msg ||
@@ -129,44 +138,8 @@ const KuisBab1 = () => {
     if (user?.uuid) {
       fetchInitialData();
     }
-  }, [user]);
-
-  // Ambil riwayat skor
-  useEffect(() => {
-    const fetchRiwayat = async () => {
-      if (!user?.uuid) return;
-
-      try {
-        const scoresResponse = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
-          {
-            withCredentials: true,
-          }
-        );
-        const filteredScores = scoresResponse.data.scores.filter(
-          (score) => score.type === "evaluasi" && score.chapter === 1
-        );
-        const formattedRiwayat = filteredScores.map((score) => ({
-          tanggal: formatDate(score.created_at),
-          persentase: `${score.score}%`,
-          status: score.score >= kkm ? "Lulus" : "Tidak Lulus",
-        }));
-        setRiwayat(formattedRiwayat);
-      } catch (error) {
-        const errorMsg =
-          error.response?.data?.msg ||
-          "Gagal mengambil riwayat. Silakan coba lagi.";
-        console.error("Error fetching riwayat:", errorMsg, error);
-        setError(errorMsg);
-      }
-    };
-
-    if (user?.uuid) {
-      fetchRiwayat();
-    }
   }, [user, kkm]);
 
-  // Timer untuk kuis
   useEffect(() => {
     if (showKuis && timeLeft > 0) {
       const timer = setInterval(() => {
@@ -298,13 +271,13 @@ const KuisBab1 = () => {
             {
               user_id: user.uuid,
               type: "evaluasi",
-              chapter: 1,
+              chapter: 2,
               score: score,
             },
             { withCredentials: true }
           );
 
-          navigate("/materi/bab1/hasil-kuis-bab1", {
+          navigate("/materi/bab2/hasil-kuis-bab2", {
             state: { score, totalQuestions: questions.length, kkm },
           });
         } catch (error) {
@@ -327,7 +300,7 @@ const KuisBab1 = () => {
         {
           user_id: user.uuid,
           type: "evaluasi",
-          chapter: 1,
+          chapter: 2,
           score: score,
         },
         { withCredentials: true }
@@ -340,7 +313,7 @@ const KuisBab1 = () => {
         confirmButtonText: "OK",
         confirmButtonColor: "#6E2A7F",
       }).then(() => {
-        navigate("/materi/bab1/hasil-kuis-bab1", {
+        navigate("/materi/bab2/hasil-kuis-bab2", {
           state: { score, totalQuestions: questions.length, kkm },
         });
       });
@@ -355,26 +328,25 @@ const KuisBab1 = () => {
     }
   };
 
-  // UI untuk halaman instruksi
   const renderInstruksi = () => (
     <div className="mx-auto max-w-4xl px-2 sm:px-4">
       <div className="p-2 sm:p-4 bg-white rounded-lg shadow-md">
         <h1 className="mb-4 text-xl sm:text-2xl font-bold text-center">
-          BAB 1 - PENDAHULUAN
+          BAB 2 - VARIABEL
         </h1>
         <section>
-          <h2 className="font-semibold text-gray-800 mb-3 text-base sm:text-lg">
+          <h2 className="mb-3 font-semibold text-gray-800 text-base sm:text-lg">
             Aturan
           </h2>
           <p className="mb-3 leading-relaxed text-sm sm:text-base">
-            Kuis ini bertujuan untuk menguji pengetahuan Anda tentang materi
-            pendahuluan pada pemrograman C#.
+            Kuis ini bertujuan untuk menguji pengetahuan Anda tentang variabel
+            dan tipe data dalam pemrograman C#.
           </p>
           <p className="mb-3 leading-relaxed text-sm sm:text-base">
             Terdapat {questions.length} pertanyaan pilihan ganda yang harus
             dikerjakan dalam kuis ini. Beberapa ketentuannya sebagai berikut:
           </p>
-          <ul className="list-disc list-inside mb-3 leading-relaxed text-sm sm:text-base">
+          <ul className="mb-3 leading-relaxed list-disc list-inside text-sm sm:text-base">
             <li>Syarat nilai kelulusan: {kkm}%</li>
             <li>Durasi ujian: 20 menit</li>
           </ul>
@@ -417,7 +389,7 @@ const KuisBab1 = () => {
         </section>
 
         <section className="mt-8 sm:mt-16">
-          <h3 className="font-semibold text-gray-800 mb-3 border-b border-gray-300 pb-1 text-base sm:text-lg">
+          <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300 text-base sm:text-lg">
             Riwayat
           </h3>
           {isLoading ? (
@@ -467,13 +439,12 @@ const KuisBab1 = () => {
     </div>
   );
 
-  // UI untuk halaman kuis
   const renderKuis = () => {
     if (questions.length === 0 || !questions[currentQuestionIndex]) {
       return (
-        <div className="p-2 sm:p-4 bg-white rounded-lg shadow-md text-center">
+        <div className="p-2 sm:p-4 text-center bg-white rounded-lg shadow-md">
           <h2 className="text-base sm:text-lg font-semibold text-gray-800">
-            KUIS BAB 1
+            KUIS BAB 2
           </h2>
           <p className="mt-4 text-red-600 text-sm sm:text-base">
             {error || "Gagal memuat soal. Silakan coba lagi nanti."}
@@ -485,7 +456,7 @@ const KuisBab1 = () => {
     return (
       <div className="max-w-full p-2 sm:p-4 mx-auto bg-white rounded-lg shadow-lg">
         <h2 className="text-base sm:text-lg font-semibold text-center text-gray-800">
-          KUIS BAB 1
+          KUIS BAB 2
         </h2>
 
         <div
@@ -712,4 +683,4 @@ const KuisBab1 = () => {
   return showKuis ? renderKuis() : renderInstruksi();
 };
 
-export default KuisBab1;
+export default KuisBab2;
