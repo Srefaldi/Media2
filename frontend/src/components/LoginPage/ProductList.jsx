@@ -306,34 +306,34 @@ const EvaluationList = () => {
   const renderHeader = () => (
     <thead className="hidden sm:table-header-group">
       <tr className="text-center border-b border-gray-200">
-        <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
+        <th className="px-2 py-2 text-sm font-semibold w-[5%] sm:px-3 sm:text-base">
           NO
         </th>
-        <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
+        <th className="px-2 py-2 text-sm font-semibold w-[10%] sm:px-3 sm:text-base">
           BAB
         </th>
-        <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
+        <th className="px-2 py-2 text-sm font-semibold w-[25%] sm:px-3 sm:text-base">
           SOAL
         </th>
-        <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
+        <th className="px-2 py-2 text-sm font-semibold w-[10%] sm:px-3 sm:text-base">
           A
         </th>
-        <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
+        <th className="px-2 py-2 text-sm font-semibold w-[10%] sm:px-3 sm:text-base">
           B
         </th>
-        <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
+        <th className="px-2 py-2 text-sm font-semibold w-[10%] sm:px-3 sm:text-base">
           C
         </th>
-        <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
+        <th className="px-2 py-2 text-sm font-semibold w-[10%] sm:px-3 sm:text-base">
           D
         </th>
-        <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
+        <th className="px-2 py-2 text-sm font-semibold w-[10%] sm:px-3 sm:text-base">
           E
         </th>
-        <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
+        <th className="px-2 py-2 text-sm font-semibold w-[5%] sm:px-3 sm:text-base">
           JAWABAN
         </th>
-        <th className="px-2 py-1 text-sm font-semibold text-center select-none sm:px-3 sm:py-2 sm:text-base">
+        <th className="px-2 py-2 text-sm font-semibold w-[10%] sm:px-3 sm:text-base">
           AKSI
         </th>
       </tr>
@@ -341,12 +341,12 @@ const EvaluationList = () => {
   );
 
   const renderBody = () => (
-    <tbody>
+    <tbody className="text-center">
       {currentQuestions.length === 0 ? (
         <tr className="border-b border-gray-200">
           <td
             colSpan="10"
-            className="px-2 py-1 font-mono text-sm text-center text-gray-500 sm:px-3 sm:py-2 sm:text-base"
+            className="px-2 py-4 font-mono text-sm text-center text-gray-500 sm:px-3 sm:text-base"
           >
             Tidak ada soal untuk bab/evaluasi ini.
           </td>
@@ -355,15 +355,15 @@ const EvaluationList = () => {
         currentQuestions.map((question, index) => (
           <tr
             key={question.id}
-            className="flex flex-col border-b border-gray-200 sm:table-row sm:border-b"
+            className="flex flex-col border-b border-gray-200 sm:table-row"
           >
-            <td className="flex items-center px-2 py-1 text-sm text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+            <td className="flex px-2 py-2 text-sm sm:table-cell sm:px-3 sm:font-mono sm:text-base sm:align-middle">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 No:
               </span>
               {(currentPage - 1) * itemsPerPage + index + 1}
             </td>
-            <td className="flex items-center px-2 py-1 text-sm text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+            <td className="flex px-2 py-2 text-sm sm:table-cell sm:px-3 sm:font-mono sm:text-base sm:align-middle">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 Bab:
               </span>
@@ -377,49 +377,51 @@ const EvaluationList = () => {
                   }`
                 : "Evaluasi Akhir"}
             </td>
-            <td className="flex items-center px-2 py-1 text-sm text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+            <td className="flex px-2 py-2 text-sm sm:table-cell sm:px-3 sm:font-mono sm:text-base sm:align-middle truncate">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 Soal:
               </span>
-              {question.question_text}
+              <span title={question.question_text}>
+                {question.question_text}
+              </span>
             </td>
-            <td className="flex items-center px-2 py-1 text-sm text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+            <td className="flex px-2 py-2 text-sm sm:table-cell sm:px-3 sm:font-mono sm:text-base sm:align-middle truncate">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 Opsi A:
               </span>
-              {question.option_a}
+              <span title={question.option_a}>{question.option_a}</span>
             </td>
-            <td className="flex items-center px-2 py-1 text-sm text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+            <td className="flex px-2 py-2 text-sm sm:table-cell sm:px-3 sm:font-mono sm:text-base sm:align-middle truncate">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 Opsi B:
               </span>
-              {question.option_b}
+              <span title={question.option_b}>{question.option_b}</span>
             </td>
-            <td className="flex items-center px-2 py-1 text-sm text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+            <td className="flex px-2 py-2 text-sm sm:table-cell sm:px-3 sm:font-mono sm:text-base sm:align-middle truncate">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 Opsi C:
               </span>
-              {question.option_c}
+              <span title={question.option_c}>{question.option_c}</span>
             </td>
-            <td className="flex items-center px-2 py-1 text-sm text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+            <td className="flex px-2 py-2 text-sm sm:table-cell sm:px-3 sm:font-mono sm:text-base sm:align-middle truncate">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 Opsi D:
               </span>
-              {question.option_d}
+              <span title={question.option_d}>{question.option_d}</span>
             </td>
-            <td className="flex items-center px-2 py-1 text-sm text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+            <td className="flex px-2 py-2 text-sm sm:table-cell sm:px-3 sm:font-mono sm:text-base sm:align-middle truncate">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 Opsi E:
               </span>
-              {question.option_e}
+              <span title={question.option_e}>{question.option_e}</span>
             </td>
-            <td className="flex items-center px-2 py-1 text-sm text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+            <td className="flex px-2 py-2 text-sm sm:table-cell sm:px-3 sm:font-mono sm:text-base sm:align-middle">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 Jawaban:
               </span>
               {question.correct_answer}
             </td>
-            <td className="flex items-center justify-center px-2 py-1 text-sm text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
+            <td className="flex justify-center px-2 py-2 text-sm sm:table-cell sm:px-3 sm:font-mono sm:text-base sm:align-middle">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 Aksi:
               </span>
@@ -489,7 +491,10 @@ const EvaluationList = () => {
   );
 
   return (
-    <div className="flex flex-col min-h-screen text-gray-800 bg-white">
+    <div
+      className="flex flex-col min-h-screen text-gray-800 bg-white"
+      style={{ marginTop: window.innerWidth >= 768 ? "100px" : "60px" }}
+    >
       <main className="flex flex-1 overflow-hidden">
         <section className="flex-1 p-4 overflow-auto sm:p-6 md:p-8">
           <h1 className="mb-4 text-2xl font-semibold text-gray-800 sm:mb-5 sm:text-3xl">
@@ -562,7 +567,7 @@ const EvaluationList = () => {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full mt-4 text-sm text-gray-700 bg-white border table-fixed sm:mt-5 sm:text-base">
+            <table className="w-full mt-4 text-sm text-gray-700 bg-white border sm:mt-5 sm:text-base">
               {renderHeader()}
               {renderBody()}
             </table>

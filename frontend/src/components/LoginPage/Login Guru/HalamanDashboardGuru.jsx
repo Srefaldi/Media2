@@ -208,7 +208,10 @@ const AdminDashboard = () => {
       <Navbar />
       <div className="flex flex-1">
         <Sidebar />
-        <div className="flex flex-col flex-1 w-full p-4 mx-auto sm:p-6 md:p-8 max-w-7xl">
+        <div
+          className="flex flex-col flex-1 w-full p-4 mx-auto sm:p-6 md:p-8 max-w-7xl"
+          style={{ marginTop: window.innerWidth >= 768 ? "100px" : "60px" }}
+        >
           <h2 className="mb-6 text-2xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 sm:text-3xl md:text-4xl">
             DASHBOARD GURU
           </h2>

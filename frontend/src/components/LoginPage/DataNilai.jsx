@@ -248,7 +248,7 @@ const ScoreList = () => {
 
   const renderHeader = () => (
     <thead className="hidden sm:table-header-group">
-      <tr className="border-b border-gray-200">
+      <tr className=" text-center border-b border-gray-200">
         <th
           rowSpan={2}
           className="w-[10%] px-2 py-1 text-sm font-semibold text-center align-middle select-none sm:px-3 sm:py-2 sm:text-base"
@@ -308,7 +308,7 @@ const ScoreList = () => {
   );
 
   const renderBody = () => (
-    <tbody>
+    <tbody className="text-center">
       {currentUsers.length === 0 ? (
         <tr>
           <td
@@ -421,7 +421,10 @@ const ScoreList = () => {
   );
 
   return (
-    <div className="flex flex-col min-h-screen text-gray-800 bg-white">
+    <div
+      className="flex flex-col min-h-screen text-gray-800 bg-white"
+      style={{ marginTop: window.innerWidth >= 768 ? "100px" : "60px" }}
+    >
       <main className="flex flex-1 overflow-hidden">
         <section className="flex-1 p-4 overflow-auto sm:p-6 md:p-8">
           <h1 className="mb-4 text-2xl font-semibold text-gray-800 sm:mb-5 sm:text-3xl">

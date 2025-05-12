@@ -306,3 +306,32 @@ Cookie: connect.sid=<your_session_cookie>
 #HAPUS
 DELETE http://localhost:5000/questions/1
 Cookie: connect.sid=<your_session_cookie>
+
+
+###
+# Update Progress
+PATCH https://host-backend-production.up.railway.app/progress
+Content-Type: application/json
+
+{
+  "progress": 100
+}
+
+###
+# Login request
+POST https://host-backend-production.up.railway.app/login
+Content-Type: application/json
+
+{
+    "nis": "1234",
+    "password": "123"
+}
+
+###
+# Update Progress
+PATCH https://host-backend-production.up.railway.app/users/e50a5a60-a574-427f-9a15-6dee8658371e/progress
+Content-Type: application/json
+
+{
+  "progress": 100
+}

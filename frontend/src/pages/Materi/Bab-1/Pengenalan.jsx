@@ -221,11 +221,11 @@ const PengenalanCSharp = () => {
         {quizCompleted && (
           <button
             onClick={handleNext}
-            className="flex items-center justify-between text-sm sm:text-base"
+            className="flex items-center justify-between"
             style={{
               backgroundColor: "#6E2A7F",
               color: "white",
-              padding: "0.375rem 0.75rem sm:0.5rem 1rem",
+              padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s",
             }}
@@ -237,11 +237,7 @@ const PengenalanCSharp = () => {
             }
           >
             <span>Selanjutnya</span>
-            <img
-              src={nextIcon}
-              alt="Selanjutnya"
-              className="w-4 h-4 ml-2 sm:w-5 sm:h-5"
-            />
+            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
           </button>
         )}
       </div>

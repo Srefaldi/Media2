@@ -23,21 +23,20 @@ const UserDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInformasiOpen, setIsInformasiOpen] = useState(false);
   const [lastLessonPath, setLastLessonPath] = useState("/materi");
-  const [isLoggedOut, setIsLoggedOut] = useState(false); // State untuk melacak status logout
+  const [isLoggedOut, setIsLoggedOut] = useState(false);
 
   useEffect(() => {
-    // Hanya panggil getMe jika belum logout
+    console.log("Auth state:", { isLoading, isError, user, message });
     if (!isLoggedOut) {
       dispatch(getMe());
     }
   }, [dispatch, isLoggedOut]);
 
   useEffect(() => {
-    // Hanya tampilkan notifikasi error jika bukan karena logout
     if (isError && message === "Mohon login ke akun anda" && !isLoggedOut) {
       Swal.fire({
         icon: "error",
-        title: "Sesi Kadaluarsa",
+        title: "Logout Berhasil",
         text: "Silakan login kembali.",
         showConfirmButton: true,
       }).then(() => {
@@ -88,17 +87,25 @@ const UserDashboard = () => {
     );
   }
 
-  if (!user && !isLoggedOut) {
-    return null; // Hindari render jika user belum dimuat dan bukan logout
+  // Hanya kembalikan null jika user null, bukan logout, dan tidak ada error
+  if (!user && !isLoggedOut && !isError) {
+    console.log("Dashboard tidak dirender: menunggu getMe selesai");
+    return null;
   }
+
+  console.log("Dashboard dirender, user:", user);
+  console.log("Modal status:", { isModalOpen, isInformasiOpen });
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar setIsLoggedOut={setIsLoggedOut} /> {/* Kirim prop untuk logout */}
+      <Navbar setIsLoggedOut={setIsLoggedOut} />
       <div className="flex flex-1">
         <div className="flex-1 p-4 bg-white sm:p-6">
           <main className="container px-4 py-4 mx-auto">
-            <h1 className="mb-8 text-2xl font-bold text-center text-gray-800 sm:text-3xl md:text-4xl">
+            <h1
+              className="mb-8 text-2xl font-bold text-center text-gray-800 sm:text-3xl md:text-4xl"
+              style={{ minHeight: "3rem", marginTop: "4rem" }} // Menambahkan margin-top 4rem
+            >
               DASAR-DASAR PEMROGRAMAN C#
             </h1>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -175,7 +182,7 @@ const UserDashboard = () => {
                   to="/informasi"
                   className="px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base text-gray-600 bg-transparent border border-gray-600 rounded hover:bg-gray-300"
                   onClick={(e) => {
-                    e.preventDefault(); // Cegah navigasi default
+                    e.preventDefault();
                     handleOpenInformasi();
                   }}
                 >
