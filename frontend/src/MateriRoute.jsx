@@ -15,7 +15,8 @@ import Kuis from "../src/pages/Materi/Bab-1/Kuis";
 import Rangkuman from "../src/pages/Materi/Bab-1/Rangkuman";
 import SebelumLatihan1 from "../src/pages/Materi/Bab-1/SebelumLatihan";
 import SebelumKuis1 from "../src/pages/Materi/Bab-1/SebelumKuis";
-
+import HasilLatihanBab1 from "../src/pages/Materi/Bab-1/HasilLatihanBab1";
+import HasilKuisBab1 from "../src/pages/Materi/Bab-1/HasilKuisBab1";
 // BAB 2
 import Variabel from "../src/pages/Materi/Bab-2/variabel";
 import PenamaanVariabel from "../src/pages/Materi/Bab-2/PenamaanVariabel";
@@ -99,6 +100,8 @@ const MateriRoutes = () => {
         <Route path="bab1/rangkuman-bab1" element={<Rangkuman />} />
         <Route path="bab1/intruksi-latihan1" element={<SebelumLatihan1 />} />
         <Route path="bab1/intruksi-kuis1" element={<SebelumKuis1 />} />
+        <Route path="bab1/hasil-latihan-bab1" element={<HasilLatihanBab1 />} />
+        <Route path="bab1/hasil-kuis-bab1" element={<HasilKuisBab1 />} />
 
         {/* BAB 2 */}
 

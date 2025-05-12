@@ -11,13 +11,13 @@ const KuisBab1 = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
   const { user } = useSelector((state) => state.auth);
-  const [showKuis, setShowKuis] = useState(false); // State untuk beralih antara instruksi dan kuis
+  const [showKuis, setShowKuis] = useState(false);
 
   // State untuk instruksi
   const [riwayat, setRiwayat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [kkm, setKkm] = useState(75); // Default KKM
+  const [kkm, setKkm] = useState(75);
 
   // State untuk kuis
   const [questions, setQuestions] = useState([]);
@@ -26,7 +26,7 @@ const KuisBab1 = () => {
   const [score, setScore] = useState(0);
   const [answerStatus, setAnswerStatus] = useState([]);
   const [hasAnswered, setHasAnswered] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 menit dalam detik
+  const [timeLeft, setTimeLeft] = useState(20 * 60);
 
   const [evaluationId, setEvaluationId] = useState(null);
 
@@ -62,7 +62,7 @@ const KuisBab1 = () => {
       try {
         // Ambil evaluasi untuk Bab 1
         const evalResponse = await axios.get(
-          "http://localhost:5000/evaluations",
+          `${import.meta.env.VITE_API_ENDPOINT}/evaluations`,
           {
             withCredentials: true,
           }
@@ -77,9 +77,12 @@ const KuisBab1 = () => {
         setEvaluationId(bab1Evaluation.id);
 
         // Ambil KKM
-        const kkmResponse = await axios.get("http://localhost:5000/kkm", {
-          withCredentials: true,
-        });
+        const kkmResponse = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/kkm`,
+          {
+            withCredentials: true,
+          }
+        );
         const bab1Kkm = kkmResponse.data.find(
           (k) => k.evaluation_id === bab1Evaluation.id
         );
@@ -89,7 +92,9 @@ const KuisBab1 = () => {
 
         // Ambil soal
         const questionsResponse = await axios.get(
-          `http://localhost:5000/questions/evaluation/${bab1Evaluation.id}`,
+          `${import.meta.env.VITE_API_ENDPOINT}/questions/evaluation/${
+            bab1Evaluation.id
+          }`,
           { withCredentials: true }
         );
         const fetchedQuestions = questionsResponse.data.questions.map(
@@ -110,20 +115,6 @@ const KuisBab1 = () => {
         setSelectedAnswers(Array(fetchedQuestions.length).fill(""));
         setAnswerStatus(Array(fetchedQuestions.length).fill(null));
         setHasAnswered(Array(fetchedQuestions.length).fill(false));
-
-        // Ambil riwayat skor
-        const scoresResponse = await axios.get("http://localhost:5000/scores", {
-          withCredentials: true,
-        });
-        const filteredScores = scoresResponse.data.scores.filter(
-          (score) => score.type === "evaluasi" && score.chapter === 1
-        );
-        const formattedRiwayat = filteredScores.map((score) => ({
-          tanggal: formatDate(score.created_at),
-          persentase: `${score.score}%`,
-          status: score.score >= kkm ? "Lulus" : "Tidak Lulus",
-        }));
-        setRiwayat(formattedRiwayat);
       } catch (error) {
         const errorMsg =
           error.response?.data?.msg ||
@@ -138,7 +129,42 @@ const KuisBab1 = () => {
     if (user?.uuid) {
       fetchInitialData();
     }
-  }, [user, navigate, kkm]);
+  }, [user]);
+
+  // Ambil riwayat skor
+  useEffect(() => {
+    const fetchRiwayat = async () => {
+      if (!user?.uuid) return;
+
+      try {
+        const scoresResponse = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+          {
+            withCredentials: true,
+          }
+        );
+        const filteredScores = scoresResponse.data.scores.filter(
+          (score) => score.type === "evaluasi" && score.chapter === 1
+        );
+        const formattedRiwayat = filteredScores.map((score) => ({
+          tanggal: formatDate(score.created_at),
+          persentase: `${score.score}%`,
+          status: score.score >= kkm ? "Lulus" : "Tidak Lulus",
+        }));
+        setRiwayat(formattedRiwayat);
+      } catch (error) {
+        const errorMsg =
+          error.response?.data?.msg ||
+          "Gagal mengambil riwayat. Silakan coba lagi.";
+        console.error("Error fetching riwayat:", errorMsg, error);
+        setError(errorMsg);
+      }
+    };
+
+    if (user?.uuid) {
+      fetchRiwayat();
+    }
+  }, [user, kkm]);
 
   // Timer untuk kuis
   useEffect(() => {
@@ -180,7 +206,7 @@ const KuisBab1 = () => {
     const newAnswerStatus = [...answerStatus];
     if (answer === correctAnswer) {
       if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 10); // 10 poin per soal (100/10 soal)
+        setScore((prevScore) => prevScore + 10);
         newAnswerStatus[currentQuestionIndex] = "correct";
         setHasAnswered((prev) => {
           const newHasAnswered = [...prev];
@@ -252,119 +278,113 @@ const KuisBab1 = () => {
         icon: "warning",
         confirmButtonText: "OK",
       });
-    } else {
-      try {
-        await axios.post(
-          "http://localhost:5000/scores",
-          {
-            user_id: user.uuid,
-            type: "evaluasi",
-            chapter: 1,
-            score: score,
-          },
-          { withCredentials: true }
-        );
-      } catch (error) {
-        console.error("Error saving score:", error);
-      }
-
-      if (score >= kkm) {
-        Swal.fire({
-          title: "Selamat!",
-          text: `Skor Anda: ${score}. Anda telah selesai mengerjakan kuis.`,
-          icon: "success",
-          confirmButtonText: "Selanjutnya",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleLessonComplete("/materi/bab1/kuis-bab1");
-            handleLessonComplete("/materi/bab1/rangkuman-bab1");
-            window.scrollTo(0, 0);
-            navigate("/materi/bab1/rangkuman-bab1");
-          }
-        });
-      } else {
-        showFinalScore();
-      }
+      return;
     }
-  };
 
-  const handleTimeUp = () => {
     Swal.fire({
-      title: "Waktu Habis!",
-      text: `Skor Anda: ${score}`,
-      icon: "warning",
-      confirmButtonText: "OK",
-    }).then(() => {
-      showFinalScore();
-    });
-  };
-
-  const showFinalScore = () => {
-    Swal.fire({
-      title: score >= kkm ? "Kuis Selesai" : "WAKTU HABIS",
-      text:
-        score >= kkm
-          ? `Skor Anda: ${score}.`
-          : `Skor Anda tidak mencukupi (KKM: ${kkm}). Silakan coba lagi.`,
-      icon: score >= kkm ? "success" : "error",
+      title: "Konfirmasi Pengiriman",
+      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
+      icon: "question",
       showCancelButton: true,
-      confirmButtonText: score >= kkm ? "Selanjutnya" : "Coba Lagi",
-      cancelButtonText: "Kembali",
-    }).then((result) => {
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+      confirmButtonColor: "#6E2A7F",
+      cancelButtonColor: "#EF4444",
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        if (score >= kkm) {
-          handleLessonComplete("/materi/bab1/kuis-bab1");
-          window.scrollTo(0, 0);
-          navigate("/materi/bab1/rangkuman-bab1");
-        } else {
-          setShowKuis(false); // Kembali ke instruksi
-          setCurrentQuestionIndex(0);
-          setSelectedAnswers(Array(questions.length).fill(""));
-          setScore(0);
-          setAnswerStatus(Array(questions.length).fill(null));
-          setHasAnswered(Array(questions.length).fill(false));
-          setTimeLeft(20 * 60);
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+            {
+              user_id: user.uuid,
+              type: "evaluasi",
+              chapter: 1,
+              score: score,
+            },
+            { withCredentials: true }
+          );
+
+          navigate("/materi/bab1/hasil-kuis-bab1", {
+            state: { score, totalQuestions: questions.length, kkm },
+          });
+        } catch (error) {
+          console.error("Error saving score:", error);
+          Swal.fire({
+            title: "Gagal!",
+            text: "Terjadi kesalahan saat menyimpan skor.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
-      } else {
-        setShowKuis(false); // Kembali ke instruksi
-        setCurrentQuestionIndex(0);
-        setSelectedAnswers(Array(questions.length).fill(""));
-        setScore(0);
-        setAnswerStatus(Array(questions.length).fill(null));
-        setHasAnswered(Array(questions.length).fill(false));
-        setShowKuis(false); // Kembali ke instruksi
-        setTimeLeft(20 * 60);
-        navigate("/materi/bab1/kuis-bab1");
       }
     });
+  };
+
+  const handleTimeUp = async () => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+        {
+          user_id: user.uuid,
+          type: "evaluasi",
+          chapter: 1,
+          score: score,
+        },
+        { withCredentials: true }
+      );
+
+      Swal.fire({
+        title: "Waktu Habis!",
+        text: "Jawaban Anda akan dikirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        navigate("/materi/bab1/hasil-kuis-bab1", {
+          state: { score, totalQuestions: questions.length, kkm },
+        });
+      });
+    } catch (error) {
+      console.error("Error saving score:", error);
+      Swal.fire({
+        title: "Gagal!",
+        text: "Terjadi kesalahan saat menyimpan skor.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   // UI untuk halaman instruksi
   const renderInstruksi = () => (
-    <div>
-      <div className="p-4 bg-white rounded-lg shadow-md">
-        <h1 className="mb-4 text-2xl font-bold text-center">
+    <div className="mx-auto max-w-4xl px-2 sm:px-4">
+      <div className="p-2 sm:p-4 bg-white rounded-lg shadow-md">
+        <h1 className="mb-4 text-xl sm:text-2xl font-bold text-center">
           BAB 1 - PENDAHULUAN
         </h1>
         <section>
-          <h2 className="font-semibold text-gray-800 mb-3">Aturan</h2>
-          <p className="mb-3 leading-relaxed">
+          <h2 className="font-semibold text-gray-800 mb-3 text-base sm:text-lg">
+            Aturan
+          </h2>
+          <p className="mb-3 leading-relaxed text-sm sm:text-base">
             Kuis ini bertujuan untuk menguji pengetahuan Anda tentang materi
             pendahuluan pada pemrograman C#.
           </p>
-          <p className="mb-3 leading-relaxed">
+          <p className="mb-3 leading-relaxed text-sm sm:text-base">
             Terdapat {questions.length} pertanyaan pilihan ganda yang harus
             dikerjakan dalam kuis ini. Beberapa ketentuannya sebagai berikut:
           </p>
-          <ul className="list-disc list-inside mb-3 leading-relaxed">
+          <ul className="list-disc list-inside mb-3 leading-relaxed text-sm sm:text-base">
             <li>Syarat nilai kelulusan: {kkm}%</li>
             <li>Durasi ujian: 20 menit</li>
           </ul>
-          <p className="mb-3 leading-relaxed">
+          <p className="mb-3 leading-relaxed text-sm sm:text-base">
             Apabila tidak memenuhi syarat kelulusan, Anda harus mengulang
             pengerjaan kuis kembali.
           </p>
-          <p className="mb-6 leading-relaxed">Selamat Mengerjakan!</p>
+          <p className="mb-6 leading-relaxed text-sm sm:text-base">
+            Selamat Mengerjakan!
+          </p>
           <div className="flex justify-end">
             <button
               onClick={() => {
@@ -381,7 +401,7 @@ const KuisBab1 = () => {
                 }
                 setShowKuis(true);
               }}
-              className="flex items-center gap-2 text-base px-6 py-3 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+              className="flex items-center gap-2 px-6 py-3 text-base text-white transition-all duration-200 rounded-lg shadow-sm hover:shadow-md sm:px-8"
               style={{ backgroundColor: "#6E2A7F" }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.backgroundColor = "#5B1F6A")
@@ -396,45 +416,51 @@ const KuisBab1 = () => {
           </div>
         </section>
 
-        <section className="mt-16">
-          <h3 className="font-semibold text-gray-800 mb-3 border-b border-gray-300 pb-1">
+        <section className="mt-8 sm:mt-16">
+          <h3 className="font-semibold text-gray-800 mb-3 border-b border-gray-300 pb-1 text-base sm:text-lg">
             Riwayat
           </h3>
           {isLoading ? (
-            <p className="text-gray-600">Memuat riwayat...</p>
+            <p className="text-gray-600 text-sm sm:text-base">
+              Memuat riwayat...
+            </p>
           ) : error ? (
-            <p className="text-red-600">{error}</p>
+            <p className="text-red-600 text-sm sm:text-base">{error}</p>
           ) : riwayat.length === 0 ? (
-            <p className="text-gray-600">Belum ada riwayat</p>
+            <p className="text-gray-600 text-sm sm:text-base">
+              Belum ada riwayat
+            </p>
           ) : (
-            <table className="w-full text-left text-gray-600">
-              <thead>
-                <tr>
-                  <th className="pb-2 font-semibold">Tanggal</th>
-                  <th className="pb-2 font-semibold">Persentase</th>
-                  <th className="pb-2 font-semibold">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {riwayat.map((item, index) => (
-                  <tr key={index}>
-                    <td className="pt-2 pb-3">{item.tanggal}</td>
-                    <td className="pt-2 pb-3">{item.persentase}</td>
-                    <td className="pt-2 pb-3">
-                      <span
-                        className={`text-[10px] font-semibold px-2 py-[2px] rounded ${
-                          item.status === "Lulus"
-                            ? "text-green-600 bg-green-100"
-                            : "text-red-600 bg-red-100"
-                        }`}
-                      >
-                        {item.status}
-                      </span>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-gray-600 text-sm sm:text-base">
+                <thead>
+                  <tr>
+                    <th className="pb-2 font-semibold">Tanggal</th>
+                    <th className="pb-2 font-semibold">Persentase</th>
+                    <th className="pb-2 font-semibold">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {riwayat.map((item, index) => (
+                    <tr key={index}>
+                      <td className="pt-2 pb-3">{item.tanggal}</td>
+                      <td className="pt-2 pb-3">{item.persentase}</td>
+                      <td className="pt-2 pb-3">
+                        <span
+                          className={`text-[10px] sm:text-xs font-semibold px-2 py-[2px] rounded ${
+                            item.status === "Lulus"
+                              ? "text-green-600 bg-green-100"
+                              : "text-red-600 bg-red-100"
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </section>
       </div>
@@ -445,9 +471,11 @@ const KuisBab1 = () => {
   const renderKuis = () => {
     if (questions.length === 0 || !questions[currentQuestionIndex]) {
       return (
-        <div className="p-4 bg-white rounded-lg shadow-md text-center">
-          <h2 className="text-lg font-semibold text-gray-800">KUIS BAB 1</h2>
-          <p className="mt-4 text-red-600">
+        <div className="p-2 sm:p-4 bg-white rounded-lg shadow-md text-center">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+            KUIS BAB 1
+          </h2>
+          <p className="mt-4 text-red-600 text-sm sm:text-base">
             {error || "Gagal memuat soal. Silakan coba lagi nanti."}
           </p>
         </div>
@@ -455,23 +483,23 @@ const KuisBab1 = () => {
     }
 
     return (
-      <div className="max-w-full p-4 mx-auto bg-white rounded-lg shadow-lg">
-        <h2 className="text-lg font-semibold text-center text-gray-800">
+      <div className="max-w-full p-2 sm:p-4 mx-auto bg-white rounded-lg shadow-lg">
+        <h2 className="text-base sm:text-lg font-semibold text-center text-gray-800">
           KUIS BAB 1
         </h2>
 
         <div
-          className="relative p-4 mt-4 border rounded-lg"
+          className="relative p-2 sm:p-4 mt-4 border rounded-lg"
           style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
         >
           <h3
-            className="flex items-center p-2 text-lg font-semibold border rounded-lg w-80"
+            className="flex items-center p-2 text-base sm:text-lg font-semibold border rounded-lg w-full sm:w-80"
             style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
           >
             <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
             PETUNJUK MENGERJAKAN
           </h3>
-          <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside">
+          <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside text-sm sm:text-base">
             <li>
               Jawablah pertanyaan berikut dengan memilih salah satu jawaban yang
               paling tepat.
@@ -518,16 +546,18 @@ const KuisBab1 = () => {
           </ol>
         </div>
 
-        <div className="flex mt-6">
-          <div className="flex flex-col mr-3">
-            <div className="p-4 mt-5 text-center text-red-600 bg-gray-100 border rounded-lg">
-              <h3 className="font-semibold">
+        <div className="flex flex-col md:flex-row mt-6 gap-2 sm:gap-4">
+          <div className="flex flex-col mr-0 md:mr-3 w-full md:w-auto">
+            <div className="p-2 sm:p-4 mt-2 sm:mt-5 text-center text-red-600 bg-gray-100 border rounded-lg w-full">
+              <h3 className="font-semibold text-sm sm:text-base">
                 Waktu Tersisa: {Math.floor(timeLeft / 60)}:
                 {(timeLeft % 60).toString().padStart(2, "0")}
               </h3>
             </div>
-            <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
-            <div className="flex flex-row">
+            <h3 className="mt-4 sm:mt-8 text-base sm:text-lg font-semibold text-center">
+              SOAL
+            </h3>
+            <div className="flex flex-wrap gap-1 justify-center">
               {questions.slice(0, 5).map((question, index) => (
                 <button
                   key={question.id}
@@ -560,7 +590,7 @@ const KuisBab1 = () => {
                 </button>
               ))}
             </div>
-            <div className="flex flex-row mt-2">
+            <div className="flex flex-wrap gap-1 mt-2 justify-center">
               {questions.slice(5, 10).map((question, index) => (
                 <button
                   key={question.id}
@@ -595,17 +625,19 @@ const KuisBab1 = () => {
             </div>
           </div>
 
-          <div className="w-full p-4 border rounded-lg">
-            <div className="p-4 mb-4 text-center bg-gray-100 border rounded-lg">
-              <h3 className="font-semibold">SKOR: {score}</h3>
+          <div className="w-full p-2 sm:p-4 border rounded-lg">
+            <div className="p-2 sm:p-4 mb-4 text-center bg-gray-100 border rounded-lg">
+              <h3 className="font-semibold text-sm sm:text-base">
+                SKOR: {score}
+              </h3>
             </div>
 
-            <h3 className="font-semibold">{`${questions[currentQuestionIndex].id}. ${questions[currentQuestionIndex].question}`}</h3>
+            <h3 className="font-semibold text-sm sm:text-base">{`${questions[currentQuestionIndex].id}. ${questions[currentQuestionIndex].question}`}</h3>
             <div className="mt-2 mb-4">
               {questions[currentQuestionIndex].options.map((option) => (
                 <div key={option} className="mb-2">
                   <label
-                    className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 ${
+                    className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 text-sm sm:text-base ${
                       selectedAnswers[currentQuestionIndex] === option
                         ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
                         : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
@@ -622,7 +654,7 @@ const KuisBab1 = () => {
                   </label>
                 </div>
               ))}
-              <div className="flex justify-start mt-4">
+              <div className="flex flex-wrap justify-start mt-4 gap-2">
                 <button
                   onClick={checkAnswers}
                   style={{
@@ -643,7 +675,7 @@ const KuisBab1 = () => {
                 </button>
                 <button
                   onClick={resetAnswerForCurrentQuestion}
-                  className="px-4 py-2 mt-2 ml-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
+                  className="px-4 py-2 mt-2 sm:mt-0 ml-0 sm:ml-2 text-white bg-red-500 rounded-lg hover:bg-red-600 text-sm sm:text-base"
                 >
                   Hapus Jawaban
                 </button>
@@ -665,7 +697,7 @@ const KuisBab1 = () => {
                     e.currentTarget.style.backgroundColor = "white";
                     e.currentTarget.style.borderColor = "#6E2A7F";
                   }}
-                  className="ml-2"
+                  className="ml-0 sm:ml-2 mt-2 sm:mt-0 text-sm sm:text-base"
                 >
                   Selesai
                 </button>
