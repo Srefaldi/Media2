@@ -11,26 +11,23 @@ const KuisBab2 = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
   const { user } = useSelector((state) => state.auth);
-  const [showKuis, setShowKuis] = useState(false); // State untuk beralih antara instruksi dan kuis
+  const [showKuis, setShowKuis] = useState(false);
 
-  // State untuk instruksi
   const [riwayat, setRiwayat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [kkm, setKkm] = useState(75); // Default KKM
+  const [kkm, setKkm] = useState(75);
 
-  // State untuk kuis
   const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [answerStatus, setAnswerStatus] = useState([]);
   const [hasAnswered, setHasAnswered] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 menit dalam detik
+  const [timeLeft, setTimeLeft] = useState(20 * 60);
 
   const [evaluationId, setEvaluationId] = useState(null);
 
-  // Fungsi untuk memformat tanggal
   const formatDate = (dateString) => {
     if (!dateString) {
       console.warn("Tanggal tidak tersedia:", dateString);
@@ -50,7 +47,6 @@ const KuisBab2 = () => {
     });
   };
 
-  // Ambil data evaluasi, KKM, soal, dan riwayat
   useEffect(() => {
     const fetchInitialData = async () => {
       if (!user?.uuid) {
@@ -60,9 +56,8 @@ const KuisBab2 = () => {
 
       setIsLoading(true);
       try {
-        // Ambil evaluasi untuk Bab 2
         const evalResponse = await axios.get(
-          "http://localhost:5000/evaluations",
+          `${import.meta.env.VITE_API_ENDPOINT}/evaluations`,
           {
             withCredentials: true,
           }
@@ -76,10 +71,12 @@ const KuisBab2 = () => {
         }
         setEvaluationId(bab2Evaluation.id);
 
-        // Ambil KKM
-        const kkmResponse = await axios.get("http://localhost:5000/kkm", {
-          withCredentials: true,
-        });
+        const kkmResponse = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/kkm`,
+          {
+            withCredentials: true,
+          }
+        );
         const bab2Kkm = kkmResponse.data.find(
           (k) => k.evaluation_id === bab2Evaluation.id
         );
@@ -87,9 +84,10 @@ const KuisBab2 = () => {
           setKkm(bab2Kkm.kkm);
         }
 
-        // Ambil soal
         const questionsResponse = await axios.get(
-          `http://localhost:5000/questions/evaluation/${bab2Evaluation.id}`,
+          `${import.meta.env.VITE_API_ENDPOINT}/questions/evaluation/${
+            bab2Evaluation.id
+          }`,
           { withCredentials: true }
         );
         const fetchedQuestions = questionsResponse.data.questions.map(
@@ -102,7 +100,7 @@ const KuisBab2 = () => {
               q.option_c,
               q.option_d,
               q.option_e,
-            ].filter(Boolean), // Filter out null/undefined options
+            ].filter(Boolean),
             correctAnswer: q[`option_${q.correct_answer.toLowerCase()}`],
           })
         );
@@ -111,10 +109,12 @@ const KuisBab2 = () => {
         setAnswerStatus(Array(fetchedQuestions.length).fill(null));
         setHasAnswered(Array(fetchedQuestions.length).fill(false));
 
-        // Ambil riwayat skor
-        const scoresResponse = await axios.get("http://localhost:5000/scores", {
-          withCredentials: true,
-        });
+        const scoresResponse = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+          {
+            withCredentials: true,
+          }
+        );
         const filteredScores = scoresResponse.data.scores.filter(
           (score) => score.type === "evaluasi" && score.chapter === 2
         );
@@ -140,7 +140,6 @@ const KuisBab2 = () => {
     }
   }, [user, kkm]);
 
-  // Timer untuk kuis
   useEffect(() => {
     if (showKuis && timeLeft > 0) {
       const timer = setInterval(() => {
@@ -180,7 +179,7 @@ const KuisBab2 = () => {
     const newAnswerStatus = [...answerStatus];
     if (answer === correctAnswer) {
       if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 10); // 10 poin per soal (100/10 soal)
+        setScore((prevScore) => prevScore + 10);
         newAnswerStatus[currentQuestionIndex] = "correct";
         setHasAnswered((prev) => {
           const newHasAnswered = [...prev];
@@ -252,94 +251,83 @@ const KuisBab2 = () => {
         icon: "warning",
         confirmButtonText: "OK",
       });
-    } else {
-      try {
-        await axios.post(
-          "http://localhost:5000/scores",
-          {
-            user_id: user.uuid,
-            type: "evaluasi",
-            chapter: 2,
-            score: score,
-          },
-          { withCredentials: true }
-        );
-      } catch (error) {
-        console.error("Error saving score:", error);
-      }
+      return;
+    }
 
-      if (score >= kkm) {
-        Swal.fire({
-          title: "Selamat!",
-          text: `Skor Anda: ${score}. Anda telah selesai mengerjakan kuis.`,
-          icon: "success",
-          confirmButtonText: "Selanjutnya",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleLessonComplete("/materi/bab2/kuis-bab2");
-            handleLessonComplete("/materi/bab2/rangkuman-bab2");
-            window.scrollTo(0, 0);
-            navigate("/materi/bab2/rangkuman-bab2");
-          }
-        });
-      } else {
-        showFinalScore();
+    Swal.fire({
+      title: "Konfirmasi Pengiriman",
+      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+      confirmButtonColor: "#6E2A7F",
+      cancelButtonColor: "#EF4444",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+            {
+              user_id: user.uuid,
+              type: "evaluasi",
+              chapter: 2,
+              score: score,
+            },
+            { withCredentials: true }
+          );
+
+          navigate("/materi/bab2/hasil-kuis-bab2", {
+            state: { score, totalQuestions: questions.length, kkm },
+          });
+        } catch (error) {
+          console.error("Error saving score:", error);
+          Swal.fire({
+            title: "Gagal!",
+            text: "Terjadi kesalahan saat menyimpan skor.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       }
+    });
+  };
+
+  const handleTimeUp = async () => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+        {
+          user_id: user.uuid,
+          type: "evaluasi",
+          chapter: 2,
+          score: score,
+        },
+        { withCredentials: true }
+      );
+
+      Swal.fire({
+        title: "Waktu Habis!",
+        text: "Jawaban Anda akan dikirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        navigate("/materi/bab2/hasil-kuis-bab2", {
+          state: { score, totalQuestions: questions.length, kkm },
+        });
+      });
+    } catch (error) {
+      console.error("Error saving score:", error);
+      Swal.fire({
+        title: "Gagal!",
+        text: "Terjadi kesalahan saat menyimpan skor.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
-  const handleTimeUp = () => {
-    Swal.fire({
-      title: "Waktu Habis!",
-      text: `Skor Anda: ${score}`,
-      icon: "warning",
-      confirmButtonText: "OK",
-    }).then(() => {
-      showFinalScore();
-    });
-  };
-
-  const showFinalScore = () => {
-    Swal.fire({
-      title: score >= kkm ? "Kuis Selesai" : "WAKTU HABIS",
-      text:
-        score >= kkm
-          ? `Skor Anda: ${score}.`
-          : `Skor Anda tidak mencukupi (KKM: ${kkm}). Silakan coba lagi.`,
-      icon: score >= kkm ? "success" : "error",
-      showCancelButton: true,
-      confirmButtonText: score >= kkm ? "Selanjutnya" : "Coba Lagi",
-      cancelButtonText: "Kembali",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        if (score >= kkm) {
-          handleLessonComplete("/materi/bab2/kuis-bab2");
-          window.scrollTo(0, 0);
-          navigate("/materi/bab2/rangkuman-bab2");
-        } else {
-          setShowKuis(false); // Kembali ke instruksi
-          setCurrentQuestionIndex(0);
-          setSelectedAnswers(Array(questions.length).fill(""));
-          setScore(0);
-          setAnswerStatus(Array(questions.length).fill(null));
-          setHasAnswered(Array(questions.length).fill(false));
-          setTimeLeft(20 * 60);
-        }
-      } else {
-        setShowKuis(false); // Kembali ke instruksi
-        setCurrentQuestionIndex(0);
-        setSelectedAnswers(Array(questions.length).fill(""));
-        setScore(0);
-        setAnswerStatus(Array(questions.length).fill(null));
-        setHasAnswered(Array(questions.length).fill(false));
-        setTimeLeft(20 * 60);
-        setShowKuis(false); // Kembali ke instruksi
-        navigate("/materi/bab2/kuis-bab2");
-      }
-    });
-  };
-
-  // UI untuk halaman instruksi
   const renderInstruksi = () => (
     <div>
       <div className="p-4 bg-white rounded-lg shadow-md">
@@ -441,7 +429,6 @@ const KuisBab2 = () => {
     </div>
   );
 
-  // UI untuk halaman kuis
   const renderKuis = () => {
     if (questions.length === 0 || !questions[currentQuestionIndex]) {
       return (

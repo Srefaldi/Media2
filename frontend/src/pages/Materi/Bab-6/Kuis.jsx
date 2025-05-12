@@ -61,7 +61,7 @@ const KuisBab6 = () => {
       try {
         // Ambil evaluasi untuk Bab 6
         const evalResponse = await axios.get(
-          "http://localhost:5000/evaluations",
+          `${import.meta.env.VITE_API_ENDPOINT}/evaluations`,
           { withCredentials: true }
         );
         const bab6Evaluation = evalResponse.data.find(
@@ -74,9 +74,10 @@ const KuisBab6 = () => {
         setEvaluationId(bab6Evaluation.id);
 
         // Ambil KKM
-        const kkmResponse = await axios.get("http://localhost:5000/kkm", {
-          withCredentials: true,
-        });
+        const kkmResponse = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/kkm`,
+          { withCredentials: true }
+        );
         const bab6Kkm = kkmResponse.data.find(
           (k) => k.evaluation_id === bab6Evaluation.id
         );
@@ -86,7 +87,9 @@ const KuisBab6 = () => {
 
         // Ambil soal
         const questionsResponse = await axios.get(
-          `http://localhost:5000/questions/evaluation/${bab6Evaluation.id}`,
+          `${import.meta.env.VITE_API_ENDPOINT}/questions/evaluation/${
+            bab6Evaluation.id
+          }`,
           { withCredentials: true }
         );
         const fetchedQuestions = questionsResponse.data.questions.map(
@@ -109,9 +112,10 @@ const KuisBab6 = () => {
         setHasAnswered(Array(fetchedQuestions.length).fill(false));
 
         // Ambil riwayat skor
-        const scoresResponse = await axios.get("http://localhost:5000/scores", {
-          withCredentials: true,
-        });
+        const scoresResponse = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+          { withCredentials: true }
+        );
         const filteredScores = scoresResponse.data.scores.filter(
           (score) => score.type === "evaluasi" && score.chapter === 6
         );
@@ -215,6 +219,11 @@ const KuisBab6 = () => {
     }
 
     setAnswerStatus(newAnswerStatus);
+
+    const nextQuestionIndex = currentQuestionIndex + 1;
+    if (nextQuestionIndex < questions.length) {
+      setCurrentQuestionIndex(nextQuestionIndex);
+    }
   };
 
   const resetAnswerForCurrentQuestion = () => {
@@ -246,88 +255,84 @@ const KuisBab6 = () => {
         icon: "warning",
         confirmButtonText: "OK",
       });
-    } else {
-      try {
-        await axios.post(
-          "http://localhost:5000/scores",
-          {
-            user_id: user.uuid,
-            type: "evaluasi",
-            chapter: 6,
-            score: score,
-          },
-          { withCredentials: true }
-        );
-      } catch (error) {
-        console.error("Error saving score:", error);
-      }
-
-      if (score >= kkm) {
-        Swal.fire({
-          title: "Selamat!",
-          text: `Skor Anda: ${score}. Anda telah selesai mengerjakan kuis.`,
-          icon: "success",
-          confirmButtonText: "Selanjutnya",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleLessonComplete("/materi/bab6/kuis-bab6");
-            handleLessonComplete("/materi/bab6/rangkuman-bab6");
-            window.scrollTo(0, 0);
-            navigate("/materi/bab6/rangkuman-bab6");
-          }
-        });
-      } else {
-        showFinalScore();
-      }
+      return;
     }
+
+    Swal.fire({
+      title: "Konfirmasi Pengiriman",
+      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+      confirmButtonColor: "#6E2A7F",
+      cancelButtonColor: "#EF4444",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+            {
+              user_id: user.uuid,
+              type: "evaluasi",
+              chapter: 6,
+              score: score,
+            },
+            { withCredentials: true }
+          );
+
+          navigate("/materi/bab6/hasil-kuis-bab6", {
+            state: { score, totalQuestions: questions.length, kkm },
+          });
+        } catch (error) {
+          console.error("Error saving score:", error);
+          Swal.fire({
+            title: "Gagal!",
+            text: "Terjadi kesalahan saat menyimpan skor.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      }
+    });
   };
 
   const handleTimeUp = () => {
     Swal.fire({
       title: "Waktu Habis!",
-      text: `Skor Anda: ${score}`,
+      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
       icon: "warning",
-      confirmButtonText: "OK",
-    }).then(() => {
-      showFinalScore();
-    });
-  };
-
-  const showFinalScore = () => {
-    Swal.fire({
-      title: score >= kkm ? "Kuis Selesai" : "WAKTU HABIS",
-      text:
-        score >= kkm
-          ? `Skor Anda: ${score}.`
-          : `Skor Anda tidak mencukupi (KKM: ${kkm}). Silakan coba lagi.`,
-      icon: score >= kkm ? "success" : "error",
       showCancelButton: true,
-      confirmButtonText: score >= kkm ? "Selanjutnya" : "Coba Lagi",
-      cancelButtonText: "Kembali",
-    }).then((result) => {
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+      confirmButtonColor: "#6E2A7F",
+      cancelButtonColor: "#EF4444",
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        if (score >= kkm) {
-          handleLessonComplete("/materi/bab6/kuis-bab6");
-          window.scrollTo(0, 0);
-          navigate("/materi/bab6/rangkuman-bab6");
-        } else {
-          setShowKuis(false);
-          setCurrentQuestionIndex(0);
-          setSelectedAnswers(Array(questions.length).fill(""));
-          setScore(0);
-          setAnswerStatus(Array(questions.length).fill(null));
-          setHasAnswered(Array(questions.length).fill(false));
-          setTimeLeft(20 * 60);
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+            {
+              user_id: user.uuid,
+              type: "evaluasi",
+              chapter: 6,
+              score: score,
+            },
+            { withCredentials: true }
+          );
+
+          navigate("/materi/bab6/hasil-kuis-bab6", {
+            state: { score, totalQuestions: questions.length, kkm },
+          });
+        } catch (error) {
+          console.error("Error saving score:", error);
+          Swal.fire({
+            title: "Gagal!",
+            text: "Terjadi kesalahan saat menyimpan skor.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
-      } else {
-        setShowKuis(false);
-        setCurrentQuestionIndex(0);
-        setSelectedAnswers(Array(questions.length).fill(""));
-        setScore(0);
-        setAnswerStatus(Array(questions.length).fill(null));
-        setHasAnswered(Array(questions.length).fill(false));
-        setTimeLeft(20 * 60);
-        navigate("/materi/bab6/kuis-bab6");
       }
     });
   };

@@ -224,6 +224,21 @@ const MateriLayout = () => {
             toggleSidebar={toggleSidebar}
           />
         </div>
+        {/* Backdrop for mobile when sidebar is open */}
+        {isSidebarOpen && window.innerWidth < 768 && (
+          <div
+            style={{
+              position: "fixed",
+              top: "80px",
+              left: 0,
+              width: "100%",
+              height: "calc(100vh - 80px)",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              zIndex: 40,
+            }}
+            onClick={toggleSidebar}
+          />
+        )}
         <div
           style={{
             flex: 1,
@@ -234,12 +249,16 @@ const MateriLayout = () => {
         >
           <button
             style={{
+              position: "fixed",
+              top: "92px",
+              right: "16px",
               padding: "8px",
-              marginBottom: "16px",
               color: "white",
               backgroundColor: "#6b7280",
               borderRadius: "8px",
-              display: window.innerWidth >= 768 ? "none" : "block",
+              zIndex: 30,
+              display:
+                isSidebarOpen || window.innerWidth >= 768 ? "none" : "block",
             }}
             onClick={toggleSidebar}
           >

@@ -28,6 +28,8 @@ import SintaksInput from "./pages/Materi/Bab-2/SintaksInput";
 import LatihanBab2 from "./pages/Materi/Bab-2/Latihan";
 import KuisBab2 from "./pages/Materi/Bab-2/Kuis";
 import RangkumanBab2 from "./pages/Materi/Bab-2/Rangkuman";
+import HasilLatihanBab2 from "../src/pages/Materi/Bab-2/HasilLatihanBab2";
+import HasilKuisBab2 from "../src/pages/Materi/Bab-2/HasilKuisBab2";
 
 // BAB 3
 import PengertianTipeData from "./pages/Materi/Bab-3/tipeData";
@@ -41,6 +43,8 @@ import String from "./pages/Materi/Bab-3/String";
 import LatihanBab3 from "./pages/Materi/Bab-3/Latihan";
 import KuisBab3 from "./pages/Materi/Bab-3/Kuis";
 import RangkumanBab3 from "./pages/Materi/Bab-3/Rangkuman";
+import HasilLatihanBab3 from "../src/pages/Materi/Bab-3/HasilLatihanBab3";
+import HasilKuisBab3 from "../src/pages/Materi/Bab-3/HasilKuisBab3";
 
 // BAB 4
 import PengertianOperator from "./pages/Materi/Bab-4/pengertianOperator";
@@ -54,6 +58,8 @@ import OperatorKesetaraan from "./pages/Materi/Bab-4/operatorKesetaraan";
 import LatihanBab4 from "./pages/Materi/Bab-4/Latihan";
 import KuisBab4 from "./pages/Materi/Bab-4/Kuis";
 import RangkumanBab4 from "./pages/Materi/Bab-4/Rangkuman";
+import HasilLatihanBab4 from "../src/pages/Materi/Bab-4/HasilLatihanBab4";
+import HasilKuisBab4 from "../src/pages/Materi/Bab-4/HasilKuisBab4";
 
 // BAB 5
 import PengertianKontrolAlur from "./pages/Materi/Bab-5/Pengertian";
@@ -66,6 +72,8 @@ import LatihanBab5 from "./pages/Materi/Bab-5/Latihan";
 import KuisBab5 from "./pages/Materi/Bab-5/Kuis";
 import RangkumanBab5 from "./pages/Materi/Bab-5/Rangkuman";
 import PernyataanBersarang from "./pages/Materi/Bab-5/PernyataanBersarang";
+import HasilLatihanBab5 from "../src/pages/Materi/Bab-5/HasilLatihanBab5";
+import HasilKuisBab5 from "../src/pages/Materi/Bab-5/HasilKuisBab5";
 
 // BAB 6
 import PengenalanMethod from "./pages/Materi/Bab-6/PengenalanMethod";
@@ -75,6 +83,8 @@ import ParameterMethod from "./pages/Materi/Bab-6/ParameterMethod";
 import LatihanBab6 from "./pages/Materi/Bab-6/Latihan";
 import KuisBab6 from "./pages/Materi/Bab-6/Kuis";
 import RangkumanBab6 from "./pages/Materi/Bab-6/Rangkuman";
+import HasilLatihanBab6 from "../src/pages/Materi/Bab-6/HasilLatihanBab6";
+import HasilKuisBab6 from "../src/pages/Materi/Bab-6/HasilKuisBab6";
 
 // Evaluasi
 import EvaluasiAkhir from "./pages/Materi/EvaluasiAkhir/EvaluasiAkhir";
@@ -121,6 +131,8 @@ const MateriRoutes = () => {
         <Route path="bab2/latihan-bab2" element={<LatihanBab2 />} />
         <Route path="bab2/kuis-bab2" element={<KuisBab2 />} />
         <Route path="bab2/rangkuman-bab2" element={<RangkumanBab2 />} />
+        <Route path="bab2/hasil-latihan-bab2" element={<HasilLatihanBab2 />} />
+        <Route path="bab2/hasil-kuis-bab2" element={<HasilKuisBab2 />} />
 
         {/*   BAB 3 Tipe Data */}
         <Route
@@ -140,6 +152,8 @@ const MateriRoutes = () => {
         <Route path="bab3/latihan-bab3" element={<LatihanBab3 />} />
         <Route path="bab3/kuis-bab3" element={<KuisBab3 />} />
         <Route path="bab3/rangkuman-bab3" element={<RangkumanBab3 />} />
+        <Route path="bab3/hasil-latihan-bab3" element={<HasilLatihanBab3 />} />
+        <Route path="bab3/hasil-kuis-bab3" element={<HasilKuisBab3 />} />
 
         {/* BAB 4  */}
         <Route
@@ -171,7 +185,8 @@ const MateriRoutes = () => {
         <Route path="bab4/latihan-bab4" element={<LatihanBab4 />} />
         <Route path="bab4/kuis-bab4" element={<KuisBab4 />} />
         <Route path="bab4/rangkuman-bab4" element={<RangkumanBab4 />} />
-
+        <Route path="bab4/hasil-latihan-bab4" element={<HasilLatihanBab4 />} />
+        <Route path="bab4/hasil-kuis-bab4" element={<HasilKuisBab4 />} />
         {/* BAB 5 KONTROL ALUR */}
         <Route
           path="bab5/pengertian-kontrol-alur"
@@ -191,7 +206,8 @@ const MateriRoutes = () => {
         <Route path="bab5/latihan-bab5" element={<LatihanBab5 />} />
         <Route path="bab5/kuis-bab5" element={<KuisBab5 />} />
         <Route path="bab5/rangkuman-bab5" element={<RangkumanBab5 />} />
-
+        <Route path="bab5/hasil-latihan-bab5" element={<HasilLatihanBab5 />} />
+        <Route path="bab5/hasil-kuis-bab5" element={<HasilKuisBab5 />} />
         {/* BAB 6 */}
         <Route path="bab6/pengenalan-method" element={<PengenalanMethod />} />
         <Route path="bab6/method-void" element={<MethodVoid />} />
@@ -200,7 +216,8 @@ const MateriRoutes = () => {
         <Route path="bab6/latihan-bab6" element={<LatihanBab6 />} />
         <Route path="bab6/kuis-bab6" element={<KuisBab6 />} />
         <Route path="bab6/rangkuman-bab6" element={<RangkumanBab6 />} />
-
+        <Route path="bab6/hasil-latihan-bab6" element={<HasilLatihanBab6 />} />
+        <Route path="bab6/hasil-kuis-bab6" element={<HasilKuisBab6 />} />
         {/* Evaluasi */}
         <Route path="evaluasi/evaluasi-akhir" element={<EvaluasiAkhir />} />
         <Route path="evaluasi/kesimpulan-akhir" element={<Kesimpulan />} />

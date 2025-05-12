@@ -11,20 +11,18 @@ const LatihanBab3 = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
   const { user } = useSelector((state) => state.auth);
-  const [showLatihan, setShowLatihan] = useState(false); // State untuk beralih antara instruksi dan latihan
+  const [showLatihan, setShowLatihan] = useState(false);
 
-  // State untuk instruksi
   const [riwayat, setRiwayat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // State untuk latihan
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState(Array(10).fill([""]));
+  const [answers, setAnswers] = useState(Array(5).fill([""]));
   const [score, setScore] = useState(0);
-  const [answerStatus, setAnswerStatus] = useState(Array(10).fill(null));
-  const [hasAnswered, setHasAnswered] = useState(Array(10).fill(false));
-  const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 menit dalam detik
+  const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null));
+  const [hasAnswered, setHasAnswered] = useState(Array(5).fill(false));
+  const [timeLeft, setTimeLeft] = useState(10 * 60);
 
   const questions = [
     {
@@ -105,86 +103,8 @@ const LatihanBab3 = () => {
 }`,
       correctAnswer: ["++", "counter"],
     },
-    {
-      id: 6,
-      prompt:
-        "Lengkapilah kode berikut untuk menggunakan operator penugasan gabungan (+=) untuk menambah nilai variabel.",
-      code: `public class Latihan
-{
-    public static void Main(string[] args)
-    {
-        int total = 100;
-        total _____ 50;
-        Console.WriteLine("Total: " + _____);
-    }
-}`,
-      correctAnswer: ["+=", "total"],
-    },
-    {
-      id: 7,
-      prompt:
-        "Lengkapilah kode berikut untuk menggunakan operator perbandingan lebih besar (>) untuk membandingkan dua angka.",
-      code: `public class Latihan
-{
-    public static void Main(string[] args)
-    {
-        int a = 15;
-        int b = 10;
-        bool isGreater = a _____ b;
-        Console.WriteLine("A lebih besar? " + _____);
-    }
-}`,
-      correctAnswer: [">", "isGreater"],
-    },
-    {
-      id: 8,
-      prompt:
-        "Lengkapilah kode berikut untuk menggunakan operator logika OR (||) untuk memeriksa dua kondisi.",
-      code: `public class Latihan
-{
-    public static void Main(string[] args)
-    {
-        bool isMember = false;
-        bool hasCoupon = true;
-        bool getDiscount = isMember _____ hasCoupon;
-        Console.WriteLine("Dapat diskon? " + _____);
-    }
-}`,
-      correctAnswer: ["||", "getDiscount"],
-    },
-    {
-      id: 9,
-      prompt:
-        "Lengkapilah kode berikut untuk menggunakan operator decrement (--) untuk mengurangi nilai variabel.",
-      code: `public class Latihan
-{
-    public static void Main(string[] args)
-    {
-        int stock = 10;
-        stock_____;
-        Console.WriteLine("Stock: " + _____);
-    }
-}`,
-      correctAnswer: ["--", "stock"],
-    },
-    {
-      id: 10,
-      prompt:
-        "Lengkapilah kode berikut untuk menggunakan operator penugasan gabungan (*=) untuk mengalikan nilai variabel.",
-      code: `public class Latihan
-{
-    public static void Main(string[] args)
-    {
-        int nilai = 5;
-        nilai _____ 3;
-        Console.WriteLine("Nilai: " + _____);
-    }
-}`,
-      correctAnswer: ["*=", "nilai"],
-    },
   ];
 
-  // Fungsi untuk memformat tanggal
   const formatDate = (dateString) => {
     if (!dateString) {
       console.warn("Tanggal tidak tersedia:", dateString);
@@ -204,7 +124,6 @@ const LatihanBab3 = () => {
     });
   };
 
-  // Ambil data riwayat dari API
   useEffect(() => {
     const fetchRiwayat = async () => {
       if (!user?.uuid) {
@@ -214,18 +133,19 @@ const LatihanBab3 = () => {
 
       setIsLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/scores", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+          {
+            withCredentials: true,
+          }
+        );
         console.log("Data scores dari API:", response.data);
 
-        // Filter hanya skor untuk latihan Bab 3
         const filteredScores = response.data.scores.filter(
           (score) => score.type === "latihan" && score.chapter === 3
         );
         console.log("Filtered scores (Bab 3):", filteredScores);
 
-        // Format data untuk tabel
         const formattedRiwayat = filteredScores.map((score) => {
           console.log("Score item:", score);
           return {
@@ -248,7 +168,6 @@ const LatihanBab3 = () => {
     fetchRiwayat();
   }, [user]);
 
-  // Timer untuk latihan
   useEffect(() => {
     if (showLatihan) {
       const timer = setInterval(() => {
@@ -293,7 +212,7 @@ const LatihanBab3 = () => {
 
     if (isCorrect) {
       if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 10); // 10 poin per soal (100/10 soal)
+        setScore((prevScore) => prevScore + 20);
         const newAnswerStatus = [...answerStatus];
         newAnswerStatus[currentQuestionIndex] = "correct";
         setAnswerStatus(newAnswerStatus);
@@ -356,7 +275,7 @@ const LatihanBab3 = () => {
     }
   };
 
-  const handleFinish = async () => {
+  const handleFinish = () => {
     const hasIncompleteAnswers = answers.some((answer) =>
       answer.some((a) => a === "")
     );
@@ -367,93 +286,98 @@ const LatihanBab3 = () => {
         icon: "warning",
         confirmButtonText: "OK",
       });
-    } else {
-      try {
-        await axios.post(
-          "http://localhost:5000/scores",
-          {
-            user_id: user.uuid,
-            type: "latihan",
-            chapter: 3,
-            score: score,
-          },
-          { withCredentials: true }
-        );
-      } catch (error) {
-        console.error("Error saving score:", error);
-      }
+      return;
+    }
 
-      if (score >= 75) {
-        Swal.fire({
-          title: "Selamat!",
-          text: `Skor Anda: ${score}. Anda telah selesai mengerjakan latihan.`,
-          icon: "success",
-          confirmButtonText: "Selanjutnya",
-        }).then((result) => {
-          if (result.isConfirmed) {
+    Swal.fire({
+      title: "Konfirmasi Pengiriman",
+      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+      confirmButtonColor: "#6E2A7F",
+      cancelButtonColor: "#EF4444",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+            {
+              user_id: user.uuid,
+              type: "latihan",
+              chapter: 3,
+              score: score,
+            },
+            { withCredentials: true }
+          );
+
+          if (score >= 75) {
             handleLessonComplete("/materi/bab3/latihan-bab3");
             handleLessonComplete("/materi/bab3/kuis-bab3");
-            window.scrollTo(0, 0);
-            navigate("/materi/bab3/kuis-bab3");
           }
-        });
-      } else {
-        showFinalScore();
+
+          navigate("/materi/bab3/hasil-latihan-bab3", {
+            state: { score, totalQuestions: questions.length },
+          });
+        } catch (error) {
+          console.error("Error saving score:", error);
+          Swal.fire({
+            title: "Gagal!",
+            text: "Terjadi kesalahan saat menyimpan skor.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       }
-    }
+    });
   };
 
   const handleTimeUp = () => {
     Swal.fire({
       title: "Waktu Habis!",
-      text: `Skor Anda: ${score}`,
+      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
       icon: "warning",
-      confirmButtonText: "OK",
-    }).then(() => {
-      showFinalScore();
-    });
-  };
-
-  const showFinalScore = () => {
-    Swal.fire({
-      title: score >= 75 ? "Latihan Selesai" : "WAKTU HABIS",
-      text:
-        score >= 75
-          ? `Skor Anda: ${score}.`
-          : "Skor anda tidak mencukupi, Silahkan Coba Kembali.",
-      icon: score >= 75 ? "success" : "error",
       showCancelButton: true,
-      confirmButtonText: score >= 75 ? "Selanjutnya" : "Coba Lagi",
-      cancelButtonText: "Kembali",
-    }).then((result) => {
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+      confirmButtonColor: "#6E2A7F",
+      cancelButtonColor: "#EF4444",
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        if (score >= 75) {
-          handleLessonComplete("/materi/bab3/latihan-bab3");
-          window.scrollTo(0, 0);
-          navigate("/materi/bab3/kuis-bab3");
-        } else {
-          setShowLatihan(false); // Kembali ke instruksi untuk coba lagi
-          setCurrentQuestionIndex(0);
-          setAnswers(Array(10).fill([""]));
-          setScore(0);
-          setAnswerStatus(Array(10).fill(null));
-          setHasAnswered(Array(10).fill(false));
-          setTimeLeft(20 * 60);
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+            {
+              user_id: user.uuid,
+              type: "latihan",
+              chapter: 3,
+              score: score,
+            },
+            { withCredentials: true }
+          );
+
+          if (score >= 75) {
+            handleLessonComplete("/materi/bab3/latihan-bab3");
+            handleLessonComplete("/materi/bab3/kuis-bab3");
+          }
+
+          navigate("/materi/bab3/hasil-latihan-bab3", {
+            state: { score, totalQuestions: questions.length },
+          });
+        } catch (error) {
+          console.error("Error saving score:", error);
+          Swal.fire({
+            title: "Gagal!",
+            text: "Terjadi kesalahan saat menyimpan skor.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
-      } else {
-        setShowLatihan(false); // Kembali ke instruksi untuk coba lagi
-        setCurrentQuestionIndex(0);
-        setAnswers(Array(10).fill([""]));
-        setScore(0);
-        setAnswerStatus(Array(10).fill(null));
-        setHasAnswered(Array(10).fill(false));
-        setTimeLeft(20 * 60);
-        navigate("/materi/bab3/latihan-bab3");
       }
     });
   };
 
-  // UI untuk halaman instruksi
   const renderInstruksi = () => (
     <div className="p-4 mx-auto bg-white rounded-lg shadow-md max-w-4xl sm:p-6 lg:p-8">
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 3 - TIPE DATA</h1>
@@ -464,12 +388,12 @@ const LatihanBab3 = () => {
           dalam pemrograman C#.
         </p>
         <p className="mb-3 leading-relaxed">
-          Terdapat 10 pertanyaan yang harus dikerjakan dalam latihan ini.
+          Terdapat 5 pertanyaan yang harus dikerjakan dalam latihan ini.
           Beberapa ketentuannya sebagai berikut:
         </p>
         <ul className="mb-3 leading-relaxed list-disc list-inside">
           <li>Syarat nilai kelulusan: 75%</li>
-          <li>Durasi ujian: 20 menit</li>
+          <li>Durasi ujian: 10 menit</li>
         </ul>
         <p className="mb-3 leading-relaxed">
           Apabila tidak memenuhi syarat kelulusan, maka Anda harus mengulang
@@ -540,7 +464,6 @@ const LatihanBab3 = () => {
     </div>
   );
 
-  // UI untuk halaman latihan
   const renderLatihan = () => (
     <div className="max-w-6xl p-4 mx-auto bg-white rounded-lg shadow-lg sm:p-6 lg:p-8">
       <h2 className="text-lg font-semibold text-center text-gray-800">
@@ -615,7 +538,7 @@ const LatihanBab3 = () => {
           </div>
           <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
           <div className="flex flex-row flex-wrap justify-center">
-            {questions.slice(0, 5).map((question, index) => (
+            {questions.map((question, index) => (
               <button
                 key={question.id}
                 onClick={() => handleQuestionSelect(index)}
@@ -639,40 +562,6 @@ const LatihanBab3 = () => {
                     currentQuestionIndex === index ||
                     answerStatus[index] === "correct" ||
                     answerStatus[index] === "incorrect"
-                      ? "white"
-                      : "black",
-                }}
-                className="sm:w-8 sm:h-8"
-              >
-                {question.id}
-              </button>
-            ))}
-          </div>
-          <div className="flex flex-row flex-wrap justify-center mt-2">
-            {questions.slice(5, 10).map((question, index) => (
-              <button
-                key={question.id}
-                onClick={() => handleQuestionSelect(index + 5)}
-                style={{
-                  width: "2rem",
-                  height: "2rem",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "0.5rem",
-                  margin: "0.125rem",
-                  backgroundColor:
-                    currentQuestionIndex === index + 5
-                      ? "#6E2A7F"
-                      : answerStatus[index + 5] === "correct"
-                      ? "#10B981"
-                      : answerStatus[index + 5] === "incorrect"
-                      ? "#EF4444"
-                      : "#D1D5DB",
-                  color:
-                    currentQuestionIndex === index + 5 ||
-                    answerStatus[index + 5] === "correct" ||
-                    answerStatus[index + 5] === "incorrect"
                       ? "white"
                       : "black",
                 }}

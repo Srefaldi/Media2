@@ -24,9 +24,9 @@ const LatihanBab6 = () => {
   const [score, setScore] = useState(0);
   const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null));
   const [hasAnswered, setHasAnswered] = useState(Array(5).fill(false));
-  const [timeLeft, setTimeLeft] = useState(20 * 60);
+  const [timeLeft, setTimeLeft] = useState(10 * 60);
 
-  // Soal hard-coded
+  // Soal hard-coded (hanya 1-5)
   const questions = [
     {
       id: 1,
@@ -122,9 +122,10 @@ public static void Main()
 
       setIsLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/scores", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+          { withCredentials: true }
+        );
         const filteredScores = response.data.scores.filter(
           (score) => score.type === "latihan" && score.chapter === 6
         );
@@ -209,12 +210,22 @@ public static void Main()
           text: "Silakan lanjutkan ke soal berikutnya.",
           icon: "success",
           confirmButtonText: "OK",
+        }).then(() => {
+          // Lanjutkan ke soal berikutnya jika bukan soal terakhir
+          if (currentQuestionIndex < questions.length - 1) {
+            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+          }
         });
       } else {
         Swal.fire({
           icon: "info",
           title: "Sudah Menjawab",
-          text: "Anda sudah menjawab soal ini.",
+          text: "Anda sudah menjawab soal ini, silakan lanjutkan ke soal berikutnya.",
+        }).then(() => {
+          // Lanjutkan ke soal berikutnya jika bukan soal terakhir
+          if (currentQuestionIndex < questions.length - 1) {
+            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+          }
         });
       }
     } else {
@@ -223,6 +234,11 @@ public static void Main()
         text: "Silakan lanjut ke soal berikutnya.",
         icon: "error",
         confirmButtonText: "OK",
+      }).then(() => {
+        // Lanjutkan ke soal berikutnya jika bukan soal terakhir
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+        }
       });
     }
   };
@@ -232,14 +248,15 @@ public static void Main()
       Swal.fire({
         icon: "info",
         title: "Sudah Menjawab",
-        text: "Anda sudah menjawab soal ini.",
+        text: "Anda sudah menjawab soal ini, silakan lanjutkan ke soal berikutnya.",
       });
-    } else {
-      setCurrentQuestionIndex(index);
-      const newAnswers = [...answers];
-      newAnswers[index] = Array(questions[index].correctAnswer.length).fill("");
-      setAnswers(newAnswers);
+      // Tidak mengizinkan kembali ke soal yang sudah dijawab
+      return;
     }
+    setCurrentQuestionIndex(index);
+    const newAnswers = [...answers];
+    newAnswers[index] = Array(questions[index].correctAnswer.length).fill("");
+    setAnswers(newAnswers);
   };
 
   const handleFinish = async () => {
@@ -254,87 +271,92 @@ public static void Main()
         confirmButtonText: "OK",
       });
     } else {
-      try {
-        await axios.post(
-          "http://localhost:5000/scores",
-          {
-            user_id: user.uuid,
-            type: "latihan",
-            chapter: 6,
-            score: score,
-          },
-          { withCredentials: true }
-        );
-      } catch (error) {
-        console.error("Error saving score:", error);
-      }
+      Swal.fire({
+        title: "Konfirmasi Pengiriman",
+        text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak",
+        confirmButtonColor: "#6E2A7F",
+        cancelButtonColor: "#EF4444",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await axios.post(
+              `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+              {
+                user_id: user.uuid,
+                type: "latihan",
+                chapter: 6,
+                score: score,
+              },
+              { withCredentials: true }
+            );
 
-      if (score >= 5) {
-        Swal.fire({
-          title: "Selamat!",
-          text: `Skor Anda: ${score}. Anda telah selesai mengerjakan latihan.`,
-          icon: "success",
-          confirmButtonText: "Selanjutnya",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleLessonComplete("/materi/bab6/latihan-bab6");
-            handleLessonComplete("/materi/bab6/kuis-bab6");
-            window.scrollTo(0, 0);
-            navigate("/materi/bab6/kuis-bab6");
+            if (score >= 75) {
+              handleLessonComplete("/materi/bab6/latihan-bab6");
+              handleLessonComplete("/materi/bab6/kuis-bab6");
+            }
+
+            navigate("/materi/bab6/hasil-latihan-bab6", {
+              state: { score, totalQuestions: questions.length },
+            });
+          } catch (error) {
+            console.error("Error saving score:", error);
+            Swal.fire({
+              title: "Gagal!",
+              text: "Terjadi kesalahan saat menyimpan skor.",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
           }
-        });
-      } else {
-        showFinalScore();
-      }
+        }
+      });
     }
   };
 
   const handleTimeUp = () => {
     Swal.fire({
       title: "Waktu Habis!",
-      text: `Skor Anda: ${score}`,
+      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
       icon: "warning",
-      confirmButtonText: "OK",
-    }).then(() => {
-      showFinalScore();
-    });
-  };
-
-  const showFinalScore = () => {
-    Swal.fire({
-      title: score >= 75 ? "Latihan Selesai" : "WAKTU HABIS",
-      text:
-        score >= 75
-          ? `Skor Anda: ${score}.`
-          : "Skor anda tidak mencukupi, Silahkan Coba Kembali.",
-      icon: score >= 75 ? "success" : "error",
       showCancelButton: true,
-      confirmButtonText: score >= 75 ? "Selanjutnya" : "Coba Lagi",
-      cancelButtonText: "Kembali",
-    }).then((result) => {
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+      confirmButtonColor: "#6E2A7F",
+      cancelButtonColor: "#EF4444",
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        if (score >= 75) {
-          handleLessonComplete("/materi/bab6/latihan-bab6");
-          window.scrollTo(0, 0);
-          navigate("/materi/bab6/kuis-bab6");
-        } else {
-          setShowLatihan(false);
-          setCurrentQuestionIndex(0);
-          setAnswers(Array(5).fill([""]));
-          setScore(0);
-          setAnswerStatus(Array(5).fill(null));
-          setHasAnswered(Array(5).fill(false));
-          setTimeLeft(20 * 60);
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+            {
+              user_id: user.uuid,
+              type: "latihan",
+              chapter: 6,
+              score: score,
+            },
+            { withCredentials: true }
+          );
+
+          if (score >= 75) {
+            handleLessonComplete("/materi/bab6/latihan-bab6");
+            handleLessonComplete("/materi/bab6/kuis-bab6");
+          }
+
+          navigate("/materi/bab6/hasil-latihan-bab6", {
+            state: { score, totalQuestions: questions.length },
+          });
+        } catch (error) {
+          console.error("Error saving score:", error);
+          Swal.fire({
+            title: "Gagal!",
+            text: "Terjadi kesalahan saat menyimpan skor.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
-      } else {
-        setShowLatihan(false);
-        setCurrentQuestionIndex(0);
-        setAnswers(Array(5).fill([""]));
-        setScore(0);
-        setAnswerStatus(Array(5).fill(null));
-        setHasAnswered(Array(5).fill(false));
-        setTimeLeft(20 * 60);
-        navigate("/materi/bab6/latihan-bab6");
       }
     });
   };
@@ -356,7 +378,7 @@ public static void Main()
           </p>
           <ul className="mb-3 leading-relaxed list-disc list-inside">
             <li>Syarat nilai kelulusan: 75%</li>
-            <li>Durasi ujian: 20 menit</li>
+            <li>Durasi ujian: 10 menit</li>
           </ul>
           <p className="mb-3 leading-relaxed">
             Apabila tidak memenuhi syarat kelulusan, maka Anda harus mengulang
