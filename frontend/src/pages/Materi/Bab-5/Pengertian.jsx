@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
 import iconBook from "../../../assets/img/book.png";
 import iconTujuan from "../../../assets/img/tujuan.png";
 import iconKonten from "../../../assets/img/konten.png";
-import { useOutletContext } from "react-router-dom";
 import QuizOperator from "./Quiz-bab5/Quiz1";
 
 const KontrolAlur = () => {
@@ -19,9 +19,11 @@ const KontrolAlur = () => {
   };
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab5/pengertian-kontrol-alur");
-    window.scrollTo(0, 0);
-    navigate("/materi/bab5/pernyataan-if-else");
+    if (quizCompleted) {
+      handleLessonComplete("/materi/bab5/pengertian-kontrol-alur");
+      window.scrollTo(0, 0);
+      navigate("/materi/bab5/pernyataan-if-else");
+    }
   };
 
   const handleBack = () => {
@@ -30,7 +32,7 @@ const KontrolAlur = () => {
   };
 
   return (
-    <div>
+    <div className="mt-4 mb-4">
       <h1 className="mb-4 text-2xl font-bold text-center">
         BAB 5 - KONTROL ALUR
       </h1>
@@ -46,7 +48,7 @@ const KontrolAlur = () => {
           <span className="ml-2">▼</span>
         </h3>
 
-        <div className="p-4 text-justify text-gray-700 rounded-b-lg">
+        <div className="p-4 text-justify text-gray-700 rounded-b-lg bg-white">
           <p>
             Pada bab ini membahas tentang kontrol alur dalam pemrograman C#.
             Kontrol alur adalah mekanisme yang digunakan untuk mengatur urutan
@@ -146,7 +148,6 @@ const KontrolAlur = () => {
           <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
             <code>{`(Pilkom == "Pendidikan Komputer") `}</code>
           </pre>
-          {/* Ganti dengan path gambar yang sesuai */}
           <p className="mb-4">
             Dalam contoh di atas terdapat operator kesamaan ==. Tanda kurung
             merupakan keharusan. Jika kondisi tidak diletakkan dalam tanda
@@ -175,14 +176,11 @@ const KontrolAlur = () => {
     } 
 } `}</code>
           </pre>
-          {/* Ganti dengan path gambar yang sesuai */}
         </div>
       </div>
 
-      {/* Kuis */}
-      {!quizCompleted && <QuizOperator onComplete={handleQuizComplete} />}
+      <QuizOperator onComplete={handleQuizComplete} />
 
-      {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}
@@ -191,28 +189,29 @@ const KontrolAlur = () => {
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quizCompleted && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+        <button
+          onClick={handleNext}
+          className="flex items-center justify-between px-4 py-2 text-white rounded-lg"
+          style={{
+            backgroundColor: quizCompleted ? "#6E2A7F" : "#A0A0A0",
+            cursor: quizCompleted ? "pointer" : "not-allowed",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            quizCompleted && (e.currentTarget.style.backgroundColor = "#5B1F6A")
+          }
+          onMouseLeave={(e) =>
+            quizCompleted && (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }
+          disabled={!quizCompleted}
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quizCompleted ? nextIcon : lockIcon}
+            alt={quizCompleted ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

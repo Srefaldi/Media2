@@ -3,6 +3,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import Quiz from "./Quiz-bab1/Quiz5";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
 
 const SintaksPrint = () => {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ const SintaksPrint = () => {
     const outputLines = lines.map((line) => {
       if (line.startsWith("Console.WriteLine(") && line.endsWith(");")) {
         const number = line.slice(line.indexOf("(") + 1, line.lastIndexOf(")"));
-        return number; // Mengembalikan angka yang dicetak
+        return number;
       }
       return "Format kode tidak valid.";
     });
@@ -93,7 +94,7 @@ const SintaksPrint = () => {
         trimmedCode.indexOf('"') + 1,
         trimmedCode.lastIndexOf('"')
       );
-      setStringConcatOutput(outputText.replace(/" \+ "/g, " ")); // Mengganti " + " dengan spasi
+      setStringConcatOutput(outputText.replace(/" \+ "/g, " "));
     } else {
       setStringConcatOutput(
         "Format kode tidak valid. Pastikan menggunakan Console.WriteLine()."
@@ -111,8 +112,8 @@ const SintaksPrint = () => {
         trimmedCode.indexOf('"') + 1,
         trimmedCode.lastIndexOf('"')
       );
-      const number = trimmedCode.match(/\d+/); // Mencari angka dalam kode
-      setStringAndNumberOutput(`${outputText} ${number}`); // Menggabungkan string dan angka
+      const number = trimmedCode.match(/\d+/);
+      setStringAndNumberOutput(`${outputText} ${number}`);
     } else {
       setStringAndNumberOutput(
         "Format kode tidak valid. Pastikan menggunakan Console.WriteLine()."
@@ -130,8 +131,8 @@ const SintaksPrint = () => {
         trimmedCode.indexOf("(") + 1,
         trimmedCode.lastIndexOf(")")
       );
-      const result = eval(expression); // Menghitung hasil dari ekspresi
-      setNumberAndNumberOutput(result); // Hanya menampilkan hasil
+      const result = eval(expression);
+      setNumberAndNumberOutput(result);
     } else {
       setNumberAndNumberOutput(
         "Format kode tidak valid. Pastikan menggunakan Console.WriteLine()."
@@ -140,8 +141,12 @@ const SintaksPrint = () => {
   };
 
   const handleQuizCompletion = () => {
-    handleLessonComplete("/materi/bab1/sintaks-komentar");
-    setQuizCompleted(true); // Set quiz as completed
+    handleLessonComplete("/materi/bab1/sintaks-print");
+    setQuizCompleted(true);
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -151,7 +156,7 @@ const SintaksPrint = () => {
       </h1>
 
       <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold">1.5 Sintaks Print</h2>
+        <h2 className="text-2xl font-bold">1.4 Sintaks Print</h2>
 
         <h3 className="mt-4 text-xl font-semibold">
           Menampilkan hasil dalam program menggunakan fungsi
@@ -369,42 +374,48 @@ const SintaksPrint = () => {
             </pre>
           </div>
         </div>
-      </div>
 
-      {/* Komponen Kuis */}
-      {!quizCompleted && <Quiz onComplete={handleQuizCompletion} />}
+        <Quiz onComplete={handleQuizCompletion} />
 
-      {/* Tombol Navigasi */}
-      <div className="flex justify-between mt-6">
-        <button
-          onClick={handleBack}
-          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
-        >
-          <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
-          Kembali
-        </button>
-        {quizCompleted && (
+        {/* Tombol Navigasi */}
+        <div className="flex justify-between mt-6">
           <button
-            onClick={handleNext}
+            onClick={handleBack}
+            className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+          >
+            <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
+            Kembali
+          </button>
+          <button
+            onClick={quizCompleted ? handleNext : null}
             className="flex items-center justify-between"
             style={{
-              backgroundColor: "#6E2A7F",
+              backgroundColor: quizCompleted ? "#6E2A7F" : "#B0B0B0",
               color: "white",
               padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s",
+              cursor: quizCompleted ? "pointer" : "not-allowed",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
+            onMouseEnter={(e) => {
+              if (quizCompleted) {
+                e.currentTarget.style.backgroundColor = "#5B1F6A";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (quizCompleted) {
+                e.currentTarget.style.backgroundColor = "#6E2A7F";
+              }
+            }}
           >
             <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
+            <img
+              src={quizCompleted ? nextIcon : lockIcon}
+              alt={quizCompleted ? "Selanjutnya" : "Terkunci"}
+              className="w-5 h-5 ml-2"
+            />
           </button>
-        )}
+        </div>
       </div>
     </div>
   );

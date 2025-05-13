@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz5 = ({ onComplete }) => {
   const [var1Type, setVar1Type] = useState("");
@@ -8,7 +8,6 @@ const Quiz5 = ({ onComplete }) => {
   const [var1Value, setVar1Value] = useState("");
   const [var2Value, setVar2Value] = useState("");
   const [var3Value, setVar3Value] = useState("");
-  const [quizFeedback, setQuizFeedback] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,13 +21,8 @@ const Quiz5 = ({ onComplete }) => {
       var2Value === "D" &&
       var3Value === "M"
     ) {
-      onComplete();
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      console.log("Correct answers submitted"); // Debugging
+      onComplete(true); // Pass true to indicate correct answer
     } else {
       // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
@@ -38,7 +32,6 @@ const Quiz5 = ({ onComplete }) => {
       setVar1Value("");
       setVar2Value("");
       setVar3Value("");
-      setQuizFeedback("Jawaban Anda Salah! Silakan coba lagi.");
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
@@ -55,7 +48,6 @@ const Quiz5 = ({ onComplete }) => {
     setVar1Value("");
     setVar2Value("");
     setVar3Value("");
-    setQuizFeedback("");
   };
 
   return (
@@ -167,11 +159,6 @@ const Quiz5 = ({ onComplete }) => {
           Hapus Jawaban
         </button>
       </div>
-
-      {/* Umpan Balik Kuis */}
-      {quizFeedback && (
-        <p className={`mt-4 text-center text-red-500`}>{quizFeedback}</p>
-      )}
     </div>
   );
 };

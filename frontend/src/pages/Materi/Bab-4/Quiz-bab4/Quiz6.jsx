@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz6 = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -8,18 +8,9 @@ const Quiz6 = ({ onComplete }) => {
     e.preventDefault();
 
     if (selectedAnswer === "B") {
-      window.scrollTo(0, document.body.scrollHeight);
-
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
-
-      onComplete(true);
+      console.log("Correct answer submitted"); // Debugging
+      onComplete(true); // Pass true to indicate correct answer
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setSelectedAnswer("");
       Swal.fire({
@@ -36,7 +27,7 @@ const Quiz6 = ({ onComplete }) => {
   };
 
   return (
-    <div className="max-w-full p-6 mx-auto mt-4 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mt-4 bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}

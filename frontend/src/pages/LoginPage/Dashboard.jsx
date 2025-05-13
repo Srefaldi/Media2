@@ -67,16 +67,8 @@ const UserDashboard = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   const handleOpenInformasi = () => {
     setIsInformasiOpen(true);
-  };
-
-  const handleCloseInformasi = () => {
-    setIsInformasiOpen(false);
   };
 
   if (isLoading) {
@@ -181,10 +173,6 @@ const UserDashboard = () => {
                 <Link
                   to="/informasi"
                   className="px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base text-gray-600 bg-transparent border border-gray-600 rounded hover:bg-gray-300"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleOpenInformasi();
-                  }}
                 >
                   LIHAT INFORMASI
                 </Link>
@@ -194,8 +182,6 @@ const UserDashboard = () => {
         </div>
       </div>
       <Footer />
-      <InfoModal isOpen={isModalOpen} toggleModal={handleCloseModal} />
-      <Informasi isOpen={isInformasiOpen} toggleModal={handleCloseInformasi} />
     </div>
   );
 };

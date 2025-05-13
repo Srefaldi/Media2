@@ -3,6 +3,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import QuizEquality from "./Quiz-bab4/Quiz8";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
 
 const OperatorKesetaraan = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -10,9 +11,11 @@ const OperatorKesetaraan = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab4/operator-equality");
-    window.scrollTo(0, 0);
-    navigate("/materi/bab4/latihan-bab4");
+    if (quizCompleted) {
+      handleLessonComplete("/materi/bab4/operator-equality");
+      window.scrollTo(0, 0);
+      navigate("/materi/bab4/latihan-bab4");
+    }
   };
 
   const handleBack = () => {
@@ -97,7 +100,7 @@ const OperatorKesetaraan = () => {
         </div>
       </div>
 
-      {!quizCompleted && <QuizEquality onComplete={handleQuizComplete} />}
+      <QuizEquality onComplete={handleQuizComplete} />
 
       <div className="flex justify-between mt-6">
         <button
@@ -107,28 +110,29 @@ const OperatorKesetaraan = () => {
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quizCompleted && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+        <button
+          onClick={handleNext}
+          className="flex items-center justify-between px-4 py-2 text-white rounded-lg"
+          style={{
+            backgroundColor: quizCompleted ? "#6E2A7F" : "#A0A0A0",
+            cursor: quizCompleted ? "pointer" : "not-allowed",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            quizCompleted && (e.currentTarget.style.backgroundColor = "#5B1F6A")
+          }
+          onMouseLeave={(e) =>
+            quizCompleted && (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }
+          disabled={!quizCompleted}
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quizCompleted ? nextIcon : lockIcon}
+            alt={quizCompleted ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

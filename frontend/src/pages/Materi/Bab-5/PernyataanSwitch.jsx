@@ -1,23 +1,26 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
 import QuizSwitch from "./Quiz-bab5/Quiz4";
+
 const PernyataanSwitch = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab5/pernyataan-switch");
-    window.scrollTo(0, 0);
-    navigate("/materi/bab5/pernyataan-perulangan"); // Ganti dengan rute topik berikutnya
+    if (quizCompleted) {
+      handleLessonComplete("/materi/bab5/pernyataan-switch");
+      window.scrollTo(0, 0);
+      navigate("/materi/bab5/pernyataan-perulangan");
+    }
   };
 
   const handleBack = () => {
     window.scrollTo(0, 0);
-    navigate("/materi/bab5/pernyataan-if-else"); // Ganti dengan rute topik sebelumnya
+    navigate("/materi/bab5/pernyataan-if-else");
   };
 
   const handleQuizComplete = () => {
@@ -83,7 +86,7 @@ const PernyataanSwitch = () => {
         </p>
         <p className="mb-2">
           Ketika kecocokan ditemukan, statemen-statemen yang berkaitan dengan
-          <stron>case </stron>tersebut akan dieksekusi sampai ditemukannya
+          <strong>case </strong>tersebut akan dieksekusi sampai ditemukannya
           statemen <strong>break</strong>.
         </p>
         <p className="mb-2">
@@ -121,10 +124,8 @@ const PernyataanSwitch = () => {
         </div>
       </div>
 
-      {/* Kuis */}
-      {!quizCompleted && <QuizSwitch onComplete={handleQuizComplete} />}
+      <QuizSwitch onComplete={handleQuizComplete} />
 
-      {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}
@@ -133,28 +134,29 @@ const PernyataanSwitch = () => {
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quizCompleted && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+        <button
+          onClick={handleNext}
+          className="flex items-center justify-between px-4 py-2 text-white rounded-lg"
+          style={{
+            backgroundColor: quizCompleted ? "#6E2A7F" : "#A0A0A0",
+            cursor: quizCompleted ? "pointer" : "not-allowed",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            quizCompleted && (e.currentTarget.style.backgroundColor = "#5B1F6A")
+          }
+          onMouseLeave={(e) =>
+            quizCompleted && (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }
+          disabled={!quizCompleted}
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quizCompleted ? nextIcon : lockIcon}
+            alt={quizCompleted ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

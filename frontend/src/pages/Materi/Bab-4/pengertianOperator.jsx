@@ -1,33 +1,65 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import QuizOperator from "./Quiz-bab4/Quiz1"; // Import komponen kuis
+import React, { useState, useEffect } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import QuizOperator from "./Quiz-bab4/Quiz1";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
 import iconBook from "../../../assets/img/book.png";
 import iconTujuan from "../../../assets/img/tujuan.png";
 import iconKonten from "../../../assets/img/konten.png";
-import { useOutletContext } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Operator = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [quizPassed, setQuizPassed] = useState(false);
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
 
-  const handleQuizComplete = () => {
-    handleLessonComplete("/materi/bab4/operator-arithmetic");
+  const handleQuizComplete = (isPassed) => {
+    console.log("Quiz completed, isPassed:", isPassed); // Debugging
     setQuizCompleted(true);
+    setQuizPassed(isPassed);
+
+    if (isPassed) {
+      handleLessonComplete("/materi/bab4/operator-arithmetic");
+      Swal.fire({
+        title: "Jawaban Anda Benar",
+        text: "Silahkan Lanjut Kemateri Berikutnya",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+    } else {
+      setQuizCompleted(false); // Allow retry
+      Swal.fire({
+        title: "Jawaban Anda Salah",
+        text: "Coba lagi hingga benar untuk melanjutkan.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   const handleNext = () => {
+    if (!quizPassed) return; // Prevent navigation if quiz not passed
     handleLessonComplete("/materi/bab4/pengertian-operator");
     window.scrollTo(0, 0);
-    navigate("/materi/bab4/operator-arithmetic"); // Ganti dengan rute topik berikutnya
+    navigate("/materi/bab4/operator-arithmetic");
   };
 
   const handleBack = () => {
     window.scrollTo(0, 0);
     navigate("/materi/bab3/rangkuman-bab3");
   };
+
+  // Debugging state changes
+  useEffect(() => {
+    console.log("quizCompleted:", quizCompleted, "quizPassed:", quizPassed);
+  }, [quizCompleted, quizPassed]);
 
   return (
     <div>
@@ -210,39 +242,53 @@ int b = (a == 5) ? 20 : 30; // b akan bernilai 20`}
       </div>
 
       {/* Kuis */}
-      {!quizCompleted && <QuizOperator onComplete={handleQuizComplete} />}
+      <QuizOperator onComplete={handleQuizComplete} />
 
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}
           className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
+          aria-label="Kembali ke materi sebelumnya"
         >
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quizCompleted && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+        <button
+          onClick={handleNext}
+          disabled={!quizPassed}
+          className="flex items-center justify-between"
+          style={{
+            backgroundColor: quizPassed ? "#6E2A7F" : "#B0B0B0",
+            color: "white",
+            padding: "0.5rem 1rem",
+            borderRadius: "0.5rem",
+            transition: "background-color 0.2s",
+            cursor: quizPassed ? "pointer" : "not-allowed",
+          }}
+          onMouseEnter={(e) => {
+            if (quizPassed) {
+              e.currentTarget.style.backgroundColor = "#5B1F6A";
             }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }}
+          onMouseLeave={(e) => {
+            if (quizPassed) {
+              e.currentTarget.style.backgroundColor = "#6E2A7F";
             }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+          }}
+          aria-label={
+            quizPassed
+              ? "Lanjut ke materi berikutnya"
+              : "Selesaikan kuis dengan benar untuk melanjutkan"
+          }
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quizPassed ? nextIcon : lockIcon}
+            alt={quizPassed ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

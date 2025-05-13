@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz8 = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -19,7 +19,6 @@ const Quiz8 = ({ onComplete }) => {
 
       onComplete(true);
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setSelectedAnswer("");
       Swal.fire({
@@ -36,7 +35,7 @@ const Quiz8 = ({ onComplete }) => {
   };
 
   return (
-    <div className="max-w-full p-6 mx-auto mt-4 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto mt-4 rounded-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}

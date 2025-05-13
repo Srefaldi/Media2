@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz2 = ({ onComplete }) => {
   const [inputTambah, setInputTambah] = useState("");
@@ -10,19 +10,12 @@ const Quiz2 = ({ onComplete }) => {
 
     // Cek jawaban
     if (inputTambah === "+" && inputKurang === "-") {
-      onComplete();
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      console.log("Correct answers submitted"); // Debugging
+      onComplete(true); // Pass true to indicate correct answer
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setInputTambah("");
       setInputKurang("");
-
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",

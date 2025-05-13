@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import { useOutletContext } from "react-router-dom";
-import QuizParameterMethod from "./Quiz-bab6/Quiz4"; // Ganti dengan komponen kuis yang sesuai
+import { useNavigate, useOutletContext } from "react-router-dom";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
+import QuizParameterMethod from "./Quiz-bab6/Quiz4";
 
 const ParameterMethod = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -11,27 +11,28 @@ const ParameterMethod = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab6/parameter-method");
-    window.scrollTo(0, 0);
-    navigate("/materi/bab6/latihan-bab6"); // Ganti dengan rute topik berikutnya
+    if (quizCompleted) {
+      handleLessonComplete("/materi/bab6/parameter-method");
+      window.scrollTo(0, 0);
+      navigate("/materi/bab6/latihan-bab6");
+    }
   };
 
   const handleBack = () => {
     window.scrollTo(0, 0);
-    navigate("/materi/bab6/method-tipe-data"); // Ganti dengan rute topik sebelumnya
+    navigate("/materi/bab6/method-tipe-data");
   };
 
   const handleQuizComplete = () => {
     handleLessonComplete("/materi/bab6/latihan-bab6");
-    setQuizCompleted(true); // Menandakan kuis selesai
+    setQuizCompleted(true);
   };
 
   return (
     <div className="mt-4 mb-4">
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 6 - METHOD</h1>
 
-      {/* Pendahuluan Materi */}
-      <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h2 className="mt-2 mb-4 text-2xl font-bold">6.4 Parameter Method</h2>
         <p className="mb-4">
           Dalam pendeklarasian sebuah metode (method) kita dapat membuat suatu
@@ -52,10 +53,9 @@ const ParameterMethod = () => {
         </p>
         <p className="mb-4">
           Untuk mengisi nilai pada parameter <code>nama</code> dapat langsung
-          saat pemanggilan method <code>Test()</code>, perhatikan kode berikut:
+          saat pemanggilan method <code>test()</code>, perhatikan kode berikut:
         </p>
-
-        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -66,8 +66,7 @@ const ParameterMethod = () => {
         </div>
       </div>
 
-      {/* Method dengan Multiple Parameter */}
-      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h3 className="mb-3 text-xl font-bold">
           Method dengan Multiple Parameter
         </h3>
@@ -80,7 +79,7 @@ const ParameterMethod = () => {
           Berikut contoh penggunaan method dengan parameter lebih dari satu,
           dalam kasus penghitungan luas persegi panjang:
         </p>
-        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -91,10 +90,8 @@ const ParameterMethod = () => {
         </div>
       </div>
 
-      {/* Kuis Parameter Method */}
       <QuizParameterMethod onComplete={handleQuizComplete} />
 
-      {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}
@@ -103,28 +100,29 @@ const ParameterMethod = () => {
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quizCompleted && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+        <button
+          onClick={handleNext}
+          className="flex items-center justify-between px-4 py-2 text-white rounded-lg"
+          style={{
+            backgroundColor: quizCompleted ? "#6E2A7F" : "#A0A0A0",
+            cursor: quizCompleted ? "pointer" : "not-allowed",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            quizCompleted && (e.currentTarget.style.backgroundColor = "#5B1F6A")
+          }
+          onMouseLeave={(e) =>
+            quizCompleted && (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }
+          disabled={!quizCompleted}
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quizCompleted ? nextIcon : lockIcon}
+            alt={quizCompleted ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

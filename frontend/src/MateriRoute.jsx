@@ -67,7 +67,7 @@ import PernyataanIf from "./pages/Materi/Bab-5/PernyataanIf";
 import PernyataanSwitch from "./pages/Materi/Bab-5/PernyataanSwitch";
 import Perulangan from "./pages/Materi/Bab-5/Perulangan";
 import PernyataanBreakdanContinue from "./pages/Materi/Bab-5/PernyataanBreakdanContinue";
-import PerulanganBersarang from "./pages/Materi/Bab-5/PernyataanBersarang";
+
 import LatihanBab5 from "./pages/Materi/Bab-5/Latihan";
 import KuisBab5 from "./pages/Materi/Bab-5/Kuis";
 import RangkumanBab5 from "./pages/Materi/Bab-5/Rangkuman";

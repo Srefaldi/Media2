@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz7 = ({ onComplete }) => {
   const [charValue1, setCharValue1] = useState("");
@@ -8,7 +8,6 @@ const Quiz7 = ({ onComplete }) => {
   const [output1, setOutput1] = useState("");
   const [output2, setOutput2] = useState("");
   const [output3, setOutput3] = useState("");
-  const [quizFeedback, setQuizFeedback] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,15 +21,9 @@ const Quiz7 = ({ onComplete }) => {
       output2 === "angka" &&
       output3 === "simbol"
     ) {
-      onComplete();
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      console.log("Correct answers submitted"); // Debugging
+      onComplete(true); // Pass true to indicate correct answer
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setCharValue1("");
       setCharValue2("");
@@ -38,7 +31,6 @@ const Quiz7 = ({ onComplete }) => {
       setOutput1("");
       setOutput2("");
       setOutput3("");
-
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
@@ -55,7 +47,6 @@ const Quiz7 = ({ onComplete }) => {
     setOutput1("");
     setOutput2("");
     setOutput3("");
-    setQuizFeedback("");
   };
 
   return (
@@ -168,11 +159,6 @@ const Quiz7 = ({ onComplete }) => {
           Hapus Jawaban
         </button>
       </div>
-
-      {/* Umpan Balik Kuis */}
-      {quizFeedback && (
-        <p className={`mt-4 text-center text-red-500`}>{quizFeedback}</p>
-      )}
     </div>
   );
 };

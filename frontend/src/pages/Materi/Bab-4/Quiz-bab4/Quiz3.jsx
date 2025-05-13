@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz3 = ({ onComplete }) => {
   const [inputPreIncrement, setInputPreIncrement] = useState("");
@@ -10,19 +10,12 @@ const Quiz3 = ({ onComplete }) => {
 
     // Cek jawaban
     if (inputPreIncrement === "++" && inputPostIncrement === "++") {
-      onComplete();
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      console.log("Correct answers submitted"); // Debugging
+      onComplete(true); // Pass true to indicate correct answer
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setInputPreIncrement("");
       setInputPostIncrement("");
-
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
@@ -48,8 +41,8 @@ const Quiz3 = ({ onComplete }) => {
 
       <div className="mt-4">
         <p className="mt-2 text-gray-600">
-          Lengkapilah bagian kode yang hilang agar program dapat melakukan
-          operasi increment dengan benar ...
+          Lengkapilah bagian kode yang hilang dengan operator increment yang
+          benar untuk pre-increment dan post-increment ...
         </p>
 
         <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg mb-4">

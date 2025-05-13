@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import { useOutletContext } from "react-router-dom";
-import QuizMethodVoid from "./Quiz-bab6/Quiz2"; // Ganti dengan komponen kuis yang sesuai
+import { useNavigate, useOutletContext } from "react-router-dom";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
+import QuizMethodVoid from "./Quiz-bab6/Quiz2";
 
 const MethodVoid = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -11,28 +11,29 @@ const MethodVoid = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab6/method-void");
-    window.scrollTo(0, 0);
-    navigate("/materi/bab6/method-tipe-data"); // Ganti dengan rute topik berikutnya
+    if (quizCompleted) {
+      handleLessonComplete("/materi/bab6/method-void");
+      window.scrollTo(0, 0);
+      navigate("/materi/bab6/method-tipe-data");
+    }
   };
 
   const handleBack = () => {
     window.scrollTo(0, 0);
-    navigate("/materi/bab6/pengenalan-method"); // Ganti dengan rute topik sebelumnya
+    navigate("/materi/bab6/pengenalan-method");
   };
 
   const handleQuizComplete = () => {
-    handleLessonComplete("/materi/bab6method-tipe-data");
-    setQuizCompleted(true); // Menandakan kuis selesai
+    handleLessonComplete("/materi/bab6/method-tipe-data");
+    setQuizCompleted(true);
   };
 
   return (
     <div className="mt-4 mb-4">
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 6 - METHOD</h1>
-      <div className="p-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h2 className="mt-2 mb-4 text-2xl font-bold">6.2 Method Void</h2>
-        {/* Pendahuluan Materi */}
-
+        <h3 className="mb-3 text-xl font-bold">Pendahuluan</h3>
         <p className="mb-4">
           Method void adalah jenis method yang menjalankan sekumpulan perintah
           tanpa mengembalikan nilai. Method ini berguna untuk melakukan operasi
@@ -42,12 +43,7 @@ const MethodVoid = () => {
         </p>
       </div>
 
-      {/* Mendefinisikan dan Memanggil Method */}
       <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
-        <p className="mb-4">
-          Pada bagian ini, kita akan membahas cara mendefinisikan dan memanggil
-          method void, serta memberikan contoh implementasinya.
-        </p>
         <h3 className="mb-3 text-xl font-bold">
           Mendefinisikan dan Memanggil Method
         </h3>
@@ -59,7 +55,7 @@ const MethodVoid = () => {
           </strong>{" "}
           (tetapi masih dapat menampilkan sesuatu ke layar).
         </p>
-        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -79,7 +75,6 @@ const MethodVoid = () => {
         </p>
       </div>
 
-      {/* Penjelasan Method Void */}
       <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h3 className="mb-3 text-xl font-bold">Penjelasan Method Void</h3>
         <p className="mb-4">
@@ -89,7 +84,7 @@ const MethodVoid = () => {
           <code>{`static void HitungTampilkanHasil() 
 { 
     Console.WriteLine(10 + 20); 
-} `}</code>
+}`}</code>
         </pre>
         <ul className="pl-6 mb-4 list-disc">
           <li className="mb-2">
@@ -97,8 +92,7 @@ const MethodVoid = () => {
             <strong>method</strong>.
           </li>
           <li className="mb-2">
-            Kata kunci
-            <code> void</code> berfungsi untuk{" "}
+            Kata kunci <code>void</code> berfungsi untuk{" "}
             <strong>
               memberitahu compiler bahwa method di atas tidak mengembalikan
               nilai apapun
@@ -129,14 +123,12 @@ const MethodVoid = () => {
     HitungTampilkanHasil(); 
     HitungTampilkanHasil(); 
     HitungTampilkanHasil(); 
-} `}</code>
+}`}</code>
         </pre>
       </div>
 
-      {/* Kuis Method Void */}
       <QuizMethodVoid onComplete={handleQuizComplete} />
 
-      {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}
@@ -145,28 +137,29 @@ const MethodVoid = () => {
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quizCompleted && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+        <button
+          onClick={handleNext}
+          className="flex items-center justify-between px-4 py-2 text-white rounded-lg"
+          style={{
+            backgroundColor: quizCompleted ? "#6E2A7F" : "#A0A0A0",
+            cursor: quizCompleted ? "pointer" : "not-allowed",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            quizCompleted && (e.currentTarget.style.backgroundColor = "#5B1F6A")
+          }
+          onMouseLeave={(e) =>
+            quizCompleted && (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }
+          disabled={!quizCompleted}
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quizCompleted ? nextIcon : lockIcon}
+            alt={quizCompleted ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

@@ -1,29 +1,21 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const QuizOperator = ({ onComplete }) => {
   const [inputA, setInputA] = useState("");
   const [inputB, setInputB] = useState("");
-  const [quizFeedback, setQuizFeedback] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Cek jawaban
     if (inputA === "-a" && inputB === "!true") {
-      onComplete();
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      console.log("Correct answers submitted"); // Debugging
+      onComplete(true); // Pass true to indicate correct answer
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setInputA("");
       setInputB("");
-
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
@@ -36,7 +28,6 @@ const QuizOperator = ({ onComplete }) => {
   const handleReset = () => {
     setInputA("");
     setInputB("");
-    setQuizFeedback("");
   };
 
   return (
@@ -117,11 +108,6 @@ const QuizOperator = ({ onComplete }) => {
           Hapus Jawaban
         </button>
       </div>
-
-      {/* Umpan Balik Kuis */}
-      {quizFeedback && (
-        <p className={`mt-4 text-center text-red-500`}>{quizFeedback}</p>
-      )}
     </div>
   );
 };

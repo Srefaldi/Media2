@@ -31,7 +31,12 @@ const ScrollableList = styled.ul`
   scrollbar-width: none;
 `;
 
-const MateriSidebar = ({ completedLessons, progress, toggleSidebar }) => {
+const MateriSidebar = ({
+  completedLessons,
+  progress,
+  toggleSidebar,
+  handleStartLearningAgain,
+}) => {
   const [openBab, setOpenBab] = useState(null);
   const location = useLocation();
 
@@ -76,6 +81,7 @@ const MateriSidebar = ({ completedLessons, progress, toggleSidebar }) => {
         DAFTAR MATERI
       </h2>
       <ProgressBar progress={progress} />
+
       <ul className="mt-4 space-y-2">
         {daftarBab.map((bab) => (
           <li key={bab.id}>

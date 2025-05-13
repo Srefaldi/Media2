@@ -3,6 +3,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import Swal from "sweetalert2";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
 import QuizDeklarasiBanyakVariabel from "./Quiz-bab2/Quiz5";
 
 const DeklarasiBanyakVariabel = () => {
@@ -15,19 +16,16 @@ const DeklarasiBanyakVariabel = () => {
     handleLessonComplete("/materi/bab2/variabel-konstanta");
     setQuizCompleted(true);
     setQuizPassed(isPassed);
+    if (isPassed) {
+      // Scroll ke bagian paling bawah halaman
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   };
 
   const handleNext = () => {
-    if (!quizPassed) {
-      Swal.fire({
-        title: "Oops!",
-        text: "Anda harus menjawab kuis dengan benar sebelum melanjutkan.",
-        icon: "warning",
-        confirmButtonText: "OK",
-        confirmButtonColor: "#68217A",
-      });
-      return;
-    }
     handleLessonComplete("/materi/bab2/deklarasi-banyak");
     window.scrollTo(0, 0);
     navigate("/materi/bab2/variabel-konstanta");
@@ -89,29 +87,40 @@ const DeklarasiBanyakVariabel = () => {
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quizCompleted && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+        <button
+          onClick={quizPassed ? handleNext : null}
+          className="flex items-center justify-between"
+          style={{
+            backgroundColor: quizPassed ? "#6E2A7F" : "#B0B0B0",
+            color: "white",
+            padding: "0.5rem 1rem",
+            borderRadius: "0.5rem",
+            transition: "background-color 0.2s",
+            cursor: quizPassed ? "pointer" : "not-allowed",
+          }}
+          onMouseEnter={(e) => {
+            if (quizPassed) {
+              e.currentTarget.style.backgroundColor = "#5B1F6A";
             }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }}
+          onMouseLeave={(e) => {
+            if (quizPassed) {
+              e.currentTarget.style.backgroundColor = "#6E2A7F";
             }
-            aria-label="Lanjut ke materi berikutnya"
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+          }}
+          aria-label={
+            quizPassed
+              ? "Lanjut ke materi berikutnya"
+              : "Kuis belum dijawab dengan benar"
+          }
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quizPassed ? nextIcon : lockIcon}
+            alt={quizPassed ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

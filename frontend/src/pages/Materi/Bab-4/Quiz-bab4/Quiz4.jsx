@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const QuizAssignment = ({ onComplete }) => {
   const [inputMultiply, setInputMultiply] = useState("");
@@ -16,19 +16,12 @@ const QuizAssignment = ({ onComplete }) => {
       inputMultiply.trim() === correctMultiply &&
       inputDivide.trim() === correctDivide
     ) {
-      onComplete();
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      console.log("Correct answers submitted"); // Debugging
+      onComplete(true); // Pass true to indicate correct answer
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setInputMultiply("");
       setInputDivide("");
-
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
@@ -44,7 +37,7 @@ const QuizAssignment = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-4 max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
+    <div className="mt-4 max-w-full p-6 bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}

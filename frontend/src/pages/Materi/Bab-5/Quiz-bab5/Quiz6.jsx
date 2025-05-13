@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz6 = ({ onComplete }) => {
   const [inputCondition, setInputCondition] = useState("");
@@ -8,27 +8,29 @@ const Quiz6 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Cek jawaban
-    const correctCondition = "i > 0"; // Jawaban yang benar untuk kondisi
-    const correctIteration = "i--"; // Jawaban yang benar untuk iterasi
+    const correctCondition = "i > 0";
+    const correctIteration = "i--";
 
     if (
       inputCondition.trim() === correctCondition &&
       inputIteration.trim() === correctIteration
     ) {
-      onComplete();
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",
         icon: "success",
         confirmButtonText: "OK",
+      }).then(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
+        onComplete();
       });
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setInputCondition("");
       setInputIteration("");
-
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
@@ -44,20 +46,18 @@ const Quiz6 = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-4 max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
+    <div className="mt-4 max-w-full p-6 mx-auto rounded-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
       >
         UJI PENGETAHUAN
       </h2>
-
       <div className="mt-4">
         <p className="mt-2 text-gray-600">
           Lengkapilah bagian kode berikut dengan pernyataan while yang sesuai
           untuk mencetak angka dari 5 hingga 1.
         </p>
-
         <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg mb-4">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
@@ -81,8 +81,6 @@ const Quiz6 = ({ onComplete }) => {
             </code>
           </pre>
         </div>
-
-        {/* Tombol Submit */}
         <button
           onClick={handleSubmit}
           style={{
@@ -101,8 +99,6 @@ const Quiz6 = ({ onComplete }) => {
         >
           Cek Jawaban
         </button>
-
-        {/* Tombol Reset (Hapus Jawaban) */}
         <button
           onClick={handleReset}
           style={{

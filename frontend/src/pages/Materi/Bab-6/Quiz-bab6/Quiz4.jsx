@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz4 = ({ onComplete }) => {
   const [inputMethodCall, setInputMethodCall] = useState("");
@@ -8,27 +8,29 @@ const Quiz4 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Cek jawaban
-    const correctMethodCall = "Sapa"; // Jawaban yang benar untuk pemanggilan method
-    const correctParameter = "nama"; // Jawaban yang benar untuk parameter
+    const correctMethodCall = "Sapa";
+    const correctParameter = "nama";
 
     if (
       inputMethodCall.trim() === correctMethodCall &&
       inputParameter.trim() === correctParameter
     ) {
-      onComplete();
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",
         icon: "success",
         confirmButtonText: "OK",
+      }).then(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
+        onComplete(true);
       });
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setInputMethodCall("");
       setInputParameter("");
-
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
@@ -44,7 +46,7 @@ const Quiz4 = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-4 max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
+    <div className="mt-4 max-w-full p-6 mx-auto rounded-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -52,7 +54,7 @@ const Quiz4 = ({ onComplete }) => {
         UJI PENGETAHUAN
       </h2>
 
-      <div className="mt-4">
+      <form onSubmit={handleSubmit}>
         <p className="mt-2 text-gray-600">
           Lengkapilah kode berikut agar method Sapa() menerima satu parameter
           berupa string dan mencetak sapaan ke layar dengan format "Halo,
@@ -67,17 +69,15 @@ const Quiz4 = ({ onComplete }) => {
                 type="text"
                 value={inputMethodCall}
                 onChange={(e) => setInputMethodCall(e.target.value)}
-                className="ml-1 mr-1 border border-gray-400 px-1 py-1 w-40 mb-2 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
+                className="ml-1 mr-1 border-2 border-gray-400 px-2 py-1 w-40 mb-2 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
                 placeholder="Jawaban ..."
               />
-              {`("Andi");\n    }\n\n    static void Sapa(string nama`}
-
-              {`)\n    {\n        Console.WriteLine("Halo, " + `}
+              {`("Andi");\n    }\n\n    static void Sapa(string nama)\n    {\n        Console.WriteLine("Halo, " + `}
               <input
                 type="text"
                 value={inputParameter}
                 onChange={(e) => setInputParameter(e.target.value)}
-                className="ml-1 mr-1 border border-gray-400 px-1 py-1 w-40 mb-2 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
+                className="ml-1 mr-1 border-2 border-gray-400 px-2 py-1 w-40 mb-2 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
                 placeholder="Jawaban ..."
               />
               {`);\n    }\n}`}
@@ -85,45 +85,46 @@ const Quiz4 = ({ onComplete }) => {
           </pre>
         </div>
 
-        {/* Tombol Submit */}
-        <button
-          onClick={handleSubmit}
-          style={{
-            backgroundColor: "#6E2A7F",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#5B1F6A")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#6E2A7F")
-          }
-        >
-          Cek Jawaban
-        </button>
-
-        {/* Tombol Reset (Hapus Jawaban) */}
-        <button
-          onClick={handleReset}
-          style={{
-            backgroundColor: "red",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-            marginLeft: "1rem",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#c0392b")
-          }
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "red")}
-        >
-          Hapus Jawaban
-        </button>
-      </div>
+        <div className="flex space-x-2">
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
+          >
+            Cek Jawaban
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#c0392b")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "red")
+            }
+          >
+            Hapus Jawaban
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

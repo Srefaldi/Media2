@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz8 = ({ onComplete }) => {
   const [dataType, setDataType] = useState("");
   const [stringValue, setStringValue] = useState("");
   const [output, setOutput] = useState("");
-  const [quizFeedback, setQuizFeedback] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,20 +15,13 @@ const Quiz8 = ({ onComplete }) => {
       stringValue === '"Hello World"' &&
       output === "greeting"
     ) {
-      onComplete();
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      console.log("Correct answers submitted"); // Debugging
+      onComplete(true); // Pass true to indicate correct answer
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setDataType("");
       setStringValue("");
       setOutput("");
-
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
@@ -43,7 +35,6 @@ const Quiz8 = ({ onComplete }) => {
     setDataType("");
     setStringValue("");
     setOutput("");
-    setQuizFeedback("");
   };
 
   return (
@@ -132,11 +123,6 @@ const Quiz8 = ({ onComplete }) => {
           Hapus Jawaban
         </button>
       </div>
-
-      {/* Umpan Balik Kuis */}
-      {quizFeedback && (
-        <p className={`mt-4 text-center text-red-500`}>{quizFeedback}</p>
-      )}
     </div>
   );
 };

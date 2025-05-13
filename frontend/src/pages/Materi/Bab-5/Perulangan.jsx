@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import { useOutletContext } from "react-router-dom";
-import QuizPerulangan from "./Quiz-bab5/Quiz5"; // Import komponen kuis
+import { useNavigate, useOutletContext } from "react-router-dom";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
+import QuizPerulangan from "./Quiz-bab5/Quiz5";
 import QuizKedua from "./Quiz-bab5/Quiz6";
+
 const PernyataanPerulangan = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [quiz2Completed, setQuiz2Completed] = useState(false);
@@ -12,22 +13,25 @@ const PernyataanPerulangan = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab5/pernyataan-perulangan");
-    window.scrollTo(0, 0);
-    navigate("/materi/bab5/pernyataan-break-continue"); // Ganti dengan rute topik berikutnya
+    if (quiz2Completed) {
+      handleLessonComplete("/materi/bab5/pernyataan-perulangan");
+      window.scrollTo(0, 0);
+      navigate("/materi/bab5/pernyataan-break-continue");
+    }
   };
 
   const handleBack = () => {
     window.scrollTo(0, 0);
-    navigate("/materi/bab5/pernyataan-switch"); // Ganti dengan rute topik sebelumnya
+    navigate("/materi/bab5/pernyataan-switch");
   };
 
   const handleQuizComplete = () => {
     setQuizCompleted(true);
   };
+
   const handleQuiz2Complete = () => {
     handleLessonComplete("/materi/bab5/pernyataan-break-continue");
-    setQuiz2Completed(true); // Menandakan Quiz2 selesai
+    setQuiz2Completed(true);
   };
 
   return (
@@ -149,7 +153,7 @@ const PernyataanPerulangan = () => {
       </div>
       <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mb-3">
-          <strong> Hal Penting pada Perulangan for:</strong>
+          <strong>Hal Penting pada Perulangan for:</strong>
           <br />
           <span>
             Satu hal yang penting mengenai perulangan for adalah bahwa{" "}
@@ -181,13 +185,12 @@ const PernyataanPerulangan = () => {
         <p className="mb-3">
           <strong>Menggunakan beberapa variabel kendali:</strong>
           <br /> Perulangan for memperbolehkan kita untuk menggunakan{" "}
-          <strong>dua</strong> atau
-          <strong> lebih variabel</strong> untuk mengendalikan perulangan.
-          Ketika menggunakan beberapa variabel kendali perulangan, statement
-          inisialisasi dan increment untuk tiap variabel dipisahkan dengan koma
-          ,.
+          <strong>dua</strong> atau <strong>lebih variabel</strong> untuk
+          mengendalikan perulangan. Ketika menggunakan beberapa variabel kendali
+          perulangan, statement inisialisasi dan increment untuk tiap variabel
+          dipisahkan dengan koma ,.
         </p>
-        <p className="mb-2 font-bold">Cobalah kode program pada complier :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -196,11 +199,10 @@ const PernyataanPerulangan = () => {
             frameborder="0"
           ></iframe>
         </div>
-
         <p className="mb-2">
           Di sini, koma , memisahkan dua statement inisialisasi dan dua ekspresi
           iterasi. Ketika perulangan dimulai, kedua i dan j diinisialisasi.
-          Setiap kali loop berulang, i di-incremenet dan j di decremenet. Kita
+          Setiap kali loop berulang, i di-increment dan j di-decrement. Kita
           dapat menaruh sebanyak mungkin inisialisasi dan statement iterasi,
           tetapi pada praktiknya, variabel kendali dalam sebuah perulangan yang
           lebih dari dua akan membuat perulangan for menjadi sulit dimengerti.
@@ -215,7 +217,7 @@ const PernyataanPerulangan = () => {
           berikut, perulangan for dikendalikan oleh nilai dari variabel{" "}
           <strong>selesai</strong>.
         </p>
-        <p className="mb-2 font-bold">Cobalah kode program pada complier :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -236,9 +238,9 @@ const PernyataanPerulangan = () => {
           <br />
           Dalam C#, adalah hal yang memungkinkan untuk salah satu atau semuanya
           dari inisialisasi, kondisi, atau iterasi pada perulangan for dibiarkan
-          kosong. Sebagai contoh perhatikan kode program di bawah ini :
+          kosong. Sebagai contoh perhatikan kode program di bawah ini:
         </p>
-        <p className="mb-2 font-bold">Cobalah kode program pada complier :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -254,9 +256,9 @@ const PernyataanPerulangan = () => {
         </p>
         <p className="mb-2">
           Selain dari bagian iterasi, bagian inisialisasi juga dapat dibiarkan
-          kosong dalam sebuah perulangan for :
+          kosong dalam sebuah perulangan for:
         </p>
-        <p className="mb-2 font-bold">Cobalah kode program pada complier :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -281,10 +283,8 @@ const PernyataanPerulangan = () => {
         </pre>
       </div>
 
-      {/* Kuis Pertama*/}
-      {<QuizPerulangan onComplete={handleQuizComplete} />}
+      <QuizPerulangan onComplete={handleQuizComplete} />
 
-      {/* Materi Lanjutan */}
       <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mb-3 text-xl font-bold">Perintah While</p>
         <p className="mb-2">
@@ -295,7 +295,7 @@ const PernyataanPerulangan = () => {
             selama suatu kondisi terpenuhi atau bernilai true.
           </strong>
         </p>
-        <p className="mb-2">Format umum dari perulangan while adalah :</p>
+        <p className="mb-2">Format umum dari perulangan while adalah:</p>
         <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
           <code>{`while (kondisi) 
 { 
@@ -311,7 +311,7 @@ const PernyataanPerulangan = () => {
           Berikut adalah sebuah contoh sederhana di mana perulangan while,
           dipakai untuk menghitung jumlah digit di dalam suatu integer:
         </p>
-        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -320,17 +320,15 @@ const PernyataanPerulangan = () => {
             frameborder="0"
           ></iframe>
         </div>
-
-        <p className="mb-2 font-bold">Perulangan While Bekerja Seperti Ini :</p>
+        <p className="mb-2 font-bold">Perulangan While Bekerja Seperti Ini:</p>
         <p className="mb-2">
           Nilai dari <strong>angka</strong> diuji. Jika <strong>angka</strong>{" "}
-          lebih besar dari 0, kounter <strong>jumlahDigit</strong> di inkremen,
+          lebih besar dari 0, kounter <strong>jumlahDigit</strong> di inkrement,
           dan <strong>angka</strong> dibagi dengan 10. Selama nilai di dalam{" "}
           <strong>angka</strong> lebih besar dari 0, maka perulangan akan
-          berulang. Ketika
-          <strong>an gka</strong> bernilai 0, perulangan akan berhenti dan
-          <strong>jumlahDigit</strong> memuat jumlah digit di dalam integer yang
-          diberikan.
+          berulang. Ketika <strong>angka</strong> bernilai 0, perulangan akan
+          berhenti dan <strong>jumlahDigit</strong> memuat jumlah digit di dalam
+          integer yang diberikan.
         </p>
       </div>
       <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
@@ -339,8 +337,8 @@ const PernyataanPerulangan = () => {
         </h3>
         <p className="mb-2">
           Perulangan while juga dapat dibentuk dengan format yang sama dengan
-          for, pada umumnya kita perlu memperhatikan tiga hal, yaitu :
-          inisialisasi, kondisi, dan iterasi. Sehingga strukturnya menjadi :
+          for, pada umumnya kita perlu memperhatikan tiga hal, yaitu:
+          inisialisasi, kondisi, dan iterasi. Sehingga strukturnya menjadi:
         </p>
         <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
           <code>{`inisialisasi; 
@@ -350,7 +348,7 @@ while (kondisi)
     iterasi; 
 }`}</code>
         </pre>
-        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -372,7 +370,7 @@ while (kondisi)
           memeriksa kondisinya di akhir perulangan. Ini berarti bahwa perulangan
           do-while{" "}
           <strong>selalu dieksekusi sedikitnya 1 kali perulangan.</strong>{" "}
-          Format umum atas perulangan do-while adalah :
+          Format umum atas perulangan do-while adalah:
         </p>
         <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
           <code>{`do 
@@ -387,7 +385,7 @@ while (kondisi)
           menggunakan perulangan <strong>do-while</strong> untuk menampilkan
           digit - digit dari sebuah integer dengan urutan terbalik:
         </p>
-        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -401,13 +399,12 @@ while (kondisi)
           Pada tiap iterasi, digit paling kiri didapatkan dengan menghitung sisa
           dari sebuah pembagian integer (pembagian oleh 10). Digit ini kemudian
           ditampilkan. Selanjutnya, nilai di dalam <strong>angka</strong> dibagi
-          10, Proses ini berulang sampai <strong>angka</strong> bernilai 0..
+          10, Proses ini berulang sampai <strong>angka</strong> bernilai 0.
         </p>
       </div>
-      {/* Kuis Kedua */}
+
       <QuizKedua onComplete={handleQuiz2Complete} />
 
-      {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}
@@ -416,28 +413,31 @@ while (kondisi)
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quiz2Completed && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+        <button
+          onClick={handleNext}
+          className="flex items-center justify-between px-4 py-2 text-white rounded-lg"
+          style={{
+            backgroundColor: quiz2Completed ? "#6E2A7F" : "#A0A0A0",
+            cursor: quiz2Completed ? "pointer" : "not-allowed",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            quiz2Completed &&
+            (e.currentTarget.style.backgroundColor = "#5B1F6A")
+          }
+          onMouseLeave={(e) =>
+            quiz2Completed &&
+            (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }
+          disabled={!quiz2Completed}
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quiz2Completed ? nextIcon : lockIcon}
+            alt={quiz2Completed ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

@@ -1,24 +1,17 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz4 = ({ onComplete }) => {
   const [var1, setVar1] = useState("");
   const [var2, setVar2] = useState("");
   const [var3, setVar3] = useState("");
-  const [quizFeedback, setQuizFeedback] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Cek jawaban
     if (var1 === "0b10100100" && var2 === "164" && var3 === "0xA4") {
-      onComplete();
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+      onComplete(true); // Pass true to indicate correct answer
     } else {
       // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
@@ -38,7 +31,6 @@ const Quiz4 = ({ onComplete }) => {
     setVar1("");
     setVar2("");
     setVar3("");
-    setQuizFeedback("");
   };
 
   return (
@@ -127,11 +119,6 @@ const Quiz4 = ({ onComplete }) => {
           Hapus Jawaban
         </button>
       </div>
-
-      {/* Umpan Balik Kuis */}
-      {quizFeedback && (
-        <p className={`mt-4 text-center text-red-500`}>{quizFeedback}</p>
-      )}
     </div>
   );
 };

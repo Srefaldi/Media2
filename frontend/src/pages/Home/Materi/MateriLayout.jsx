@@ -18,7 +18,7 @@ const MateriLayout = () => {
   const { user, isError, isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const totalLessons = 60;
+  const totalLessons = 59;
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -141,6 +141,19 @@ const MateriLayout = () => {
     return allLessons[currentIndex + 1];
   };
 
+  const getStartLesson = () => {
+    const allLessons = daftarBab.flatMap((bab) =>
+      bab.subBab.map((sub) => sub.path)
+    );
+    if (progress >= 100) {
+      return allLessons[allLessons.length - 1]; // Last lesson
+    }
+    const nextIncompleteLesson = allLessons.find(
+      (lesson) => !completedLessons.includes(lesson)
+    );
+    return nextIncompleteLesson || allLessons[0]; // Fallback to first lesson
+  };
+
   const handleLessonComplete = (lessonId) => {
     console.log("handleLessonComplete dipanggil dengan lessonId:", lessonId);
     if (!completedLessons.includes(lessonId)) {
@@ -196,6 +209,12 @@ const MateriLayout = () => {
     }
   };
 
+  const handleStartLearningAgain = () => {
+    const startLesson = getStartLesson();
+    console.log("Starting learning again, navigating to:", startLesson);
+    navigate(startLesson);
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <Navbar />
@@ -222,9 +241,9 @@ const MateriLayout = () => {
             completedLessons={completedLessons}
             progress={progress}
             toggleSidebar={toggleSidebar}
+            handleStartLearningAgain={handleStartLearningAgain}
           />
         </div>
-        {/* Backdrop for mobile when sidebar is open */}
         {isSidebarOpen && window.innerWidth < 768 && (
           <div
             style={{

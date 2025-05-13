@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import Quiz from "./Quiz-bab1/Quiz7"; // Import komponen Quiz
+import Quiz from "./Quiz-bab1/Quiz7";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
 
 const ErrorCSharp = () => {
   const navigate = useNavigate();
@@ -21,8 +22,13 @@ const ErrorCSharp = () => {
   };
 
   const handleQuizCompletion = () => {
-    handleLessonComplete("/materi/bab1/latihan-bab1");
+    handleLessonComplete("/materi/bab1/error-csharp");
     setQuizCompleted(true);
+    // Scroll ke bagian paling bawah halaman
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -30,7 +36,7 @@ const ErrorCSharp = () => {
       <h1 className="mb-4 text-2xl font-bold text-center">
         BAB 1 - PENDAHULUAN
       </h1>
-      <h2 className="mb-4 text-2xl font-bold">1.7 Error Pada C#</h2>
+      <h2 className="mb-4 text-2xl font-bold">1.6 Error Pada C#</h2>
       <div className="p-4 bg-white rounded-lg shadow-md">
         <p className="mb-4 text-justify text-gray-700">
           Dalam pemrograman C# terdapat beberapa tipe-tipe error yang dapat
@@ -54,7 +60,6 @@ const ErrorCSharp = () => {
             mempelajari dan mempraktikkan tata bahasa dan kode C# sesuai dengan
             aturan yang ditetapkan.
           </li>
-
           <li>
             Sebagai contoh, untuk mencetak string "Halo", tanda kutip dua harus
             digunakan di kedua sisi string. Namun, pada kode di bawah ini,
@@ -114,7 +119,6 @@ const ErrorCSharp = () => {
             Sebagian besar dari logical error terjadi karena adanya kesalahan
             dalam perhitungan atau menggunakan variabel yang salah.
           </li>
-
           <li>
             Saat terjadi logical error biasanya tidak akan membuat program
             berhenti secara total. Pasalnya, program akan tetap bisa berjalan
@@ -136,28 +140,35 @@ const ErrorCSharp = () => {
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quizCompleted && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+        <button
+          onClick={quizCompleted ? handleNext : null}
+          className="flex items-center justify-between"
+          style={{
+            backgroundColor: quizCompleted ? "#6E2A7F" : "#B0B0B0",
+            color: "white",
+            padding: "0.5rem 1rem",
+            borderRadius: "0.5rem",
+            transition: "background-color 0.2s",
+            cursor: quizCompleted ? "pointer" : "not-allowed",
+          }}
+          onMouseEnter={(e) => {
+            if (quizCompleted) {
+              e.currentTarget.style.backgroundColor = "#5B1F6A";
             }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }}
+          onMouseLeave={(e) => {
+            if (quizCompleted) {
+              e.currentTarget.style.backgroundColor = "#6E2A7F";
             }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+          }}
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quizCompleted ? nextIcon : lockIcon}
+            alt={quizCompleted ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

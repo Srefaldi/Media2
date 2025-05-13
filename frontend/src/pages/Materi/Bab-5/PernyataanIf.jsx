@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import QuizIfElse from "./Quiz-bab5/Quiz2"; // Import kuis pertama
-import Quiz2 from "./Quiz-bab5/Quiz3"; // Import kuis kedua
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import QuizIfElse from "./Quiz-bab5/Quiz2";
+import Quiz2 from "./Quiz-bab5/Quiz3";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
 
 const PernyataanIfElse = () => {
   const [quiz1Completed, setQuiz1Completed] = useState(false);
@@ -13,14 +13,16 @@ const PernyataanIfElse = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab5/pernyataan-if-else");
-    window.scrollTo(0, 0);
-    navigate("/materi/bab5/pernyataan-switch"); // Ganti dengan rute topik berikutnya
+    if (quiz2Completed) {
+      handleLessonComplete("/materi/bab5/pernyataan-if-else");
+      window.scrollTo(0, 0);
+      navigate("/materi/bab5/pernyataan-switch");
+    }
   };
 
   const handleBack = () => {
     window.scrollTo(0, 0);
-    navigate("/materi/bab5/pengertian-kontrol-alur"); // Ganti dengan rute topik sebelumnya
+    navigate("/materi/bab5/pengertian-kontrol-alur");
   };
 
   const handleQuiz1Complete = () => {
@@ -29,7 +31,7 @@ const PernyataanIfElse = () => {
 
   const handleQuiz2Complete = () => {
     handleLessonComplete("/materi/bab5/pernyataan-switch");
-    setQuiz2Completed(true); // Menandakan Quiz2 selesai
+    setQuiz2Completed(true);
   };
 
   return (
@@ -179,10 +181,8 @@ else
         </div>
       </div>
 
-      {/* Kuis Pertama */}
       <QuizIfElse onComplete={handleQuiz1Complete} />
 
-      {/* Materi Selanjutnya */}
       <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h3 className="font-bold">Pernyataan if bersarang</h3>
         <p className="mb-2">
@@ -259,10 +259,8 @@ else
         </div>
       </div>
 
-      {/* Kuis Kedua */}
       <Quiz2 onComplete={handleQuiz2Complete} />
 
-      {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}
@@ -271,28 +269,31 @@ else
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quiz2Completed && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+        <button
+          onClick={handleNext}
+          className="flex items-center justify-between px-4 py-2 text-white rounded-lg"
+          style={{
+            backgroundColor: quiz2Completed ? "#6E2A7F" : "#A0A0A0",
+            cursor: quiz2Completed ? "pointer" : "not-allowed",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            quiz2Completed &&
+            (e.currentTarget.style.backgroundColor = "#5B1F6A")
+          }
+          onMouseLeave={(e) =>
+            quiz2Completed &&
+            (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }
+          disabled={!quiz2Completed}
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quiz2Completed ? nextIcon : lockIcon}
+            alt={quiz2Completed ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import nextIcon from "../../../assets/img/selanjutnya.png";
 import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
 import QuizKategoriVariabel from "./Quiz-bab2/Quiz3";
 
 const KategoriVariabel = () => {
@@ -12,6 +13,11 @@ const KategoriVariabel = () => {
   const handleQuizComplete = () => {
     handleLessonComplete("/materi/bab2/deklarasi-inialisasi");
     setQuizCompleted(true);
+    // Scroll ke bagian paling bawah halaman
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
   };
 
   const handleNext = () => {
@@ -27,7 +33,7 @@ const KategoriVariabel = () => {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
+      <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
 
       <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold">2.3 Kategori Variabel</h2>
@@ -53,7 +59,7 @@ const KategoriVariabel = () => {
         <iframe
           width="100%"
           height="475"
-          src="https://dotnetfiddle.net/Widget/t31kaR"
+          src="https://dotnetfiddle.net/Widget/f10LP8"
           frameBorder="0"
           className="mt-4"
           title="C# Static Variable Example"
@@ -86,7 +92,7 @@ const KategoriVariabel = () => {
         <iframe
           width="100%"
           height="475"
-          src="https://dotnetfiddle.net/Widget/AnotherUniqueID" // Replace with correct URL
+          src="https://dotnetfiddle.net/Widget/t31kaR"
           frameBorder="0"
           className="mt-4"
           title="C# Instance Variable Example"
@@ -185,28 +191,35 @@ const KategoriVariabel = () => {
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quizCompleted && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+        <button
+          onClick={quizCompleted ? handleNext : null}
+          className="flex items-center justify-between"
+          style={{
+            backgroundColor: quizCompleted ? "#6E2A7F" : "#B0B0B0",
+            color: "white",
+            padding: "0.5rem 1rem",
+            borderRadius: "0.5rem",
+            transition: "background-color 0.2s",
+            cursor: quizCompleted ? "pointer" : "not-allowed",
+          }}
+          onMouseEnter={(e) => {
+            if (quizCompleted) {
+              e.currentTarget.style.backgroundColor = "#5B1F6A";
             }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }}
+          onMouseLeave={(e) => {
+            if (quizCompleted) {
+              e.currentTarget.style.backgroundColor = "#6E2A7F";
             }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+          }}
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quizCompleted ? nextIcon : lockIcon}
+            alt={quizCompleted ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );

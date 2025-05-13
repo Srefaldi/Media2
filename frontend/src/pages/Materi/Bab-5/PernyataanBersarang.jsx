@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import nextIcon from "../../../assets/img/selanjutnya.png"; // Pastikan path ini sesuai
-import backIcon from "../../../assets/img/kembali.png"; // Pastikan path ini sesuai
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import nextIcon from "../../../assets/img/selanjutnya.png";
+import backIcon from "../../../assets/img/kembali.png";
+import lockIcon from "../../../assets/img/lock.png";
 import QuizKedua from "./Quiz-bab5/Quiz8";
 
 const PernyataanBersarang = () => {
@@ -11,19 +11,21 @@ const PernyataanBersarang = () => {
   const { handleLessonComplete } = useOutletContext();
 
   const handleNext = () => {
-    handleLessonComplete("/materi/bab5/perulangan-bersarang");
-    window.scrollTo(0, 0);
-    navigate("/materi/bab5/latihan-bab5"); // Ganti dengan rute topik berikutnya
+    if (quiz2Completed) {
+      handleLessonComplete("/materi/bab5/perulangan-bersarang");
+      window.scrollTo(0, 0);
+      navigate("/materi/bab5/latihan-bab5");
+    }
   };
 
   const handleBack = () => {
     window.scrollTo(0, 0);
-    navigate("/materi/bab5/pernyataan-break-continue"); // Ganti dengan rute topik sebelumnya
+    navigate("/materi/bab5/pernyataan-break-continue");
   };
 
   const handleQuiz2Complete = () => {
-    handleLessonComplete("/materi/bab5/latihan-bab2");
-    setQuiz2Completed(true); // Menandakan Quiz2 selesai
+    handleLessonComplete("/materi/bab5/latihan-bab5");
+    setQuiz2Completed(true);
   };
 
   return (
@@ -61,7 +63,7 @@ const PernyataanBersarang = () => {
           lainnya.
         </p>
         <p className="mb-2 font-bold">
-          Format umum atas perulangan for bersarang adalah :
+          Format umum atas perulangan for bersarang adalah:
         </p>
         <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
           <code>{`for (inisialisasi; kondisi; iterasi) 
@@ -72,7 +74,7 @@ const PernyataanBersarang = () => {
     } 
 }`}</code>
         </pre>
-        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -88,15 +90,15 @@ const PernyataanBersarang = () => {
         <p className="mb-3">
           Dalam perulangan while, kondisi pengujian diberikan pada awal
           perulangan, dan semua pernyataan dieksekusi bernilai true dan ketika
-          sampai kondisi kondisi <strong>boolean</strong> yang menjadi false,
-          kontrol akan keluar dari perulangan while.{" "}
+          sampai kondisi <strong>boolean</strong> yang menjadi false, kontrol
+          akan keluar dari perulangan while.{" "}
           <strong>Perulangan while bersarang diperbolehkan</strong>, yang
           berarti Anda dapat menggunakan perulangan while di dalam perulangan
           lainnya. Namun, tidak disarankan untuk menggunakan perulangan while
-          bersarang karena sulit untuk di-maintaince dan di-debug.
+          bersarang karena sulit untuk di-maintenance dan di-debug.
         </p>
         <p className="mb-2 font-bold">
-          Format umum atas perulangan while bersarang adalah :
+          Format umum atas perulangan while bersarang adalah:
         </p>
         <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
           <code>{`while (kondisi) 
@@ -109,7 +111,7 @@ const PernyataanBersarang = () => {
     } 
 }`}</code>
         </pre>
-        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -131,7 +133,7 @@ const PernyataanBersarang = () => {
           lainnya.
         </p>
         <p className="mb-2 font-bold">
-          Format umum atas perulangan do-while bersarang adalah :
+          Format umum atas perulangan do-while bersarang adalah:
         </p>
         <pre className="p-2 mb-4 font-mono bg-gray-100 rounded">
           <code>{`do 
@@ -144,7 +146,7 @@ const PernyataanBersarang = () => {
     } while (kondisi); 
 } while (kondisi);`}</code>
         </pre>
-        <p className="mb-2 font-bold">Cobalah kode program pada compiler :</p>
+        <p className="mb-2 font-bold">Cobalah kode program pada compiler:</p>
         <div className="flex justify-center mb-4">
           <iframe
             width="100%"
@@ -155,10 +157,8 @@ const PernyataanBersarang = () => {
         </div>
       </div>
 
-      {/* Kuis Kedua */}
       <QuizKedua onComplete={handleQuiz2Complete} />
 
-      {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
         <button
           onClick={handleBack}
@@ -167,28 +167,31 @@ const PernyataanBersarang = () => {
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali
         </button>
-        {quiz2Completed && (
-          <button
-            onClick={handleNext}
-            className="flex items-center justify-between"
-            style={{
-              backgroundColor: "#6E2A7F",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#5B1F6A")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#6E2A7F")
-            }
-          >
-            <span>Selanjutnya</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5 ml-2" />
-          </button>
-        )}
+        <button
+          onClick={handleNext}
+          className="flex items-center justify-between px-4 py-2 text-white rounded-lg"
+          style={{
+            backgroundColor: quiz2Completed ? "#6E2A7F" : "#A0A0A0",
+            cursor: quiz2Completed ? "pointer" : "not-allowed",
+            transition: "background-color 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            quiz2Completed &&
+            (e.currentTarget.style.backgroundColor = "#5B1F6A")
+          }
+          onMouseLeave={(e) =>
+            quiz2Completed &&
+            (e.currentTarget.style.backgroundColor = "#6E2A7F")
+          }
+          disabled={!quiz2Completed}
+        >
+          <span>Selanjutnya</span>
+          <img
+            src={quiz2Completed ? nextIcon : lockIcon}
+            alt={quiz2Completed ? "Selanjutnya" : "Terkunci"}
+            className="w-5 h-5 ml-2"
+          />
+        </button>
       </div>
     </div>
   );
