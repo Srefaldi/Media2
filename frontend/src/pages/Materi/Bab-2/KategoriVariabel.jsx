@@ -178,9 +178,7 @@ const KategoriVariabel = () => {
       </div>
 
       {/* Kuis Kategori Variabel */}
-      {!quizCompleted && (
-        <QuizKategoriVariabel onComplete={handleQuizComplete} />
-      )}
+      <QuizKategoriVariabel onComplete={handleQuizComplete} />
 
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">

@@ -73,9 +73,7 @@ const DeklarasiBanyakVariabel = () => {
       </div>
 
       {/* Kuis Deklarasi Banyak Variabel */}
-      {!quizCompleted && (
-        <QuizDeklarasiBanyakVariabel onComplete={handleQuizComplete} />
-      )}
+      <QuizDeklarasiBanyakVariabel onComplete={handleQuizComplete} />
 
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">

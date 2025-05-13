@@ -37,6 +37,8 @@ const ErrorCSharp = () => {
         BAB 1 - PENDAHULUAN
       </h1>
       <h2 className="mb-4 text-2xl font-bold">1.6 Error Pada C#</h2>
+
+      {/* White Container - Content Only */}
       <div className="p-4 bg-white rounded-lg shadow-md">
         <p className="mb-4 text-justify text-gray-700">
           Dalam pemrograman C# terdapat beberapa tipe-tipe error yang dapat
@@ -128,11 +130,13 @@ const ErrorCSharp = () => {
         </ul>
       </div>
 
-      {/* Komponen Kuis */}
-      {!quizCompleted && <Quiz onComplete={handleQuizCompletion} />}
+      {/* Quiz Component - Now always visible and outside white container */}
+      <div className="mb-6">
+        <Quiz onComplete={handleQuizCompletion} />
+      </div>
 
-      {/* Tombol Navigasi */}
-      <div className="flex justify-between mt-6">
+      {/* Navigation Buttons - Now outside white container */}
+      <div className="flex justify-between">
         <button
           onClick={handleBack}
           className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
@@ -142,6 +146,7 @@ const ErrorCSharp = () => {
         </button>
         <button
           onClick={quizCompleted ? handleNext : null}
+          disabled={!quizCompleted}
           className="flex items-center justify-between"
           style={{
             backgroundColor: quizCompleted ? "#6E2A7F" : "#B0B0B0",

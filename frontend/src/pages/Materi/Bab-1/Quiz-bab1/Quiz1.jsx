@@ -8,17 +8,19 @@ const Quiz = ({ onComplete }) => {
     e.preventDefault();
 
     if (selectedAnswer === "B") {
-      console.log("Correct answer selected, calling onComplete");
-      window.scrollTo(0, document.body.scrollHeight);
-
+      console.log("Correct answer selected");
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",
         icon: "success",
         confirmButtonText: "OK",
+      }).then(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
+        onComplete(true);
       });
-
-      onComplete();
     } else {
       console.log("Incorrect answer selected:", selectedAnswer);
       window.scrollTo(0, 0);
@@ -38,7 +40,7 @@ const Quiz = ({ onComplete }) => {
   };
 
   return (
-    <div className="max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto mt-4 rounded-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -71,7 +73,7 @@ const Quiz = ({ onComplete }) => {
         </div>
         <div className="flex space-x-2">
           <button
-            type="submit"
+            onClick={handleSubmit}
             style={{
               backgroundColor: "#6E2A7F",
               color: "white",
@@ -86,25 +88,12 @@ const Quiz = ({ onComplete }) => {
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
             }
           >
-            Kirim
+            Cek Jawaban
           </button>
           <button
             type="button"
             onClick={handleReset}
-            style={{
-              backgroundColor: "red",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              transition: "background-color 0.2s",
-              marginLeft: "1rem",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#c0392b")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "red")
-            }
+            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
           >
             Hapus Jawaban
           </button>

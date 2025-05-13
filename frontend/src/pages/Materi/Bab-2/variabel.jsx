@@ -172,11 +172,13 @@ const Variabel = () => {
         </figure>
       </div>
 
-      {/* Kuis */}
-      {!quizCompleted && <Quiz onComplete={handleQuizComplete} />}
+      {/* Quiz Component - Now always visible and outside white container */}
+      <div className="mb-6">
+        <Quiz onComplete={handleQuizComplete} />
+      </div>
 
-      {/* Tombol Navigasi */}
-      <div className="flex justify-between mt-6">
+      {/* Navigation Buttons - Now outside white container */}
+      <div className="flex justify-between">
         <button
           onClick={handleBack}
           className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
@@ -186,6 +188,7 @@ const Variabel = () => {
         </button>
         <button
           onClick={quizCompleted ? handleNext : null}
+          disabled={!quizCompleted}
           className="flex items-center justify-between"
           style={{
             backgroundColor: quizCompleted ? "#6E2A7F" : "#B0B0B0",

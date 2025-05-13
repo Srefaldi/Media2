@@ -174,9 +174,7 @@ const DeklarasiInisialisasi = () => {
       </div>
 
       {/* Kuis Deklarasi Variabel */}
-      {!quizCompleted && (
-        <QuizDeklarasiVariabel onComplete={handleQuizComplete} />
-      )}
+      <QuizDeklarasiVariabel onComplete={handleQuizComplete} />
 
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">

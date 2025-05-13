@@ -204,7 +204,7 @@ const PengenalanCSharp = () => {
       </div>
 
       {/* Kuis */}
-      {!quizCompleted && <Quiz onComplete={handleQuizCompleteLocal} />}
+      <Quiz onComplete={handleQuizCompleteLocal} />
 
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">

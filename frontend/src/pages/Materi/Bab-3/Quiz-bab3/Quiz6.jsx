@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz6 = ({ onComplete }) => {
   const [operator1, setOperator1] = useState("");
@@ -12,12 +12,17 @@ const Quiz6 = ({ onComplete }) => {
 
     // Cek jawaban
     if (operator1 === "<" && operator2 === "==" && operator3 === ">") {
-      onComplete();
+      onComplete(true); // Pass isPassed: true to parent
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",
         icon: "success",
         confirmButtonText: "OK",
+      }).then(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
       });
     } else {
       // Scroll ke atas ketika jawaban salah
@@ -25,13 +30,14 @@ const Quiz6 = ({ onComplete }) => {
       setOperator1("");
       setOperator2("");
       setOperator3("");
-      setQuizFeedback("Jawaban Anda Salah! Silakan coba lagi.");
+
       Swal.fire({
         title: "Jawaban Salah!",
         text: "Baca Kembali Materi dan Coba Lagi",
         icon: "error",
         confirmButtonText: "OK",
       });
+      onComplete(false); // Pass isPassed: false to parent
     }
   };
 

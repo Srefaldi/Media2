@@ -38,6 +38,7 @@ const StrukturEksekusi = () => {
         BAB 1 - PENDAHULUAN
       </h1>
 
+      {/* White Container - Content Only */}
       <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold">1.3 Struktur Eksekusi Kode</h2>
 
@@ -112,11 +113,13 @@ const StrukturEksekusi = () => {
         </figure>
       </div>
 
-      {/* Kuis */}
-      {!quizCompleted && <Quiz onComplete={handleQuizComplete} />}
+      {/* Quiz - Now outside white container */}
+      <div className="mb-6">
+        <Quiz onComplete={handleQuizComplete} />
+      </div>
 
-      {/* Tombol Navigasi */}
-      <div className="flex justify-between mt-6">
+      {/* Navigation Buttons - Now outside white container */}
+      <div className="flex justify-between">
         <button
           onClick={handleBack}
           className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"

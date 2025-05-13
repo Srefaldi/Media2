@@ -84,7 +84,7 @@ const StrukturKode = () => {
       </div>
 
       {/* Kuis */}
-      {!quizCompleted && <Quiz onComplete={handleQuizComplete} />}
+      <Quiz onComplete={handleQuizComplete} />
 
       {/* Tombol Navigasi */}
       <div className="flex justify-between mt-6">
