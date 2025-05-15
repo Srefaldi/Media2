@@ -9,8 +9,22 @@ const Quiz4 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.trim().replace(/\s+/g, " ").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedVar1 = normalizeAnswer(var1);
+    const normalizedVar2 = normalizeAnswer(var2);
+    const normalizedVar3 = normalizeAnswer(var3);
+
     // Cek jawaban
-    if (var1 === "0b10100100" && var2 === "164" && var3 === "0xA4") {
+    if (
+      normalizedVar1 === normalizeAnswer("0b10100100") &&
+      normalizedVar2 === normalizeAnswer("164") &&
+      normalizedVar3 === normalizeAnswer("0xA4")
+    ) {
       onComplete(true); // Pass true to indicate correct answer
     } else {
       // Scroll ke atas ketika jawaban salah
@@ -34,7 +48,7 @@ const Quiz4 = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-4 max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto mt-4 bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}

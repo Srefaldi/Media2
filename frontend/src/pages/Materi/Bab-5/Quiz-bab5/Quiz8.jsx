@@ -7,9 +7,27 @@ const Quiz8 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const correctIteration = "for (int j = 0; j < 2; j++)";
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.replace(/\s+/g, "").toLowerCase();
+    };
 
-    if (inputIteration.trim() === correctIteration) {
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedInputIteration = normalizeAnswer(inputIteration);
+    const correctIteration = "for (int j = 0; j < 2; j++)";
+    const normalizedCorrectIteration = normalizeAnswer(correctIteration);
+
+    // Cek jawaban (case insensitive dan ignore spaces)
+    if (normalizedInputIteration === normalizedCorrectIteration) {
+      // Jika benar, simpan dengan format yang benar (kapitalisasi sesuai jawaban benar)
+      const formattedAnswer = inputIteration.replace(/\s+/g, " ").trim();
+      const correctFormatted = correctIteration;
+      
+      // Jika hanya masalah kapitalisasi, gunakan format yang benar
+      if (normalizeAnswer(formattedAnswer) === normalizeAnswer(correctFormatted)) {
+        setInputIteration(correctFormatted);
+      }
+
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",
@@ -39,7 +57,7 @@ const Quiz8 = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-4 max-w-full p-6 mx-auto rounded-lg">
+    <div className="max-w-full p-6 mx-auto mt-4 rounded-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -54,7 +72,7 @@ const Quiz8 = ({ onComplete }) => {
           bentuk i j:
         </p>
 
-        <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg mb-4">
+        <div className="p-4 mt-3 mb-4 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
               {`public class Quiz\n{\n    public static void Main()\n    {\n        for (int i = 0; i < 2; i++)\n        {\n            `}

@@ -8,13 +8,21 @@ const QuizAssignment = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Cek jawaban
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.replace(/\s+/g, "").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedInputMultiply = normalizeAnswer(inputMultiply);
+    const normalizedInputDivide = normalizeAnswer(inputDivide);
     const correctMultiply = "*="; // Operator penugasan untuk perkalian
     const correctDivide = "/="; // Operator penugasan untuk pembagian
 
+    // Cek jawaban
     if (
-      inputMultiply.trim() === correctMultiply &&
-      inputDivide.trim() === correctDivide
+      normalizedInputMultiply === normalizeAnswer(correctMultiply) &&
+      normalizedInputDivide === normalizeAnswer(correctDivide)
     ) {
       console.log("Correct answers submitted"); // Debugging
       onComplete(true); // Pass true to indicate correct answer
@@ -37,7 +45,7 @@ const QuizAssignment = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-4 max-w-full p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mt-4 bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -51,10 +59,10 @@ const QuizAssignment = ({ onComplete }) => {
           yang sesuai untuk mendapatkan hasil perhitungan yang benar.
         </p>
 
-        <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg mb-4">
+        <div className="p-4 mt-3 mb-4 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
-              {`using System;\n\npublic class SoalPenugasan2\n{\n    public static void Main(string[] args)\n    {\n        int angka = 10;\n\n        // Kalikan angka dengan 4\n        angka `}
+              {`public class SoalPenugasan2\n{\n    public static void Main(string[] args)\n    {\n        int angka = 10;\n\n        // Kalikan angka dengan 4\n        angka `}
               <input
                 type="text"
                 value={inputMultiply}

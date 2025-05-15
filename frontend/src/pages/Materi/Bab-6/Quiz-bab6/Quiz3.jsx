@@ -8,12 +8,23 @@ const Quiz3 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.replace(/\s+/g, "").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedInputMain = normalizeAnswer(inputMain);
+    const normalizedInputReturn = normalizeAnswer(inputReturn);
     const correctMain = "PerkalianTigaAngka()";
     const correctReturn = "return hasil;";
+    const normalizedCorrectMain = normalizeAnswer(correctMain);
+    const normalizedCorrectReturn = normalizeAnswer(correctReturn);
 
+    // Cek jawaban
     if (
-      inputMain.trim() === correctMain &&
-      inputReturn.trim() === correctReturn
+      normalizedInputMain === normalizedCorrectMain &&
+      normalizedInputReturn === normalizedCorrectReturn
     ) {
       Swal.fire({
         title: "Jawaban Anda Benar",

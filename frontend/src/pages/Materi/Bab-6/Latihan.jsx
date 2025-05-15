@@ -188,8 +188,15 @@ public static void Main()
       return;
     }
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.replace(/\s+/g, "").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
     const isCorrect = question.correctAnswer.every(
-      (correctAnswer, index) => correctAnswer === userAnswers[index]
+      (correctAnswer, index) =>
+        normalizeAnswer(correctAnswer) === normalizeAnswer(userAnswers[index])
     );
 
     const newAnswerStatus = [...answerStatus];

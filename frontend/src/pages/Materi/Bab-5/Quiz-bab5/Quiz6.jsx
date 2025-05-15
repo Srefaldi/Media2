@@ -8,12 +8,22 @@ const Quiz6 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.replace(/\s+/g, "").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedInputCondition = normalizeAnswer(inputCondition);
+    const normalizedInputIteration = normalizeAnswer(inputIteration);
     const correctCondition = "i > 0";
     const correctIteration = "i--";
+    const normalizedCorrectCondition = normalizeAnswer(correctCondition);
+    const normalizedCorrectIteration = normalizeAnswer(correctIteration);
 
     if (
-      inputCondition.trim() === correctCondition &&
-      inputIteration.trim() === correctIteration
+      normalizedInputCondition === normalizedCorrectCondition &&
+      normalizedInputIteration === normalizedCorrectIteration
     ) {
       Swal.fire({
         title: "Jawaban Anda Benar",
@@ -46,7 +56,7 @@ const Quiz6 = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-4 max-w-full p-6 mx-auto rounded-lg">
+    <div className="max-w-full p-6 mx-auto mt-4 rounded-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -58,7 +68,7 @@ const Quiz6 = ({ onComplete }) => {
           Lengkapilah bagian kode berikut dengan pernyataan while yang sesuai
           untuk mencetak angka dari 5 hingga 1.
         </p>
-        <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg mb-4">
+        <div className="p-4 mt-3 mb-4 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
               {`\npublic class Quiz\n{\n    public static void Main()\n    {\n        int i = 5;\n\n        while (`}

@@ -9,15 +9,27 @@ const Quiz5 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Cek jawaban
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.replace(/\s+/g, "").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedInputInit = normalizeAnswer(inputInit);
+    const normalizedInputCondition = normalizeAnswer(inputCondition);
+    const normalizedInputIteration = normalizeAnswer(inputIteration);
     const correctInit = "int i = 1"; // Jawaban yang benar untuk inisialisasi
     const correctCondition = "i <= 10"; // Jawaban yang benar untuk kondisi
     const correctIteration = "i++"; // Jawaban yang benar untuk iterasi
+    const normalizedCorrectInit = normalizeAnswer(correctInit);
+    const normalizedCorrectCondition = normalizeAnswer(correctCondition);
+    const normalizedCorrectIteration = normalizeAnswer(correctIteration);
 
+    // Cek jawaban
     if (
-      inputInit.trim() === correctInit &&
-      inputCondition.trim() === correctCondition &&
-      inputIteration.trim() === correctIteration
+      normalizedInputInit === normalizedCorrectInit &&
+      normalizedInputCondition === normalizedCorrectCondition &&
+      normalizedInputIteration === normalizedCorrectIteration
     ) {
       onComplete();
       Swal.fire({
@@ -49,7 +61,7 @@ const Quiz5 = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-4 max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto mt-4 bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -63,7 +75,7 @@ const Quiz5 = ({ onComplete }) => {
           untuk mencetak angka dari 1 hingga 10.
         </p>
 
-        <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg mb-4">
+        <div className="p-4 mt-3 mb-4 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
               {`\npublic class Quiz\n{\n    public static void Main()\n    {\n            for (`}

@@ -30,7 +30,7 @@ const QuizComparison = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-4 max-w-full p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mt-4 bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -44,10 +44,10 @@ const QuizComparison = ({ onComplete }) => {
           sesuai untuk mendapatkan hasil yang benar.
         </p>
 
-        <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg mb-4">
+        <div className="p-4 mt-3 mb-4 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
-              {`using System;\n\npublic class SoalPerbandingan4\n{\n    public static void Main(string[] args)\n    {\n        int x = 18;\n        int y = 12;\n\n        if (x `}
+              {`public class SoalPerbandingan4\n{\n    public static void Main(string[] args)\n    {\n        int x = 18;\n        int y = 12;\n\n        if (x `}
               <input
                 type="text"
                 value={inputComparison}

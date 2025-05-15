@@ -9,11 +9,21 @@ const Quiz8 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.trim().replace(/\s+/g, " ").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedDataType = normalizeAnswer(dataType);
+    const normalizedStringValue = normalizeAnswer(stringValue);
+    const normalizedOutput = normalizeAnswer(output);
+
     // Cek jawaban
     if (
-      dataType === "string" &&
-      stringValue === '"Hello World"' &&
-      output === "greeting"
+      normalizedDataType === normalizeAnswer("string") &&
+      normalizedStringValue === normalizeAnswer('"Hello World"') &&
+      normalizedOutput === normalizeAnswer("greeting")
     ) {
       console.log("Correct answers submitted"); // Debugging
       onComplete(true); // Pass true to indicate correct answer
@@ -52,7 +62,7 @@ const Quiz8 = ({ onComplete }) => {
           mencetak Hello World ...
         </p>
 
-        <div className="p-4 mb-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg">
+        <div className="p-4 mt-3 mb-4 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
               {`\npublic class BelajarCSharp  \n{\n    public static void Main() \n    {\n        `}

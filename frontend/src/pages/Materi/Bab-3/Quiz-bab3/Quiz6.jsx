@@ -10,8 +10,22 @@ const Quiz6 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.trim().replace(/\s+/g, " ").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedOperator1 = normalizeAnswer(operator1);
+    const normalizedOperator2 = normalizeAnswer(operator2);
+    const normalizedOperator3 = normalizeAnswer(operator3);
+
     // Cek jawaban
-    if (operator1 === "<" && operator2 === "==" && operator3 === ">") {
+    if (
+      normalizedOperator1 === normalizeAnswer("<") &&
+      normalizedOperator2 === normalizeAnswer("==") &&
+      normalizedOperator3 === normalizeAnswer(">")
+    ) {
       onComplete(true); // Pass isPassed: true to parent
       Swal.fire({
         title: "Jawaban Anda Benar",

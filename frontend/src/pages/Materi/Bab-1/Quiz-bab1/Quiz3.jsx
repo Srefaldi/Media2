@@ -7,8 +7,18 @@ const Quiz = ({ onComplete }) => {
   const [showCompiler, setShowCompiler] = useState(false);
   const [quizFeedback, setQuizFeedback] = useState("");
 
+  const normalizeAnswer = (answer) => {
+    return answer.trim().toLowerCase();
+  };
+
   const handleSubmit = () => {
-    if (functionName === "Main" && methodName === "Console") {
+    const normalizedFunction = normalizeAnswer(functionName);
+    const normalizedMethod = normalizeAnswer(methodName);
+
+    if (normalizedFunction === "main" && normalizedMethod === "console") {
+      // Auto-correct the case before proceeding
+      setFunctionName("Main");
+      setMethodName("Console");
       onComplete();
       Swal.fire({
         title: "Jawaban Anda Benar",

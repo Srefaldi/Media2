@@ -13,11 +13,23 @@ const Quiz2 = ({ onComplete }) => {
     const correctCall2 = "TampilkanPesan();";
     const correctMethod = "TampilkanPesan()";
 
-    if (
-      inputCall1.trim() === correctCall1 &&
-      inputCall2.trim() === correctCall2 &&
-      inputMethod.trim() === correctMethod
-    ) {
+    // Function to normalize answers (remove spaces and make lowercase)
+    const normalizeAnswer = (answer) => {
+      return answer.replace(/\s+/g, "").toLowerCase();
+    };
+
+    // Check if answers match when normalized
+    const isCorrect =
+      normalizeAnswer(inputCall1) === normalizeAnswer(correctCall1) &&
+      normalizeAnswer(inputCall2) === normalizeAnswer(correctCall2) &&
+      normalizeAnswer(inputMethod) === normalizeAnswer(correctMethod);
+
+    if (isCorrect) {
+      // If correct but has capitalization/spacing issues, correct the display
+      setInputCall1(correctCall1);
+      setInputCall2(correctCall2);
+      setInputMethod(correctMethod);
+
       Swal.fire({
         title: "Jawaban Anda Benar",
         text: "Silahkan Lanjut Kemateri Berikutnya",

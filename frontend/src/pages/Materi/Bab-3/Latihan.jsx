@@ -196,6 +196,11 @@ const LatihanBab3 = () => {
     const question = questions[currentQuestionIndex];
     const userAnswers = answers[currentQuestionIndex];
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.trim().replace(/\s+/g, " ").toLowerCase();
+    };
+
     if (userAnswers.some((answer) => answer === "")) {
       Swal.fire({
         title: "Soal Belum Dijawab!",
@@ -207,7 +212,8 @@ const LatihanBab3 = () => {
     }
 
     const isCorrect = question.correctAnswer.every(
-      (correctAnswer, index) => correctAnswer === userAnswers[index]
+      (correctAnswer, index) =>
+        normalizeAnswer(correctAnswer) === normalizeAnswer(userAnswers[index])
     );
 
     if (isCorrect) {
@@ -379,31 +385,31 @@ const LatihanBab3 = () => {
   };
 
   const renderInstruksi = () => (
-    <div className="mx-auto max-w-4xl p-2 sm:p-4 lg:p-6 bg-white rounded-lg shadow-md">
-      <h1 className="mb-4 text-xl sm:text-2xl font-bold text-center">
+    <div className="max-w-4xl p-2 mx-auto bg-white rounded-lg shadow-md sm:p-4 lg:p-6">
+      <h1 className="mb-4 text-xl font-bold text-center sm:text-2xl">
         BAB 3 - TIPE DATA
       </h1>
       <section>
-        <h2 className="mb-3 font-semibold text-gray-800 text-base sm:text-lg">
+        <h2 className="mb-3 text-base font-semibold text-gray-800 sm:text-lg">
           Aturan
         </h2>
-        <p className="mb-3 leading-relaxed text-sm sm:text-base">
+        <p className="mb-3 text-sm leading-relaxed sm:text-base">
           Latihan ini bertujuan untuk menguji pengetahuan Anda tentang operator
           dalam pemrograman C#.
         </p>
-        <p className="mb-3 leading-relaxed text-sm sm:text-base">
+        <p className="mb-3 text-sm leading-relaxed sm:text-base">
           Terdapat 5 pertanyaan yang harus dikerjakan dalam latihan ini.
           Beberapa ketentuannya sebagai berikut:
         </p>
-        <ul className="mb-3 leading-relaxed list-disc list-inside text-sm sm:text-base">
+        <ul className="mb-3 text-sm leading-relaxed list-disc list-inside sm:text-base">
           <li>Syarat nilai kelulusan: 75%</li>
           <li>Durasi ujian: 10 menit</li>
         </ul>
-        <p className="mb-3 leading-relaxed text-sm sm:text-base">
+        <p className="mb-3 text-sm leading-relaxed sm:text-base">
           Apabila tidak memenuhi syarat kelulusan, maka Anda harus mengulang
           pengerjaan latihan kembali.
         </p>
-        <p className="mb-6 leading-relaxed text-sm sm:text-base">
+        <p className="mb-6 text-sm leading-relaxed sm:text-base">
           Selamat Mengerjakan!
         </p>
         <div className="flex justify-end">
@@ -422,29 +428,29 @@ const LatihanBab3 = () => {
             <img
               src={nextIcon}
               alt="Selanjutnya"
-              className="w-4 sm:w-5 h-4 sm:h-5"
+              className="w-4 h-4 sm:w-5 sm:h-5"
             />
           </button>
         </div>
       </section>
 
       <section className="mt-8 sm:mt-16">
-        <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300 text-base sm:text-lg">
+        <h3 className="pb-1 mb-3 text-base font-semibold text-gray-800 border-b border-gray-300 sm:text-lg">
           Riwayat
         </h3>
         {isLoading ? (
-          <p className="text-gray-600 text-sm sm:text-base">
+          <p className="text-sm text-gray-600 sm:text-base">
             Memuat riwayat...
           </p>
         ) : error ? (
-          <p className="text-red-600 text-sm sm:text-base">{error}</p>
+          <p className="text-sm text-red-600 sm:text-base">{error}</p>
         ) : riwayat.length === 0 ? (
-          <p className="text-gray-600 text-sm sm:text-base">
+          <p className="text-sm text-gray-600 sm:text-base">
             Belum ada riwayat
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-gray-600 text-sm sm:text-base">
+            <table className="w-full text-sm text-left text-gray-600 sm:text-base">
               <thead>
                 <tr>
                   <th className="pb-2 font-semibold">Tanggal</th>
@@ -479,27 +485,27 @@ const LatihanBab3 = () => {
   );
 
   const renderLatihan = () => (
-    <div className="max-w-6xl p-2 sm:p-4 lg:p-6 mx-auto bg-white rounded-lg shadow-lg">
-      <h2 className="text-base sm:text-lg font-semibold text-center text-gray-800">
+    <div className="max-w-6xl p-2 mx-auto bg-white rounded-lg shadow-lg sm:p-4 lg:p-6">
+      <h2 className="text-base font-semibold text-center text-gray-800 sm:text-lg">
         LATIHAN BAB 3
       </h2>
 
       <div
-        className="relative p-2 sm:p-4 mt-4 border rounded-lg"
+        className="relative p-2 mt-4 border rounded-lg sm:p-4"
         style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
       >
         <h3
-          className="flex items-center p-2 text-base sm:text-lg font-semibold border rounded-lg w-full sm:w-80 md:w-96"
+          className="flex items-center w-full p-2 text-base font-semibold border rounded-lg sm:text-lg sm:w-80 md:w-96"
           style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
         >
           <img
             src={IconPetunjuk}
             alt="Icon"
-            className="w-5 sm:w-6 h-5 sm:h-6 mr-2"
+            className="w-5 h-5 mr-2 sm:w-6 sm:h-6"
           />
           PETUNJUK MENGERJAKAN
         </h3>
-        <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside text-sm sm:text-base">
+        <ol className="mt-2 text-sm text-justify text-gray-600 list-decimal list-inside sm:text-base">
           <li>
             Jawablah soal-soal di bawah ini dengan mengisikannya pada input yang
             tersedia.
@@ -546,18 +552,18 @@ const LatihanBab3 = () => {
         </ol>
       </div>
 
-      <div className="flex flex-col lg:flex-row mt-6 gap-2 sm:gap-4 lg:items-start">
-        <div className="flex flex-col mr-0 lg:mr-6 w-full lg:w-auto">
-          <div className="p-2 sm:p-4 mt-2 sm:mt-5 text-center text-red-600 bg-gray-100 border rounded-lg">
-            <h3 className="font-semibold text-sm sm:text-base">
+      <div className="flex flex-col gap-2 mt-6 lg:flex-row sm:gap-4 lg:items-start">
+        <div className="flex flex-col w-full mr-0 lg:mr-6 lg:w-auto">
+          <div className="p-2 mt-2 text-center text-red-600 bg-gray-100 border rounded-lg sm:p-4 sm:mt-5">
+            <h3 className="text-sm font-semibold sm:text-base">
               Waktu Tersisa: {Math.floor(timeLeft / 60)}:
               {(timeLeft % 60).toString().padStart(2, "0")}
             </h3>
           </div>
-          <h3 className="mt-4 sm:mt-8 text-base sm:text-lg font-semibold text-center">
+          <h3 className="mt-4 text-base font-semibold text-center sm:mt-8 sm:text-lg">
             SOAL
           </h3>
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex flex-wrap justify-center gap-2">
             {questions.map((question, index) => (
               <button
                 key={question.id}
@@ -593,12 +599,12 @@ const LatihanBab3 = () => {
           </div>
         </div>
 
-        <div className="w-full p-2 sm:p-4 lg:p-6 border rounded-lg">
-          <h3 className="font-semibold text-sm sm:text-base">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
-          <p className="text-gray-600 text-sm sm:text-base">
+        <div className="w-full p-2 border rounded-lg sm:p-4 lg:p-6">
+          <h3 className="text-sm font-semibold sm:text-base">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
+          <p className="text-sm text-gray-600 sm:text-base">
             {questions[currentQuestionIndex].prompt}
           </p>
-          <div className="p-2 sm:p-4 mt-2 font-mono text-xs sm:text-sm bg-gray-100 rounded-lg">
+          <div className="p-2 mt-2 font-mono text-xs bg-gray-100 rounded-lg sm:p-4 sm:text-sm">
             <pre className="code-block">
               <code>
                 {questions[currentQuestionIndex].code
@@ -646,7 +652,7 @@ const LatihanBab3 = () => {
                             onChange={(e) =>
                               handleAnswerChange(e.target.value, index)
                             }
-                            className="w-20 sm:w-24 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
+                            className="w-20 px-2 py-1 border border-gray-400 rounded-md sm:w-24 focus:ring-2 focus:ring-blue-300"
                             placeholder="Jawaban..."
                           />
                         </span>

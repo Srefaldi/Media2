@@ -88,12 +88,12 @@ const Quiz = ({ onComplete }) => {
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
             }
           >
-            Cek Jawaban
+            Kirim
           </button>
           <button
             type="button"
             onClick={handleReset}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+            className="px-4 py-2 text-white transition-colors bg-red-500 rounded-lg hover:bg-red-600"
           >
             Hapus Jawaban
           </button>

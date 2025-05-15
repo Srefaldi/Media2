@@ -189,6 +189,7 @@ const LatihanBab1 = () => {
     newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]];
     newAnswers[currentQuestionIndex][inputIndex] = value;
     setAnswers(newAnswers);
+    console.log("Updated answers:", newAnswers); // Debugging
   };
 
   // Fungsi untuk memeriksa jawaban
@@ -206,9 +207,30 @@ const LatihanBab1 = () => {
       return;
     }
 
-    const isCorrect = question.correctAnswer.every(
-      (correctAnswer, index) => correctAnswer === userAnswers[index]
-    );
+    const normalizeAnswer = (answer) => {
+      // Remove leading/trailing spaces and normalize internal spaces
+      let normalized = answer.trim().replace(/\s+/g, " ");
+      // For question 5, remove spaces around the + operator and in string literals
+      if (question.id === 5) {
+        normalized = normalized.replace(/\s*\+\s*/g, "+");
+        normalized = normalized.replace(/"([^"]*)\s*"/g, '"$1"');
+      }
+      return normalized;
+    };
+
+    const isCorrect = question.correctAnswer.every((correctAnswer, index) => {
+      const userAnswer = normalizeAnswer(userAnswers[index]);
+      const normalizedCorrectAnswer = normalizeAnswer(correctAnswer);
+      const normalizedUserAnswer = userAnswer.toLowerCase();
+      const normalizedCorrectAnswerLower =
+        normalizedCorrectAnswer.toLowerCase();
+      console.log(
+        "Comparing:",
+        normalizedUserAnswer,
+        normalizedCorrectAnswerLower
+      ); // Debugging
+      return normalizedUserAnswer === normalizedCorrectAnswerLower;
+    });
 
     if (isCorrect) {
       if (!hasAnswered[currentQuestionIndex]) {
@@ -585,7 +607,7 @@ const LatihanBab1 = () => {
                 {questions[currentQuestionIndex].code
                   .split("_____")
                   .map((part, index) => (
-                    <React.Fragment key={index}>
+                    <React.Fragment key={`part-${index}`}>
                       {part.split(" ").map((word, wordIndex) => {
                         if (
                           word.includes("class") ||
@@ -595,24 +617,24 @@ const LatihanBab1 = () => {
                           word.includes("Console")
                         ) {
                           return (
-                            <span key={wordIndex} className="keyword">
+                            <span key={`word-${wordIndex}`} className="keyword">
                               {word}{" "}
                             </span>
                           );
                         } else if (word.includes('"')) {
                           return (
-                            <span key={wordIndex} className="string">
+                            <span key={`word-${wordIndex}`} className="string">
                               {word}{" "}
                             </span>
                           );
                         } else if (word.includes("//")) {
                           return (
-                            <span key={wordIndex} className="comment">
+                            <span key={`word-${wordIndex}`} className="comment">
                               {word}{" "}
                             </span>
                           );
                         }
-                        return <span key={wordIndex}>{word} </span>;
+                        return <span key={`word-${wordIndex}`}>{word} </span>;
                       })}
                       {index <
                         questions[currentQuestionIndex].code.split("_____")
@@ -622,22 +644,32 @@ const LatihanBab1 = () => {
                           {currentQuestionIndex === 2 ? (
                             <input
                               type="text"
+                              key={`input-${index}`}
                               value={answers[currentQuestionIndex][index] || ""}
                               onChange={(e) =>
                                 handleAnswerChange(e.target.value, index)
                               }
+                              onKeyDown={(e) =>
+                                console.log("Key pressed:", e.key)
+                              } // Debugging
                               className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
                               placeholder="Jawaban..."
+                              autoFocus={index === 0}
                             />
                           ) : (
                             <input
                               type="text"
+                              key={`input-0`}
                               value={answers[currentQuestionIndex][0] || ""}
                               onChange={(e) =>
                                 handleAnswerChange(e.target.value, 0)
                               }
+                              onKeyDown={(e) =>
+                                console.log("Key pressed:", e.key)
+                              } // Debugging
                               className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
                               placeholder="Jawaban..."
+                              autoFocus
                             />
                           )}
                         </span>

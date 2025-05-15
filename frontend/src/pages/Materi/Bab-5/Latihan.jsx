@@ -211,9 +211,29 @@ const LatihanBab5 = () => {
       return;
     }
 
-    const isCorrect = question.correctAnswer.every(
-      (correctAnswer, index) => correctAnswer === userAnswers[index]
-    );
+    // Fungsi untuk normalisasi jawaban (ignore spaces and case)
+    const normalizeAnswer = (answer) => {
+      return answer.replace(/\s+/g, "").toLowerCase();
+    };
+
+    const isCorrect = question.correctAnswer.every((correctAnswer, index) => {
+      const normalizedCorrect = normalizeAnswer(correctAnswer);
+      const normalizedUser = normalizeAnswer(userAnswers[index]);
+      return normalizedCorrect === normalizedUser;
+    });
+
+    // Jika benar tetapi ada perbedaan kapitalisasi, perbaiki jawaban pengguna
+    if (isCorrect) {
+      const newAnswers = [...answers];
+      newAnswers[currentQuestionIndex] = question.correctAnswer.map(
+        (correct, index) => {
+          // Jika jawaban user sudah benar secara konten (tapi mungkin beda kapitalisasi/spasi)
+          // Kembalikan format yang benar dari question.correctAnswer
+          return correct;
+        }
+      );
+      setAnswers(newAnswers);
+    }
 
     const newAnswerStatus = [...answerStatus];
     newAnswerStatus[currentQuestionIndex] = isCorrect ? "correct" : "incorrect";
@@ -234,7 +254,6 @@ const LatihanBab5 = () => {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          // Lanjutkan ke soal berikutnya jika bukan soal terakhir
           if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
           }
@@ -245,7 +264,6 @@ const LatihanBab5 = () => {
           title: "Sudah Menjawab",
           text: "Anda sudah menjawab soal ini.",
         }).then(() => {
-          // Lanjutkan ke soal berikutnya jika bukan soal terakhir
           if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
           }
@@ -258,7 +276,6 @@ const LatihanBab5 = () => {
         icon: "error",
         confirmButtonText: "OK",
       }).then(() => {
-        // Lanjutkan ke soal berikutnya jika bukan soal terakhir
         if (currentQuestionIndex < questions.length - 1) {
           setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         }

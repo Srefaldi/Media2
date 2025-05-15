@@ -7,10 +7,18 @@ const Quiz1 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Cek jawaban
-    const correctCondition = 'jenisHewan == "Kucing"'; // Kondisi yang benar
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.replace(/\s+/g, "").toLowerCase();
+    };
 
-    if (inputCondition.trim() === correctCondition) {
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedInputCondition = normalizeAnswer(inputCondition);
+    const correctCondition = 'jenisHewan == "Kucing"'; // Kondisi yang benar
+    const normalizedCorrectCondition = normalizeAnswer(correctCondition);
+
+    // Cek jawaban
+    if (normalizedInputCondition === normalizedCorrectCondition) {
       window.scrollTo(0, document.body.scrollHeight);
 
       Swal.fire({
@@ -28,7 +36,6 @@ const Quiz1 = ({ onComplete }) => {
 
       Swal.fire({
         title: "Jawaban Salah!",
-
         text: "Baca Kembali Materi dan Coba Lagi",
         icon: "error",
         confirmButtonText: "OK",

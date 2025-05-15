@@ -12,14 +12,27 @@ const Quiz7 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.trim().replace(/\s+/g, " ").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedCharValue1 = normalizeAnswer(charValue1);
+    const normalizedCharValue2 = normalizeAnswer(charValue2);
+    const normalizedCharValue3 = normalizeAnswer(charValue3);
+    const normalizedOutput1 = normalizeAnswer(output1);
+    const normalizedOutput2 = normalizeAnswer(output2);
+    const normalizedOutput3 = normalizeAnswer(output3);
+
     // Cek jawaban
     if (
-      charValue1 === "'B'" &&
-      charValue2 === "'7'" &&
-      charValue3 === "'#'" &&
-      output1 === "huruf" &&
-      output2 === "angka" &&
-      output3 === "simbol"
+      normalizedCharValue1 === normalizeAnswer("'B'") &&
+      normalizedCharValue2 === normalizeAnswer("'7'") &&
+      normalizedCharValue3 === normalizeAnswer("'#'") &&
+      normalizedOutput1 === normalizeAnswer("huruf") &&
+      normalizedOutput2 === normalizeAnswer("angka") &&
+      normalizedOutput3 === normalizeAnswer("simbol")
     ) {
       console.log("Correct answers submitted"); // Debugging
       onComplete(true); // Pass true to indicate correct answer
@@ -64,7 +77,7 @@ const Quiz7 = ({ onComplete }) => {
           dengan output yang benar ...
         </p>
 
-        <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg mb-4">
+        <div className="p-4 mt-3 mb-4 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
               {`\npublic class BelajarCSharp \n{\n    public static void Main(string[] args) \n    {\n        char huruf = `}

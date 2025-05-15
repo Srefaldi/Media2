@@ -8,12 +8,23 @@ const Quiz4 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.replace(/\s+/g, "").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedInputMethodCall = normalizeAnswer(inputMethodCall);
+    const normalizedInputParameter = normalizeAnswer(inputParameter);
     const correctMethodCall = "Sapa";
     const correctParameter = "nama";
+    const normalizedCorrectMethodCall = normalizeAnswer(correctMethodCall);
+    const normalizedCorrectParameter = normalizeAnswer(correctParameter);
 
+    // Cek jawaban
     if (
-      inputMethodCall.trim() === correctMethodCall &&
-      inputParameter.trim() === correctParameter
+      normalizedInputMethodCall === normalizedCorrectMethodCall &&
+      normalizedInputParameter === normalizedCorrectParameter
     ) {
       Swal.fire({
         title: "Jawaban Anda Benar",

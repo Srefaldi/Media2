@@ -8,8 +8,20 @@ const Quiz2 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.trim().replace(/\s+/g, " ").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedInputTambah = normalizeAnswer(inputTambah);
+    const normalizedInputKurang = normalizeAnswer(inputKurang);
+
     // Cek jawaban
-    if (inputTambah === "+" && inputKurang === "-") {
+    if (
+      normalizedInputTambah === normalizeAnswer("+") &&
+      normalizedInputKurang === normalizeAnswer("-")
+    ) {
       console.log("Correct answers submitted"); // Debugging
       onComplete(true); // Pass true to indicate correct answer
     } else {
@@ -31,7 +43,7 @@ const Quiz2 = ({ onComplete }) => {
   };
 
   return (
-    <div className="mt-4 max-w-full p-6 mx-auto bg-white rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto mt-4 bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -46,7 +58,7 @@ const Quiz2 = ({ onComplete }) => {
           ...
         </p>
 
-        <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg mb-4">
+        <div className="p-4 mt-3 mb-4 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
               {`int angka1 = 15;\nint angka2 = 10;\n\nint hasilTambah = angka1 `}

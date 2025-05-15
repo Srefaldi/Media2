@@ -12,14 +12,27 @@ const Quiz5 = ({ onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Fungsi untuk normalisasi jawaban
+    const normalizeAnswer = (answer) => {
+      return answer.trim().replace(/\s+/g, " ").toLowerCase();
+    };
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedVar1Type = normalizeAnswer(var1Type);
+    const normalizedVar2Type = normalizeAnswer(var2Type);
+    const normalizedVar3Type = normalizeAnswer(var3Type);
+    const normalizedVar1Value = normalizeAnswer(var1Value);
+    const normalizedVar2Value = normalizeAnswer(var2Value);
+    const normalizedVar3Value = normalizeAnswer(var3Value);
+
     // Cek jawaban
     if (
-      var1Type === "float" &&
-      var2Type === "double" &&
-      var3Type === "decimal" &&
-      var1Value === "F" &&
-      var2Value === "D" &&
-      var3Value === "M"
+      normalizedVar1Type === normalizeAnswer("float") &&
+      normalizedVar2Type === normalizeAnswer("double") &&
+      normalizedVar3Type === normalizeAnswer("decimal") &&
+      normalizedVar1Value === normalizeAnswer("F") &&
+      normalizedVar2Value === normalizeAnswer("D") &&
+      normalizedVar3Value === normalizeAnswer("M")
     ) {
       console.log("Correct answers submitted"); // Debugging
       onComplete(true); // Pass true to indicate correct answer

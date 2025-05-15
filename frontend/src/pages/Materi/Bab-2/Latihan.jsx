@@ -214,9 +214,15 @@ const LatihanBab2 = () => {
       return;
     }
 
-    const isCorrect = question.correctAnswer.every(
-      (correctAnswer, index) => correctAnswer === userAnswers[index]
-    );
+    const normalizeAnswer = (answer) => {
+      return answer.trim().replace(/\s+/g, " ").toLowerCase();
+    };
+
+    const isCorrect = question.correctAnswer.every((correctAnswer, index) => {
+      const normalizedUserAnswer = normalizeAnswer(userAnswers[index]);
+      const normalizedCorrectAnswer = normalizeAnswer(correctAnswer);
+      return normalizedUserAnswer === normalizedCorrectAnswer;
+    });
 
     if (isCorrect) {
       if (!hasAnswered[currentQuestionIndex]) {
@@ -279,7 +285,7 @@ const LatihanBab2 = () => {
       setCurrentQuestionIndex(index);
       const newAnswers = [...answers];
       newAnswers[index] =
-        index === 0 || index === 1 || index === 2 || index === 4
+        index === 0 || index === 1 || index === 2
           ? ["", "", ""]
           : index === 3
           ? ["", ""]
@@ -390,7 +396,7 @@ const LatihanBab2 = () => {
   };
 
   const renderInstruksi = () => (
-    <div className="p-4 mx-auto bg-white rounded-lg shadow-md max-w-4xl sm:p-6 lg:p-8">
+    <div className="max-w-4xl p-4 mx-auto bg-white rounded-lg shadow-md sm:p-6 lg:p-8">
       <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
       <section>
         <h2 className="mb-3 font-semibold text-gray-800">Aturan</h2>
@@ -486,7 +492,7 @@ const LatihanBab2 = () => {
         style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
       >
         <h3
-          className="flex items-center p-2 text-lg font-semibold border rounded-lg w-full sm:w-80 md:w-96"
+          className="flex items-center w-full p-2 text-lg font-semibold border rounded-lg sm:w-80 md:w-96"
           style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
         >
           <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
@@ -673,8 +679,7 @@ const LatihanBab2 = () => {
                 newAnswers[currentQuestionIndex] =
                   currentQuestionIndex === 0 ||
                   currentQuestionIndex === 1 ||
-                  currentQuestionIndex === 2 ||
-                  currentQuestionIndex === 4
+                  currentQuestionIndex === 2
                     ? ["", "", ""]
                     : currentQuestionIndex === 3
                     ? ["", ""]
