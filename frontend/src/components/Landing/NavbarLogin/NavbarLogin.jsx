@@ -6,6 +6,7 @@ import { IoLogOut } from "react-icons/io5";
 import { useSelector, useDispatch } from "react-redux";
 import { LogOut, reset } from "../../../features/authSlice";
 import userAvatar from "../../../assets/img/user.png";
+import Swal from "sweetalert2"; // Impor SweetAlert2
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -23,9 +24,16 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    dispatch(LogOut());
-    dispatch(reset());
-    navigate("/");
+    Swal.fire({
+      icon: "success", // Ubah ke "success" agar lebih sesuai dengan logout
+      title: "Logout Berhasil",
+      text: "Anda telah keluar dari sistem.",
+      showConfirmButton: true,
+    }).then(() => {
+      dispatch(LogOut());
+      dispatch(reset());
+      navigate("/login"); // Navigasi ke login setelah konfirmasi
+    });
   };
 
   return (

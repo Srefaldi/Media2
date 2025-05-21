@@ -71,8 +71,8 @@ const MateriSidebar = ({
   return (
     <SidebarContainer className="relative p-3 text-gray-900 bg-white sm:p-4 max-w-80 md:max-w-80">
       <button
-        className="absolute z-50 p-2 text-white bg-gray-500 rounded-lg md:hidden top-4 right-4"
-        style={{ padding: "8px" }}
+        className="absolute z-50 p-2 text-white bg-gray-500 rounded-lg md:hidden top-4 right-4 "
+        style={{ padding: "8px", width: "40px" }}
         onClick={toggleSidebar}
       >
         <HiX size={24} />

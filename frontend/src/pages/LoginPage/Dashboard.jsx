@@ -34,15 +34,8 @@ const UserDashboard = () => {
 
   useEffect(() => {
     if (isError && message === "Mohon login ke akun anda" && !isLoggedOut) {
-      Swal.fire({
-        icon: "error",
-        title: "Logout Berhasil",
-        text: "Silakan login kembali.",
-        showConfirmButton: true,
-      }).then(() => {
-        dispatch(reset());
-        navigate("/login");
-      });
+      dispatch(reset());
+      navigate("/login");
     }
   }, [isError, message, dispatch, navigate, isLoggedOut]);
 

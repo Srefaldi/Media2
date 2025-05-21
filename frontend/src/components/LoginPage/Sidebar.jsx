@@ -48,7 +48,7 @@ const Sidebar = () => {
     <>
       {/* Mobile Toggle Button */}
       <button
-        className="fixed z-50 p-2 text-white transition-shadow duration-200 rounded-lg shadow-md md:hidden top-4 left-4 bg-gradient-to-r from-purple-600 to-blue-500 hover:shadow-lg"
+        className="fixed z-50 w-10 p-2 text-white transition-shadow duration-200 rounded-lg shadow-md md:hidden top-4 left-4 bg-gradient-to-r from-purple-600 to-blue-500 hover:shadow-lg"
         onClick={toggleSidebar}
       >
         {isOpen ? (

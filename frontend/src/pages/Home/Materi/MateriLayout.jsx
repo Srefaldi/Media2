@@ -8,7 +8,7 @@ import Footer from "../../../components/Landing/Footer2";
 import Swal from "sweetalert2";
 import daftarBab from "./daftarBab.json";
 import { getMe } from "../../../features/authSlice";
-import { HiMenuAlt3 } from "react-icons/hi";
+import { HiMenuAlt3, HiX } from "react-icons/hi"; // Impor HiX untuk ikon tutup
 
 const MateriLayout = () => {
   const [progress, setProgress] = useState(0);
@@ -276,12 +276,15 @@ const MateriLayout = () => {
               backgroundColor: "#6b7280",
               borderRadius: "8px",
               zIndex: 30,
-              display:
-                isSidebarOpen || window.innerWidth >= 768 ? "none" : "block",
+              width: "40px", // Lebar tetap 40px
+              height: "40px", // Tinggi ditambahkan untuk konsistensi
+              display: window.innerWidth >= 768 ? "none" : "flex", // Hanya muncul di layar kecil
+              alignItems: "center",
+              justifyContent: "center",
             }}
             onClick={toggleSidebar}
           >
-            <HiMenuAlt3 size={24} />
+            {isSidebarOpen ? <HiX size={24} /> : <HiMenuAlt3 size={24} />}
           </button>
           <Outlet context={{ handleLessonComplete, handleQuizComplete }} />
           <Footer />
