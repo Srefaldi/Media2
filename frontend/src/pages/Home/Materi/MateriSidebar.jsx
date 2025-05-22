@@ -12,6 +12,7 @@ import kontrolAlurIcon from "./style/img/kontrol.png";
 import methodIcon from "./style/img/method.png";
 import lockIcon from "./style/img/lock.png";
 import unlockIcon from "./style/img/unlock.png";
+import evaluasi from "./style/img/evaluasi.png";
 import { HiX } from "react-icons/hi";
 
 const SidebarContainer = styled.div`
@@ -66,6 +67,7 @@ const MateriSidebar = ({
     operatorIcon,
     kontrolAlurIcon,
     methodIcon,
+    evaluasi,
   };
 
   return (

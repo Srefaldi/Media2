@@ -33,12 +33,7 @@ const Rangkuman = () => {
             struktur eksekusi kode secara sekuensial, di mana kode yang ditulis
             terlebih dahulu akan dieksekusi terlebih dahulu.
           </li>
-          <li className="text-justify">
-            Untuk menjalankan program C#, diperlukan instalasi dan setup{" "}
-            <strong>Visual Studio Code</strong>, <strong>.NET SDK</strong>,
-            serta <strong>.NET Runtime</strong>. Selain itu, perlu juga memasang{" "}
-            <strong>VS Code Extension</strong> (C# dan C# Extension).
-          </li>
+
           <li className="text-justify">
             Struktur dasar kode dalam C# meliputi penulisan{" "}
             <strong>kelas</strong>, <strong>metode Main</strong>, dan penggunaan{" "}

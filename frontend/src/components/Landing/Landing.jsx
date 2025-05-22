@@ -13,7 +13,7 @@ const daftarMateri = [
     judul: "PENDAHULUAN",
     subMateri: [
       "Pengenalan C#",
-      "Instalasi C#",
+
       "Struktur Kode Pemrograman C#",
       "Struktur Eksekusi Kode",
       "Sintaks Print",

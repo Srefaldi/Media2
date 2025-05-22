@@ -30,7 +30,6 @@ const Sidebar = () => {
     setIsOpen(!isOpen);
   };
 
-  // Dynamically set sidebar height to match document height
   useEffect(() => {
     const setSidebarHeight = () => {
       const sidebar = document.querySelector(".sidebar");
@@ -148,7 +147,7 @@ const Sidebar = () => {
               onClick={() => setIsOpen(false)}
             >
               <IoSettings className="mr-2 text-xl text-gray-600 sm:text-2xl" />
-              Pengaturan
+              Pengaturan KKM
             </NavLink>
           )}
           <button
