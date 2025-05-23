@@ -9,7 +9,7 @@ const HasilLatihanBab5 = () => {
   const { state } = useLocation();
   const { handleLessonComplete } = useOutletContext();
   const { score = 0, totalQuestions = 5 } = state || {};
-  const percentage = (score / (totalQuestions * 20)) * 100;
+  const percentage = Math.min((score / (totalQuestions * 10)) * 100, 100); // Cap at 100%
   const isPassing = percentage >= 75;
 
   const handleRetry = () => {
@@ -31,7 +31,7 @@ const HasilLatihanBab5 = () => {
       </h1>
       <div className="p-4 text-center bg-gray-100 rounded-lg sm:p-6">
         <h2 className="text-lg font-semibold text-gray-800">
-          Skor Anda: {score} / {totalQuestions * 20}
+          Skor Anda: {score} / {totalQuestions * 10}
         </h2>
         <p className="mt-2 text-gray-600">
           Persentase: {percentage.toFixed(2)}%

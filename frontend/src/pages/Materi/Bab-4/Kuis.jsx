@@ -162,64 +162,44 @@ const KuisBab4 = () => {
     setSelectedAnswers(newAnswers);
   };
 
-  const checkAnswers = () => {
+  const submitAnswer = () => {
     const answer = selectedAnswers[currentQuestionIndex];
-    const correctAnswer = questions[currentQuestionIndex].correctAnswer;
 
     if (answer === "") {
       Swal.fire({
         title: "Soal Belum Dijawab!",
-        text: "Silakan pilih jawaban sebelum melanjutkan.",
+        text: "Silakan pilih jawaban sebelum mengirim.",
         icon: "warning",
         confirmButtonText: "OK",
       });
       return;
     }
 
+    const isCorrect = answer === questions[currentQuestionIndex].correctAnswer;
+    if (isCorrect && !hasAnswered[currentQuestionIndex]) {
+      setScore((prev) => prev + 10);
+    }
+
     const newAnswerStatus = [...answerStatus];
-    if (answer === correctAnswer) {
-      if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 10);
-        newAnswerStatus[currentQuestionIndex] = "correct";
-        setHasAnswered((prev) => {
-          const newHasAnswered = [...prev];
-          newHasAnswered[currentQuestionIndex] = true;
-          return newHasAnswered;
-        });
-        Swal.fire({
-          title: "Jawaban Anda Benar!",
-          text: "Silakan lanjutkan ke soal berikutnya.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "Sudah Menjawab",
-          text: "Anda sudah menjawab soal ini.",
-        });
-      }
-    } else {
-      newAnswerStatus[currentQuestionIndex] = "incorrect";
-      setHasAnswered((prev) => {
-        const newHasAnswered = [...prev];
-        newHasAnswered[currentQuestionIndex] = true;
-        return newHasAnswered;
-      });
-      Swal.fire({
-        title: "Jawaban Salah!",
-        text: "Silakan lanjut ke soal berikutnya.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-    }
-
+    newAnswerStatus[currentQuestionIndex] = "submitted";
     setAnswerStatus(newAnswerStatus);
+    setHasAnswered((prev) => {
+      const newHasAnswered = [...prev];
+      newHasAnswered[currentQuestionIndex] = true;
+      return newHasAnswered;
+    });
 
-    const nextQuestionIndex = currentQuestionIndex + 1;
-    if (nextQuestionIndex < questions.length) {
-      setCurrentQuestionIndex(nextQuestionIndex);
-    }
+    Swal.fire({
+      title: "Jawaban Terkirim!",
+      text: "Silakan lanjut ke soal berikutnya.",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then(() => {
+      const nextQuestionIndex = currentQuestionIndex + 1;
+      if (nextQuestionIndex < questions.length) {
+        setCurrentQuestionIndex(nextQuestionIndex);
+      }
+    });
   };
 
   const resetAnswerForCurrentQuestion = () => {
@@ -266,19 +246,24 @@ const KuisBab4 = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
+          const scoreToSave = (score / (questions.length * 10)) * 100; // Convert to percentage
           await axios.post(
             `${import.meta.env.VITE_API_ENDPOINT}/scores`,
             {
               user_id: user.uuid,
               type: "evaluasi",
               chapter: 4,
-              score: score,
+              score: scoreToSave,
             },
             { withCredentials: true }
           );
 
           navigate("/materi/bab4/hasil-kuis-bab4", {
-            state: { score, totalQuestions: questions.length, kkm },
+            state: {
+              score: scoreToSave,
+              totalQuestions: questions.length,
+              kkm,
+            },
           });
         } catch (error) {
           console.error("Error saving score:", error);
@@ -306,19 +291,24 @@ const KuisBab4 = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
+          const scoreToSave = (score / (questions.length * 10)) * 100; // Convert to percentage
           await axios.post(
             `${import.meta.env.VITE_API_ENDPOINT}/scores`,
             {
               user_id: user.uuid,
               type: "evaluasi",
               chapter: 4,
-              score: score,
+              score: scoreToSave,
             },
             { withCredentials: true }
           );
 
           navigate("/materi/bab4/hasil-kuis-bab4", {
-            state: { score, totalQuestions: questions.length, kkm },
+            state: {
+              score: scoreToSave,
+              totalQuestions: questions.length,
+              kkm,
+            },
           });
         } catch (error) {
           console.error("Error saving score:", error);
@@ -502,13 +492,12 @@ const KuisBab4 = () => {
                     opacity: 0.6,
                   }}
                 >
-                  Cek Jawaban
+                  Kirim
                 </button>{" "}
-                untuk mengecek jawaban.
+                untuk mengirim jawaban.
               </li>
               <li>
-                Apabila notifikasi berwarna Merah jawaban salah, dan apabila
-                berwarna Hijau jawaban benar.
+                Apabila notifikasi berwarna Hijau, jawaban Anda telah terkirim.
               </li>
               <li>
                 Tekan tombol{" "}
@@ -558,15 +547,12 @@ const KuisBab4 = () => {
                       backgroundColor:
                         currentQuestionIndex === index
                           ? "#6E2A7F"
-                          : answerStatus[index] === "correct"
+                          : answerStatus[index] === "submitted"
                           ? "#10B981"
-                          : answerStatus[index] === "incorrect"
-                          ? "#EF4444"
                           : "#D1D5DB",
                       color:
                         currentQuestionIndex === index ||
-                        answerStatus[index] === "correct" ||
-                        answerStatus[index] === "incorrect"
+                        answerStatus[index] === "submitted"
                           ? "white"
                           : "black",
                     }}
@@ -592,15 +578,12 @@ const KuisBab4 = () => {
                       backgroundColor:
                         currentQuestionIndex === index + 5
                           ? "#6E2A7F"
-                          : answerStatus[index + 5] === "correct"
+                          : answerStatus[index + 5] === "submitted"
                           ? "#10B981"
-                          : answerStatus[index + 5] === "incorrect"
-                          ? "#EF4444"
                           : "#D1D5DB",
                       color:
                         currentQuestionIndex === index + 5 ||
-                        answerStatus[index + 5] === "correct" ||
-                        answerStatus[index + 5] === "incorrect"
+                        answerStatus[index + 5] === "submitted"
                           ? "white"
                           : "black",
                     }}
@@ -645,7 +628,7 @@ const KuisBab4 = () => {
                 ))}
                 <div className="flex flex-col mt-4 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 justify-start">
                   <button
-                    onClick={checkAnswers}
+                    onClick={submitAnswer}
                     style={{
                       backgroundColor: "#6E2A7F",
                       color: "white",
@@ -661,7 +644,7 @@ const KuisBab4 = () => {
                     }
                     className="w-full sm:w-auto"
                   >
-                    Cek Jawaban
+                    Kirim
                   </button>
                   <button
                     onClick={resetAnswerForCurrentQuestion}

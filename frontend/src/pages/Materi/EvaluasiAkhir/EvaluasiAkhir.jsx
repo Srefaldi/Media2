@@ -169,61 +169,46 @@ const EvaluasiAkhir = () => {
     setSelectedAnswers(newAnswers);
   };
 
-  const checkAnswers = () => {
+  const submitAnswer = () => {
     if (questions.length === 0 || !questions[currentQuestionIndex]) return;
 
     const answer = selectedAnswers[currentQuestionIndex];
-    const correctAnswer = questions[currentQuestionIndex].correctAnswer;
 
     if (answer === "") {
       Swal.fire({
         title: "Soal Belum Dijawab!",
-        text: "Silakan pilih jawaban sebelum melanjutkan.",
+        text: "Silakan pilih jawaban sebelum mengirim.",
         icon: "warning",
         confirmButtonText: "OK",
       });
       return;
     }
 
-    const newAnswerStatus = [...answerStatus];
-    if (answer === correctAnswer) {
-      if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 5);
-        newAnswerStatus[currentQuestionIndex] = "correct";
-        setHasAnswered((prev) => {
-          const newHasAnswered = [...prev];
-          newHasAnswered[currentQuestionIndex] = true;
-          return newHasAnswered;
-        });
-        Swal.fire({
-          title: "Jawaban Anda Benar!",
-          text: "Silakan lanjutkan ke soal berikutnya.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "Sudah Menjawab",
-          text: "Anda sudah menjawab soal ini.",
-        });
-      }
-    } else {
-      newAnswerStatus[currentQuestionIndex] = "incorrect";
-      setHasAnswered((prev) => {
-        const newHasAnswered = [...prev];
-        newHasAnswered[currentQuestionIndex] = true;
-        return newHasAnswered;
-      });
-      Swal.fire({
-        title: "Jawaban Salah!",
-        text: "Silakan lanjut ke soal berikutnya.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+    const isCorrect = answer === questions[currentQuestionIndex].correctAnswer;
+    if (isCorrect && !hasAnswered[currentQuestionIndex]) {
+      setScore((prev) => prev + 5);
     }
 
+    const newAnswerStatus = [...answerStatus];
+    newAnswerStatus[currentQuestionIndex] = "submitted";
     setAnswerStatus(newAnswerStatus);
+    setHasAnswered((prev) => {
+      const newHasAnswered = [...prev];
+      newHasAnswered[currentQuestionIndex] = true;
+      return newHasAnswered;
+    });
+
+    Swal.fire({
+      title: "Jawaban Terkirim!",
+      text: "Silakan lanjut ke soal berikutnya.",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then(() => {
+      const nextQuestionIndex = currentQuestionIndex + 1;
+      if (nextQuestionIndex < questions.length) {
+        setCurrentQuestionIndex(nextQuestionIndex);
+      }
+    });
   };
 
   const resetAnswerForCurrentQuestion = () => {
@@ -281,12 +266,13 @@ const EvaluasiAkhir = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
+          const scoreToSave = (score / (questions.length * 5)) * 100; // Convert to percentage
           await axios.post(
             `${import.meta.env.VITE_API_ENDPOINT}/scores`,
             {
               user_id: user.uuid,
               type: "evaluasi_akhir",
-              score: score,
+              score: scoreToSave,
             },
             {
               withCredentials: true,
@@ -296,13 +282,17 @@ const EvaluasiAkhir = () => {
             }
           );
 
-          if (score >= kkm) {
+          if (scoreToSave >= kkm) {
             handleLessonComplete("/materi/evaluasi/evaluasi-akhir");
             handleLessonComplete("/materi/evaluasi/kesimpulan");
           }
 
           navigate("/materi/evaluasi/hasil-evaluasi-akhir", {
-            state: { score, totalQuestions: questions.length, kkm },
+            state: {
+              score: scoreToSave,
+              totalQuestions: questions.length,
+              kkm,
+            },
           });
         } catch (error) {
           console.error("Error saving score:", error);
@@ -320,56 +310,51 @@ const EvaluasiAkhir = () => {
     });
   };
 
-  const handleTimeUp = () => {
-    Swal.fire({
-      title: "Waktu Habis!",
-      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya",
-      cancelButtonText: "Tidak",
-      confirmButtonColor: "#6E2A7F",
-      cancelButtonColor: "#EF4444",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.post(
-            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
-            {
-              user_id: user.uuid,
-              type: "evaluasi_akhir",
-              score: score,
-            },
-            {
-              withCredentials: true,
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-
-          if (score >= kkm) {
-            handleLessonComplete("/materi/evaluasi/evaluasi-akhir");
-            handleLessonComplete("/materi/evaluasi/kesimpulan");
-          }
-
-          navigate("/materi/evaluasi/hasil-evaluasi-akhir", {
-            state: { score, totalQuestions: questions.length, kkm },
-          });
-        } catch (error) {
-          console.error("Error saving score:", error);
-          const errorMsg =
-            error.response?.data?.msg ||
-            "Gagal menyimpan skor. Silakan coba lagi.";
-          Swal.fire({
-            title: "Gagal Menyimpan Skor",
-            text: errorMsg,
-            icon: "error",
-            confirmButtonText: "OK",
-          });
+  const handleTimeUp = async () => {
+    try {
+      const scoreToSave = (score / (questions.length * 5)) * 100; // Convert to percentage
+      await axios.post(
+        `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+        {
+          user_id: user.uuid,
+          type: "evaluasi_akhir",
+          score: scoreToSave,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
+      );
+
+      if (scoreToSave >= kkm) {
+        handleLessonComplete("/materi/evaluasi/evaluasi-akhir");
+        handleLessonComplete("/materi/evaluasi/kesimpulan");
       }
-    });
+
+      Swal.fire({
+        title: "Waktu Habis!",
+        text: "Jawaban Anda akan dikirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        navigate("/materi/evaluasi/hasil-evaluasi-akhir", {
+          state: { score: scoreToSave, totalQuestions: questions.length, kkm },
+        });
+      });
+    } catch (error) {
+      console.error("Error saving score:", error);
+      const errorMsg =
+        error.response?.data?.msg || "Gagal menyimpan skor. Silakan coba lagi.";
+      Swal.fire({
+        title: "Gagal Menyimpan Skor",
+        text: errorMsg,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   // UI untuk halaman instruksi
@@ -527,13 +512,12 @@ const EvaluasiAkhir = () => {
                     opacity: 0.6,
                   }}
                 >
-                  Cek Jawaban
+                  Kirim
                 </button>{" "}
-                untuk mengecek jawaban.
+                untuk mengirim jawaban.
               </li>
               <li>
-                Apabila notifikasi berwarna Merah jawaban salah, dan apabila
-                berwarna Hijau jawaban benar.
+                Apabila notifikasi berwarna Hijau, jawaban Anda telah terkirim.
               </li>
               <li>
                 Tekan tombol{" "}
@@ -589,18 +573,13 @@ const EvaluasiAkhir = () => {
                                 currentQuestionIndex === rowIndex * 5 + index
                                   ? "#6E2A7F"
                                   : answerStatus[rowIndex * 5 + index] ===
-                                    "correct"
+                                    "submitted"
                                   ? "#10B981"
-                                  : answerStatus[rowIndex * 5 + index] ===
-                                    "incorrect"
-                                  ? "#EF4444"
                                   : "#D1D5DB",
                               color:
                                 currentQuestionIndex === rowIndex * 5 + index ||
                                 answerStatus[rowIndex * 5 + index] ===
-                                  "correct" ||
-                                answerStatus[rowIndex * 5 + index] ===
-                                  "incorrect"
+                                  "submitted"
                                   ? "white"
                                   : "black",
                             }}
@@ -615,10 +594,6 @@ const EvaluasiAkhir = () => {
             </div>
 
             <div className="w-full p-4 border rounded-lg">
-              <div className="p-4 mb-4 text-center bg-gray-100 border rounded-lg">
-                <h3 className="font-semibold text-base">SKOR: {score}</h3>
-              </div>
-
               <h3 className="font-semibold text-base">
                 {questions[currentQuestionIndex]?.id &&
                 questions[currentQuestionIndex]?.question
@@ -650,7 +625,7 @@ const EvaluasiAkhir = () => {
                 )) || <p className="text-base">Memuat opsi...</p>}
                 <div className="flex flex-col mt-4 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 justify-start">
                   <button
-                    onClick={checkAnswers}
+                    onClick={submitAnswer}
                     style={{
                       backgroundColor: "#6E2A7F",
                       color: "white",
@@ -666,7 +641,7 @@ const EvaluasiAkhir = () => {
                     }
                     className="px-4 py-2 text-base w-full sm:w-auto"
                   >
-                    Cek Jawaban
+                    Kirim
                   </button>
                   <button
                     onClick={resetAnswerForCurrentQuestion}

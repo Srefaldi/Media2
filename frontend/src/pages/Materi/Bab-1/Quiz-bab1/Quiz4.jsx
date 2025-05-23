@@ -59,15 +59,14 @@ const Quiz = ({ onComplete }) => {
           dengan urutan struktur eksekusi kode yang benar?
         </p>
         <pre className="p-2 mb-4 bg-gray-100 rounded-md">
-          {`namespace CsharpLearn {
-    class Transportasi {
-        static void Main(string[] args) {
-            Console.WriteLine("Mobil");
-            Console.WriteLine("Motor");
-            Console.WriteLine("Sepeda");
+          {`public class Transportasi {
+    static void Main(string[] args) {
+        Console.WriteLine("Mobil");
+        Console.WriteLine("Motor");
+        Console.WriteLine("Sepeda");
         }
     }
-}`}
+`}
         </pre>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (

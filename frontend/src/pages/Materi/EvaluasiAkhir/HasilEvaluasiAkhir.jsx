@@ -9,7 +9,7 @@ const HasilEvaluasiAkhir = () => {
   const { handleLessonComplete } = useOutletContext();
   const { state } = useLocation();
   const { score = 0, totalQuestions = 20, kkm = 75 } = state || {};
-  const percentage = (score / (totalQuestions * 5)) * 100;
+  const percentage = Math.min((score / (totalQuestions * 5)) * 100, 100); // Cap at 100%
   const isPassing = percentage >= kkm;
 
   const handleRetry = () => {

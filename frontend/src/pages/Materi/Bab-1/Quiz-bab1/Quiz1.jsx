@@ -48,7 +48,9 @@ const Quiz = ({ onComplete }) => {
         UJI PENGETAHUAN
       </h2>
       <form onSubmit={handleSubmit}>
-        <p className="mb-4 text-gray-700">Hasil kompilasi program C# ....</p>
+        <p className="mb-4 text-gray-700">
+          Hasil dari kompilasi program C# ...
+        </p>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
             <div key={option} className="mb-2">

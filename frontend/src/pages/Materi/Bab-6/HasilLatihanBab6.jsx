@@ -9,7 +9,7 @@ const HasilLatihanBab6 = () => {
   const { state } = useLocation();
   const { handleLessonComplete } = useOutletContext();
   const { score = 0, totalQuestions = 5 } = state || {};
-  const percentage = (score / (totalQuestions * 20)) * 100;
+  const percentage = Math.min((score / (totalQuestions * 20)) * 100, 100);
   const isPassing = percentage >= 75;
 
   const handleRetry = () => {

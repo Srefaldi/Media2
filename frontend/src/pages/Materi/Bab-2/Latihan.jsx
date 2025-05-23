@@ -198,80 +198,41 @@ const LatihanBab2 = () => {
     newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]];
     newAnswers[currentQuestionIndex][inputIndex] = value;
     setAnswers(newAnswers);
+    console.log("Updated answers:", newAnswers);
   };
 
-  const checkAnswer = () => {
-    const question = questions[currentQuestionIndex];
+  const submitAnswer = () => {
     const userAnswers = answers[currentQuestionIndex];
 
     if (userAnswers.some((answer) => answer === "")) {
       Swal.fire({
         title: "Soal Belum Dijawab!",
-        text: "Silakan isi jawaban sebelum melanjutkan.",
+        text: "Silakan isi jawaban sebelum mengirim.",
         icon: "warning",
         confirmButtonText: "OK",
       });
       return;
     }
 
-    const normalizeAnswer = (answer) => {
-      return answer.trim().replace(/\s+/g, " ").toLowerCase();
-    };
-
-    const isCorrect = question.correctAnswer.every((correctAnswer, index) => {
-      const normalizedUserAnswer = normalizeAnswer(userAnswers[index]);
-      const normalizedCorrectAnswer = normalizeAnswer(correctAnswer);
-      return normalizedUserAnswer === normalizedCorrectAnswer;
+    const newAnswerStatus = [...answerStatus];
+    newAnswerStatus[currentQuestionIndex] = "submitted";
+    setAnswerStatus(newAnswerStatus);
+    setHasAnswered((prev) => {
+      const newHasAnswered = [...prev];
+      newHasAnswered[currentQuestionIndex] = true;
+      return newHasAnswered;
     });
 
-    if (isCorrect) {
-      if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 20);
-        const newAnswerStatus = [...answerStatus];
-        newAnswerStatus[currentQuestionIndex] = "correct";
-        setAnswerStatus(newAnswerStatus);
-        setHasAnswered((prev) => {
-          const newHasAnswered = [...prev];
-          newHasAnswered[currentQuestionIndex] = true;
-          return newHasAnswered;
-        });
-        Swal.fire({
-          title: "Jawaban Anda Benar!",
-          text: "Silakan lanjutkan ke soal berikutnya.",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          setCurrentQuestionIndex((prevIndex) =>
-            Math.min(prevIndex + 1, questions.length - 1)
-          );
-        });
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "Sudah Menjawab",
-          text: "Anda sudah menjawab soal ini.",
-        });
-      }
-    } else {
-      const newAnswerStatus = [...answerStatus];
-      newAnswerStatus[currentQuestionIndex] = "incorrect";
-      setAnswerStatus(newAnswerStatus);
-      setHasAnswered((prev) => {
-        const newHasAnswered = [...prev];
-        newHasAnswered[currentQuestionIndex] = true;
-        return newHasAnswered;
-      });
-      Swal.fire({
-        title: "Jawaban Salah!",
-        text: "Silakan lanjut ke soal berikutnya",
-        icon: "error",
-        confirmButtonText: "OK",
-      }).then(() => {
-        setCurrentQuestionIndex((prevIndex) =>
-          Math.min(prevIndex + 1, questions.length - 1)
-        );
-      });
-    }
+    Swal.fire({
+      title: "Jawaban Terkirim!",
+      text: "Silahkan lanjutkan ke soal berikutnya.",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then(() => {
+      setCurrentQuestionIndex((prevIndex) =>
+        Math.min(prevIndex + 1, questions.length - 1)
+      );
+    });
   };
 
   const handleQuestionSelect = (index) => {
@@ -354,43 +315,38 @@ const LatihanBab2 = () => {
   const handleTimeUp = () => {
     Swal.fire({
       title: "Waktu Habis!",
-      text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
+      text: "Jawaban Anda akan dikirim.",
       icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Ya",
-      cancelButtonText: "Tidak",
+      confirmButtonText: "OK",
       confirmButtonColor: "#6E2A7F",
-      cancelButtonColor: "#EF4444",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.post(
-            `${import.meta.env.VITE_API_ENDPOINT}/scores`,
-            {
-              user_id: user.uuid,
-              type: "latihan",
-              chapter: 2,
-              score: score,
-            },
-            { withCredentials: true }
-          );
+    }).then(async () => {
+      try {
+        await axios.post(
+          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+          {
+            user_id: user.uuid,
+            type: "latihan",
+            chapter: 2,
+            score: score,
+          },
+          { withCredentials: true }
+        );
 
-          if (score >= 75) {
-            handleQuizComplete("/materi/bab2/latihan-bab2");
-          }
-
-          navigate("/materi/bab2/hasil-latihan-bab2", {
-            state: { score, totalQuestions: questions.length },
-          });
-        } catch (error) {
-          console.error("Error saving score:", error);
-          Swal.fire({
-            title: "Gagal!",
-            text: "Terjadi kesalahan saat menyimpan skor.",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
+        if (score >= 75) {
+          handleQuizComplete("/materi/bab2/latihan-bab2");
         }
+
+        navigate("/materi/bab2/hasil-latihan-bab2", {
+          state: { score, totalQuestions: questions.length },
+        });
+      } catch (error) {
+        console.error("Error saving score:", error);
+        Swal.fire({
+          title: "Gagal!",
+          text: "Terjadi kesalahan saat menyimpan skor.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       }
     });
   };
@@ -516,13 +472,12 @@ const LatihanBab2 = () => {
                 opacity: 0.6,
               }}
             >
-              Cek Jawaban
+              Kirim
             </button>{" "}
-            untuk mengecek jawaban.
+            untuk mengirim jawaban.
           </li>
           <li>
-            Apabila notifikasi berwarna Merah jawaban salah, dan apabila
-            berwarna Hijau jawaban benar.
+            Apabila notifikasi berwarna Hijau, jawaban Anda telah terkirim.
           </li>
           <li>
             Tekan tombol{" "}
@@ -570,15 +525,12 @@ const LatihanBab2 = () => {
                   backgroundColor:
                     currentQuestionIndex === index
                       ? "#6E2A7F"
-                      : answerStatus[index] === "correct"
+                      : answerStatus[index] === "submitted"
                       ? "#10B981"
-                      : answerStatus[index] === "incorrect"
-                      ? "#EF4444"
                       : "#D1D5DB",
                   color:
                     currentQuestionIndex === index ||
-                    answerStatus[index] === "correct" ||
-                    answerStatus[index] === "incorrect"
+                    answerStatus[index] === "submitted"
                       ? "white"
                       : "black",
                 }}
@@ -601,7 +553,7 @@ const LatihanBab2 = () => {
                 {questions[currentQuestionIndex].code
                   .split("_____")
                   .map((part, index) => (
-                    <>
+                    <React.Fragment key={`part-${index}`}>
                       {part.split(" ").map((word, wordIndex) => {
                         if (
                           word.includes("class") ||
@@ -612,42 +564,61 @@ const LatihanBab2 = () => {
                           word.includes("const")
                         ) {
                           return (
-                            <span key={wordIndex} className="keyword">
+                            <span key={`word-${wordIndex}`} className="keyword">
                               {word}{" "}
                             </span>
                           );
                         } else if (word.includes('"') || word.includes("'")) {
                           return (
-                            <span key={wordIndex} className="string">
+                            <span key={`word-${wordIndex}`} className="string">
                               {word}{" "}
                             </span>
                           );
                         } else if (word.includes("//")) {
                           return (
-                            <span key={wordIndex} className="comment">
+                            <span key={`word-${wordIndex}`} className="comment">
                               {word}{" "}
                             </span>
                           );
                         }
-                        return <span key={wordIndex}>{word} </span>;
+                        return <span key={`word-${wordIndex}`}>{word} </span>;
                       })}
                       {index <
                         questions[currentQuestionIndex].code.split("_____")
                           .length -
                           1 && (
                         <span>
-                          <input
-                            type="text"
-                            value={answers[currentQuestionIndex][index] || ""}
-                            onChange={(e) =>
-                              handleAnswerChange(e.target.value, index)
-                            }
-                            className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24 md:w-24"
-                            placeholder="Jawaban..."
-                          />
+                          {currentQuestionIndex === 0 ||
+                          currentQuestionIndex === 1 ||
+                          currentQuestionIndex === 2 ||
+                          currentQuestionIndex === 3 ? (
+                            <input
+                              type="text"
+                              key={`input-${index}`}
+                              value={answers[currentQuestionIndex][index] || ""}
+                              onChange={(e) =>
+                                handleAnswerChange(e.target.value, index)
+                              }
+                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24 md:w-24"
+                              placeholder="Jawaban..."
+                              autoFocus={index === 0}
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              key={`input-0`}
+                              value={answers[currentQuestionIndex][0] || ""}
+                              onChange={(e) =>
+                                handleAnswerChange(e.target.value, 0)
+                              }
+                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24 md:w-24"
+                              placeholder="Jawaban..."
+                              autoFocus
+                            />
+                          )}
                         </span>
                       )}
-                    </>
+                    </React.Fragment>
                   ))}
               </code>
             </pre>
@@ -655,7 +626,7 @@ const LatihanBab2 = () => {
 
           <div className="flex flex-col mt-4 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
             <button
-              onClick={checkAnswer}
+              onClick={submitAnswer}
               style={{
                 backgroundColor: "#6E2A7F",
                 color: "white",
@@ -671,7 +642,7 @@ const LatihanBab2 = () => {
               }
               className="w-full sm:w-auto md:w-auto"
             >
-              Cek Jawaban
+              Kirim
             </button>
             <button
               onClick={() => {

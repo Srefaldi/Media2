@@ -62,37 +62,28 @@ const Quiz = ({ onComplete }) => {
 
       <div className="mt-4">
         <p className="mt-2 text-gray-600">
-          Lengkapi kode berikut agar bisa menampilkan "Hello World"
+          Lengkapilah struktur kode berikut dengan mengisi bagian yang kosong
+          agar program memiliki sintaks yang benar ....
         </p>
 
         <div className="p-4 mt-3 font-mono text-sm bg-gray-100 rounded-lg">
           <pre style={{ whiteSpace: "pre-wrap" }}>
             <code>
-              {`static void `}
+              {`public class Program\n{\n  static void `}
               <input
                 type="text"
                 value={functionName}
                 onChange={(e) => setFunctionName(e.target.value)}
                 className="border border-gray-400 px-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
               />
-              {` (string[] args)`}
-              {"\n{"}
-              {"\n  "}
+              {`(string[] args)\n  {\n    `}
               <input
                 type="text"
                 value={methodName}
                 onChange={(e) => setMethodName(e.target.value)}
                 className="border border-gray-400 px-2 py-1 w-20 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
               />
-              {`.`}
-              <input
-                type="text"
-                className="border border-gray-400 px-2 py-1 w-32 rounded-md focus:ring-2 focus:ring-[#6E2A7F]"
-                value="WriteLine"
-                readOnly
-              />
-              {`("Hello World!");`}
-              {"\n}"}
+              {`.WriteLine("Hello World");\n  }\n}`}
             </code>
           </pre>
         </div>

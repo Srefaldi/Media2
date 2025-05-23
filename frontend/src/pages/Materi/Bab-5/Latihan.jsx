@@ -197,46 +197,21 @@ const LatihanBab5 = () => {
     setAnswers(newAnswers);
   };
 
-  const checkAnswer = () => {
-    const question = questions[currentQuestionIndex];
+  const submitAnswer = () => {
     const userAnswers = answers[currentQuestionIndex];
 
     if (userAnswers.some((answer) => answer === "")) {
       Swal.fire({
         title: "Soal Belum Dijawab!",
-        text: "Silakan isi jawaban sebelum melanjutkan.",
+        text: "Silakan isi jawaban sebelum mengirim.",
         icon: "warning",
         confirmButtonText: "OK",
       });
       return;
     }
 
-    // Fungsi untuk normalisasi jawaban (ignore spaces and case)
-    const normalizeAnswer = (answer) => {
-      return answer.replace(/\s+/g, "").toLowerCase();
-    };
-
-    const isCorrect = question.correctAnswer.every((correctAnswer, index) => {
-      const normalizedCorrect = normalizeAnswer(correctAnswer);
-      const normalizedUser = normalizeAnswer(userAnswers[index]);
-      return normalizedCorrect === normalizedUser;
-    });
-
-    // Jika benar tetapi ada perbedaan kapitalisasi, perbaiki jawaban pengguna
-    if (isCorrect) {
-      const newAnswers = [...answers];
-      newAnswers[currentQuestionIndex] = question.correctAnswer.map(
-        (correct, index) => {
-          // Jika jawaban user sudah benar secara konten (tapi mungkin beda kapitalisasi/spasi)
-          // Kembalikan format yang benar dari question.correctAnswer
-          return correct;
-        }
-      );
-      setAnswers(newAnswers);
-    }
-
     const newAnswerStatus = [...answerStatus];
-    newAnswerStatus[currentQuestionIndex] = isCorrect ? "correct" : "incorrect";
+    newAnswerStatus[currentQuestionIndex] = "submitted";
     setAnswerStatus(newAnswerStatus);
 
     setHasAnswered((prev) => {
@@ -245,42 +220,16 @@ const LatihanBab5 = () => {
       return newHasAnswered;
     });
 
-    if (isCorrect) {
-      if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 20);
-        Swal.fire({
-          title: "Jawaban Anda Benar!",
-          text: "Silakan lanjutkan ke soal berikutnya.",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          if (currentQuestionIndex < questions.length - 1) {
-            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "Sudah Menjawab",
-          text: "Anda sudah menjawab soal ini.",
-        }).then(() => {
-          if (currentQuestionIndex < questions.length - 1) {
-            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-          }
-        });
-      }
-    } else {
-      Swal.fire({
-        title: "Jawaban Salah!",
-        text: "Silakan lanjut ke soal berikutnya.",
-        icon: "error",
-        confirmButtonText: "OK",
-      }).then(() => {
-        if (currentQuestionIndex < questions.length - 1) {
-          setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-        }
-      });
-    }
+    Swal.fire({
+      title: "Jawaban Terkirim!",
+      text: "Silakan lanjutkan ke soal berikutnya.",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then(() => {
+      setCurrentQuestionIndex((prevIndex) =>
+        Math.min(prevIndex + 1, questions.length - 1)
+      );
+    });
   };
 
   const handleQuestionSelect = (index) => {
@@ -288,9 +237,8 @@ const LatihanBab5 = () => {
       Swal.fire({
         icon: "info",
         title: "Sudah Menjawab",
-        text: "Anda sudah menjawab soal ini, silakan lanjutkan ke soal berikutnya.",
+        text: "Anda sudah menjawab soal ini.",
       });
-      // Tidak mengizinkan kembali ke soal yang sudah dijawab
       return;
     }
     setCurrentQuestionIndex(index);
@@ -543,13 +491,12 @@ const LatihanBab5 = () => {
                 opacity: 0.6,
               }}
             >
-              Cek Jawaban
+              Kirim
             </button>{" "}
-            untuk mengecek jawaban.
+            untuk mengirim jawaban.
           </li>
           <li>
-            Apabila notifikasi berwarna Merah jawaban salah, dan apabila
-            berwarna Hijau jawaban benar.
+            Apabila notifikasi berwarna Hijau, jawaban Anda telah terkirim.
           </li>
           <li>
             Tekan tombol{" "}
@@ -599,15 +546,12 @@ const LatihanBab5 = () => {
                   backgroundColor:
                     currentQuestionIndex === index
                       ? "#6E2A7F"
-                      : answerStatus[index] === "correct"
+                      : answerStatus[index] === "submitted"
                       ? "#10B981"
-                      : answerStatus[index] === "incorrect"
-                      ? "#EF4444"
                       : "#D1D5DB",
                   color:
                     currentQuestionIndex === index ||
-                    answerStatus[index] === "correct" ||
-                    answerStatus[index] === "incorrect"
+                    answerStatus[index] === "submitted"
                       ? "white"
                       : "black",
                 }}
@@ -693,7 +637,7 @@ const LatihanBab5 = () => {
 
           <div className="flex flex-col mt-4 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
             <button
-              onClick={checkAnswer}
+              onClick={submitAnswer}
               style={{
                 backgroundColor: "#6E2A7F",
                 color: "white",
@@ -709,7 +653,7 @@ const LatihanBab5 = () => {
               }
               className="w-full sm:w-auto"
             >
-              Cek Jawaban
+              Kirim
             </button>
             <button
               onClick={() => {

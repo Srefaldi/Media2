@@ -174,77 +174,52 @@ public static void Main()
     setAnswers(newAnswers);
   };
 
-  const checkAnswer = () => {
-    const question = questions[currentQuestionIndex];
+  const submitAnswer = () => {
     const userAnswers = answers[currentQuestionIndex];
 
     if (userAnswers.some((answer) => answer === "")) {
       Swal.fire({
         title: "Soal Belum Dijawab!",
-        text: "Silakan isi jawaban sebelum melanjutkan.",
+        text: "Silakan isi jawaban sebelum mengirim.",
         icon: "warning",
         confirmButtonText: "OK",
       });
       return;
     }
 
-    // Fungsi untuk normalisasi jawaban
     const normalizeAnswer = (answer) => {
       return answer.replace(/\s+/g, "").toLowerCase();
     };
 
-    // Normalisasi jawaban pengguna dan jawaban yang benar
-    const isCorrect = question.correctAnswer.every(
+    const isCorrect = questions[currentQuestionIndex].correctAnswer.every(
       (correctAnswer, index) =>
         normalizeAnswer(correctAnswer) === normalizeAnswer(userAnswers[index])
     );
 
-    const newAnswerStatus = [...answerStatus];
-    newAnswerStatus[currentQuestionIndex] = isCorrect ? "correct" : "incorrect";
-    setAnswerStatus(newAnswerStatus);
+    if (isCorrect && !hasAnswered[currentQuestionIndex]) {
+      setScore((prev) => prev + 20);
+    }
 
+    const newAnswerStatus = [...answerStatus];
+    newAnswerStatus[currentQuestionIndex] = "submitted";
+    setAnswerStatus(newAnswerStatus);
     setHasAnswered((prev) => {
       const newHasAnswered = [...prev];
       newHasAnswered[currentQuestionIndex] = true;
       return newHasAnswered;
     });
 
-    if (isCorrect) {
-      if (!hasAnswered[currentQuestionIndex]) {
-        setScore((prevScore) => prevScore + 20);
-        Swal.fire({
-          title: "Jawaban Anda Benar!",
-          text: "Silakan lanjutkan ke soal berikutnya.",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          if (currentQuestionIndex < questions.length - 1) {
-            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "Sudah Menjawab",
-          text: "Anda sudah menjawab soal ini, silakan lanjutkan ke soal berikutnya.",
-        }).then(() => {
-          if (currentQuestionIndex < questions.length - 1) {
-            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-          }
-        });
+    Swal.fire({
+      title: "Jawaban Terkirim!",
+      text: "Silakan lanjut ke soal berikutnya.",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then(() => {
+      const nextQuestionIndex = currentQuestionIndex + 1;
+      if (nextQuestionIndex < questions.length) {
+        setCurrentQuestionIndex(nextQuestionIndex);
       }
-    } else {
-      Swal.fire({
-        title: "Jawaban Salah!",
-        text: "Silakan lanjut ke soal berikutnya.",
-        icon: "error",
-        confirmButtonText: "OK",
-      }).then(() => {
-        if (currentQuestionIndex < questions.length - 1) {
-          setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-        }
-      });
-    }
+    });
   };
 
   const handleQuestionSelect = (index) => {
@@ -252,7 +227,7 @@ public static void Main()
       Swal.fire({
         icon: "info",
         title: "Sudah Menjawab",
-        text: "Anda sudah menjawab soal ini, silakan lanjutkan ke soal berikutnya.",
+        text: "Anda sudah menjawab soal ini.",
       });
       return;
     }
@@ -505,13 +480,12 @@ public static void Main()
                 opacity: 0.6,
               }}
             >
-              Cek Jawaban
+              Kirim
             </button>{" "}
-            untuk mengecek jawaban.
+            untuk mengirim jawaban.
           </li>
           <li>
-            Apabila notifikasi berwarna Merah jawaban salah, dan apabila
-            berwarna Hijau jawaban benar.
+            Apabila notifikasi berwarna Hijau, jawaban Anda telah terkirim.
           </li>
           <li>
             Tekan tombol{" "}
@@ -561,15 +535,12 @@ public static void Main()
                   backgroundColor:
                     currentQuestionIndex === index
                       ? "#6E2A7F"
-                      : answerStatus[index] === "correct"
+                      : answerStatus[index] === "submitted"
                       ? "#10B981"
-                      : answerStatus[index] === "incorrect"
-                      ? "#EF4444"
                       : "#D1D5DB",
                   color:
                     currentQuestionIndex === index ||
-                    answerStatus[index] === "correct" ||
-                    answerStatus[index] === "incorrect"
+                    answerStatus[index] === "submitted"
                       ? "white"
                       : "black",
                 }}
@@ -648,7 +619,7 @@ public static void Main()
 
           <div className="flex flex-col mt-4 space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
             <button
-              onClick={checkAnswer}
+              onClick={submitAnswer}
               style={{
                 backgroundColor: "#6E2A7F",
                 color: "white",
@@ -664,7 +635,7 @@ public static void Main()
               }
               className="w-full sm:w-auto"
             >
-              Cek Jawaban
+              Kirim
             </button>
             <button
               onClick={() => {

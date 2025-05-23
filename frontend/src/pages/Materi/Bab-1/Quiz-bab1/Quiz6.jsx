@@ -52,7 +52,9 @@ const Quiz = ({ onComplete }) => {
       >
         UJI PENGETAHUAN
       </h2>
-      <p className="mb-4">Sintaks untuk membuat single line comment adalah …</p>
+      <p className="mb-4">
+        Sintaks C# untuk membuat single line comment adalah …
+      </p>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (

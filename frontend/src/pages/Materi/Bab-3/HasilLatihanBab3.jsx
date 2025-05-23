@@ -8,7 +8,7 @@ const HasilLatihanBab3 = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { score = 0, totalQuestions = 5 } = state || {};
-  const percentage = (score / (totalQuestions * 20)) * 100;
+  const percentage = Math.min((score / (totalQuestions * 20)) * 100, 100); // Cap at 100%
   const isPassing = percentage >= 75;
   const { handleLessonComplete } = useOutletContext();
 

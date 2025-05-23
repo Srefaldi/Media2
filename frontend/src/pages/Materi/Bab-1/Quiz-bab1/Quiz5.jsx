@@ -55,7 +55,7 @@ const Quiz = ({ onComplete }) => {
       >
         UJI PENGETAHUAN
       </h2>
-      <p className="mb-4">Console.WriteLine() merupakan function untuk?</p>
+      <p className="mb-4">Console.WriteLine() merupakan function untuk ...</p>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
