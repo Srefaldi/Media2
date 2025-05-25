@@ -191,8 +191,7 @@
       {
         "path": "/materi/evaluasi/evaluasi-akhir",
         "label": "Evaluasi Akhir"
-      },
-      { "path": "/materi/evaluasi/kesimpulan-akhir", "label": "Kesimpulan" }
+      }
     ]
   }
 ]

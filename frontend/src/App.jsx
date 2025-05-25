@@ -26,6 +26,7 @@ import DaftarGuru from "./components/LoginPage/Login Guru/DaftarGuru";
 
 // Siswa
 import DaftarSiswa from "./components/LoginPage/DaftarSIswa/FormDaftarSiswa";
+import PetunjukPenggunaan from "./pages/Home/Materi/PetunjukPenggunaan";
 
 // CRUD
 import AddQuestion from "./components/LoginPage/TambahEvaluasi";
@@ -39,10 +40,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/informasi" element={<Informasi />} />
-        <Route path="/petunjuk-penggunaan" element={<Petunjuk />} />
+
         <Route path="/progres-belajar" element={<ProgresBelajar />} />
         <Route path="/complier" element={<CompilerPage />} />
         <Route path="/daftar-siswa" element={<DaftarSiswa />} />
+        <Route path="/petunjuk-penggunaan" element={<PetunjukPenggunaan />} />
         {/* Guru */}
         <Route path="/login-guru" element={<LoginGuru />} />
         <Route path="/daftar-guru" element={<DaftarGuru />} />

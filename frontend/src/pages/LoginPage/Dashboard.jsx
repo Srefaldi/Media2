@@ -4,8 +4,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { getMe, reset } from "../../features/authSlice.js";
 import Navbar from "../../components/Landing/NavbarLogin/NavbarLogin";
 import Footer from "../../components/Landing/Footer";
-import InfoModal from "../../components/Home/Dashboard/InfoModal";
-import Informasi from "../../components/Home/Dashboard/ModalInformasi";
 import daftarBab from "../Home/Materi/daftarBab.json";
 import Swal from "sweetalert2";
 
@@ -20,8 +18,6 @@ const UserDashboard = () => {
   const { isError, isLoading, user, message } = useSelector(
     (state) => state.auth
   );
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isInformasiOpen, setIsInformasiOpen] = useState(false);
   const [lastLessonPath, setLastLessonPath] = useState("/materi");
   const [isLoggedOut, setIsLoggedOut] = useState(false);
 
@@ -56,12 +52,8 @@ const UserDashboard = () => {
     }
   }, [user]);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOpenInformasi = () => {
-    setIsInformasiOpen(true);
+  const handleOpenPetunjuk = () => {
+    navigate("/petunjuk-penggunaan"); // Navigasi ke halaman petunjuk penggunaan
   };
 
   if (isLoading) {
@@ -79,7 +71,6 @@ const UserDashboard = () => {
   }
 
   console.log("Dashboard dirender, user:", user);
-  console.log("Modal status:", { isModalOpen, isInformasiOpen });
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -114,7 +105,7 @@ const UserDashboard = () => {
                 />
                 <button
                   className="px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base text-gray-600 bg-transparent border border-gray-600 rounded hover:bg-gray-300"
-                  onClick={handleOpenModal}
+                  onClick={handleOpenPetunjuk} // Ganti fungsi untuk navigasi
                 >
                   LIHAT PETUNJUK
                 </button>
