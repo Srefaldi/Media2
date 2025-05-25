@@ -561,7 +561,7 @@ const KuisBab3 = () => {
               <h3 className="mt-4 sm:mt-8 text-base sm:text-lg font-semibold text-center">
                 SOAL
               </h3>
-              <div className="flex flex-wrap gap-2 justify-center">
+              <div className="flex flex-row gap-1 justify-center">
                 {questions.slice(0, 5).map((question, index) => (
                   <button
                     key={question.id}
@@ -592,7 +592,7 @@ const KuisBab3 = () => {
                   </button>
                 ))}
               </div>
-              <div className="flex flex-wrap gap-2 justify-center mt-2">
+              <div className="flex flex-row gap-1 justify-center mt-2">
                 {questions.slice(5, 10).map((question, index) => (
                   <button
                     key={question.id}

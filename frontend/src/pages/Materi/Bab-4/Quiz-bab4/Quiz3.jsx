@@ -4,9 +4,22 @@ import Swal from "sweetalert2";
 const Quiz3 = ({ onComplete }) => {
   const [inputPreIncrement, setInputPreIncrement] = useState("");
   const [inputPostIncrement, setInputPostIncrement] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Check for empty inputs
+    if (!inputPreIncrement || !inputPostIncrement) {
+      Swal.fire({
+        title: "Isi Semua Jawaban!",
+        text: "Silakan isi semua kolom jawaban sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      });
+      return;
+    }
 
     // Fungsi untuk normalisasi jawaban
     const normalizeAnswer = (answer) => {
@@ -22,17 +35,26 @@ const Quiz3 = ({ onComplete }) => {
       normalizedInputPreIncrement === normalizeAnswer("++") &&
       normalizedInputPostIncrement === normalizeAnswer("++")
     ) {
-      console.log("Correct answers submitted"); // Debugging
-      onComplete(true); // Pass true to indicate correct answer
+      setShowExplanation(true);
+      Swal.fire({
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
+        icon: "success",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        onComplete(true);
+      });
     } else {
-      window.scrollTo(0, 0);
       setInputPreIncrement("");
       setInputPostIncrement("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
@@ -40,6 +62,7 @@ const Quiz3 = ({ onComplete }) => {
   const handleReset = () => {
     setInputPreIncrement("");
     setInputPostIncrement("");
+    setShowExplanation(false);
   };
 
   return (
@@ -51,7 +74,7 @@ const Quiz3 = ({ onComplete }) => {
         UJI PENGETAHUAN
       </h2>
 
-      <div className="mt-4">
+      <form onSubmit={handleSubmit}>
         <p className="mt-2 text-gray-600">
           Lengkapilah bagian kode yang hilang dengan operator increment yang
           benar untuk pre-increment dan post-increment ...
@@ -81,45 +104,85 @@ const Quiz3 = ({ onComplete }) => {
           </pre>
         </div>
 
-        {/* Tombol Submit */}
-        <button
-          onClick={handleSubmit}
-          style={{
-            backgroundColor: "#6E2A7F",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#5B1F6A")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#6E2A7F")
-          }
-        >
-          Cek Jawaban
-        </button>
+        <div className="flex space-x-2">
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
+          >
+            Cek Jawaban
+          </button>
 
-        {/* Tombol Reset (Hapus Jawaban) */}
-        <button
-          onClick={handleReset}
-          style={{
-            backgroundColor: "red",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-            marginLeft: "1rem",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#c0392b")
-          }
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "red")}
-        >
-          Hapus Jawaban
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#c0392b")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "red")
+            }
+          >
+            Hapus Jawaban
+          </button>
+        </div>
+      </form>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah:
+          <br />
+          Untuk pre-increment: <strong>++</strong> (sebelum variabel, menjadi{" "}
+          <code>++a</code>),
+          <br />
+          Untuk post-increment: <strong>++</strong> (setelah variabel, menjadi{" "}
+          <code>b++</code>).
+          <br />
+          Dalam C#, operator <code>++</code> digunakan untuk increment.
+          Pre-increment (<code>++a</code>) menambah nilai <code>a</code>{" "}
+          terlebih dahulu (menjadi 6), lalu mencetak 6. Post-increment (
+          <code>b++</code>) mencetak nilai <code>b</code> terlebih dahulu (5),
+          lalu menambah nilainya menjadi 6, yang terlihat pada baris berikutnya.
+        </div>
+      )}
     </div>
   );
 };

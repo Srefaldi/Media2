@@ -531,7 +531,7 @@ const KuisBab4 = () => {
               <h3 className="mt-4 sm:mt-8 text-base sm:text-lg font-semibold text-center">
                 SOAL
               </h3>
-              <div className="flex flex-wrap gap-2 justify-center">
+              <div className="flex flex-row gap-1 justify-center">
                 {questions.slice(0, 5).map((question, index) => (
                   <button
                     key={question.id}
@@ -562,7 +562,7 @@ const KuisBab4 = () => {
                   </button>
                 ))}
               </div>
-              <div className="flex flex-wrap gap-2 justify-center mt-2">
+              <div className="flex flex-row gap-1 justify-center mt-2">
                 {questions.slice(5, 10).map((question, index) => (
                   <button
                     key={question.id}
@@ -596,12 +596,6 @@ const KuisBab4 = () => {
             </div>
 
             <div className="w-full p-2 sm:p-4 border rounded-lg">
-              <div className="p-2 sm:p-4 mb-4 text-center bg-gray-100 border rounded-lg">
-                <h3 className="font-semibold text-sm sm:text-base">
-                  SKOR: {score}
-                </h3>
-              </div>
-
               <h3 className="font-semibold text-sm sm:text-base">{`${questions[currentQuestionIndex].id}. ${questions[currentQuestionIndex].question}`}</h3>
               <div className="mt-2 mb-4">
                 {questions[currentQuestionIndex].options.map((option) => (

@@ -22,7 +22,7 @@ const ErrorCSharp = () => {
   };
 
   const handleQuizCompletion = () => {
-    handleLessonComplete("/materi/bab1/error-csharp");
+    handleLessonComplete("/materi/bab1/latihan-bab1");
     setQuizCompleted(true);
     // Scroll ke bagian paling bawah halaman
     window.scrollTo({

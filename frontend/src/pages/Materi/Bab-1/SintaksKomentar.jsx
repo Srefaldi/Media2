@@ -22,7 +22,7 @@ const SintaksKomentar = () => {
   };
 
   const handleQuizCompletion = () => {
-    handleLessonComplete("/materi/bab1/sintaks-komentar");
+    handleLessonComplete("/materi/bab1/error-csharp");
     setQuizCompleted(true);
     // Scroll ke bagian paling bawah halaman
     window.scrollTo({

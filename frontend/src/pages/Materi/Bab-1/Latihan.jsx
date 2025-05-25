@@ -183,6 +183,11 @@ const LatihanBab1 = () => {
     }
   }, [showLatihan]);
 
+  // Fungsi untuk normalisasi jawaban
+  const normalizeAnswer = (answer) => {
+    return answer.trim().replace(/\s+/g, " ").toLowerCase();
+  };
+
   // Fungsi untuk mengubah jawaban pengguna
   const handleAnswerChange = (value, inputIndex) => {
     const newAnswers = [...answers];
@@ -204,6 +209,24 @@ const LatihanBab1 = () => {
         confirmButtonText: "OK",
       });
       return;
+    }
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedUserAnswers = userAnswers.map((answer) =>
+      normalizeAnswer(answer)
+    );
+    const normalizedCorrectAnswers = questions[
+      currentQuestionIndex
+    ].correctAnswer.map((answer) => normalizeAnswer(answer));
+
+    // Cek apakah jawaban benar
+    const isCorrect = normalizedUserAnswers.every(
+      (answer, idx) => answer === normalizedCorrectAnswers[idx]
+    );
+
+    // Update skor (setiap soal bernilai 20 poin)
+    if (isCorrect) {
+      setScore((prevScore) => prevScore + 20);
     }
 
     const newAnswerStatus = [...answerStatus];
@@ -269,30 +292,41 @@ const LatihanBab1 = () => {
       cancelButtonColor: "#EF4444",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        const scorePercentage = (score / (questions.length * 20)) * 100; // Simpan skor sebagai persentase
+        const payload = {
+          user_id: user.uuid,
+          type: "latihan",
+          chapter: 1,
+          score: scorePercentage,
+        };
+        console.log("Sending score to backend:", payload);
+
         try {
-          await axios.post(
+          const response = await axios.post(
             `${import.meta.env.VITE_API_ENDPOINT}/scores`,
-            {
-              user_id: user.uuid,
-              type: "latihan",
-              chapter: 1,
-              score: score,
-            },
+            payload,
             { withCredentials: true }
           );
+          console.log("Score save response:", response.status, response.data);
 
-          if (score >= 75) {
+          if (scorePercentage >= 75) {
             handleQuizComplete("/materi/bab1/latihan-bab1");
+            handleQuizComplete("/materi/bab1/rangkuman-bab1");
           }
 
           navigate("/materi/bab1/hasil-latihan-bab1", {
             state: { score, totalQuestions: questions.length },
           });
         } catch (error) {
-          console.error("Error saving score:", error);
+          const errorMsg = error.response
+            ? `Error ${error.response.status}: ${
+                error.response.data.msg || error.response.data
+              }`
+            : error.message;
+          console.error("Error saving score:", errorMsg);
           Swal.fire({
             title: "Gagal!",
-            text: "Terjadi kesalahan saat menyimpan skor.",
+            text: `Terjadi kesalahan saat menyimpan skor: ${errorMsg}`,
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -303,16 +337,26 @@ const LatihanBab1 = () => {
 
   // Fungsi ketika waktu habis
   const handleTimeUp = async () => {
+    const scorePercentage = (score / (questions.length * 20)) * 100;
+    console.log("Time up score percentage:", scorePercentage);
+    const payload = {
+      user_id: user.uuid,
+      type: "latihan",
+      chapter: 1,
+      score: scorePercentage,
+    };
+    console.log("Sending score to backend (time up):", payload);
+
     try {
-      await axios.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_API_ENDPOINT}/scores`,
-        {
-          user_id: user.uuid,
-          type: "latihan",
-          chapter: 1,
-          score: score,
-        },
+        payload,
         { withCredentials: true }
+      );
+      console.log(
+        "Score save response (time up):",
+        response.status,
+        response.data
       );
 
       Swal.fire({
@@ -322,7 +366,7 @@ const LatihanBab1 = () => {
         confirmButtonText: "OK",
         confirmButtonColor: "#6E2A7F",
       }).then(() => {
-        if (score >= 75) {
+        if (scorePercentage >= 75) {
           handleQuizComplete("/materi/bab1/latihan-bab1");
         }
         navigate("/materi/bab1/hasil-latihan-bab1", {
@@ -330,10 +374,15 @@ const LatihanBab1 = () => {
         });
       });
     } catch (error) {
-      console.error("Error saving score:", error);
+      const errorMsg = error.response
+        ? `Error ${error.response.status}: ${
+            error.response.data.msg || error.response.data
+          }`
+        : error.message;
+      console.error("Error saving score (time up):", errorMsg);
       Swal.fire({
         title: "Gagal!",
-        text: "Terjadi kesalahan saat menyimpan skor.",
+        text: `Terjadi kesalahan saat menyimpan skor: ${errorMsg}`,
         icon: "error",
         confirmButtonText: "OK",
       });

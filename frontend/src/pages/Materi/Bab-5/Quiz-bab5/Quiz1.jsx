@@ -3,41 +3,56 @@ import Swal from "sweetalert2";
 
 const Quiz1 = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (selectedAnswer === "C") {
+    // Check for empty selection
+    if (!selectedAnswer) {
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
+        title: "Pilih Jawaban!",
+        text: "Silakan pilih salah satu jawaban sebelum mengirim.",
+        icon: "warning",
         confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      });
+      return;
+    }
+
+    // Check answer
+    if (selectedAnswer === "C") {
+      setShowExplanation(true);
+      Swal.fire({
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
+        icon: "success",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
       }).then(() => {
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: "smooth",
-        });
         onComplete(true);
       });
     } else {
       window.scrollTo(0, 0);
       setSelectedAnswer("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
 
   const handleReset = () => {
     setSelectedAnswer("");
+    setShowExplanation(false);
   };
 
   return (
-    <div className="max-w-full p-6 mx-auto mt-4 rounded-lg">
+    <div className="max-w-full p-6 mx-auto mt-4 bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -88,7 +103,7 @@ const Quiz1 = ({ onComplete }) => {
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
             }
           >
-            Kirim
+            Cek Jawaban
           </button>
           <button
             type="button"
@@ -99,7 +114,6 @@ const Quiz1 = ({ onComplete }) => {
               padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s",
-              marginLeft: "1rem",
             }}
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor = "#c0392b")
@@ -112,6 +126,55 @@ const Quiz1 = ({ onComplete }) => {
           </button>
         </div>
       </form>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah: <strong>C. if (nilai == 100)</strong>.
+          <br />
+          Dalam C#, pernyataan <code>if (nilai == 100)</code> menunjukkan
+          kondisi dalam kontrol alur. Struktur ini digunakan untuk memeriksa
+          apakah nilai sama dengan 100, dan jika benar, kode di dalam blok{" "}
+          <code>if</code> akan dijalankan. Pilihan lain tidak menunjukkan
+          kondisi kontrol alur:
+          <ul className="list-disc list-inside">
+            <li>
+              <code>Console.WriteLine(&quot;Halo Dunia&quot;);</code> adalah
+              perintah untuk mencetak teks.
+            </li>
+            <li>
+              <code>int angka = 10;</code> adalah deklarasi variabel.
+            </li>
+            <li>
+              <code>{'{ Console.WriteLine("Sempurna"); }'}</code> adalah blok
+              kode, bukan kondisi.
+            </li>
+            <li>
+              <code>string pesan = &quot;Selamat Datang&quot;;</code> adalah
+              deklarasi variabel string.
+            </li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

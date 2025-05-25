@@ -7,10 +7,12 @@ import "./Style/HasilLatihanBab1.css";
 const HasilLatihanBab1 = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { score = 0, totalQuestions = 10 } = state || {};
-  const percentage = (score / (totalQuestions * 10)) * 100;
-  const isPassing = percentage >= 75;
+  const { score = 0, totalQuestions = 5 } = state || {}; // Total pertanyaan tetap 5
+  const maxScore = totalQuestions * 20; // Setiap soal bernilai 20
+  const percentage = (score / maxScore) * 100; // Persentase dihitung berdasarkan skor maksimum
+  const isPassing = percentage >= 75; // Kriteria kelulusan
   const { handleLessonComplete } = useOutletContext();
+
   const handleRetry = () => {
     navigate("/materi/bab1/latihan-bab1");
   };
@@ -30,7 +32,7 @@ const HasilLatihanBab1 = () => {
       </h1>
       <div className="p-4 text-center bg-gray-100 rounded-lg sm:p-6">
         <h2 className="text-lg font-semibold text-gray-800">
-          Skor Anda: {score} / {totalQuestions * 10}
+          Skor Anda: {score} / {maxScore} {/* Total skor maksimum adalah 100 */}
         </h2>
         <p className="mt-2 text-gray-600">
           Persentase: {percentage.toFixed(2)}%

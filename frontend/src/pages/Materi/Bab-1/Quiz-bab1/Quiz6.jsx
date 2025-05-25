@@ -1,38 +1,47 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz = ({ onComplete }) => {
   const [selectedOption, setSelectedOption] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
   const handleSubmit = (e) => {
-    window.scrollTo(0, 0);
     e.preventDefault();
-    // Validasi jawaban
-    if (selectedOption === "C") {
-      onComplete();
-      setIsSubmitted(true);
-      setShowNotification(false);
 
+    if (!selectedOption) {
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
+        title: "Pilih Jawaban!",
+        text: "Silakan pilih salah satu opsi sebelum mengirim.",
+        icon: "warning",
         confirmButtonText: "OK",
+      });
+      return;
+    }
+
+    if (selectedOption === "C") {
+      setShowExplanation(true);
+      Swal.fire({
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
+        icon: "success",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        onComplete();
       });
     } else {
       setSelectedOption("");
-      setIsSubmitted(false);
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       }).then(() => {
         window.scrollTo(0, 0);
       });
@@ -41,7 +50,7 @@ const Quiz = ({ onComplete }) => {
 
   const handleReset = () => {
     setSelectedOption("");
-    setIsSubmitted(false);
+    setShowExplanation(false);
   };
 
   return (
@@ -102,14 +111,14 @@ const Quiz = ({ onComplete }) => {
             type="button"
             onClick={handleReset}
             style={{
-              backgroundColor: "red", // Warna merah
+              backgroundColor: "red",
               color: "white",
               padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s",
             }}
-            onMouseEnter={
-              (e) => (e.currentTarget.style.backgroundColor = "#c0392b") // Warna merah lebih gelap saat hover
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#c0392b")
             }
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor = "red")
@@ -119,14 +128,35 @@ const Quiz = ({ onComplete }) => {
           </button>
         </div>
       </form>
-      {isSubmitted && (
-        <p
-          className={`mt-4 text-center ${
-            selectedOption === "C" ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {selectedOption === "C"}
-        </p>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah: <strong>C. //</strong>
+          <br />
+          Dalam C#, <code>//</code> digunakan untuk membuat komentar satu baris.
+          Semua teks setelah <code>//</code> hingga akhir baris akan diabaikan
+          oleh compiler.
+        </div>
       )}
     </div>
   );

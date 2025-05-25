@@ -193,6 +193,11 @@ const LatihanBab2 = () => {
     }
   }, [showLatihan]);
 
+  // Fungsi untuk normalisasi jawaban
+  const normalizeAnswer = (answer) => {
+    return answer.trim().replace(/\s+/g, " ").toLowerCase();
+  };
+
   const handleAnswerChange = (value, inputIndex) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]];
@@ -212,6 +217,24 @@ const LatihanBab2 = () => {
         confirmButtonText: "OK",
       });
       return;
+    }
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedUserAnswers = userAnswers.map((answer) =>
+      normalizeAnswer(answer)
+    );
+    const normalizedCorrectAnswers = questions[
+      currentQuestionIndex
+    ].correctAnswer.map((answer) => normalizeAnswer(answer));
+
+    // Cek apakah jawaban benar
+    const isCorrect = normalizedUserAnswers.every(
+      (answer, idx) => answer === normalizedCorrectAnswers[idx]
+    );
+
+    // Update skor (setiap soal bernilai 10 poin)
+    if (isCorrect) {
+      setScore((prevScore) => prevScore + 10);
     }
 
     const newAnswerStatus = [...answerStatus];
@@ -280,6 +303,7 @@ const LatihanBab2 = () => {
       cancelButtonColor: "#EF4444",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        const scorePercentage = (score / (questions.length * 10)) * 100; // Simpan skor sebagai persentase
         try {
           await axios.post(
             `${import.meta.env.VITE_API_ENDPOINT}/scores`,
@@ -287,12 +311,12 @@ const LatihanBab2 = () => {
               user_id: user.uuid,
               type: "latihan",
               chapter: 2,
-              score: score,
+              score: scorePercentage,
             },
             { withCredentials: true }
           );
 
-          if (score >= 75) {
+          if (scorePercentage >= 75) {
             handleQuizComplete("/materi/bab2/latihan-bab2");
           }
 
@@ -313,6 +337,7 @@ const LatihanBab2 = () => {
   };
 
   const handleTimeUp = () => {
+    const scorePercentage = (score / (questions.length * 10)) * 100; // Simpan skor sebagai persentase
     Swal.fire({
       title: "Waktu Habis!",
       text: "Jawaban Anda akan dikirim.",
@@ -327,12 +352,12 @@ const LatihanBab2 = () => {
             user_id: user.uuid,
             type: "latihan",
             chapter: 2,
-            score: score,
+            score: scorePercentage,
           },
           { withCredentials: true }
         );
 
-        if (score >= 75) {
+        if (scorePercentage >= 75) {
           handleQuizComplete("/materi/bab2/latihan-bab2");
         }
 
@@ -509,7 +534,7 @@ const LatihanBab2 = () => {
             </h3>
           </div>
           <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
-          <div className="flex flex-row flex-wrap justify-center">
+          <div className="flex flex-row justify-center mb-2">
             {questions.map((question, index) => (
               <button
                 key={question.id}
@@ -534,7 +559,7 @@ const LatihanBab2 = () => {
                       ? "white"
                       : "black",
                 }}
-                className="sm:w-8 sm:h-8 md:w-8 md:h-8"
+                className="sm:w-8 sm:h-8"
               >
                 {question.id}
               </button>
@@ -599,7 +624,7 @@ const LatihanBab2 = () => {
                               onChange={(e) =>
                                 handleAnswerChange(e.target.value, index)
                               }
-                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24 md:w-24"
+                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
                               placeholder="Jawaban..."
                               autoFocus={index === 0}
                             />
@@ -611,7 +636,7 @@ const LatihanBab2 = () => {
                               onChange={(e) =>
                                 handleAnswerChange(e.target.value, 0)
                               }
-                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24 md:w-24"
+                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
                               placeholder="Jawaban..."
                               autoFocus
                             />
@@ -640,7 +665,7 @@ const LatihanBab2 = () => {
               onMouseLeave={(e) =>
                 (e.currentTarget.style.backgroundColor = "#6E2A7F")
               }
-              className="w-full sm:w-auto md:w-auto"
+              className="w-full sm:w-auto"
             >
               Kirim
             </button>
@@ -657,7 +682,7 @@ const LatihanBab2 = () => {
                     : [""];
                 setAnswers(newAnswers);
               }}
-              className="w-full px-4 py-2 mt-2 text-white bg-red-500 rounded-lg hover:bg-red-600 sm:w-auto sm:mt-0 md:w-auto md:mt-0"
+              className="w-full px-4 py-2 mt-2 text-white bg-red-500 rounded-lg hover:bg-red-600 sm:w-auto sm:mt-0"
             >
               Hapus Jawaban
             </button>
@@ -679,7 +704,7 @@ const LatihanBab2 = () => {
                 e.currentTarget.style.backgroundColor = "white";
                 e.currentTarget.style.borderColor = "#6E2A7F";
               }}
-              className="w-full sm:w-auto md:w-auto"
+              className="w-full sm:w-auto"
             >
               Selesai
             </button>

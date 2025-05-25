@@ -23,7 +23,7 @@ const StrukturEksekusi = () => {
   };
 
   const handleQuizComplete = () => {
-    handleLessonComplete("/materi/bab1/struktur-eksekusi");
+    handleLessonComplete("/materi/bab1/sintaks-print");
     setQuizCompleted(true);
     // Scroll to the bottom of the page
     window.scrollTo({

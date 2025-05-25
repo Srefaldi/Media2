@@ -2,47 +2,51 @@ import React, { useState } from "react";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Quiz = ({ onComplete }) => {
-  const [selectedOption, setSelectedOption] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (selectedOption === "B") {
-      onComplete();
-      setIsSubmitted(true);
-      setShowNotification(false);
-
+    if (!selectedAnswer) {
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
+        title: "Pilih Jawaban!",
+        text: "Silakan pilih salah satu opsi sebelum mengirim.",
+        icon: "warning",
         confirmButtonText: "OK",
       });
-    } else {
-      setSelectedOption("");
-      setIsSubmitted(false);
+      return;
+    }
 
+    if (selectedAnswer === "B") {
+      setShowExplanation(true);
+      Swal.fire({
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
+        icon: "success",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        onComplete();
+      });
+    } else {
+      setSelectedAnswer("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       }).then(() => {
-        // Scroll ke atas setelah modal ditutup
         window.scrollTo(0, 0);
       });
     }
   };
 
   const handleReset = () => {
-    setSelectedOption("");
-    setIsSubmitted(false);
+    setSelectedAnswer("");
+    setShowExplanation(false);
   };
 
   return (
@@ -53,14 +57,17 @@ const Quiz = ({ onComplete }) => {
       >
         UJI PENGETAHUAN
       </h2>
-      <p className="mb-4">Penyebab dari syntax error adalah …</p>
+      <p className="mb-4">
+        Yang perlu diperhatikan dalam memilih tipe data untuk sebuah variabel
+        ...
+      </p>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           {["A", "B", "C", "D", "E"].map((option) => (
             <div key={option} className="mb-2">
               <label
                 className={`flex items-center cursor-pointer p-3 rounded-lg border-2 transition duration-200 ${
-                  selectedOption === option
+                  selectedAnswer === option
                     ? "bg-[#6E2A7F] text-white border-[#6E2A7F]"
                     : "bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200"
                 }`}
@@ -68,8 +75,8 @@ const Quiz = ({ onComplete }) => {
                 <input
                   type="radio"
                   value={option}
-                  checked={selectedOption === option}
-                  onChange={handleOptionChange}
+                  checked={selectedAnswer === option}
+                  onChange={(e) => setSelectedAnswer(e.target.value)}
                   className="hidden"
                 />
                 {option}. {getOptionText(option)}
@@ -96,7 +103,6 @@ const Quiz = ({ onComplete }) => {
           >
             Kirim
           </button>
-
           <button
             type="button"
             onClick={handleReset}
@@ -106,6 +112,7 @@ const Quiz = ({ onComplete }) => {
               padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s",
+              marginLeft: "1rem",
             }}
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor = "#c0392b")
@@ -118,19 +125,36 @@ const Quiz = ({ onComplete }) => {
           </button>
         </div>
       </form>
-      {isSubmitted && (
-        <p
-          className={`mt-4 text-center ${
-            selectedOption === "B" ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {selectedOption === "B"}
-        </p>
-      )}
 
-      {/* Notifikasi jika jawaban salah */}
-      {showNotification && (
-        <PopUpJawabanSalah onClose={handleCloseNotification} />
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah:{" "}
+          <strong>B. Kapan dan untuk apa tipe data tersebut digunakan</strong>
+          <br />
+          Penjelasan: Tipe data digunakan untuk menentukan jenis data yang dapat
+          disimpan dalam variabel dan bagaimana data tersebut dapat digunakan
+          dalam program.
+        </div>
       )}
     </div>
   );
@@ -139,15 +163,15 @@ const Quiz = ({ onComplete }) => {
 const getOptionText = (option) => {
   switch (option) {
     case "A":
-      return "Tidak memberikan spasi antara kode";
+      return "Lokasi penyimpanan variabel di dalam memori";
     case "B":
-      return "Menulis kode yang menyimpang dari aturan tata bahasa C#"; // Jawaban benar
+      return "Kapan dan untuk apa tipe data tersebut digunakan";
     case "C":
-      return "Pengguna memasukkan data yang salah";
+      return "Cara menuliskan nama variabel dalam bahasa pemrograman";
     case "D":
-      return "Menggunakan variabel yang tidak dideklarasikan";
+      return "Ukuran layar untuk menampilkan variabel";
     case "E":
-      return "Menggunakan tipe data yang tidak sesuai";
+      return "Warna teks variabel pada editor kode";
     default:
       return "";
   }

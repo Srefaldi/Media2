@@ -190,6 +190,11 @@ const LatihanBab5 = () => {
     }
   }, [showLatihan, timeLeft]);
 
+  // Fungsi untuk normalisasi jawaban
+  const normalizeAnswer = (answer) => {
+    return answer.trim().replace(/\s+/g, " ").toLowerCase();
+  };
+
   const handleAnswerChange = (value, inputIndex) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]];
@@ -208,6 +213,24 @@ const LatihanBab5 = () => {
         confirmButtonText: "OK",
       });
       return;
+    }
+
+    // Normalisasi jawaban pengguna dan jawaban yang benar
+    const normalizedUserAnswers = userAnswers.map((answer) =>
+      normalizeAnswer(answer)
+    );
+    const normalizedCorrectAnswers = questions[
+      currentQuestionIndex
+    ].correctAnswer.map((answer) => normalizeAnswer(answer));
+
+    // Cek apakah jawaban benar
+    const isCorrect = normalizedUserAnswers.every(
+      (answer, idx) => answer === normalizedCorrectAnswers[idx]
+    );
+
+    // Update skor (setiap soal bernilai 20 poin)
+    if (isCorrect) {
+      setScore((prevScore) => prevScore + 20);
     }
 
     const newAnswerStatus = [...answerStatus];
@@ -272,6 +295,7 @@ const LatihanBab5 = () => {
       cancelButtonColor: "#EF4444",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        const scorePercentage = (score / (questions.length * 20)) * 100; // Simpan skor sebagai persentase
         try {
           await axios.post(
             `${import.meta.env.VITE_API_ENDPOINT}/scores`,
@@ -279,12 +303,12 @@ const LatihanBab5 = () => {
               user_id: user.uuid,
               type: "latihan",
               chapter: 5,
-              score: score,
+              score: scorePercentage,
             },
             { withCredentials: true }
           );
 
-          if (score >= 75) {
+          if (scorePercentage >= 75) {
             handleLessonComplete("/materi/bab5/latihan-bab5");
             handleLessonComplete("/materi/bab5/kuis-bab5");
           }
@@ -317,6 +341,7 @@ const LatihanBab5 = () => {
       cancelButtonColor: "#EF4444",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        const scorePercentage = (score / (questions.length * 20)) * 100; // Simpan skor sebagai persentase
         try {
           await axios.post(
             `${import.meta.env.VITE_API_ENDPOINT}/scores`,
@@ -324,12 +349,12 @@ const LatihanBab5 = () => {
               user_id: user.uuid,
               type: "latihan",
               chapter: 5,
-              score: score,
+              score: scorePercentage,
             },
             { withCredentials: true }
           );
 
-          if (score >= 75) {
+          if (scorePercentage >= 75) {
             handleLessonComplete("/materi/bab5/latihan-bab5");
             handleLessonComplete("/materi/bab5/kuis-bab5");
           }
@@ -453,27 +478,23 @@ const LatihanBab5 = () => {
 
   // UI untuk halaman latihan
   const renderLatihan = () => (
-    <div className="mx-auto max-w-6xl p-2 sm:p-4 lg:p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-base sm:text-lg font-semibold text-center text-gray-800">
+    <div className="mx-auto max-w-6xl p-4 sm:p-6 lg:p-8 bg-white rounded-lg shadow-lg">
+      <h2 className="text-lg font-semibold text-center text-gray-800">
         LATIHAN BAB 5
       </h2>
 
       <div
-        className="relative p-2 sm:p-4 mt-4 border rounded-lg"
+        className="relative p-4 sm:p-6 mt-4 border rounded-lg"
         style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
       >
         <h3
-          className="flex items-center p-2 text-base sm:text-lg font-semibold border rounded-lg w-full sm:w-80 md:w-96"
+          className="flex items-center p-2 text-lg font-semibold border rounded-lg w-full sm:w-80 md:w-96"
           style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
         >
-          <img
-            src={IconPetunjuk}
-            alt="Icon"
-            className="w-5 sm:w-6 h-5 sm:h-6 mr-2"
-          />
+          <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
           PETUNJUK MENGERJAKAN
         </h3>
-        <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside text-sm sm:text-base">
+        <ol className="mt-2 text-justify text-gray-600 list-decimal list-inside">
           <li>
             Jawablah soal-soal di bawah ini dengan mengisikannya pada input yang
             tersedia.
@@ -519,18 +540,16 @@ const LatihanBab5 = () => {
         </ol>
       </div>
 
-      <div className="flex flex-col lg:flex-row mt-6 gap-2 sm:gap-4 lg:items-start">
-        <div className="flex flex-col mr-0 lg:mr-6 w-full lg:w-auto">
-          <div className="p-2 sm:p-4 mt-2 sm:mt-5 text-center text-red-600 bg-gray-100 border rounded-lg">
-            <h3 className="font-semibold text-sm sm:text-base">
+      <div className="flex flex-col mt-6 lg:flex-row lg:items-start">
+        <div className="flex flex-col mr-3 lg:mr-6">
+          <div className="p-4 mt-5 text-center text-red-600 bg-gray-100 border rounded-lg sm:p-5">
+            <h3 className="font-semibold">
               Waktu Tersisa: {Math.floor(timeLeft / 60)}:
               {(timeLeft % 60).toString().padStart(2, "0")}
             </h3>
           </div>
-          <h3 className="mt-4 sm:mt-8 text-base sm:text-lg font-semibold text-center">
-            SOAL
-          </h3>
-          <div className="flex flex-wrap gap-2 justify-center">
+          <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
+          <div className="flex flex-row justify-center mb-2">
             {questions.map((question, index) => (
               <button
                 key={question.id}
@@ -555,7 +574,7 @@ const LatihanBab5 = () => {
                       ? "white"
                       : "black",
                 }}
-                className="w-8 h-8 sm:w-8 sm:h-8"
+                className="sm:w-8 sm:h-8"
               >
                 {question.id}
               </button>
@@ -563,18 +582,18 @@ const LatihanBab5 = () => {
           </div>
         </div>
 
-        <div className="w-full p-2 sm:p-4 lg:p-6 border rounded-lg">
-          <h3 className="font-semibold text-sm sm:text-base">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
-          <p className="text-gray-600 text-sm sm:text-base">
+        <div className="w-full p-4 lg:p-6 border rounded-lg">
+          <h3 className="font-semibold">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
+          <p className="text-gray-600">
             {questions[currentQuestionIndex].prompt}
           </p>
-          <div className="p-2 sm:p-4 mt-2 font-mono text-xs sm:text-sm bg-gray-100 rounded-lg">
+          <div className="p-4 mt-2 font-mono text-sm bg-gray-100 rounded-lg">
             <pre className="code-block">
               <code>
                 {questions[currentQuestionIndex].code
                   .split("___")
                   .map((part, index) => (
-                    <>
+                    <React.Fragment key={`part-${index}`}>
                       {part.split(" ").map((word, wordIndex) => {
                         if (
                           word.includes("class") ||
@@ -594,24 +613,24 @@ const LatihanBab5 = () => {
                           word.includes("default")
                         ) {
                           return (
-                            <span key={wordIndex} className="keyword">
+                            <span key={`word-${wordIndex}`} className="keyword">
                               {word}{" "}
                             </span>
                           );
                         } else if (word.includes('"') || word.includes("'")) {
                           return (
-                            <span key={wordIndex} className="string">
+                            <span key={`word-${wordIndex}`} className="string">
                               {word}{" "}
                             </span>
                           );
                         } else if (word.includes("//")) {
                           return (
-                            <span key={wordIndex} className="comment">
+                            <span key={`word-${wordIndex}`} className="comment">
                               {word}{" "}
                             </span>
                           );
                         }
-                        return <span key={wordIndex}>{word} </span>;
+                        return <span key={`word-${wordIndex}`}>{word} </span>;
                       })}
                       {index <
                         questions[currentQuestionIndex].code.split("___")
@@ -620,16 +639,18 @@ const LatihanBab5 = () => {
                         <span>
                           <input
                             type="text"
+                            key={`input-${index}`}
                             value={answers[currentQuestionIndex][index] || ""}
                             onChange={(e) =>
                               handleAnswerChange(e.target.value, index)
                             }
-                            className="w-20 sm:w-24 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300"
+                            className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
                             placeholder="Jawaban..."
+                            autoFocus={index === 0}
                           />
                         </span>
                       )}
-                    </>
+                    </React.Fragment>
                   ))}
               </code>
             </pre>
@@ -663,7 +684,7 @@ const LatihanBab5 = () => {
                 ).fill("");
                 setAnswers(newAnswers);
               }}
-              className="w-full px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 sm:w-auto"
+              className="w-full px-4 py-2 mt-2 text-white bg-red-500 rounded-lg hover:bg-red-600 sm:w-auto sm:mt-0"
             >
               Hapus Jawaban
             </button>

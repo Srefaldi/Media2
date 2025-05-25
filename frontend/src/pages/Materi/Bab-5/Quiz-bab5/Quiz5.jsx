@@ -1,13 +1,27 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz5 = ({ onComplete }) => {
   const [inputInit, setInputInit] = useState("");
   const [inputCondition, setInputCondition] = useState("");
   const [inputIteration, setInputIteration] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Check for empty inputs
+    if (!inputInit || !inputCondition || !inputIteration) {
+      window.scrollTo(0, 0);
+      Swal.fire({
+        title: "Isi Semua Kolom!",
+        text: "Silakan isi semua bagian sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      });
+      return;
+    }
 
     // Fungsi untuk normalisasi jawaban
     const normalizeAnswer = (answer) => {
@@ -31,25 +45,32 @@ const Quiz5 = ({ onComplete }) => {
       normalizedInputCondition === normalizedCorrectCondition &&
       normalizedInputIteration === normalizedCorrectIteration
     ) {
-      onComplete();
+      setShowExplanation(true);
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        onComplete(true);
       });
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setInputInit("");
       setInputCondition("");
       setInputIteration("");
-
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
@@ -58,6 +79,7 @@ const Quiz5 = ({ onComplete }) => {
     setInputInit("");
     setInputCondition("");
     setInputIteration("");
+    setShowExplanation(false);
   };
 
   return (
@@ -107,45 +129,82 @@ const Quiz5 = ({ onComplete }) => {
           </pre>
         </div>
 
-        {/* Tombol Submit */}
-        <button
-          onClick={handleSubmit}
-          style={{
-            backgroundColor: "#6E2A7F",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#5B1F6A")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#6E2A7F")
-          }
-        >
-          Cek Jawaban
-        </button>
-
-        {/* Tombol Reset (Hapus Jawaban) */}
-        <button
-          onClick={handleReset}
-          style={{
-            backgroundColor: "red",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-            marginLeft: "1rem",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#c0392b")
-          }
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "red")}
-        >
-          Hapus Jawaban
-        </button>
+        <div className="flex space-x-2">
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
+            onClick={handleSubmit}
+          >
+            Cek Jawaban
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#c0392b")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "red")
+            }
+          >
+            Hapus Jawaban
+          </button>
+        </div>
       </div>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah: <code>int i = 1</code> untuk inisialisasi,{" "}
+          <code>i &lt;= 10</code> untuk kondisi, dan <code>i++</code> untuk
+          iterasi.
+          <br />
+          Dalam perulangan <code>for</code> di C#, inisialisasi{" "}
+          <code>int i = 1</code> menetapkan variabel kontrol <code>i</code>{" "}
+          mulai dari 1. Kondisi <code>i &lt;= 10</code> memastikan perulangan
+          berjalan selama nilai <code>i</code> kurang dari atau sama dengan 10.
+          Iterasi <code>i++</code> meningkatkan nilai <code>i</code> sebesar 1
+          pada setiap iterasi, sehingga mencetak angka dari 1 hingga 10.
+        </div>
+      )}
     </div>
   );
 };

@@ -18,25 +18,6 @@ const Boolean = () => {
 
     if (isPassed) {
       handleLessonComplete("/materi/bab3/char");
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then(() => {
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: "smooth",
-        });
-      });
-    } else {
-      setQuizCompleted(false); // Allow retry
-      Swal.fire({
-        title: "Jawaban Anda Salah",
-        text: "Baca Kembali Materi dan Coba Lagi",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
     }
   };
 

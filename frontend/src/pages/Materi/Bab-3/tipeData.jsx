@@ -83,8 +83,8 @@ const TipeData = () => {
               dan string dalam penulisan program C#.
             </li>
             <li>
-              Menggunakan tipe data yang tepat untuk operasi aritmatika, logika,
-              dan manipulasi data dalam program C#.
+              Menggunakan tipe data yang tepat untuk operasi aritmatika dan
+              logika dalam program C#.
             </li>
           </ul>
         </div>

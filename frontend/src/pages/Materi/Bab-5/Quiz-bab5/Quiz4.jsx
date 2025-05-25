@@ -3,43 +3,62 @@ import Swal from "sweetalert2";
 
 const Quiz4 = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Check for empty selection
+    if (!selectedAnswer) {
+      Swal.fire({
+        title: "Pilih Jawaban!",
+        text: "Silakan pilih salah satu jawaban sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      });
+      return;
+    }
+
     const correctAnswer = "A";
 
+    // Check answer
     if (selectedAnswer === correctAnswer) {
+      setShowExplanation(true);
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
       }).then(() => {
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: "smooth",
-        });
         onComplete(true);
       });
     } else {
       window.scrollTo(0, 0);
       setSelectedAnswer("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
 
   const handleReset = () => {
     setSelectedAnswer("");
+    setShowExplanation(false);
   };
 
   return (
-    <div className="max-w-full p-6 mx-auto mt-4 rounded-lg">
+    <div className="max-w-full p-6 mx-auto mt-4 bg-white rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
@@ -90,7 +109,7 @@ const Quiz4 = ({ onComplete }) => {
               (e.currentTarget.style.backgroundColor = "#6E2A7F")
             }
           >
-            Kirim
+            Cek Jawaban
           </button>
           <button
             type="button"
@@ -101,7 +120,6 @@ const Quiz4 = ({ onComplete }) => {
               padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s",
-              marginLeft: "1rem",
             }}
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor = "#c0392b")
@@ -114,6 +132,44 @@ const Quiz4 = ({ onComplete }) => {
           </button>
         </div>
       </form>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah:{" "}
+          <strong>
+            A. Switch statement memastikan persamaan antara sebuah nilai dari
+            sebuah string dengan nilai variabel selain string yang ada pada case
+            di dalam sebuah switch.
+          </strong>
+          <br />
+          Pernyataan ini tidak tepat karena dalam C#, <code>switch</code>{" "}
+          statement hanya dapat membandingkan ekspresi dengan konstanta yang
+          memiliki tipe yang sama atau kompatibel (misalnya, string hanya dengan
+          string, int hanya dengan int). Membandingkan string dengan variabel
+          bertipe lain (selain string) tidak didukung oleh struktur{" "}
+          <code>switch</code>.
+        </div>
+      )}
     </div>
   );
 };

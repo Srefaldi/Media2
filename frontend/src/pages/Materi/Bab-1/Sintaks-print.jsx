@@ -141,7 +141,7 @@ const SintaksPrint = () => {
   };
 
   const handleQuizCompletion = () => {
-    handleLessonComplete("/materi/bab1/sintaks-print");
+    handleLessonComplete("/materi/bab1/sintaks-komentar");
     setQuizCompleted(true);
     window.scrollTo({
       top: document.documentElement.scrollHeight,

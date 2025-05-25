@@ -16,19 +16,6 @@ const VariabelKonstanta = () => {
     handleLessonComplete("/materi/bab2/sintaks-input");
     setQuizCompleted(true);
     setQuizPassed(isPassed);
-    if (isPassed) {
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
-      // Scroll ke bagian paling bawah halaman
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
-      });
-    }
   };
 
   const handleNext = () => {

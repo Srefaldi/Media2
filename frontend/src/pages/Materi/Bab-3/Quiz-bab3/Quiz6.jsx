@@ -5,10 +5,22 @@ const Quiz6 = ({ onComplete }) => {
   const [operator1, setOperator1] = useState("");
   const [operator2, setOperator2] = useState("");
   const [operator3, setOperator3] = useState("");
-  const [quizFeedback, setQuizFeedback] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Check for empty inputs
+    if (!operator1 || !operator2 || !operator3) {
+      Swal.fire({
+        title: "Isi Semua Jawaban!",
+        text: "Silakan isi semua kolom jawaban sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      });
+      return;
+    }
 
     // Fungsi untuk normalisasi jawaban
     const normalizeAnswer = (answer) => {
@@ -26,32 +38,29 @@ const Quiz6 = ({ onComplete }) => {
       normalizedOperator2 === normalizeAnswer("==") &&
       normalizedOperator3 === normalizeAnswer(">")
     ) {
-      onComplete(true); // Pass isPassed: true to parent
+      setShowExplanation(true);
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
       }).then(() => {
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: "smooth",
-        });
+        onComplete(true);
       });
     } else {
-      // Scroll ke atas ketika jawaban salah
-      window.scrollTo(0, 0);
       setOperator1("");
       setOperator2("");
       setOperator3("");
-
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
-      onComplete(false); // Pass isPassed: false to parent
+      onComplete(false);
     }
   };
 
@@ -59,7 +68,7 @@ const Quiz6 = ({ onComplete }) => {
     setOperator1("");
     setOperator2("");
     setOperator3("");
-    setQuizFeedback("");
+    setShowExplanation(false);
   };
 
   return (
@@ -71,7 +80,7 @@ const Quiz6 = ({ onComplete }) => {
         UJI PENGETAHUAN
       </h2>
 
-      <div className="mt-4">
+      <form onSubmit={handleSubmit}>
         <p className="mt-2 text-gray-600">
           Lengkapi kode berikut dengan operator perbandingan yang benar:
         </p>
@@ -111,49 +120,86 @@ const Quiz6 = ({ onComplete }) => {
           </pre>
         </div>
 
-        {/* Tombol Submit */}
-        <button
-          onClick={handleSubmit}
-          style={{
-            backgroundColor: "#6E2A7F",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#5B1F6A")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#6E2A7F")
-          }
-        >
-          Cek Jawaban
-        </button>
+        <div className="flex space-x-2">
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
+          >
+            Cek Jawaban
+          </button>
 
-        {/* Tombol Reset (Hapus Jawaban) */}
-        <button
-          onClick={handleReset}
-          style={{
-            backgroundColor: "red",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-            marginLeft: "1rem",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#c0392b")
-          }
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "red")}
-        >
-          Hapus Jawaban
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#c0392b")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "red")
+            }
+          >
+            Hapus Jawaban
+          </button>
+        </div>
+      </form>
 
-      {/* Umpan Balik Kuis */}
-      {quizFeedback && (
-        <p className={`mt-4 text-center text-red-500`}>{quizFeedback}</p>
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah:
+          <br />
+          Operator 1: <strong>&lt;</strong> (lebih kecil dari),
+          <br />
+          Operator 2: <strong>==</strong> (sama dengan),
+          <br />
+          Operator 3: <strong>&gt;</strong> (lebih besar dari).
+          <br />
+          Dalam C#, operator perbandingan yang digunakan adalah:{" "}
+          <code>&lt;</code> untuk membandingkan apakah 50 lebih kecil dari 30
+          (hasil: <code>false</code>), <code>==</code> untuk membandingkan
+          apakah 15 sama dengan 15 (hasil: <code>true</code>), dan{" "}
+          <code>&gt;</code> untuk membandingkan apakah karakter 'B' lebih besar
+          dari 'b' berdasarkan nilai ASCII (hasil: <code>false</code>, karena
+          'B' = 66 dan 'b' = 98).
+        </div>
       )}
     </div>
   );

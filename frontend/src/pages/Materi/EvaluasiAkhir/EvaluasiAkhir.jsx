@@ -549,47 +549,67 @@ const EvaluasiAkhir = () => {
                 </h3>
               </div>
               <h3 className="mt-8 text-lg font-semibold text-center">SOAL</h3>
-              <div className="flex flex-wrap gap-2 justify-center">
-                {Array.from({ length: Math.ceil(questions.length / 5) }).map(
-                  (_, rowIndex) => (
-                    <div className="flex flex-row mb-2" key={rowIndex}>
-                      {questions
-                        .slice(rowIndex * 5, rowIndex * 5 + 5)
-                        .map((question, index) => (
-                          <button
-                            key={question.id}
-                            onClick={() =>
-                              handleQuestionSelect(rowIndex * 5 + index)
-                            }
-                            style={{
-                              width: "2rem",
-                              height: "2rem",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              borderRadius: "0.5rem",
-                              margin: "0.125rem",
-                              backgroundColor:
-                                currentQuestionIndex === rowIndex * 5 + index
-                                  ? "#6E2A7F"
-                                  : answerStatus[rowIndex * 5 + index] ===
-                                    "submitted"
-                                  ? "#10B981"
-                                  : "#D1D5DB",
-                              color:
-                                currentQuestionIndex === rowIndex * 5 + index ||
-                                answerStatus[rowIndex * 5 + index] ===
-                                  "submitted"
-                                  ? "white"
-                                  : "black",
-                            }}
-                          >
-                            {rowIndex * 5 + index + 1}
-                          </button>
-                        ))}
-                    </div>
-                  )
-                )}
+              <div className="flex flex-row gap-1 justify-center">
+                {questions.slice(0, 5).map((question, index) => (
+                  <button
+                    key={question.id}
+                    onClick={() => handleQuestionSelect(index)}
+                    style={{
+                      width: "2rem",
+                      height: "2rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "0.5rem",
+                      margin: "0.125rem",
+                      backgroundColor:
+                        currentQuestionIndex === index
+                          ? "#6E2A7F"
+                          : answerStatus[index] === "submitted"
+                          ? "#10B981"
+                          : "#D1D5DB",
+                      color:
+                        currentQuestionIndex === index ||
+                        answerStatus[index] === "submitted"
+                          ? "white"
+                          : "black",
+                    }}
+                    className="w-8 h-8 sm:w-8 sm:h-8"
+                  >
+                    {question.id}
+                  </button>
+                ))}
+              </div>
+              <div className="flex flex-row gap-1 justify-center mt-2">
+                {questions.slice(5, 10).map((question, index) => (
+                  <button
+                    key={question.id}
+                    onClick={() => handleQuestionSelect(index + 5)}
+                    style={{
+                      width: "2rem",
+                      height: "2rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "0.5rem",
+                      margin: "0.125rem",
+                      backgroundColor:
+                        currentQuestionIndex === index + 5
+                          ? "#6E2A7F"
+                          : answerStatus[index + 5] === "submitted"
+                          ? "#10B981"
+                          : "#D1D5DB",
+                      color:
+                        currentQuestionIndex === index + 5 ||
+                        answerStatus[index + 5] === "submitted"
+                          ? "white"
+                          : "black",
+                    }}
+                    className="w-8 h-8 sm:w-8 sm:h-8"
+                  >
+                    {question.id}
+                  </button>
+                ))}
               </div>
             </div>
 

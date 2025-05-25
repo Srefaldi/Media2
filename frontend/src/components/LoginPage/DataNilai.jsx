@@ -55,6 +55,7 @@ const ScoreList = () => {
           withCredentials: true,
         }
       );
+      console.log("Current user (teacher):", meResponse.data);
 
       const response = await axios.get(
         `${import.meta.env.VITE_API_ENDPOINT}/users`,
@@ -77,16 +78,21 @@ const ScoreList = () => {
                 withCredentials: true,
               }
             );
-            return { ...user, scores: scoreResponse.data.scores };
+            console.log(
+              `Raw scores for ${user.name} (UUID: ${user.uuid}):`,
+              scoreResponse.data.scores
+            );
+            return { ...user, scores: scoreResponse.data.scores || [] };
           } catch (error) {
             console.error(
               `Error fetching scores for user ${user.uuid}:`,
-              error
+              error.response ? error.response.data : error.message
             );
             return { ...user, scores: [] };
           }
         })
       );
+      console.log("Users with scores:", usersWithScores);
       setUsers(usersWithScores);
       setError(null);
     } catch (error) {
@@ -125,32 +131,33 @@ const ScoreList = () => {
       );
 
       const tableData = usersWithScores.map((user) => {
-        const getScore = (scores, type, chapter) => {
-          const score = scores.find(
+        const getHighestScore = (scores, type, chapter) => {
+          const filteredScores = scores.filter(
             (s) =>
               s.type === type &&
-              (type === "evaluasi_akhir" ? true : s.chapter === chapter)
+              (type === "evaluasi_akhir" ? true : Number(s.chapter) === chapter)
           );
-          return score ? Math.floor(score.score) : "-";
+          if (filteredScores.length === 0) return 0;
+          return Math.floor(Math.max(...filteredScores.map((s) => s.score)));
         };
 
         return [
           user.nis,
           user.name,
           user.class || "-",
-          getScore(user.scores, "latihan", 1),
-          getScore(user.scores, "latihan", 2),
-          getScore(user.scores, "latihan", 3),
-          getScore(user.scores, "latihan", 4),
-          getScore(user.scores, "latihan", 5),
-          getScore(user.scores, "latihan", 6),
-          getScore(user.scores, "evaluasi", 1),
-          getScore(user.scores, "evaluasi", 2),
-          getScore(user.scores, "evaluasi", 3),
-          getScore(user.scores, "evaluasi", 4),
-          getScore(user.scores, "evaluasi", 5),
-          getScore(user.scores, "evaluasi", 6),
-          getScore(user.scores, "evaluasi_akhir", null),
+          getHighestScore(user.scores, "latihan", 1),
+          getHighestScore(user.scores, "latihan", 2),
+          getHighestScore(user.scores, "latihan", 3),
+          getHighestScore(user.scores, "latihan", 4),
+          getHighestScore(user.scores, "latihan", 5),
+          getHighestScore(user.scores, "latihan", 6),
+          getHighestScore(user.scores, "evaluasi", 1),
+          getHighestScore(user.scores, "evaluasi", 2),
+          getHighestScore(user.scores, "evaluasi", 3),
+          getHighestScore(user.scores, "evaluasi", 4),
+          getHighestScore(user.scores, "evaluasi", 5),
+          getHighestScore(user.scores, "evaluasi", 6),
+          getHighestScore(user.scores, "evaluasi_akhir", null),
         ];
       });
 
@@ -181,9 +188,9 @@ const ScoreList = () => {
         headStyles: { fillColor: [200, 200, 200], textColor: [0, 0, 0] },
         margin: { top: 20 },
         columnStyles: {
-          0: { cellWidth: 20 }, // NIS
-          1: { cellWidth: 40 }, // Nama
-          2: { cellWidth: 15 }, // Kelas
+          0: { cellWidth: 20 },
+          1: { cellWidth: 40 },
+          2: { cellWidth: 15 },
         },
       });
 
@@ -213,7 +220,7 @@ const ScoreList = () => {
       saveAs(blob, `Daftar_Nilai_${selectedClass || "Semua_Kelas"}.xlsx`);
       setError(null);
     } catch (error) {
-      const errorMsg = error.response?.data?.msg || "Gagal mengekspor ke Excel";
+      const errorMsg = error.response?.data?.msg || "Gagal menekspor ke Excel";
       console.error("Error exporting to Excel:", errorMsg);
       setError(errorMsg);
     }
@@ -237,18 +244,32 @@ const ScoreList = () => {
     currentPage * itemsPerPage
   );
 
-  const getScore = (scores, type, chapter) => {
-    const score = scores.find(
+  const getHighestScore = (scores, type, chapter) => {
+    console.log(
+      "Checking score for type:",
+      type,
+      "chapter:",
+      chapter,
+      "scores:",
+      scores
+    );
+    const filteredScores = scores.filter(
       (s) =>
         s.type === type &&
-        (type === "evaluasi_akhir" ? true : s.chapter === chapter)
+        (type === "evaluasi_akhir" ? true : Number(s.chapter) === chapter)
     );
-    return score ? Math.floor(score.score) : "-";
+    if (filteredScores.length === 0) {
+      console.log("No scores found, returning 0");
+      return 0;
+    }
+    const highestScore = Math.max(...filteredScores.map((s) => s.score));
+    console.log("Highest score found:", highestScore);
+    return Math.floor(highestScore);
   };
 
   const renderHeader = () => (
     <thead className="hidden sm:table-header-group">
-      <tr className=" text-center border-b border-gray-200">
+      <tr className="text-center border-b border-gray-200">
         <th
           rowSpan={2}
           className="w-[10%] px-2 py-1 text-sm font-semibold text-center align-middle select-none sm:px-3 sm:py-2 sm:text-base"
@@ -350,7 +371,7 @@ const ScoreList = () => {
                 <span className="inline-block w-24 font-semibold text-center sm:hidden">
                   Latihan Bab {i + 1}:
                 </span>
-                {getScore(user.scores, "latihan", i + 1)}
+                {getHighestScore(user.scores, "latihan", i + 1)}
               </td>
             ))}
             {[...Array(6)].map((_, i) => (
@@ -361,14 +382,14 @@ const ScoreList = () => {
                 <span className="inline-block w-24 font-semibold text-center sm:hidden">
                   Kuis Bab {i + 1}:
                 </span>
-                {getScore(user.scores, "evaluasi", i + 1)}
+                {getHighestScore(user.scores, "evaluasi", i + 1)}
               </td>
             ))}
             <td className="flex items-center px-2 py-1 text-center sm:table-cell sm:px-3 sm:py-2 sm:font-mono sm:text-base sm:select-text sm:align-middle">
               <span className="inline-block w-24 font-semibold text-center sm:hidden">
                 Evaluasi Akhir:
               </span>
-              {getScore(user.scores, "evaluasi_akhir", null)}
+              {getHighestScore(user.scores, "evaluasi_akhir", null)}
             </td>
           </tr>
         ))

@@ -8,9 +8,35 @@ const Quiz5 = ({ onComplete }) => {
   const [var1Value, setVar1Value] = useState("");
   const [var2Value, setVar2Value] = useState("");
   const [var3Value, setVar3Value] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Check for empty inputs
+    if (
+      !var1Type ||
+      !var2Type ||
+      !var3Type ||
+      !var1Value ||
+      !var2Value ||
+      !var3Value
+    ) {
+      Swal.fire({
+        title: "Isi Semua Jawaban!",
+        text: "Silakan isi semua kolom jawaban sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      });
+      setVar1Type("");
+      setVar2Type("");
+      setVar3Type("");
+      setVar1Value("");
+      setVar2Value("");
+      setVar3Value("");
+      return;
+    }
 
     // Fungsi untuk normalisasi jawaban
     const normalizeAnswer = (answer) => {
@@ -34,22 +60,30 @@ const Quiz5 = ({ onComplete }) => {
       normalizedVar2Value === normalizeAnswer("D") &&
       normalizedVar3Value === normalizeAnswer("M")
     ) {
-      console.log("Correct answers submitted"); // Debugging
-      onComplete(true); // Pass true to indicate correct answer
+      setShowExplanation(true);
+      Swal.fire({
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
+        icon: "success",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        onComplete(true);
+      });
     } else {
-      // Scroll ke atas ketika jawaban salah
-      window.scrollTo(0, 0);
       setVar1Type("");
       setVar2Type("");
       setVar3Type("");
       setVar1Value("");
       setVar2Value("");
       setVar3Value("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
@@ -61,6 +95,7 @@ const Quiz5 = ({ onComplete }) => {
     setVar1Value("");
     setVar2Value("");
     setVar3Value("");
+    setShowExplanation(false);
   };
 
   return (
@@ -72,7 +107,7 @@ const Quiz5 = ({ onComplete }) => {
         UJI PENGETAHUAN
       </h2>
 
-      <div className="mt-4">
+      <form onSubmit={handleSubmit}>
         <p className="mt-2 text-gray-600">
           Lengkapi kode berikut dengan tipe data dan nilai yang benar:
         </p>
@@ -133,45 +168,85 @@ const Quiz5 = ({ onComplete }) => {
           </pre>
         </div>
 
-        {/* Tombol Submit */}
-        <button
-          onClick={handleSubmit}
-          style={{
-            backgroundColor: "#6E2A7F",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#5B1F6A")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#6E2A7F")
-          }
-        >
-          Cek Jawaban
-        </button>
+        <div className="flex space-x-2">
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
+          >
+            Cek Jawaban
+          </button>
 
-        {/* Tombol Reset (Hapus Jawaban) */}
-        <button
-          onClick={handleReset}
-          style={{
-            backgroundColor: "red",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-            marginLeft: "1rem",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#c0392b")
-          }
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "red")}
-        >
-          Hapus Jawaban
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#c0392b")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "red")
+            }
+          >
+            Hapus Jawaban
+          </button>
+        </div>
+      </form>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah:
+          <br />
+          Tipe data: <strong>float</strong> untuk var1, <strong>double</strong>{" "}
+          untuk var2, <strong>decimal</strong> untuk var3.
+          <br />
+          Sufiks: <strong>F</strong> untuk var1, <strong>D</strong> untuk var2,{" "}
+          <strong>M</strong> untuk var3.
+          <br />
+          Dalam C#, untuk bilangan desimal, tipe <code>float</code> memerlukan
+          sufiks <code>F</code>, <code>double</code> memerlukan sufiks{" "}
+          <code>D</code> (opsional, tapi disarankan untuk kejelasan), dan{" "}
+          <code>decimal</code> memerlukan sufiks <code>M</code>. Nilai 136.18
+          disimpan dengan tipe data yang sesuai.
+        </div>
+      )}
     </div>
   );
 };

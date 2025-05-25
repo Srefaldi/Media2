@@ -1,44 +1,56 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
-  const [quizFeedback, setQuizFeedback] = useState("");
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [showCompiler, setShowCompiler] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validasi jawaban
+
+    if (!selectedAnswer) {
+      Swal.fire({
+        title: "Pilih Jawaban!",
+        text: "Silakan pilih salah satu opsi sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
     if (selectedAnswer === "C") {
       setQuizCompleted(true);
       setShowCompiler(false);
-      onComplete();
-
-      // Menampilkan SweetAlert untuk jawaban benar
+      setShowExplanation(true);
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        onComplete();
       });
     } else {
-      // Menampilkan SweetAlert untuk jawaban salah
       setSelectedAnswer("");
-      setQuizFeedback("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
 
   const handleReset = () => {
     setSelectedAnswer("");
-    setQuizFeedback("");
     setQuizCompleted(false);
+    setShowExplanation(false);
+    setShowCompiler(false);
   };
 
   const toggleCompiler = () => {
@@ -46,14 +58,14 @@ const Quiz = ({ onComplete }) => {
   };
 
   return (
-    <div className="max-w-full p-6 mx-auto  rounded-lg shadow-lg">
+    <div className="max-w-full p-6 mx-auto rounded-lg shadow-lg">
       <h2
         className="text-lg font-semibold text-center"
         style={{ color: "#6E2A7F" }}
       >
         UJI PENGETAHUAN
       </h2>
-      <form onSubmit={handleSubmit} className="p-4  rounded-lg shadow-md">
+      <form onSubmit={handleSubmit} className="p-4 rounded-lg shadow-md">
         <p className="mb-4 text-gray-700">
           Dari sampel kode di bawah ini, yang mana yang merupakan hasil output
           dengan urutan struktur eksekusi kode yang benar?
@@ -113,14 +125,14 @@ const Quiz = ({ onComplete }) => {
             type="button"
             onClick={handleReset}
             style={{
-              backgroundColor: "red", // Warna merah
+              backgroundColor: "red",
               color: "white",
               padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s",
             }}
-            onMouseEnter={
-              (e) => (e.currentTarget.style.backgroundColor = "#c0392b") // Warna merah lebih gelap saat hover
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#c0392b")
             }
             onMouseLeave={(e) =>
               (e.currentTarget.style.backgroundColor = "red")
@@ -129,15 +141,15 @@ const Quiz = ({ onComplete }) => {
             Hapus Jawaban
           </button>
           <button
-            type="button" // Tambahkan type="button" di sini
+            type="button"
             onClick={toggleCompiler}
             style={{
-              backgroundColor: "white", // Warna latar belakang putih
-              color: "#6E2A7F", // Warna teks sesuai tema
+              backgroundColor: "white",
+              color: "#6E2A7F",
               padding: "0.5rem 1rem",
               borderRadius: "0.5rem",
               transition: "background-color 0.2s, border-color 0.2s",
-              border: "2px solid #6E2A7F", // Outline border dengan warna tema
+              border: "2px solid #6E2A7F",
             }}
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor = "#aab7b8")
@@ -160,15 +172,35 @@ const Quiz = ({ onComplete }) => {
         )}
       </form>
 
-      {/* Umpan Balik Kuis */}
-      {quizFeedback && (
-        <p
-          className={`mt-4 text-center ${
-            selectedAnswer === "C" ? "text-green-500" : "text-red-500"
-          }`}
-        >
-          {quizFeedback}
-        </p>
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah: <strong>C. Mobil\nMotor\nSepeda</strong>
+          <br />
+          Urutan ini sesuai dengan eksekusi kode di mana{" "}
+          <code>Console.WriteLine</code> mencetak "Mobil", lalu "Motor", dan
+          terakhir "Sepeda", sesuai dengan urutan perintah dalam metode{" "}
+          <code>Main</code>.
+        </div>
       )}
     </div>
   );

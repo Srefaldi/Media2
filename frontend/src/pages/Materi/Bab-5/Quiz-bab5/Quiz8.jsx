@@ -3,9 +3,23 @@ import Swal from "sweetalert2";
 
 const Quiz8 = ({ onComplete }) => {
   const [inputIteration, setInputIteration] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Cek apakah ada jawaban yang diisi
+    if (!inputIteration) {
+      window.scrollTo(0, 0);
+      Swal.fire({
+        title: "Isi Semua Kolom!",
+        text: "Silakan isi bagian yang kosong sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      });
+      return;
+    }
 
     // Fungsi untuk normalisasi jawaban
     const normalizeAnswer = (answer) => {
@@ -22,15 +36,20 @@ const Quiz8 = ({ onComplete }) => {
       // Jika benar, simpan dengan format yang benar (kapitalisasi sesuai jawaban benar)
       const formattedAnswer = inputIteration.replace(/\s+/g, " ").trim();
       const correctFormatted = correctIteration;
-      
+
       // Jika hanya masalah kapitalisasi, gunakan format yang benar
-      if (normalizeAnswer(formattedAnswer) === normalizeAnswer(correctFormatted)) {
+      if (
+        normalizeAnswer(formattedAnswer) === normalizeAnswer(correctFormatted)
+      ) {
         setInputIteration(correctFormatted);
       }
 
+      // Set showExplanation to true to display the explanation
+      setShowExplanation(true);
+
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
+        title: "Jawaban Anda Benar!",
+        text: "Silahkan lanjut ke materi berikutnya.",
         icon: "success",
         confirmButtonText: "OK",
       }).then(() => {
@@ -43,9 +62,10 @@ const Quiz8 = ({ onComplete }) => {
     } else {
       window.scrollTo(0, 0);
       setInputIteration("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca Kembali Materi dan Coba Lagi.",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -54,6 +74,7 @@ const Quiz8 = ({ onComplete }) => {
 
   const handleReset = () => {
     setInputIteration("");
+    setShowExplanation(false);
   };
 
   return (
@@ -128,6 +149,41 @@ const Quiz8 = ({ onComplete }) => {
           </button>
         </div>
       </form>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah: <code>for (int j = 0; j &lt; 2; j++)</code>
+          .
+          <br />
+          Dalam perulangan <code>for</code> di C#, inisialisasi{" "}
+          <code>int j = 0</code> menetapkan variabel kontrol <code>j</code>{" "}
+          mulai dari 0. Kondisi <code>j &lt; 2</code> memastikan perulangan
+          berjalan selama nilai <code>j</code> kurang dari 2. Iterasi{" "}
+          <code>j++</code> meningkatkan nilai <code>j</code> sebesar 1 pada
+          setiap iterasi, sehingga mencetak kombinasi pasangan bilangan dari 0
+          sampai 1.
+        </div>
+      )}
     </div>
   );
 };

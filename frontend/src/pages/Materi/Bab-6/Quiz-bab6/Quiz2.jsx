@@ -5,9 +5,22 @@ const Quiz2 = ({ onComplete }) => {
   const [inputCall1, setInputCall1] = useState("");
   const [inputCall2, setInputCall2] = useState("");
   const [inputMethod, setInputMethod] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Check for empty inputs
+    if (!inputCall1 || !inputCall2 || !inputMethod) {
+      Swal.fire({
+        title: "Isi Semua Jawaban!",
+        text: "Silakan isi semua kolom jawaban sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      });
+      return;
+    }
 
     const correctCall1 = "TampilkanPesan();";
     const correctCall2 = "TampilkanPesan();";
@@ -29,12 +42,14 @@ const Quiz2 = ({ onComplete }) => {
       setInputCall1(correctCall1);
       setInputCall2(correctCall2);
       setInputMethod(correctMethod);
+      setShowExplanation(true);
 
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
       }).then(() => {
         window.scrollTo({
           top: document.documentElement.scrollHeight,
@@ -47,11 +62,13 @@ const Quiz2 = ({ onComplete }) => {
       setInputCall1("");
       setInputCall2("");
       setInputMethod("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
@@ -60,6 +77,7 @@ const Quiz2 = ({ onComplete }) => {
     setInputCall1("");
     setInputCall2("");
     setInputMethod("");
+    setShowExplanation(false);
   };
 
   return (
@@ -150,6 +168,48 @@ const Quiz2 = ({ onComplete }) => {
           </button>
         </div>
       </form>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah:
+          <br />
+          Untuk pemanggilan pertama: <strong>TampilkanPesan();</strong>,
+          <br />
+          Untuk pemanggilan kedua: <strong>TampilkanPesan();</strong>,
+          <br />
+          Untuk nama method: <strong>TampilkanPesan()</strong>.
+          <br />
+          Dalam C#, method <code>TampilkanPesan()</code> harus dipanggil dengan
+          sintaks yang benar, yaitu nama method diikuti tanda kurung dan titik
+          koma untuk setiap pemanggilan. Dalam kode ini, method dipanggil tiga
+          kali (dua kali dengan <code>TampilkanPesan();</code> yang dimasukkan
+          pengguna dan sekali dalam kode yang sudah ada) untuk menampilkan pesan
+          "Selamat Belajar Method di C#!" sebanyak tiga kali. Method
+          didefinisikan dengan nama <code>TampilkanPesan()</code> tanpa
+          parameter dan bertipe <code>void</code> karena tidak mengembalikan
+          nilai.
+        </div>
+      )}
     </div>
   );
 };

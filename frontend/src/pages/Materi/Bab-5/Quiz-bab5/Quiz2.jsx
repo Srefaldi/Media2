@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz1 = ({ onComplete }) => {
   const [inputCondition, setInputCondition] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,32 +20,34 @@ const Quiz1 = ({ onComplete }) => {
 
     // Cek jawaban
     if (normalizedInputCondition === normalizedCorrectCondition) {
+      setShowExplanation(true);
       window.scrollTo(0, document.body.scrollHeight);
-
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan lanjut pelajari materi pernyataan if bersarang",
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut pelajari materi pernyataan if bersarang.",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        onComplete(true);
       });
-
-      onComplete(true);
     } else {
-      // Scroll ke atas ketika jawaban salah
       window.scrollTo(0, 0);
       setInputCondition("");
-
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
 
   const handleReset = () => {
     setInputCondition("");
+    setShowExplanation(false);
   };
 
   return (
@@ -84,46 +87,81 @@ const Quiz1 = ({ onComplete }) => {
           </pre>
         </div>
 
-        {/* Tombol Submit */}
-        <button
-          type="submit"
-          style={{
-            backgroundColor: "#6E2A7F",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#5B1F6A")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "#6E2A7F")
-          }
-        >
-          Cek Jawaban
-        </button>
-
-        {/* Tombol Reset (Hapus Jawaban) */}
-        <button
-          type="button"
-          onClick={handleReset}
-          style={{
-            backgroundColor: "red",
-            color: "white",
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            transition: "background-color 0.2s",
-            marginLeft: "1rem",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#c0392b")
-          }
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "red")}
-        >
-          Hapus Jawaban
-        </button>
+        <div className="flex space-x-2">
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#6E2A7F",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#5B1F6A")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#6E2A7F")
+            }
+          >
+            Cek Jawaban
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              transition: "background-color 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#c0392b")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "red")
+            }
+          >
+            Hapus Jawaban
+          </button>
+        </div>
       </form>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah: <strong>jenisHewan == "Kucing"</strong>.
+          <br />
+          Dalam C#, pernyataan <code>if (jenisHewan == "Kucing")</code>{" "}
+          digunakan untuk memeriksa apakah nilai variabel{" "}
+          <code>jenisHewan</code> sama dengan string <code>"Kucing"</code>.
+          Operator <code>==</code> membandingkan kesetaraan, dan jika benar,
+          blok kode di dalam <code>if</code> akan dieksekusi (menampilkan
+          "diberikan makan ikan"). Jika salah, blok <code>else</code> akan
+          dieksekusi (menampilkan "diberikan makan sayur"). Pastikan spasi dan
+          tanda kutip digunakan dengan benar dalam kondisi.
+        </div>
+      )}
     </div>
   );
 };

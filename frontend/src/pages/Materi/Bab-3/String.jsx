@@ -19,25 +19,6 @@ const String = () => {
 
     if (isPassed) {
       handleLessonComplete("/materi/bab3/latihan-bab3");
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then(() => {
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: "smooth",
-        });
-      });
-    } else {
-      setQuizCompleted(false); // Allow retry
-      Swal.fire({
-        title: "Jawaban Anda Salah",
-        text: "Coba lagi hingga benar untuk melanjutkan.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
     }
   };
 

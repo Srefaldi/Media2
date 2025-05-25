@@ -19,26 +19,6 @@ const Integer = () => {
 
     if (isPassed) {
       handleLessonComplete("/materi/bab3/floating-point");
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then(() => {
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: "smooth",
-        });
-      });
-    } else {
-      // Allow retry by not setting quizCompleted to true for incorrect answers
-      setQuizCompleted(false);
-      Swal.fire({
-        title: "Jawaban Anda Salah",
-        text: "Coba lagi hingga benar untuk melanjutkan.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
     }
   };
 

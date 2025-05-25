@@ -19,18 +19,6 @@ const TipeDataDasar = () => {
     if (isPassed) {
       handleLessonComplete("/materi/bab3/integer");
       // Tampilkan notifikasi sukses
-      Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
-        confirmButtonText: "OK",
-      }).then(() => {
-        // Scroll ke bagian paling bawah halaman
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: "smooth",
-        });
-      });
     }
   };
 

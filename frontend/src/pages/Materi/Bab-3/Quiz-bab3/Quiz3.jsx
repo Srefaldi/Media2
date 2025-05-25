@@ -1,38 +1,51 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Quiz3 = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (selectedAnswer === "B") {
-      window.scrollTo(0, document.body.scrollHeight);
-
+    if (!selectedAnswer) {
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
-        icon: "success",
+        title: "Pilih Jawaban!",
+        text: "Silakan pilih salah satu opsi sebelum mengirim.",
+        icon: "warning",
         confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
       });
+      return;
+    }
 
-      onComplete(true);
+    if (selectedAnswer === "B") {
+      setShowExplanation(true);
+      Swal.fire({
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
+        icon: "success",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        onComplete(true);
+      });
     } else {
-      // Scroll ke atas ketika jawaban salah
-      window.scrollTo(0, 0);
       setSelectedAnswer("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
 
   const handleReset = () => {
     setSelectedAnswer("");
+    setShowExplanation(false);
   };
 
   return (
@@ -111,6 +124,37 @@ const Quiz3 = ({ onComplete }) => {
           </button>
         </div>
       </form>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah: <strong>B. Stack</strong>
+          <br />
+          Dalam C#, tipe data nilai (Value Types) seperti <code>int</code>,{" "}
+          <code>double</code>, dan <code>struct</code> menyimpan data secara
+          langsung di stack memory, yang merupakan area penyimpanan sementara
+          untuk variabel lokal dan parameter metode.
+        </div>
+      )}
     </div>
   );
 };

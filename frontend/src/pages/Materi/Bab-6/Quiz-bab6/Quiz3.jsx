@@ -4,33 +4,52 @@ import Swal from "sweetalert2";
 const Quiz3 = ({ onComplete }) => {
   const [inputMain, setInputMain] = useState("");
   const [inputReturn, setInputReturn] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Fungsi untuk normalisasi jawaban
+    // Check for empty inputs
+    if (!inputMain || !inputReturn) {
+      Swal.fire({
+        title: "Isi Semua Jawaban!",
+        text: "Silakan isi semua kolom jawaban sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      });
+      return;
+    }
+
+    // Function to normalize answers
     const normalizeAnswer = (answer) => {
       return answer.replace(/\s+/g, "").toLowerCase();
     };
 
-    // Normalisasi jawaban pengguna dan jawaban yang benar
+    // Normalize user answers and correct answers
     const normalizedInputMain = normalizeAnswer(inputMain);
     const normalizedInputReturn = normalizeAnswer(inputReturn);
     const correctMain = "PerkalianTigaAngka()";
-    const correctReturn = "return hasil;";
+    const correctReturn = "return hasil";
     const normalizedCorrectMain = normalizeAnswer(correctMain);
     const normalizedCorrectReturn = normalizeAnswer(correctReturn);
 
-    // Cek jawaban
+    // Check answers
     if (
       normalizedInputMain === normalizedCorrectMain &&
       normalizedInputReturn === normalizedCorrectReturn
     ) {
+      // If correct but has capitalization/spacing issues, correct the display
+      setInputMain(correctMain);
+      setInputReturn(correctReturn);
+      setShowExplanation(true);
+
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
       }).then(() => {
         window.scrollTo({
           top: document.documentElement.scrollHeight,
@@ -42,11 +61,13 @@ const Quiz3 = ({ onComplete }) => {
       window.scrollTo(0, 0);
       setInputMain("");
       setInputReturn("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
@@ -54,6 +75,7 @@ const Quiz3 = ({ onComplete }) => {
   const handleReset = () => {
     setInputMain("");
     setInputReturn("");
+    setShowExplanation(false);
   };
 
   return (
@@ -136,6 +158,46 @@ const Quiz3 = ({ onComplete }) => {
           </button>
         </div>
       </form>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah:
+          <br />
+          Untuk pemanggilan method: <strong>PerkalianTigaAngka()</strong>,
+          <br />
+          Untuk pernyataan pengembalian: <strong>return hasil;</strong>.
+          <br />
+          Dalam C#, method <code>PerkalianTigaAngka()</code> harus dipanggil
+          dengan sintaks yang benar di dalam <code>Main</code> menggunakan{" "}
+          <code>PerkalianTigaAngka()</code> untuk mendapatkan nilai
+          kembaliannya, yang kemudian dicetak menggunakan{" "}
+          <code>Console.WriteLine</code>. Method ini memiliki tipe kembalian{" "}
+          <code>int</code>, sehingga memerlukan pernyataan{" "}
+          <code>return hasil;</code> untuk mengembalikan nilai variabel{" "}
+          <code>hasil</code>, yang merupakan hasil perkalian tiga angka (2 * 3 *
+          4 = 24).
+        </div>
+      )}
     </div>
   );
 };

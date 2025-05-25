@@ -3,18 +3,33 @@ import Swal from "sweetalert2";
 
 const Quiz1 = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Check for empty selection
+    if (!selectedAnswer) {
+      Swal.fire({
+        title: "Pilih Jawaban!",
+        text: "Silakan pilih salah satu opsi jawaban sebelum mengirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      });
+      return;
+    }
+
     const correctAnswer = "C";
 
     if (selectedAnswer === correctAnswer) {
+      setShowExplanation(true);
       Swal.fire({
-        title: "Jawaban Anda Benar",
-        text: "Silahkan Lanjut Kemateri Berikutnya",
+        title: "Jawaban Anda Benar!",
+        text: "Silakan lanjut ke materi berikutnya.",
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: "Lanjut",
+        confirmButtonColor: "#6E2A7F",
       }).then(() => {
         window.scrollTo({
           top: document.documentElement.scrollHeight,
@@ -25,17 +40,20 @@ const Quiz1 = ({ onComplete }) => {
     } else {
       window.scrollTo(0, 0);
       setSelectedAnswer("");
+      setShowExplanation(false);
       Swal.fire({
         title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi",
+        text: "Baca kembali materi dan coba lagi.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Coba Lagi",
+        confirmButtonColor: "#EF4444",
       });
     }
   };
 
   const handleReset = () => {
     setSelectedAnswer("");
+    setShowExplanation(false);
   };
 
   return (
@@ -114,6 +132,41 @@ const Quiz1 = ({ onComplete }) => {
           </button>
         </div>
       </form>
+
+      {/* Explanation Section */}
+      {showExplanation && (
+        <div className="bg-green-100 border border-green-300 rounded-md p-4 text-green-800 text-sm font-normal mt-4">
+          <div className="flex items-center mb-2 font-semibold">
+            <svg
+              className="w-5 h-5 mr-2 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4"
+              ></path>
+            </svg>
+            BENAR
+          </div>
+          Jawaban yang benar adalah:{" "}
+          <strong>
+            C. melakukan tugas tertentu dan dapat dipanggil dalam program
+          </strong>
+          .
+          <br />
+          Dalam C#, sebuah method adalah blok kode yang berisi serangkaian
+          pernyataan untuk melakukan tugas tertentu. Method dapat dipanggil
+          kapan saja dalam program untuk menjalankan tugas tersebut,
+          meningkatkan reusabilitas dan organisasi kode.
+        </div>
+      )}
     </div>
   );
 };

@@ -14,19 +14,6 @@ const KlasifikasiTipeData = () => {
   const handleQuizComplete = () => {
     handleLessonComplete("/materi/bab3/tipe-data-dasar");
     setQuizCompleted(true);
-    // Tampilkan notifikasi sukses
-    Swal.fire({
-      title: "Jawaban Anda Benar",
-      text: "Silahkan Lanjut Kemateri Berikutnya",
-      icon: "success",
-      confirmButtonText: "OK",
-    }).then(() => {
-      // Scroll ke bagian paling bawah halaman
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
-      });
-    });
   };
 
   const handleNext = () => {
