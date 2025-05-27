@@ -13,7 +13,6 @@ const daftarMateri = [
     judul: "PENDAHULUAN",
     subMateri: [
       "Pengenalan C#",
-
       "Struktur Kode Pemrograman C#",
       "Struktur Eksekusi Kode",
       "Sintaks Print",
@@ -98,14 +97,22 @@ function Landing() {
     setIsModalOpen(!isModalOpen);
   };
 
+  // Function to scroll to the daftar-materi section
+  const scrollToDaftarMateri = () => {
+    const element = document.getElementById("daftar-materi");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div>
       {/* Navbar */}
       <header className="text-gray-700 border-b border-gray-200 body-font">
         <div className="container flex flex-col flex-wrap items-center justify-between p-4 mx-auto md:flex-row">
-          <a
-            className="flex items-center font-medium text-gray-900 title-font md:mb-0"
-            href="/"
+          <Link
+            to="/"
+            className="flex items-center font-medium text-gray-900 title-font md:mb-0 no-underline"
           >
             <span className="ml-3 text-xl">
               <span className="font-bold" style={{ color: "#68217A" }}>
@@ -113,7 +120,7 @@ function Landing() {
               </span>{" "}
               LEARN
             </span>
-          </a>
+          </Link>
 
           <div className="flex items-center md:ml-auto">
             <button
@@ -172,17 +179,15 @@ function Landing() {
               DASAR - DASAR C#
             </h1>
             <p className="mb-8 text-sm leading-relaxed text-justify sm:text-base">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam
-              atque, autem numquam cum, sint aliquid ea doloribus obcaecati,
-              sapiente voluptates debitis. Aspernatur, praesentium! Ullam
-              repellat excepturi distinctio iusto veniam aperiam eveniet
-              asperiores culpa voluptatem ipsa! Quia aperiam est commodi dolor,
-              deleniti a quibusdam doloremque laudantium nihil velit nostrum
-              suscipit iste.
+              Media pembelajaran berbasis web yang dirancang untuk membantu
+              pemahaman konsep dasar-dasar pemrograman menggunakan bahasa C#. Di
+              sini, Anda akan belajar berbagai topik fundamental dalam
+              pemrograman, termasuk pendahuluan C#, variabel, tipe data,
+              operator, kontrol, hingga pembuatan metode atau fungsi sederhana.
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
-              <a
-                href="#daftar-materi"
+              <button
+                onClick={scrollToDaftarMateri}
                 className="inline-flex items-center justify-center font-bold text-white border-0 rounded focus:outline-none hover:bg-opacity-80"
                 style={{
                   backgroundColor: "#68217A",
@@ -192,10 +197,10 @@ function Landing() {
                 }}
               >
                 DAFTAR MATERI
-              </a>
-              <a
-                href="/login-guru"
-                className="inline-flex items-center justify-center font-bold text-gray-600 border border-gray-400 rounded focus:outline-none hover:bg-gray-100"
+              </button>
+              <Link
+                to="/login-guru"
+                className="inline-flex items-center justify-center font-bold text-gray-600 border border-gray-400 rounded no-underline focus:outline-none hover:bg-gray-100"
                 style={{
                   backgroundColor: "#FFFFFF",
                   width: "180px",
@@ -204,7 +209,7 @@ function Landing() {
                 }}
               >
                 HALAMAN GURU >>>
-              </a>
+              </Link>
             </div>
           </div>
 

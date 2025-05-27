@@ -137,7 +137,7 @@ const LatihanBab1 = () => {
         );
         console.log("Data scores dari API:", response.data);
 
-        const filteredScores = response.data.scores.filter(
+        const filteredScores = (response.data?.scores || []).filter(
           (score) => score.type === "latihan" && score.chapter === 1
         );
         console.log("Filtered scores (Bab 1):", filteredScores);
@@ -185,7 +185,7 @@ const LatihanBab1 = () => {
 
   // Fungsi untuk normalisasi jawaban
   const normalizeAnswer = (answer) => {
-    return answer.trim().replace(/\s+/g, " ").toLowerCase();
+    return answer?.trim().replace(/\s+/g, " ").toLowerCase() || "";
   };
 
   // Fungsi untuk mengubah jawaban pengguna
@@ -194,14 +194,14 @@ const LatihanBab1 = () => {
     newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]];
     newAnswers[currentQuestionIndex][inputIndex] = value;
     setAnswers(newAnswers);
-    console.log("Updated answers:", newAnswers); // Debugging
+    console.log("Updated answers:", newAnswers);
   };
 
   // Fungsi untuk mengirim jawaban
   const submitAnswer = () => {
     const userAnswers = answers[currentQuestionIndex];
 
-    if (userAnswers.some((answer) => answer === "")) {
+    if (userAnswers.some((answer) => !answer)) {
       Swal.fire({
         title: "Soal Belum Dijawab!",
         text: "Silakan isi jawaban sebelum mengirim.",
@@ -269,7 +269,7 @@ const LatihanBab1 = () => {
   // Fungsi untuk menyelesaikan latihan
   const handleFinish = async () => {
     const hasIncompleteAnswers = answers.some((answer) =>
-      answer.some((a) => a === "")
+      answer.some((a) => !a)
     );
     if (hasIncompleteAnswers) {
       Swal.fire({
@@ -292,9 +292,9 @@ const LatihanBab1 = () => {
       cancelButtonColor: "#EF4444",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const scorePercentage = (score / (questions.length * 20)) * 100; // Simpan skor sebagai persentase
+        const scorePercentage = (score / (questions.length * 20)) * 100;
         const payload = {
-          user_id: user.uuid,
+          user_id: user?.uuid,
           type: "latihan",
           chapter: 1,
           score: scorePercentage,
@@ -318,11 +318,8 @@ const LatihanBab1 = () => {
             state: { score, totalQuestions: questions.length },
           });
         } catch (error) {
-          const errorMsg = error.response
-            ? `Error ${error.response.status}: ${
-                error.response.data.msg || error.response.data
-              }`
-            : error.message;
+          const errorMsg =
+            error.response?.data?.msg || `Error: ${error.message}`;
           console.error("Error saving score:", errorMsg);
           Swal.fire({
             title: "Gagal!",
@@ -340,7 +337,7 @@ const LatihanBab1 = () => {
     const scorePercentage = (score / (questions.length * 20)) * 100;
     console.log("Time up score percentage:", scorePercentage);
     const payload = {
-      user_id: user.uuid,
+      user_id: user?.uuid,
       type: "latihan",
       chapter: 1,
       score: scorePercentage,
@@ -374,11 +371,7 @@ const LatihanBab1 = () => {
         });
       });
     } catch (error) {
-      const errorMsg = error.response
-        ? `Error ${error.response.status}: ${
-            error.response.data.msg || error.response.data
-          }`
-        : error.message;
+      const errorMsg = error.response?.data?.msg || `Error: ${error.message}`;
       console.error("Error saving score (time up):", errorMsg);
       Swal.fire({
         title: "Gagal!",
@@ -591,11 +584,11 @@ const LatihanBab1 = () => {
           <p className="text-gray-600">
             {questions[currentQuestionIndex].prompt}
           </p>
-          <div className="p-4 mt-2 font-mono text-sm bg-gray-100 rounded-lg">
+          <div className="p-4 mt-2 font-mono text-sm rounded-lg">
             <pre className="code-block">
               <code>
                 {questions[currentQuestionIndex].code
-                  .split("_____")
+                  ?.split("_____")
                   .map((part, index) => (
                     <React.Fragment key={`part-${index}`}>
                       {part.split(" ").map((word, wordIndex) => {
@@ -639,10 +632,7 @@ const LatihanBab1 = () => {
                               onChange={(e) =>
                                 handleAnswerChange(e.target.value, index)
                               }
-                              onKeyDown={(e) =>
-                                console.log("Key pressed:", e.key)
-                              } // Debugging
-                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
+                              className="w-20 px-2 py-1 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 sm:w-24"
                               placeholder="Jawaban..."
                               autoFocus={index === 0}
                             />
@@ -654,10 +644,7 @@ const LatihanBab1 = () => {
                               onChange={(e) =>
                                 handleAnswerChange(e.target.value, 0)
                               }
-                              onKeyDown={(e) =>
-                                console.log("Key pressed:", e.key)
-                              } // Debugging
-                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
+                              className="w-20 px-2 py-1 text-gray-800 bg-gray-100 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 sm:w-24"
                               placeholder="Jawaban..."
                               autoFocus
                             />
