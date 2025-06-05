@@ -9,7 +9,7 @@ import "../style/latihan.css";
 
 const LatihanBab2 = () => {
   const navigate = useNavigate();
-  const { handleQuizComplete } = useOutletContext();
+  const { handleLessonComplete } = useOutletContext();
   const { user } = useSelector((state) => state.auth);
   const [showLatihan, setShowLatihan] = useState(false);
 
@@ -24,7 +24,7 @@ const LatihanBab2 = () => {
   const [score, setScore] = useState(0);
   const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null));
   const [hasAnswered, setHasAnswered] = useState(Array(5).fill(false));
-  const [timeLeft, setTimeLeft] = useState(10 * 60);
+  const [timeLeft, setTimeLeft] = useState(10 * 60); // 10 menit
 
   const questions = [
     {
@@ -142,38 +142,30 @@ const LatihanBab2 = () => {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/scores`,
-          {
-            withCredentials: true,
-          }
+          { withCredentials: true }
         );
-        console.log("Data scores dari API:", response.data);
-
         const filteredScores = response.data.scores.filter(
           (score) => score.type === "latihan" && score.chapter === 2
         );
-        console.log("Filtered scores (Bab 2):", filteredScores);
-
-        const formattedRiwayat = filteredScores.map((score) => {
-          console.log("Score item:", score);
-          return {
-            tanggal: formatDate(score.created_at),
-            persentase: `${score.score}%`,
-            status: score.score >= 75 ? "Lulus" : "Tidak Lulus",
-          };
-        });
+        const formattedRiwayat = filteredScores.map((score) => ({
+          tanggal: formatDate(score.created_at),
+          persentase: `${score.score}%`,
+          status: score.score >= 75 ? "Lulus" : "Tidak Lulus",
+        }));
         setRiwayat(formattedRiwayat);
       } catch (error) {
         const errorMsg =
-          error.response?.data?.msg ||
-          `Gagal mengambil data riwayat: ${error.message}`;
-        console.error("Error fetching scores:", error);
+          error.response?.data?.msg || "Gagal mengambil data riwayat";
+        console.error("Error fetching scores:", errorMsg);
         setError(errorMsg);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchRiwayat();
+    if (user?.uuid) {
+      fetchRiwayat();
+    }
   }, [user]);
 
   useEffect(() => {
@@ -188,12 +180,10 @@ const LatihanBab2 = () => {
           return prev - 1;
         });
       }, 1000);
-
       return () => clearInterval(timer);
     }
   }, [showLatihan]);
 
-  // Fungsi untuk normalisasi jawaban
   const normalizeAnswer = (answer) => {
     return answer.trim().replace(/\s+/g, " ").toLowerCase();
   };
@@ -203,7 +193,6 @@ const LatihanBab2 = () => {
     newAnswers[currentQuestionIndex] = [...newAnswers[currentQuestionIndex]];
     newAnswers[currentQuestionIndex][inputIndex] = value;
     setAnswers(newAnswers);
-    console.log("Updated answers:", newAnswers);
   };
 
   const submitAnswer = () => {
@@ -219,7 +208,6 @@ const LatihanBab2 = () => {
       return;
     }
 
-    // Normalisasi jawaban pengguna dan jawaban yang benar
     const normalizedUserAnswers = userAnswers.map((answer) =>
       normalizeAnswer(answer)
     );
@@ -227,14 +215,12 @@ const LatihanBab2 = () => {
       currentQuestionIndex
     ].correctAnswer.map((answer) => normalizeAnswer(answer));
 
-    // Cek apakah jawaban benar
     const isCorrect = normalizedUserAnswers.every(
       (answer, idx) => answer === normalizedCorrectAnswers[idx]
     );
 
-    // Update skor (setiap soal bernilai 10 poin)
-    if (isCorrect) {
-      setScore((prevScore) => prevScore + 10);
+    if (isCorrect && !hasAnswered[currentQuestionIndex]) {
+      setScore((prevScore) => prevScore + 20);
     }
 
     const newAnswerStatus = [...answerStatus];
@@ -248,7 +234,7 @@ const LatihanBab2 = () => {
 
     Swal.fire({
       title: "Jawaban Terkirim!",
-      text: "Silahkan lanjutkan ke soal berikutnya.",
+      text: "Silakan lanjutkan ke soal berikutnya.",
       icon: "success",
       confirmButtonText: "OK",
     }).then(() => {
@@ -265,17 +251,12 @@ const LatihanBab2 = () => {
         title: "Sudah Menjawab",
         text: "Anda sudah menjawab soal ini.",
       });
-    } else {
-      setCurrentQuestionIndex(index);
-      const newAnswers = [...answers];
-      newAnswers[index] =
-        index === 0 || index === 1 || index === 2
-          ? ["", "", ""]
-          : index === 3
-          ? ["", ""]
-          : [""];
-      setAnswers(newAnswers);
+      return;
     }
+    setCurrentQuestionIndex(index);
+    const newAnswers = [...answers];
+    newAnswers[index] = Array(questions[index].correctAnswer.length).fill("");
+    setAnswers(newAnswers);
   };
 
   const handleFinish = () => {
@@ -303,7 +284,7 @@ const LatihanBab2 = () => {
       cancelButtonColor: "#EF4444",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const scorePercentage = (score / (questions.length * 10)) * 100; // Simpan skor sebagai persentase
+        const scorePercentage = (score / (questions.length * 20)) * 100;
         try {
           await axios.post(
             `${import.meta.env.VITE_API_ENDPOINT}/scores`,
@@ -317,7 +298,8 @@ const LatihanBab2 = () => {
           );
 
           if (scorePercentage >= 75) {
-            handleQuizComplete("/materi/bab2/latihan-bab2");
+            handleLessonComplete("/materi/bab2/latihan-bab2");
+            handleLessonComplete("/materi/bab2/kuis-bab2");
           }
 
           navigate("/materi/bab2/hasil-latihan-bab2", {
@@ -336,68 +318,75 @@ const LatihanBab2 = () => {
     });
   };
 
-  const handleTimeUp = () => {
-    const scorePercentage = (score / (questions.length * 10)) * 100; // Simpan skor sebagai persentase
-    Swal.fire({
-      title: "Waktu Habis!",
-      text: "Jawaban Anda akan dikirim.",
-      icon: "warning",
-      confirmButtonText: "OK",
-      confirmButtonColor: "#6E2A7F",
-    }).then(async () => {
-      try {
-        await axios.post(
-          `${import.meta.env.VITE_API_ENDPOINT}/scores`,
-          {
-            user_id: user.uuid,
-            type: "latihan",
-            chapter: 2,
-            score: scorePercentage,
-          },
-          { withCredentials: true }
-        );
+  const handleTimeUp = async () => {
+    const scorePercentage = (score / (questions.length * 20)) * 100;
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+        {
+          user_id: user.uuid,
+          type: "latihan",
+          chapter: 2,
+          score: scorePercentage,
+        },
+        { withCredentials: true }
+      );
 
+      Swal.fire({
+        title: "Waktu Habis!",
+        text: "Jawaban Anda akan dikirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
         if (scorePercentage >= 75) {
-          handleQuizComplete("/materi/bab2/latihan-bab2");
+          handleLessonComplete("/materi/bab2/latihan-bab2");
+          handleLessonComplete("/materi/bab2/kuis-bab2");
         }
-
         navigate("/materi/bab2/hasil-latihan-bab2", {
           state: { score, totalQuestions: questions.length },
         });
-      } catch (error) {
-        console.error("Error saving score:", error);
-        Swal.fire({
-          title: "Gagal!",
-          text: "Terjadi kesalahan saat menyimpan skor.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      }
-    });
+      });
+    } catch (error) {
+      const errorMsg = error.response?.data?.msg || `Error: ${error.message}`;
+      console.error("Error saving score:", errorMsg);
+      Swal.fire({
+        title: "Gagal!",
+        text: `Terjadi kesalahan saat menyimpan skor: ${errorMsg}`,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   const renderInstruksi = () => (
-    <div className="max-w-4xl p-4 mx-auto bg-white rounded-lg shadow-md sm:p-6 lg:p-8">
-      <h1 className="mb-4 text-2xl font-bold text-center">BAB 2 - VARIABEL</h1>
+    <div className="max-w-4xl p-2 mx-auto bg-white rounded-lg shadow-md sm:p-4 lg:p-6">
+      <h1 className="mb-4 text-xl font-bold text-center sm:text-2xl">
+        BAB 2 - VARIABEL
+      </h1>
       <section>
-        <h2 className="mb-3 font-semibold text-gray-800">Aturan</h2>
-        <p className="mb-3 leading-relaxed">
+        <h2 className="mb-3 text-base font-semibold text-gray-800 sm:text-lg">
+          Aturan
+        </h2>
+        <p className="mb-3 text-sm leading-relaxed sm:text-base">
           Latihan ini bertujuan untuk menguji pengetahuan Anda tentang variabel
           dan tipe data dalam pemrograman C#.
         </p>
-        <p className="mb-3 leading-relaxed">
-          Terdapat 5 pertanyaan yang harus dikerjakan dalam latihan ini.
-          Beberapa ketentuannya sebagai berikut:
+        <p className="mb-3 text-sm leading-relaxed sm:text-base">
+          Terdapat {questions.length} pertanyaan yang harus dikerjakan dalam
+          latihan ini. Beberapa ketentuannya sebagai berikut:
         </p>
-        <ul className="mb-3 leading-relaxed list-disc list-inside">
+        <ul className="mb-3 text-sm leading-relaxed list-disc list-inside sm:text-base">
           <li>Syarat nilai kelulusan: 75%</li>
           <li>Durasi ujian: 10 menit</li>
         </ul>
-        <p className="mb-3 leading-relaxed">
+        <p className="mb-3 text-sm leading-relaxed sm:text-base">
           Apabila tidak memenuhi syarat kelulusan, maka Anda harus mengulang
           pengerjaan latihan kembali.
         </p>
-        <p className="mb-6 leading-relaxed">Selamat Mengerjakan!</p>
+        <p className="mb-6 text-sm leading-relaxed sm:text-base">
+          Selamat Mengerjakan!
+        </p>
         <div className="flex justify-end">
           <button
             onClick={() => setShowLatihan(true)}
@@ -411,24 +400,32 @@ const LatihanBab2 = () => {
             }
           >
             <span>MULAI</span>
-            <img src={nextIcon} alt="Selanjutnya" className="w-5 h-5" />
+            <img
+              src={nextIcon}
+              alt="Selanjutnya"
+              className="w-4 h-4 sm:w-5 sm:h-5"
+            />
           </button>
         </div>
       </section>
 
-      <section className="mt-16">
-        <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300">
+      <section className="mt-8 sm:mt-16">
+        <h3 className="pb-1 mb-3 text-base font-semibold text-gray-800 border-b border-gray-300 sm:text-lg">
           Riwayat
         </h3>
         {isLoading ? (
-          <p className="text-gray-600">Memuat riwayat...</p>
+          <p className="text-sm text-gray-600 sm:text-base">
+            Memuat riwayat...
+          </p>
         ) : error ? (
-          <p className="text-red-600">{error}</p>
+          <p className="text-sm text-red-600 sm:text-base">{error}</p>
         ) : riwayat.length === 0 ? (
-          <p className="text-gray-600">Belum ada riwayat</p>
+          <p className="text-sm text-gray-600 sm:text-base">
+            Belum ada riwayat
+          </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-gray-600">
+            <table className="w-full text-sm text-left text-gray-600 sm:text-base">
               <thead>
                 <tr>
                   <th className="pb-2 font-semibold">Tanggal</th>
@@ -443,7 +440,7 @@ const LatihanBab2 = () => {
                     <td className="pt-2 pb-3">{item.persentase}</td>
                     <td className="pt-2 pb-3">
                       <span
-                        className={`text-[10px] font-semibold px-2 py-[2px] rounded ${
+                        className={`text-[10px] sm:text-xs font-semibold px-2 py-[2px] rounded ${
                           item.status === "Lulus"
                             ? "text-green-600 bg-green-100"
                             : "text-red-600 bg-red-100"
@@ -586,7 +583,9 @@ const LatihanBab2 = () => {
                           word.includes("static") ||
                           word.includes("void") ||
                           word.includes("Console") ||
-                          word.includes("const")
+                          word.includes("const") ||
+                          word.includes("int") ||
+                          word.includes("string")
                         ) {
                           return (
                             <span key={`word-${wordIndex}`} className="keyword">
@@ -599,12 +598,6 @@ const LatihanBab2 = () => {
                               {word}{" "}
                             </span>
                           );
-                        } else if (word.includes("//")) {
-                          return (
-                            <span key={`word-${wordIndex}`} className="comment">
-                              {word}{" "}
-                            </span>
-                          );
                         }
                         return <span key={`word-${wordIndex}`}>{word} </span>;
                       })}
@@ -613,34 +606,17 @@ const LatihanBab2 = () => {
                           .length -
                           1 && (
                         <span>
-                          {currentQuestionIndex === 0 ||
-                          currentQuestionIndex === 1 ||
-                          currentQuestionIndex === 2 ||
-                          currentQuestionIndex === 3 ? (
-                            <input
-                              type="text"
-                              key={`input-${index}`}
-                              value={answers[currentQuestionIndex][index] || ""}
-                              onChange={(e) =>
-                                handleAnswerChange(e.target.value, index)
-                              }
-                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
-                              placeholder="Jawaban..."
-                              autoFocus={index === 0}
-                            />
-                          ) : (
-                            <input
-                              type="text"
-                              key={`input-0`}
-                              value={answers[currentQuestionIndex][0] || ""}
-                              onChange={(e) =>
-                                handleAnswerChange(e.target.value, 0)
-                              }
-                              className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
-                              placeholder="Jawaban..."
-                              autoFocus
-                            />
-                          )}
+                          <input
+                            type="text"
+                            key={`input-${index}`}
+                            value={answers[currentQuestionIndex][index] || ""}
+                            onChange={(e) =>
+                              handleAnswerChange(e.target.value, index)
+                            }
+                            className="w-20 px-2 py-1 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-300 sm:w-24"
+                            placeholder="Jawaban..."
+                            autoFocus={index === 0}
+                          />
                         </span>
                       )}
                     </React.Fragment>
@@ -672,14 +648,9 @@ const LatihanBab2 = () => {
             <button
               onClick={() => {
                 const newAnswers = [...answers];
-                newAnswers[currentQuestionIndex] =
-                  currentQuestionIndex === 0 ||
-                  currentQuestionIndex === 1 ||
-                  currentQuestionIndex === 2
-                    ? ["", "", ""]
-                    : currentQuestionIndex === 3
-                    ? ["", ""]
-                    : [""];
+                newAnswers[currentQuestionIndex] = Array(
+                  questions[currentQuestionIndex].correctAnswer.length
+                ).fill("");
                 setAnswers(newAnswers);
               }}
               className="w-full px-4 py-2 mt-2 text-white bg-red-500 rounded-lg hover:bg-red-600 sm:w-auto sm:mt-0"

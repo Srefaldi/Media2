@@ -14,16 +14,14 @@ Content-Type: application/json
 }
 
 ### 2. Login sebagai Admin
-POST host-backend-production.up.railway.app/login
+POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-  "nis": "2110",
-  "password": "123"
+  "nis": "123456789",
+  "password": "admin123"
 }
-###
-GET host-backend-production.up.railway.app/me
-Content-Type: application/json
+
 # Catatan: Salin cookie connect.sid dari header respons untuk digunakan di bawah.
 
 ### 3. Ambil Data KKM (Admin)
@@ -85,8 +83,8 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-  "nis": "1234",
-  "password": "siswa123"
+  "nis": "000",
+  "password": "000"
 }
 
 # Catatan: Salin cookie connect.sid dari header respons untuk digunakan di bawah.
@@ -235,14 +233,14 @@ Content-Type: application/json
 ####
 # Latihan 1
 
-POST https://host-backend-production.up.railway.app/scores
+POST http://localhost:5000/scores
 Content-Type: application/json
 
 {
-  "user_id": "f87a89c3-7872-4966-844c-21454af18934",
+  "user_id": "1b72a99a-6991-439a-ae5f-fe82d29834e9",
   "type": "latihan",
   "chapter": 1,
-  "score": 20
+  "score": 100
 }
 ###
 # Login request
@@ -306,32 +304,3 @@ Cookie: connect.sid=<your_session_cookie>
 #HAPUS
 DELETE http://localhost:5000/questions/1
 Cookie: connect.sid=<your_session_cookie>
-
-
-###
-# Update Progress
-PATCH https://host-backend-production.up.railway.app/progress
-Content-Type: application/json
-
-{
-  "progress": 100
-}
-
-###
-# Login request
-POST https://host-backend-production.up.railway.app/login
-Content-Type: application/json
-
-{
-    "nis": "000",
-    "password": "000"
-}
-
-###
-# Update Progress
-PATCH https://host-backend-production.up.railway.app/users/e50a5a60-a574-427f-9a15-6dee8658371e/progress
-Content-Type: application/json
-
-{
-  "progress": 100
-}

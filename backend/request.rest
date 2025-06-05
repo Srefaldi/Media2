@@ -182,17 +182,3 @@ Cookie: connect.sid=<your_session_cookie>
 #HAPUS
 DELETE http://localhost:5000/questions/1
 Cookie: connect.sid=<your_session_cookie>
-
-
-
-###
-POST host-backend-production.up.railway.app/register-siswa
-Content-Type: application/json
-
-{
-  "fullName": "Sopia Refaldi",
-  "nis": "2110",
-  "password": "123",
-  "class": "A1",
-  "token": "123"
-}

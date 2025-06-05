@@ -18,46 +18,38 @@ import Kkm from "./models/KKM/kkmModels.js";
 dotenv.config();
 const app = express();
 
+// ⛳️ Penting untuk deployment (Railway / proxy)
+app.set("trust proxy", 1);
+
 const sessionStore = SequelizeStore(session.Store);
 const store = new sessionStore({
   db: db,
-  checkExpirationInterval: 15 * 60 * 1000, // Bersihkan sesi kadaluarsa setiap 15 menit
-  expiration: 24 * 60 * 60 * 1000, // Sesi berlaku selama 24 jam
+  checkExpirationInterval: 15 * 60 * 1000,
+  expiration: 24 * 60 * 60 * 1000,
 });
 
+// Sinkronisasi database dan model
 (async () => {
   try {
     await store.sync({ force: false });
     console.log("Sessions table synced");
-
     await Kkm.sync({ force: false });
     console.log("KKM table synced");
-
     await Question.sync({ force: false });
     console.log("Questions table synced");
-
     await Score.sync({ force: false });
     console.log("Scores table synced");
-
     await Evaluation.sync({ force: false });
     console.log("Evaluations table synced");
-
     await User.sync({ force: false });
     console.log("Users table synced");
-
-    console.log("Database synced successfully");
 
     const evaluations = await Evaluation.findAll();
     if (evaluations.length === 0) {
       for (let i = 1; i <= 6; i++) {
-        await Evaluation.create({
-          type: "bab",
-          chapter: i,
-        });
+        await Evaluation.create({ type: "bab", chapter: i });
       }
-      await Evaluation.create({
-        type: "evaluasi_akhir",
-      });
+      await Evaluation.create({ type: "evaluasi_akhir" });
       console.log("Evaluations initialized");
     }
 
@@ -65,10 +57,7 @@ const store = new sessionStore({
     if (kkmRecords.length === 0) {
       const evaluations = await Evaluation.findAll();
       for (const evaluation of evaluations) {
-        await Kkm.create({
-          evaluation_id: evaluation.id,
-          kkm: 75,
-        });
+        await Kkm.create({ evaluation_id: evaluation.id, kkm: 75 });
       }
       console.log("KKM initialized with default value 75");
     }
@@ -77,6 +66,31 @@ const store = new sessionStore({
   }
 })();
 
+// ✅ Konfigurasi CORS
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://host-frontend-five.vercel.app", // Ganti dengan URL frontend Anda
+];
+
+app.use(
+  cors({
+    credentials: true,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+  })
+);
+
+// ✅ Tangani permintaan OPTIONS secara eksplisit
+app.options("*", cors());
+
+// ✅ Konfigurasi session
 app.use(
   session({
     secret: process.env.SESS_SECRET || "your-secret-key",
@@ -84,39 +98,35 @@ app.use(
     saveUninitialized: false,
     store: store,
     cookie: {
-      secure: process.env.NODE_ENV === "production", // Gunakan secure di produksi
+      secure: process.env.NODE_ENV === "production" ? true : false,
       httpOnly: true,
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000, // 24 jam
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
 
-app.use(
-  cors({
-    credentials: true,
-    origin: ["http://localhost:3000"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
+// Body parser
 app.use(express.json());
+
+// ✅ Logging sesi dan cookie (untuk debug)
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  console.log("[DEBUG] Origin:", req.headers.origin);
+  console.log("[DEBUG] Session ID:", req.sessionID);
+  console.log("[DEBUG] Session userId:", req.session.userId);
+  console.log("[DEBUG] Cookies:", req.headers.cookie);
+  next();
+});
+
+// ⛳️ Gunakan route
 app.use(UserRoute);
 app.use(AuthRoute);
 app.use(ScoreRoute);
 app.use(QuestionRoute);
 app.use(KkmRoute);
 
-// Logging untuk debugging sesi
-app.use((req, res, next) => {
-  console.log(
-    `[${new Date().toISOString()}] Request: ${req.method} ${req.url}`
-  );
-  console.log("Session ID:", req.sessionID, "User ID:", req.session.userId);
-  next();
-});
-
+// ✅ Jalankan server
 const PORT = process.env.APP_PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

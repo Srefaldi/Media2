@@ -13,12 +13,10 @@ const LatihanBab6 = () => {
   const { user } = useSelector((state) => state.auth);
   const [showLatihan, setShowLatihan] = useState(false);
 
-  // State untuk instruksi
   const [riwayat, setRiwayat] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // State untuk latihan
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState(Array(5).fill([""]));
   const [score, setScore] = useState(0);
@@ -26,73 +24,71 @@ const LatihanBab6 = () => {
   const [hasAnswered, setHasAnswered] = useState(Array(5).fill(false));
   const [timeLeft, setTimeLeft] = useState(10 * 60);
 
-  // Soal hard-coded (hanya 1-5)
   const questions = [
     {
       id: 1,
       prompt:
-        "Lengkapi method berikut agar memanggil method TampilkanPesan untuk mencetak pesan ke konsol ...",
+        "Lengkapi method berikut agar memanggil method TampilkanPesan untuk mencetak pesan ke konsol",
       code: `public static void TampilkanPesan() 
     {
-    Console.WriteLine("Selamat belajar C#!"); 
+        Console.WriteLine("Selamat belajar C#!"); 
     } 
 
     public static void Main() 
     { 
-        ______(); 
+        ___; 
     }`,
-      correctAnswer: ["TampilkanPesan"],
+      correctAnswer: ["TampilkanPesan()"],
     },
     {
       id: 2,
       prompt:
-        "Lengkapi deklarasi method HitungLuas agar mengembalikan luas persegi Panjang ...",
-      code: `public static int HitungLuas(   ______   , ______  ) 
-  { 
-    return panjang * lebar; 
-  }`,
+        "Lengkapi deklarasi method HitungLuas agar mengembalikan luas persegi panjang",
+      code: `public static int HitungLuas(___, ___) 
+    { 
+        return panjang * lebar; 
+    }`,
       correctAnswer: ["int panjang", "int lebar"],
     },
     {
       id: 3,
       prompt:
-        "Lengkapi pemanggilan method berikut agar mencetak hasil penjumlahan 3 ...",
+        "Lengkapi pemanggilan method berikut agar mencetak hasil penjumlahan 3",
       code: `public static int Tambah(int a, int b) 
     { 
-      return a + b; 
+        return a + b; 
     } 
 
     public static void Main() 
     { 
-      Console.WriteLine(Tambah( ______  ,  ______  )); 
+        Console.WriteLine(Tambah(___, ___)); 
     }`,
       correctAnswer: ["1", "2"],
     },
     {
       id: 4,
       prompt:
-        "Lengkapi method dengan parameter berikut agar mencetak nama yang dimasukkan ....",
-      code: `public static void Sapa(______ nama) 
-  { 
-      Console.WriteLine("Halo, " + nama + "!"); 
-  } 
-
-public static void Main() 
+        "Lengkapi method dengan parameter berikut agar mencetak nama yang dimasukkan",
+      code: `public static void Sapa(___ nama) 
     { 
-      Sapa("Rudi"); 
+        Console.WriteLine("Halo, " + nama + "!"); 
+    } 
+
+    public static void Main() 
+    { 
+        Sapa("Rudi"); 
     }`,
       correctAnswer: ["string"],
     },
     {
       id: 5,
       prompt:
-        "Lengkapi definisi method berikut agar menggunakan expression-embodied member ...",
-      code: `public static int HitungPerkalian(int x, int y) => ______ ; `,
+        "Lengkapi definisi method berikut agar menggunakan expression-bodied member",
+      code: `public static int HitungPerkalian(int x, int y) => ___;`,
       correctAnswer: ["x * y"],
     },
   ];
 
-  // Fungsi untuk memformat tanggal
   const formatDate = (dateString) => {
     if (!dateString) {
       console.warn("Tanggal tidak tersedia:", dateString);
@@ -112,7 +108,6 @@ public static void Main()
     });
   };
 
-  // Ambil riwayat dari API
   useEffect(() => {
     const fetchRiwayat = async () => {
       if (!user?.uuid) {
@@ -124,7 +119,9 @@ public static void Main()
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_API_ENDPOINT}/scores`,
-          { withCredentials: true }
+          {
+            withCredentials: true,
+          }
         );
         const filteredScores = response.data.scores.filter(
           (score) => score.type === "latihan" && score.chapter === 6
@@ -145,14 +142,11 @@ public static void Main()
       }
     };
 
-    if (user?.uuid) {
-      fetchRiwayat();
-    }
+    fetchRiwayat();
   }, [user]);
 
-  // Timer untuk latihan
   useEffect(() => {
-    if (showLatihan && timeLeft > 0) {
+    if (showLatihan) {
       const timer = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
@@ -163,9 +157,14 @@ public static void Main()
           return prev - 1;
         });
       }, 1000);
+
       return () => clearInterval(timer);
     }
-  }, [showLatihan, timeLeft]);
+  }, [showLatihan]);
+
+  const normalizeAnswer = (answer) => {
+    return answer.trim().replace(/\s+/g, " ").toLowerCase();
+  };
 
   const handleAnswerChange = (value, inputIndex) => {
     const newAnswers = [...answers];
@@ -187,17 +186,19 @@ public static void Main()
       return;
     }
 
-    const normalizeAnswer = (answer) => {
-      return answer.replace(/\s+/g, "").toLowerCase();
-    };
+    const normalizedUserAnswers = userAnswers.map((answer) =>
+      normalizeAnswer(answer)
+    );
+    const normalizedCorrectAnswers = questions[
+      currentQuestionIndex
+    ].correctAnswer.map((answer) => normalizeAnswer(answer));
 
-    const isCorrect = questions[currentQuestionIndex].correctAnswer.every(
-      (correctAnswer, index) =>
-        normalizeAnswer(correctAnswer) === normalizeAnswer(userAnswers[index])
+    const isCorrect = normalizedUserAnswers.every(
+      (answer, idx) => answer === normalizedCorrectAnswers[idx]
     );
 
-    if (isCorrect && !hasAnswered[currentQuestionIndex]) {
-      setScore((prev) => prev + 20);
+    if (isCorrect) {
+      setScore((prevScore) => prevScore + 20);
     }
 
     const newAnswerStatus = [...answerStatus];
@@ -215,10 +216,9 @@ public static void Main()
       icon: "success",
       confirmButtonText: "OK",
     }).then(() => {
-      const nextQuestionIndex = currentQuestionIndex + 1;
-      if (nextQuestionIndex < questions.length) {
-        setCurrentQuestionIndex(nextQuestionIndex);
-      }
+      setCurrentQuestionIndex((prevIndex) =>
+        Math.min(prevIndex + 1, questions.length - 1)
+      );
     });
   };
 
@@ -229,15 +229,15 @@ public static void Main()
         title: "Sudah Menjawab",
         text: "Anda sudah menjawab soal ini.",
       });
-      return;
+    } else {
+      setCurrentQuestionIndex(index);
+      const newAnswers = [...answers];
+      newAnswers[index] = Array(questions[index].correctAnswer.length).fill("");
+      setAnswers(newAnswers);
     }
-    setCurrentQuestionIndex(index);
-    const newAnswers = [...answers];
-    newAnswers[index] = Array(questions[index].correctAnswer.length).fill("");
-    setAnswers(newAnswers);
   };
 
-  const handleFinish = async () => {
+  const handleFinish = () => {
     const hasIncompleteAnswers = answers.some((answer) =>
       answer.some((a) => a === "")
     );
@@ -248,57 +248,13 @@ public static void Main()
         icon: "warning",
         confirmButtonText: "OK",
       });
-    } else {
-      Swal.fire({
-        title: "Konfirmasi Pengiriman",
-        text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: "Ya",
-        cancelButtonText: "Tidak",
-        confirmButtonColor: "#6E2A7F",
-        cancelButtonColor: "#EF4444",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          try {
-            await axios.post(
-              `${import.meta.env.VITE_API_ENDPOINT}/scores`,
-              {
-                user_id: user.uuid,
-                type: "latihan",
-                chapter: "6",
-                score: score,
-              },
-              { withCredentials: true }
-            );
-
-            if (score >= 75) {
-              handleLessonComplete("/materi/bab6/latihan-bab6");
-              handleLessonComplete("/materi/bab6/kuis-bab6");
-            }
-
-            navigate("/materi/bab6/hasil-latihan-bab6", {
-              state: { score, totalQuestions: questions.length },
-            });
-          } catch (error) {
-            console.error("Error saving score:", error);
-            Swal.fire({
-              title: "Gagal!",
-              text: "Terjadi kesalahan saat menyimpan skor.",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          }
-        }
-      });
+      return;
     }
-  };
 
-  const handleTimeUp = () => {
     Swal.fire({
-      title: "Waktu Habis!",
+      title: "Konfirmasi Pengiriman",
       text: "Apakah Anda yakin untuk mengirim jawaban Anda?",
-      icon: "warning",
+      icon: "question",
       showCancelButton: true,
       confirmButtonText: "Ya",
       cancelButtonText: "Tidak",
@@ -306,19 +262,20 @@ public static void Main()
       cancelButtonColor: "#EF4444",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        const scorePercentage = (score / (questions.length * 20)) * 100;
         try {
           await axios.post(
             `${import.meta.env.VITE_API_ENDPOINT}/scores`,
             {
               user_id: user.uuid,
               type: "latihan",
-              chapter: "6",
-              score: score,
+              chapter: 6,
+              score: scorePercentage,
             },
             { withCredentials: true }
           );
 
-          if (score >= 75) {
+          if (scorePercentage >= 75) {
             handleLessonComplete("/materi/bab6/latihan-bab6");
             handleLessonComplete("/materi/bab6/kuis-bab6");
           }
@@ -339,33 +296,73 @@ public static void Main()
     });
   };
 
-  // UI untuk halaman instruksi
+  const handleTimeUp = async () => {
+    const scorePercentage = (score / (questions.length * 20)) * 100;
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API_ENDPOINT}/scores`,
+        {
+          user_id: user.uuid,
+          type: "latihan",
+          chapter: 6,
+          score: scorePercentage,
+        },
+        { withCredentials: true }
+      );
+
+      Swal.fire({
+        title: "Waktu Habis!",
+        text: "Jawaban Anda akan dikirim.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#6E2A7F",
+      }).then(() => {
+        if (scorePercentage >= 75) {
+          handleLessonComplete("/materi/bab6/latihan-bab6");
+          handleLessonComplete("/materi/bab6/kuis-bab6");
+        }
+        navigate("/materi/bab6/hasil-latihan-bab6", {
+          state: { score, totalQuestions: questions.length },
+        });
+      });
+    } catch (error) {
+      const errorMsg = error.response?.data?.msg || `Error: ${error.message}`;
+      console.error("Error saving score:", errorMsg);
+      Swal.fire({
+        title: "Gagal!",
+        text: `Terjadi kesalahan saat menyimpan skor: ${errorMsg}`,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
   const renderInstruksi = () => (
-    <div className="mx-auto max-w-4xl p-2 sm:p-4 lg:p-6 bg-white rounded-lg shadow-md">
-      <h1 className="mb-4 text-xl sm:text-2xl font-bold text-center">
-        BAB 6 - METHOD
+    <div className="max-w-4xl p-2 mx-auto bg-white rounded-lg shadow-md sm:p-4 lg:p-6">
+      <h1 className="mb-4 text-xl font-bold text-center sm:text-2xl">
+        BAB 6 - ARRAY DAN LIST
       </h1>
       <section>
-        <h2 className="mb-3 font-semibold text-gray-800 text-base sm:text-lg">
+        <h2 className="mb-3 text-base font-semibold text-gray-800 sm:text-lg">
           Aturan
         </h2>
-        <p className="mb-3 leading-relaxed text-sm sm:text-base">
-          Latihan ini bertujuan untuk menguji pengetahuan Anda tentang method,
-          parameter, dan expression-bodied member dalam pemrograman C#.
+        <p className="mb-3 text-sm leading-relaxed sm:text-base">
+          Latihan ini bertujuan untuk menguji pengetahuan Anda tentang array dan
+          list dalam pemrograman C#.
         </p>
-        <p className="mb-3 leading-relaxed text-sm sm:text-base">
+        <p className="mb-3 text-sm leading-relaxed sm:text-base">
           Terdapat {questions.length} pertanyaan yang harus dikerjakan dalam
           latihan ini. Beberapa ketentuannya sebagai berikut:
         </p>
-        <ul className="mb-3 leading-relaxed list-disc list-inside text-sm sm:text-base">
+        <ul className="mb-3 text-sm leading-relaxed list-disc list-inside sm:text-base">
           <li>Syarat nilai kelulusan: 75%</li>
           <li>Durasi ujian: 10 menit</li>
         </ul>
-        <p className="mb-3 leading-relaxed text-sm sm:text-base">
+        <p className="mb-3 text-sm leading-relaxed sm:text-base">
           Apabila tidak memenuhi syarat kelulusan, maka Anda harus mengulang
           pengerjaan latihan kembali.
         </p>
-        <p className="mb-6 leading-relaxed text-sm sm:text-base">
+        <p className="mb-6 text-sm leading-relaxed sm:text-base">
           Selamat Mengerjakan!
         </p>
         <div className="flex justify-end">
@@ -384,29 +381,29 @@ public static void Main()
             <img
               src={nextIcon}
               alt="Selanjutnya"
-              className="w-4 sm:w-5 h-4 sm:h-5"
+              className="w-4 h-4 sm:w-5 sm:h-5"
             />
           </button>
         </div>
       </section>
 
       <section className="mt-8 sm:mt-16">
-        <h3 className="pb-1 mb-3 font-semibold text-gray-800 border-b border-gray-300 text-base sm:text-lg">
+        <h3 className="pb-1 mb-3 text-base font-semibold text-gray-800 border-b border-gray-300 sm:text-lg">
           Riwayat
         </h3>
         {isLoading ? (
-          <p className="text-gray-600 text-sm sm:text-base">
+          <p className="text-sm text-gray-600 sm:text-base">
             Memuat riwayat...
           </p>
         ) : error ? (
-          <p className="text-red-600 text-sm sm:text-base">{error}</p>
+          <p className="text-sm text-red-600 sm:text-base">{error}</p>
         ) : riwayat.length === 0 ? (
-          <p className="text-gray-600 text-sm sm:text-base">
+          <p className="text-sm text-gray-600 sm:text-base">
             Belum ada riwayat
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-gray-600 text-sm sm:text-base">
+            <table className="w-full text-sm text-left text-gray-600 sm:text-base">
               <thead>
                 <tr>
                   <th className="pb-2 font-semibold">Tanggal</th>
@@ -440,19 +437,18 @@ public static void Main()
     </div>
   );
 
-  // UI untuk halaman latihan
   const renderLatihan = () => (
-    <div className="mx-auto max-w-6xl p-4 sm:p-6 lg:p-8 bg-white rounded-lg shadow-lg">
+    <div className="max-w-6xl p-4 mx-auto bg-white rounded-lg shadow-lg sm:p-6 lg:p-8">
       <h2 className="text-lg font-semibold text-center text-gray-800">
         LATIHAN BAB 6
       </h2>
 
       <div
-        className="relative p-4 sm:p-6 mt-4 border rounded-lg"
+        className="relative p-4 mt-4 border rounded-lg sm:p-6"
         style={{ backgroundColor: "rgba(128, 128, 128, 0.158)" }}
       >
         <h3
-          className="flex items-center p-2 text-lg font-semibold border rounded-lg w-full sm:w-80 md:w-96"
+          className="flex items-center w-full p-2 text-lg font-semibold border rounded-lg sm:w-80 md:w-96"
           style={{ outline: "2px solid #6E2A7F", outlineOffset: "2px" }}
         >
           <img src={IconPetunjuk} alt="Icon" className="w-6 h-6 mr-2" />
@@ -546,7 +542,7 @@ public static void Main()
           </div>
         </div>
 
-        <div className="w-full p-4 lg:p-6 border rounded-lg">
+        <div className="w-full p-4 border rounded-lg lg:p-6">
           <h3 className="font-semibold">{`Soal ${questions[currentQuestionIndex].id}`}</h3>
           <p className="text-gray-600">
             {questions[currentQuestionIndex].prompt}
@@ -555,7 +551,7 @@ public static void Main()
             <pre className="code-block">
               <code>
                 {questions[currentQuestionIndex].code
-                  .split("______")
+                  .split("___")
                   .map((part, index) => (
                     <React.Fragment key={`part-${index}`}>
                       {part.split(" ").map((word, wordIndex) => {
@@ -567,7 +563,8 @@ public static void Main()
                           word.includes("Console") ||
                           word.includes("int") ||
                           word.includes("string") ||
-                          word.includes("return")
+                          word.includes("List") ||
+                          word.includes("new")
                         ) {
                           return (
                             <span key={`word-${wordIndex}`} className="keyword">
@@ -580,19 +577,12 @@ public static void Main()
                               {word}{" "}
                             </span>
                           );
-                        } else if (word.includes("//")) {
-                          return (
-                            <span key={`word-${wordIndex}`} className="comment">
-                              {word}{" "}
-                            </span>
-                          );
                         }
                         return <span key={`word-${wordIndex}`}>{word} </span>;
                       })}
                       {index <
-                        questions[currentQuestionIndex].code.split("______")
-                          .length -
-                          1 && (
+                        questions[currentQuestionIndex].correctAnswer
+                          .length && (
                         <span>
                           <input
                             type="text"

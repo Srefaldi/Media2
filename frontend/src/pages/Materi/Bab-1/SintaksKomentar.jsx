@@ -72,7 +72,6 @@ const SintaksKomentar = () => {
         </pre>
       </div>
 
-      {/* Quiz Component - Now always visible and outside white container */}
       <div className="mb-6">
         <Quiz onComplete={handleQuizCompletion} />
       </div>
