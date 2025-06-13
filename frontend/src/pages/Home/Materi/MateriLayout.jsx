@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import MateriSidebar from "./MateriSidebar";
@@ -7,18 +7,21 @@ import Navbar from "./Navbar";
 import Footer from "../../../components/Landing/Footer2";
 import Swal from "sweetalert2";
 import daftarBab from "./daftarBab.json";
-import { getMe } from "../../../features/authSlice";
-import { HiMenuAlt3, HiX } from "react-icons/hi"; // Impor HiX untuk ikon tutup
+import { getMe, validateLesson } from "../../../features/authSlice";
+import { HiMenuAlt3, HiX } from "react-icons/hi";
 
 const MateriLayout = () => {
   const [progress, setProgress] = useState(0);
-  const [completedLessons, setCompletedLessons] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { user, isError, isLoading } = useSelector((state) => state.auth);
+  const { user, isError, isLoading, completedLessons } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const totalLessons = 58; // Updated to reflect the correct number of lessons
+  const location = useLocation();
+  const totalLessons = 56;
+  const previousPathRef = useRef(location.pathname);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -43,16 +46,7 @@ const MateriLayout = () => {
           }
         );
         console.log("Respon progres:", response.data);
-        const fetchedProgress = response.data.progress ?? 0;
-        setProgress(fetchedProgress);
-        const completedCount = Math.round(
-          (fetchedProgress / 100) * totalLessons
-        );
-        const lessons = daftarBab
-          .flatMap((bab) => bab.subBab.map((sub) => sub.path))
-          .slice(0, completedCount);
-        setCompletedLessons(lessons);
-        console.log("Mengatur completedLessons:", lessons);
+        setProgress(response.data.progress ?? 0);
       } catch (error) {
         console.error(
           "Error mengambil progres:",
@@ -73,16 +67,110 @@ const MateriLayout = () => {
       }
     };
     fetchProgress();
-  }, [user, dispatch, isAuthenticated]);
+  }, [user?.uuid, isAuthenticated, dispatch]);
 
   useEffect(() => {
-    if (isError && !isLoading) {
+    if (isError && !isLoading && !user) {
       console.log("Error autentikasi, mengarahkan ke login");
       navigate("/login");
     }
-  }, [isError, isLoading, navigate]);
+  }, [isError, isLoading, user, navigate]);
 
-  const updateProgressInBackend = async (newProgress) => {
+  useEffect(() => {
+    const restrictAccess = async () => {
+      const currentPath = location.pathname;
+      const allLessons = daftarBab.flatMap((bab) =>
+        bab.subBab.map((sub) => sub.path)
+      );
+      const currentIndex = allLessons.indexOf(currentPath);
+      const previousPath = previousPathRef.current;
+
+      console.log("Restrict Access - Current Path:", currentPath);
+      console.log("Restrict Access - Previous Path:", previousPath);
+      console.log("Restrict Access - Completed Lessons:", completedLessons);
+
+      // Jika path tidak valid, arahkan ke materi terakhir yang diselesaikan
+      if (currentIndex === -1) {
+        const startLesson = getStartLesson();
+        console.log("Navigating to start lesson (invalid path):", startLesson);
+        navigate(startLesson);
+        return;
+      }
+
+      try {
+        const response = await dispatch(
+          validateLesson({ lessonPath: currentPath })
+        ).unwrap();
+        console.log("Validate Lesson Response:", response);
+        if (!response.isAccessible) {
+          Swal.fire({
+            icon: "error",
+            title: "Akses Ditolak",
+            text: "Anda harus menyelesaikan materi sebelumnya terlebih dahulu.",
+          });
+          // Periksa apakah previousPath valid dan diizinkan
+          const previousIndex = allLessons.indexOf(previousPath);
+          if (
+            previousIndex !== -1 &&
+            (completedLessons.includes(previousPath) ||
+              previousIndex === 0 ||
+              (previousIndex > 0 &&
+                completedLessons.includes(allLessons[previousIndex - 1])))
+          ) {
+            console.log("Navigating back to previous path:", previousPath);
+            navigate(previousPath);
+          } else {
+            const startLesson = getStartLesson();
+            console.log(
+              "Previous path invalid, navigating to start lesson:",
+              startLesson
+            );
+            navigate(startLesson);
+          }
+        } else {
+          // Jika akses diizinkan, update previousPath
+          console.log("Access allowed, updating previous path:", currentPath);
+          previousPathRef.current = currentPath;
+        }
+      } catch (error) {
+        console.error("Error validasi akses materi:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Gagal Memvalidasi Akses",
+          text:
+            error.message || "Terjadi kesalahan saat memvalidasi akses materi.",
+        });
+        // Coba kembali ke previousPath jika valid
+        const previousIndex = allLessons.indexOf(previousPath);
+        if (
+          previousIndex !== -1 &&
+          (completedLessons.includes(previousPath) ||
+            previousIndex === 0 ||
+            (previousIndex > 0 &&
+              completedLessons.includes(allLessons[previousIndex - 1])))
+        ) {
+          console.log(
+            "Error - Navigating back to previous path:",
+            previousPath
+          );
+          navigate(previousPath);
+        } else {
+          const startLesson = getStartLesson();
+          console.log(
+            "Error - Previous path invalid, navigating to start lesson:",
+            startLesson
+          );
+          navigate(startLesson);
+        }
+      }
+    };
+
+    if (user && completedLessons) {
+      restrictAccess();
+    }
+  }, [location.pathname, user, completedLessons, dispatch, navigate]);
+
+  const updateProgressInBackend = async (newProgress, newCompletedLessons) => {
     if (!user?.uuid || !isAuthenticated) {
       console.log("UUID pengguna tidak ditemukan atau tidak terautentikasi");
       return;
@@ -92,24 +180,18 @@ const MateriLayout = () => {
         "Memperbarui progres untuk pengguna:",
         user.uuid,
         "ke",
-        newProgress
+        newProgress,
+        "dengan completedLessons:",
+        newCompletedLessons
       );
       const response = await axios.patch(
         `${import.meta.env.VITE_API_ENDPOINT}/users/${user.uuid}/progress`,
-        { progress: newProgress },
+        { progress: newProgress, completedLessons: newCompletedLessons },
         { withCredentials: true }
       );
       console.log("Respon pembaruan progres:", response.data);
       setProgress(newProgress);
-      const completedCount = Math.round((newProgress / 100) * totalLessons);
-      const lessons = daftarBab
-        .flatMap((bab) => bab.subBab.map((sub) => sub.path))
-        .slice(0, completedCount);
-      setCompletedLessons(lessons);
-      console.log(
-        "Mengatur ulang completedLessons setelah pembaruan:",
-        lessons
-      );
+      dispatch(getMe());
     } catch (error) {
       console.error(
         "Error memperbarui progres:",
@@ -146,20 +228,20 @@ const MateriLayout = () => {
       bab.subBab.map((sub) => sub.path)
     );
     if (progress >= 100) {
-      return allLessons[allLessons.length - 1]; // Last lesson
+      return allLessons[allLessons.length - 1];
     }
-    const nextIncompleteLesson = allLessons.find(
-      (lesson) => !completedLessons.includes(lesson)
-    );
-    return nextIncompleteLesson || allLessons[0]; // Fallback to first lesson
+    // Kembalikan materi terakhir yang DISLESAIKAN (ada di completedLessons)
+    if (completedLessons.length > 0) {
+      return completedLessons[completedLessons.length - 1];
+    }
+    // Jika belum ada yang diselesaikan, kembalikan materi pertama
+    return allLessons[0];
   };
 
   const handleLessonComplete = (lessonId) => {
     console.log("handleLessonComplete dipanggil dengan lessonId:", lessonId);
     if (!completedLessons.includes(lessonId)) {
       const newCompletedLessons = [...completedLessons, lessonId];
-      setCompletedLessons(newCompletedLessons);
-
       const newProgress = (newCompletedLessons.length / totalLessons) * 100;
       const roundedProgress = parseFloat(newProgress.toFixed(2));
       console.log(
@@ -168,7 +250,7 @@ const MateriLayout = () => {
         "New progress:",
         roundedProgress
       );
-      updateProgressInBackend(roundedProgress);
+      updateProgressInBackend(roundedProgress, newCompletedLessons);
     } else {
       console.log("Materi sudah diselesaikan:", lessonId);
     }
@@ -191,7 +273,6 @@ const MateriLayout = () => {
     ];
 
     if (newCompletedLessons.length > completedLessons.length) {
-      setCompletedLessons(newCompletedLessons);
       const newProgress = (newCompletedLessons.length / totalLessons) * 100;
       const roundedProgress = parseFloat(newProgress.toFixed(2));
       console.log(
@@ -200,7 +281,7 @@ const MateriLayout = () => {
         "New progress:",
         roundedProgress
       );
-      updateProgressInBackend(roundedProgress);
+      updateProgressInBackend(roundedProgress, newCompletedLessons);
     } else {
       console.log(
         "Tidak ada perubahan pada completedLessons:",
@@ -211,7 +292,7 @@ const MateriLayout = () => {
 
   const handleStartLearningAgain = () => {
     const startLesson = getStartLesson();
-    console.log("Starting learning again, navigating to:", startLesson);
+    console.log("Memulai belajar lagi, mengarahkan ke:", startLesson);
     navigate(startLesson);
   };
 
@@ -276,9 +357,9 @@ const MateriLayout = () => {
               backgroundColor: "#6b7280",
               borderRadius: "8px",
               zIndex: 30,
-              width: "40px", // Lebar tetap 40px
-              height: "40px", // Tinggi ditambahkan untuk konsistensi
-              display: window.innerWidth >= 768 ? "none" : "flex", // Hanya muncul di layar kecil
+              width: "40px",
+              height: "40px",
+              display: window.innerWidth >= 768 ? "none" : "flex",
               alignItems: "center",
               justifyContent: "center",
             }}

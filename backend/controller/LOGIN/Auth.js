@@ -11,7 +11,6 @@ export const Login = async (req, res) => {
     req.body
   );
   try {
-    // Validasi input
     if (!req.body.nis || !req.body.password) {
       console.log(
         `[LOGIN] Missing required fields: NIS=${req.body.nis}, Password=${!!req
@@ -20,8 +19,6 @@ export const Login = async (req, res) => {
       return res.status(400).json({ msg: "NIS dan password wajib diisi" });
     }
 
-    // Cari pengguna di database
-    console.log(`[LOGIN] Searching for user with NIS=${req.body.nis}`);
     const user = await User.findOne({
       where: {
         nis: req.body.nis,
@@ -34,8 +31,6 @@ export const Login = async (req, res) => {
     }
     console.log(`[LOGIN] User found: NIS=${user.nis}, UUID=${user.uuid}`);
 
-    // Verifikasi password
-    console.log(`[LOGIN] Verifying password for NIS=${req.body.nis}`);
     const match = await argon2.verify(user.password, req.body.password);
     if (!match) {
       console.log(`[LOGIN] Incorrect password for NIS=${req.body.nis}`);
@@ -43,13 +38,8 @@ export const Login = async (req, res) => {
     }
     console.log(`[LOGIN] Password verified for NIS=${req.body.nis}`);
 
-    // Simpan sesi
-    console.log(
-      `[LOGIN] Saving session for user: NIS=${user.nis}, UUID=${user.uuid}`
-    );
     req.session.userId = user.uuid;
 
-    // Verifikasi sesi tersimpan
     if (req.session.userId !== user.uuid) {
       console.error(
         `[LOGIN] Failed to save session: userId not set in session`
@@ -60,7 +50,6 @@ export const Login = async (req, res) => {
       `[LOGIN] Session created: sessionID=${req.sessionID}, userId=${req.session.userId}`
     );
 
-    // Simpan sesi secara eksplisit
     req.session.save((err) => {
       if (err) {
         console.error(`[LOGIN] Error saving session: ${err.message}`);
@@ -68,7 +57,6 @@ export const Login = async (req, res) => {
       }
       console.log(`[LOGIN] Session saved successfully for NIS=${user.nis}`);
 
-      // Kirim respons
       const { uuid, name, nis, role } = user;
       console.log(
         `[LOGIN] Login successful: NIS=${nis}, Name=${name}, Role=${role}`
