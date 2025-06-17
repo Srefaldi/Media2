@@ -16,7 +16,7 @@ const Rangkuman = () => {
 
   const handleBack = () => {
     window.scrollTo(0, 0);
-    navigate("/materi/bab3/char");
+    navigate("/materi/bab3/operator-equality");
   };
 
   return (

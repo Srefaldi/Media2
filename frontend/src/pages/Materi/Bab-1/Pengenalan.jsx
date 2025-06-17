@@ -29,7 +29,7 @@ const PengenalanCSharp = () => {
 
   const handleQuizCompleteLocal = () => {
     setQuizCompleted(true);
-    handleQuizComplete("/materi/bab1/pengenalan");
+    handleQuizComplete("/materi/bab1/struktur-kode");
   };
 
   const handleNext = () => {
@@ -207,12 +207,12 @@ const PengenalanCSharp = () => {
       <Quiz onComplete={handleQuizCompleteLocal} />
 
       {/* Tombol Navigasi */}
-      <div className="flex justify-between mt-6 gap-4">
+      <div className="flex justify-between gap-4 mt-6">
         {" "}
         {/* Added gap-4 for spacing */}
         <button
           onClick={() => navigate("/dashboard")}
-          className="flex items-center px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600 text-base font-semibold transition-colors duration-200"
+          className="flex items-center px-4 py-2 text-base font-semibold text-white transition-colors duration-200 bg-gray-500 rounded-lg hover:bg-gray-600"
         >
           <img src={backIcon} alt="Kembali" className="w-5 h-5 mr-2" />
           Kembali

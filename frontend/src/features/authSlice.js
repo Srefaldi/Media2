@@ -178,7 +178,7 @@ export const getQuestionsByEvaluation = createAsyncThunk(
   "questions/getQuestionsByEvaluation",
   async (evaluation_id, thunkAPI) => {
     try {
-      const response = axios.get(
+      const response = await axios.get(
         `${
           import.meta.env.VITE_API_ENDPOINT
         }/questions/evaluation/${evaluation_id}`,
@@ -188,6 +188,7 @@ export const getQuestionsByEvaluation = createAsyncThunk(
       return response.data;
     } catch (error) {
       const message = error.response?.data?.msg || "Terjadi kesalahan";
+      console.error("getQuestionsByEvaluation error:", error);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -444,7 +445,10 @@ export const authSlice = createSlice({
     builder.addCase(getQuestionsByEvaluation.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
-      state.questions = action.payload.questions || action.payload;
+      // Pastikan payload memiliki properti questions, jika tidak, gunakan array kosong
+      state.questions = Array.isArray(action.payload?.questions)
+        ? action.payload.questions
+        : [];
       state.isError = false;
       state.message = "";
     });
@@ -452,6 +456,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;
+      state.questions = []; // Reset questions jika gagal
     });
 
     builder.addCase(createQuestion.pending, (state) => {
@@ -463,7 +468,10 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
-      state.questions.push(action.payload.question || action.payload);
+      // Pastikan menambahkan question ke array questions
+      if (action.payload.question) {
+        state.questions.push(action.payload.question);
+      }
       state.isError = false;
     });
     builder.addCase(createQuestion.rejected, (state, action) => {
@@ -481,11 +489,14 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.message = action.payload.msg;
-      state.questions = state.questions.map((question) =>
-        question.id === action.payload.question?.id
-          ? action.payload.question
-          : question
-      );
+      // Pastikan hanya memperbarui jika question ada
+      if (action.payload.question) {
+        state.questions = state.questions.map((question) =>
+          question.id === action.payload.question?.id
+            ? action.payload.question
+            : question
+        );
+      }
       state.isError = false;
     });
     builder.addCase(updateQuestion.rejected, (state, action) => {

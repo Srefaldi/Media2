@@ -13,9 +13,11 @@ const MethodMateri = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
 
-  const handleQuizComplete = () => {
-    handleLessonComplete("/materi/bab6/pengenalan-method");
-    setQuizCompleted(true);
+  const handleQuizComplete = (isCorrect) => {
+    if (isCorrect) {
+      handleLessonComplete("/materi/bab6/method-void");
+      setQuizCompleted(true);
+    }
   };
 
   const handleNext = () => {
@@ -44,7 +46,7 @@ const MethodMateri = () => {
           PENDAHULUAN MATERI
           <span className="ml-2">▼</span>
         </h3>
-        <div className="p-4 text-justify text-gray-700 rounded-b-lg bg-white">
+        <div className="p-4 text-justify text-gray-700 bg-white rounded-b-lg">
           <p>
             Pada bab ini, kita akan membahas tentang Method dalam pemrograman
             C#. Method adalah blok kode yang dirancang untuk melakukan tugas

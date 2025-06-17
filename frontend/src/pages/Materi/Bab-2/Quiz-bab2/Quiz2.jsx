@@ -1,5 +1,6 @@
+
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const QuizPenamaanVariabel = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState("");
@@ -30,15 +31,15 @@ const QuizPenamaanVariabel = ({ onComplete }) => {
         onComplete();
       });
     } else {
-      setSelectedAnswer("");
-      setShowExplanation(false);
       Swal.fire({
-        title: "Jawaban Salah!",
-        text: "Baca Kembali Materi dan Coba Lagi.",
+        title: "Jawaban Anda Belum Tepat!",
+        html: getIncorrectFeedback(selectedAnswer),
         icon: "error",
         confirmButtonText: "Coba Lagi",
         confirmButtonColor: "#EF4444",
       }).then(() => {
+        setSelectedAnswer("");
+        setShowExplanation(false);
         window.scrollTo(0, 0);
       });
     }
@@ -47,6 +48,22 @@ const QuizPenamaanVariabel = ({ onComplete }) => {
   const handleReset = () => {
     setSelectedAnswer("");
     setShowExplanation(false);
+  };
+
+  // Function to generate feedback for incorrect answers
+  const getIncorrectFeedback = (option) => {
+    switch (option) {
+      case "A":
+        return `Pilihan Anda <strong>${getOptionText(option)}</strong> salah. Nama variabel tidak boleh dimulai dengan angka dalam C#. Tinjau kembali materi tentang aturan penamaan variabel di Bab 2. Yuk, coba lagi!`;
+      case "B":
+        return `Pilihan Anda <strong>${getOptionText(option)}</strong> tidak tepat. Nama variabel tidak boleh mengandung karakter khusus seperti # dalam C#. Tinjau kembali materi tentang aturan penamaan variabel di Bab 2. Yuk, coba lagi!`;
+      case "C":
+        return `Pilihan Anda <strong>${getOptionText(option)}</strong> tidak disarankan. Meskipun garis bawah diizinkan, nama variabel sebaiknya jelas dan bermakna tanpa garis bawah di awal. Tinjau kembali materi tentang aturan penamaan variabel di Bab 2. Yuk, coba lagi!`;
+      case "D":
+        return `Pilihan Anda <strong>${getOptionText(option)}</strong> salah. <code>Public</code> adalah kata kunci dalam C# dan tidak boleh digunakan sebagai nama variabel. Tinjau kembali materi tentang aturan penamaan variabel di Bab 2. Yuk, coba lagi!`;
+      default:
+        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang aturan penamaan variabel di Bab 2 dan coba lagi.";
+    }
   };
 
   return (

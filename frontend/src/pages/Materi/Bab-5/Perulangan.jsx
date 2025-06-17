@@ -12,6 +12,19 @@ const PernyataanPerulangan = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
 
+  const handleQuizComplete = (isCorrect) => {
+    if (isCorrect) {
+      setQuizCompleted(true);
+    }
+  };
+
+  const handleQuiz2Complete = (isCorrect) => {
+    if (isCorrect) {
+      handleLessonComplete("/materi/bab5/pernyataan-break-continue");
+      setQuiz2Completed(true);
+    }
+  };
+
   const handleNext = () => {
     if (quiz2Completed) {
       handleLessonComplete("/materi/bab5/pernyataan-perulangan");
@@ -23,15 +36,6 @@ const PernyataanPerulangan = () => {
   const handleBack = () => {
     window.scrollTo(0, 0);
     navigate("/materi/bab5/pernyataan-switch");
-  };
-
-  const handleQuizComplete = () => {
-    setQuizCompleted(true);
-  };
-
-  const handleQuiz2Complete = () => {
-    handleLessonComplete("/materi/bab5/pernyataan-break-continue");
-    setQuiz2Completed(true);
   };
 
   return (
@@ -171,8 +175,8 @@ const PernyataanPerulangan = () => {
         <p className="mb-3">
           Perulangan ini tidak akan pernah dieksekusi karena variabel
           kendalinya, hitung, lebih besar dari 5 ketika pertama kali program
-          mengeksekusi perulangan for. Ini membuat ekspresi kondisional, hitung
-          &lt; 5, bernilai false; jadi,{" "}
+          mengeksekusi perulangan for. Ini membuat ekspresi kondisional,{" "}
+          <code>hitung &lt; 5</code>, bernilai false; jadi,{" "}
           <strong>satu iterasi perulangan pun tidak pernah terjadi.</strong>
         </p>
       </div>

@@ -20,8 +20,20 @@ const MateriLayout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const totalLessons = 56;
+
+  // Hitung total lessons, kecualikan halaman hasil
+  const allLessons = daftarBab
+    .flatMap((bab) => bab.subBab.map((sub) => sub.path))
+    .filter(
+      (path) =>
+        !path.includes("hasil-latihan") &&
+        !path.includes("hasil-kuis") &&
+        !path.includes("hasil-evaluasi-akhir")
+    );
+  const totalLessons = allLessons.length; // Total sub-bab yang valid
   const previousPathRef = useRef(location.pathname);
+
+  console.log("Total Lessons:", totalLessons); // Log untuk debugging
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -79,15 +91,37 @@ const MateriLayout = () => {
   useEffect(() => {
     const restrictAccess = async () => {
       const currentPath = location.pathname;
-      const allLessons = daftarBab.flatMap((bab) =>
-        bab.subBab.map((sub) => sub.path)
-      );
-      const currentIndex = allLessons.indexOf(currentPath);
       const previousPath = previousPathRef.current;
+
+      // Daftar halaman hasil yang diizinkan
+      const resultPages = [
+        "/materi/bab1/hasil-latihan-bab1",
+        "/materi/bab1/hasil-kuis-bab1",
+        "/materi/bab2/hasil-latihan-bab2",
+        "/materi/bab2/hasil-kuis-bab2",
+        "/materi/bab3/hasil-latihan-bab3",
+        "/materi/bab3/hasil-kuis-bab3",
+        "/materi/bab4/hasil-latihan-bab4",
+        "/materi/bab4/hasil-kuis-bab4",
+        "/materi/bab5/hasil-latihan-bab5",
+        "/materi/bab5/hasil-kuis-bab5",
+        "/materi/bab6/hasil-latihan-bab6",
+        "/materi/bab6/hasil-kuis-bab6",
+        "/materi/evaluasi/hasil-evaluasi-akhir",
+      ];
 
       console.log("Restrict Access - Current Path:", currentPath);
       console.log("Restrict Access - Previous Path:", previousPath);
       console.log("Restrict Access - Completed Lessons:", completedLessons);
+
+      // Jika currentPath adalah halaman hasil, izinkan akses tanpa validasi
+      if (resultPages.includes(currentPath)) {
+        console.log("Access allowed for result page:", currentPath);
+        previousPathRef.current = currentPath;
+        return;
+      }
+
+      const currentIndex = allLessons.indexOf(currentPath);
 
       // Jika path tidak valid, arahkan ke materi terakhir yang diselesaikan
       if (currentIndex === -1) {
@@ -108,7 +142,6 @@ const MateriLayout = () => {
             title: "Akses Ditolak",
             text: "Anda harus menyelesaikan materi sebelumnya terlebih dahulu.",
           });
-          // Periksa apakah previousPath valid dan diizinkan
           const previousIndex = allLessons.indexOf(previousPath);
           if (
             previousIndex !== -1 &&
@@ -128,7 +161,6 @@ const MateriLayout = () => {
             navigate(startLesson);
           }
         } else {
-          // Jika akses diizinkan, update previousPath
           console.log("Access allowed, updating previous path:", currentPath);
           previousPathRef.current = currentPath;
         }
@@ -140,7 +172,6 @@ const MateriLayout = () => {
           text:
             error.message || "Terjadi kesalahan saat memvalidasi akses materi.",
         });
-        // Coba kembali ke previousPath jika valid
         const previousIndex = allLessons.indexOf(previousPath);
         if (
           previousIndex !== -1 &&
@@ -173,6 +204,16 @@ const MateriLayout = () => {
   const updateProgressInBackend = async (newProgress, newCompletedLessons) => {
     if (!user?.uuid || !isAuthenticated) {
       console.log("UUID pengguna tidak ditemukan atau tidak terautentikasi");
+      return;
+    }
+    // Validasi progres
+    if (newProgress < 0 || newProgress > 100) {
+      console.error("Progres tidak valid:", newProgress);
+      Swal.fire({
+        icon: "error",
+        title: "Progres Tidak Valid",
+        text: "Progres harus antara 0 dan 100.",
+      });
       return;
     }
     try {
@@ -213,9 +254,6 @@ const MateriLayout = () => {
   };
 
   const getNextLesson = (currentLessonId) => {
-    const allLessons = daftarBab.flatMap((bab) =>
-      bab.subBab.map((sub) => sub.path)
-    );
     const currentIndex = allLessons.indexOf(currentLessonId);
     if (currentIndex === -1 || currentIndex === allLessons.length - 1) {
       return null;
@@ -224,22 +262,31 @@ const MateriLayout = () => {
   };
 
   const getStartLesson = () => {
-    const allLessons = daftarBab.flatMap((bab) =>
-      bab.subBab.map((sub) => sub.path)
-    );
     if (progress >= 100) {
       return allLessons[allLessons.length - 1];
     }
-    // Kembalikan materi terakhir yang DISLESAIKAN (ada di completedLessons)
     if (completedLessons.length > 0) {
-      return completedLessons[completedLessons.length - 1];
+      const lastCompleted = completedLessons[completedLessons.length - 1];
+      const lastIndex = allLessons.indexOf(lastCompleted);
+      if (lastIndex < allLessons.length - 1) {
+        return allLessons[lastIndex + 1];
+      }
+      return lastCompleted;
     }
-    // Jika belum ada yang diselesaikan, kembalikan materi pertama
     return allLessons[0];
   };
 
   const handleLessonComplete = (lessonId) => {
     console.log("handleLessonComplete dipanggil dengan lessonId:", lessonId);
+    if (!allLessons.includes(lessonId)) {
+      console.error("lessonId tidak valid:", lessonId);
+      Swal.fire({
+        icon: "error",
+        title: "Materi Tidak Valid",
+        text: "Materi yang dipilih tidak ditemukan dalam daftar materi.",
+      });
+      return;
+    }
     if (!completedLessons.includes(lessonId)) {
       const newCompletedLessons = [...completedLessons, lessonId];
       const newProgress = (newCompletedLessons.length / totalLessons) * 100;
@@ -261,18 +308,17 @@ const MateriLayout = () => {
       "handleQuizComplete dipanggil dengan currentLessonId:",
       currentLessonId
     );
-    const nextLessonId = getNextLesson(currentLessonId);
-    const newLessonsToComplete = [currentLessonId];
-
-    if (nextLessonId && !completedLessons.includes(nextLessonId)) {
-      newLessonsToComplete.push(nextLessonId);
+    if (!allLessons.includes(currentLessonId)) {
+      console.error("currentLessonId tidak valid:", currentLessonId);
+      Swal.fire({
+        icon: "error",
+        title: "Materi Tidak Valid",
+        text: "Materi kuis yang dipilih tidak ditemukan dalam daftar materi.",
+      });
+      return;
     }
-
-    const newCompletedLessons = [
-      ...new Set([...completedLessons, ...newLessonsToComplete]),
-    ];
-
-    if (newCompletedLessons.length > completedLessons.length) {
+    if (!completedLessons.includes(currentLessonId)) {
+      const newCompletedLessons = [...completedLessons, currentLessonId];
       const newProgress = (newCompletedLessons.length / totalLessons) * 100;
       const roundedProgress = parseFloat(newProgress.toFixed(2));
       console.log(

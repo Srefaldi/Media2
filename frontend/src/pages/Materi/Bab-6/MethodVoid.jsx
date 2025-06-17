@@ -10,6 +10,13 @@ const MethodVoid = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
 
+  const handleQuizComplete = (isCorrect) => {
+    if (isCorrect) {
+      handleLessonComplete("/materi/bab6/method-tipe-data");
+      setQuizCompleted(true);
+    }
+  };
+
   const handleNext = () => {
     if (quizCompleted) {
       handleLessonComplete("/materi/bab6/method-void");
@@ -21,11 +28,6 @@ const MethodVoid = () => {
   const handleBack = () => {
     window.scrollTo(0, 0);
     navigate("/materi/bab6/pengenalan-method");
-  };
-
-  const handleQuizComplete = () => {
-    handleLessonComplete("/materi/bab6/method-tipe-data");
-    setQuizCompleted(true);
   };
 
   return (

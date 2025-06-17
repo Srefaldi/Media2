@@ -10,6 +10,13 @@ const PernyataanBreakdanContinue = () => {
   const navigate = useNavigate();
   const { handleLessonComplete } = useOutletContext();
 
+  const handleQuiz2Complete = (isCorrect) => {
+    if (isCorrect) {
+      handleLessonComplete("/materi/bab5/perulangan-bersarang");
+      setQuiz2Completed(true);
+    }
+  };
+
   const handleNext = () => {
     if (quiz2Completed) {
       handleLessonComplete("/materi/bab5/pernyataan-break-continue");
@@ -23,18 +30,13 @@ const PernyataanBreakdanContinue = () => {
     navigate("/materi/bab5/pernyataan-perulangan");
   };
 
-  const handleQuiz2Complete = () => {
-    handleLessonComplete("/materi/bab5/perulangan-bersarang");
-    setQuiz2Completed(true);
-  };
-
   return (
     <div className="mt-4 mb-4">
       <h1 className="mb-4 text-2xl font-bold text-center">
         BAB 5 - KONTROL ALUR
       </h1>
 
-      <div className="p-4 mb-6 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 mb-2 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <h2 className="mt-2 mb-4 text-2xl font-bold">
           5.5 Pernyataan Break dan Continue
         </h2>
@@ -48,7 +50,7 @@ const PernyataanBreakdanContinue = () => {
         </p>
       </div>
 
-      <div className="p-4 mt-2 mb-4 text-justify text-gray-700 bg-white rounded-lg shadow-md">
+      <div className="p-4 mb-2 text-justify text-gray-700 bg-white rounded-lg shadow-md">
         <p className="mb-3 text-xl font-bold">Pernyataan Break</p>
         <p className="mb-3">
           Pernyataan break adalah salah satu statement dalam control flow yang
