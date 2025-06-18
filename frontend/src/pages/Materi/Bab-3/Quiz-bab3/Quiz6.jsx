@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 
@@ -52,7 +51,11 @@ const Quiz6 = ({ onComplete }) => {
     } else {
       Swal.fire({
         title: "Jawaban Anda Belum Tepat!",
-        html: getIncorrectFeedback(normalizedOperator1, normalizedOperator2, normalizedOperator3),
+        html: getIncorrectFeedback(
+          normalizedOperator1,
+          normalizedOperator2,
+          normalizedOperator3
+        ),
         icon: "error",
         confirmButtonText: "Coba Lagi",
         confirmButtonColor: "#EF4444",
@@ -92,7 +95,8 @@ const Quiz6 = ({ onComplete }) => {
       feedback += `<li>Untuk <code>hasil3</code>, operator <strong>${operator3}</strong> salah. Pastikan operator sesuai untuk membandingkan karakter 'B' dengan 'b' berdasarkan nilai ASCII.</li>`;
     }
 
-    feedback += "</ul>Tinjau kembali materi tentang operator perbandingan di Bab 2. Yuk, coba lagi!";
+    feedback +=
+      "</ul>Tinjau kembali materi tentang operator perbandingan . Yuk, coba lagi!";
     return feedback;
   };
 
@@ -209,7 +213,8 @@ const Quiz6 = ({ onComplete }) => {
             </svg>
             BENAR
           </div>
-          Dalam C#, operator perbandingan digunakan untuk membandingkan nilai, menghasilkan nilai boolean berdasarkan kondisi tertentu.
+          Dalam C#, operator perbandingan digunakan untuk membandingkan nilai,
+          menghasilkan nilai boolean berdasarkan kondisi tertentu.
         </div>
       )}
     </div>

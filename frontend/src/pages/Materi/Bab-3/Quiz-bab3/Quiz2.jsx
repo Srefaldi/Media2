@@ -56,21 +56,21 @@ const QuizKlasifikasiTipeData = ({ onComplete }) => {
       case "A":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. <code>int</code> dan <code>string</code> adalah tipe data bawaan (built-in types) di C#, bukan mekanisme untuk mendefinisikan tipe data kustom. Tinjau kembali materi tentang user-defined types di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. <code>int</code> dan <code>string</code> adalah tipe data bawaan (built-in types) di C#, bukan mekanisme untuk mendefinisikan tipe data kustom. Tinjau kembali materi tentang user-defined types . Yuk, coba lagi!`;
       case "C":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak tepat. <code>interface</code> mendefinisikan kontrak, bukan tipe data lengkap, dan <code>bool</code> adalah tipe data bawaan. Keduanya bukan cara utama untuk mendefinisikan user-defined types. Tinjau kembali materi tentang user-defined types di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak tepat. <code>interface</code> mendefinisikan kontrak, bukan tipe data lengkap, dan <code>bool</code> adalah tipe data bawaan. Keduanya bukan cara utama untuk mendefinisikan user-defined types. Tinjau kembali materi tentang user-defined types . Yuk, coba lagi!`;
       case "D":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak benar. Meskipun <code>enum</code> dan <code>record</code> dapat digunakan untuk tipe data kustom, <code>class</code> dan <code>struct</code> adalah cara utama untuk mendefinisikan user-defined types. Tinjau kembali materi tentang user-defined types di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak benar. Meskipun <code>enum</code> dan <code>record</code> dapat digunakan untuk tipe data kustom, <code>class</code> dan <code>struct</code> adalah cara utama untuk mendefinisikan user-defined types. Tinjau kembali materi tentang user-defined types . Yuk, coba lagi!`;
       case "E":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. <code>delegate</code> digunakan untuk mendefinisikan tipe fungsi, dan <code>interface</code> untuk kontrak, bukan untuk mendefinisikan tipe data kustom seperti objek atau struktur. Tinjau kembali materi tentang user-defined types di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. <code>delegate</code> digunakan untuk mendefinisikan tipe fungsi, dan <code>interface</code> untuk kontrak, bukan untuk mendefinisikan tipe data kustom seperti objek atau struktur. Tinjau kembali materi tentang user-defined types . Yuk, coba lagi!`;
       default:
-        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang user-defined types di Bab 2 dan coba lagi.";
+        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang user-defined types dan coba lagi.";
     }
   };
 

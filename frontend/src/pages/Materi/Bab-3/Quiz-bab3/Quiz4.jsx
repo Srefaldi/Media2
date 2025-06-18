@@ -95,7 +95,7 @@ const Quiz4 = ({ onComplete }) => {
     }
 
     feedback +=
-      "</ul>Tinjau kembali materi tentang representasi bilangan di Bab 2. Yuk, coba lagi!";
+      "</ul>Tinjau kembali materi tentang representasi bilangan . Yuk, coba lagi!";
     return feedback;
   };
 

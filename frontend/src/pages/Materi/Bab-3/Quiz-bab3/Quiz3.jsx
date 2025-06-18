@@ -56,21 +56,21 @@ const Quiz3 = ({ onComplete }) => {
       case "A":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. <code>Heap</code> digunakan untuk menyimpan tipe data referensi (reference types) seperti <code>class</code>, bukan tipe data nilai (value types) seperti <code>int</code> atau <code>struct</code>. Tinjau kembali materi tentang tipe data nilai di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. <code>Heap</code> digunakan untuk menyimpan tipe data referensi (reference types) seperti <code>class</code>, bukan tipe data nilai (value types) seperti <code>int</code> atau <code>struct</code>. Tinjau kembali materi tentang tipe data nilai . Yuk, coba lagi!`;
       case "C":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak tepat. <code>Register</code> adalah penyimpanan cepat di dalam CPU untuk pemrosesan sementara, bukan tempat penyimpanan utama untuk tipe data nilai dalam C#. Tinjau kembali materi tentang tipe data nilai di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak tepat. <code>Register</code> adalah penyimpanan cepat di dalam CPU untuk pemrosesan sementara, bukan tempat penyimpanan utama untuk tipe data nilai dalam C#. Tinjau kembali materi tentang tipe data nilai . Yuk, coba lagi!`;
       case "D":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak benar. <code>Disk Storage</code> digunakan untuk penyimpanan permanen seperti file, bukan untuk menyimpan tipe data nilai selama eksekusi program. Tinjau kembali materi tentang tipe data nilai di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak benar. <code>Disk Storage</code> digunakan untuk penyimpanan permanen seperti file, bukan untuk menyimpan tipe data nilai selama eksekusi program. Tinjau kembali materi tentang tipe data nilai . Yuk, coba lagi!`;
       case "E":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. <code>Cache Memory</code> adalah memori cepat untuk mempercepat akses data, tetapi tipe data nilai dalam C# disimpan di <code>stack</code>, bukan cache. Tinjau kembali materi tentang tipe data nilai di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. <code>Cache Memory</code> adalah memori cepat untuk mempercepat akses data, tetapi tipe data nilai dalam C# disimpan di <code>stack</code>, bukan cache. Tinjau kembali materi tentang tipe data nilai . Yuk, coba lagi!`;
       default:
-        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang tipe data nilai di Bab 2 dan coba lagi.";
+        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang tipe data nilai dan coba lagi.";
     }
   };
 

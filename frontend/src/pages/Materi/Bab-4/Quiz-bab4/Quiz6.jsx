@@ -58,11 +58,11 @@ const Quiz6 = ({ onComplete }) => {
       case "A":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Operator <code>||</code> menghasilkan <code>false</code> jika kedua kondisi bernilai <code>false</code>, bukan <code>true</code>. Tinjau kembali materi tentang operator logika di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Operator <code>||</code> menghasilkan <code>false</code> jika kedua kondisi bernilai <code>false</code>, bukan <code>true</code>. Tinjau kembali materi tentang operator logika . Yuk, coba lagi!`;
       case "C":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak tepat. Operator <code>||</code> tidak mensyaratkan semua kondisi bernilai <code>true</code>, cukup salah satu. Tinjau kembali materi tentang operator logika di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak tepat. Operator <code>||</code> tidak mensyaratkan semua kondisi bernilai <code>true</code>, cukup salah satu. Tinjau kembali materi tentang operator logika . Yuk, coba lagi!`;
       case "D":
         return `Pilihan Anda <strong>${getOptionText(
           option
@@ -70,7 +70,7 @@ const Quiz6 = ({ onComplete }) => {
       case "E":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Operator <code>||</code> adalah operator logika untuk kondisi boolean, bukan untuk membandingkan nilai numerik. Tinjau kembali materi tentang operator logika di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Operator <code>||</code> adalah operator logika untuk kondisi boolean, bukan untuk membandingkan nilai numerik. Tinjau kembali materi tentang operator logika . Yuk, coba lagi!`;
       default:
         return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang operator logika dan coba lagi.";
     }

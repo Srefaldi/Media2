@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 
@@ -95,7 +94,8 @@ const Quiz8 = ({ onComplete }) => {
       feedback += `<li>Untuk output, jawaban <strong>${output}</strong> salah. Gunakan nama variabel yang sesuai untuk mencetak teks ke konsol.</li>`;
     }
 
-    feedback += "</ul>Tinjau kembali materi tentang tipe data <code>string</code> di Bab 2. Yuk, coba lagi!";
+    feedback +=
+      "</ul>Tinjau kembali materi tentang tipe data <code>string</code> . Yuk, coba lagi!";
     return feedback;
   };
 

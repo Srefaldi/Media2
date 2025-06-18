@@ -142,7 +142,7 @@ const Quiz5 = ({ onComplete }) => {
     }
 
     feedback +=
-      "</ul>Tinjau kembali materi tentang tipe data desimal di Bab 2. Yuk, coba lagi!";
+      "</ul>Tinjau kembali materi tentang tipe data desimal . Yuk, coba lagi!";
     return feedback;
   };
 

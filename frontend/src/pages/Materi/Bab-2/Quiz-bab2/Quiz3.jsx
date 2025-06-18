@@ -55,21 +55,21 @@ const QuizKategoriVariabel = ({ onComplete }) => {
       case "A":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Variabel static dapat diubah berkali-kali, bukan hanya sekali. Tinjau kembali materi tentang variabel static di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Variabel static dapat diubah berkali-kali, bukan hanya sekali. Tinjau kembali materi tentang variabel static . Yuk, coba lagi!`;
       case "C":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak tepat. Variabel static tidak diinisialisasi ulang oleh setiap instance, melainkan hanya sekali untuk kelas. Tinjau kembali materi tentang variabel static di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak tepat. Variabel static tidak diinisialisasi ulang oleh setiap instance, melainkan hanya sekali untuk kelas. Tinjau kembali materi tentang variabel static . Yuk, coba lagi!`;
       case "D":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak benar. C# tidak secara otomatis mengunci variabel static; penguncian memerlukan mekanisme seperti <code>lock</code>. Tinjau kembali materi tentang variabel static di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak benar. C# tidak secara otomatis mengunci variabel static; penguncian memerlukan mekanisme seperti <code>lock</code>. Tinjau kembali materi tentang variabel static . Yuk, coba lagi!`;
       case "E":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Variabel static dapat diakses dari metode static maupun non-static. Tinjau kembali materi tentang variabel static di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Variabel static dapat diakses dari metode static maupun non-static. Tinjau kembali materi tentang variabel static . Yuk, coba lagi!`;
       default:
-        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang variabel static di Bab 2 dan coba lagi.";
+        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang variabel static dan coba lagi.";
     }
   };
 

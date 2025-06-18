@@ -56,21 +56,21 @@ const Quiz = ({ onComplete }) => {
       case "B":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Tipe data bukanlah kelompok dengan jenis tertentu, melainkan definisi spesifik untuk jenis nilai yang dapat disimpan dalam variabel, seperti <code>int</code> atau <code>string</code>. Tinjau kembali materi tentang tipe data di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Tipe data bukanlah kelompok dengan jenis tertentu, melainkan definisi spesifik untuk jenis nilai yang dapat disimpan dalam variabel, seperti <code>int</code> atau <code>string</code>. Tinjau kembali materi tentang tipe data . Yuk, coba lagi!`;
       case "C":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak tepat. Pilihan ini sebenarnya benar-benar menggambarkan pengertian tipe data, yaitu cara menentukan jenis data untuk variabel. Namun, soal meminta yang <em>bukan</em> pengertian tipe data. Tinjau kembali materi tentang tipe data di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak tepat. Pilihan ini sebenarnya benar-benar menggambarkan pengertian tipe data, yaitu cara menentukan jenis data untuk variabel. Namun, soal meminta yang <em>bukan</em> pengertian tipe data. Tinjau kembali materi tentang tipe data . Yuk, coba lagi!`;
       case "D":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak benar. Tipe data memang digunakan untuk mengelompokkan data berdasarkan jenisnya, seperti bilangan atau teks, sehingga pilihan ini mendefinisikan tipe data. Soal meminta yang <em>bukan</em> pengertian tipe data. Tinjau kembali materi tentang tipe data di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak benar. Tipe data memang digunakan untuk mengelompokkan data berdasarkan jenisnya, seperti bilangan atau teks, sehingga pilihan ini mendefinisikan tipe data. Soal meminta yang <em>bukan</em> pengertian tipe data. Tinjau kembali materi tentang tipe data . Yuk, coba lagi!`;
       case "E":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Tipe data tidak menentukan nama variabel; nama variabel adalah identitas yang diberikan programmer, sedangkan tipe data menentukan jenis nilai yang disimpan. Tinjau kembali materi tentang tipe data di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Tipe data tidak menentukan nama variabel; nama variabel adalah identitas yang diberikan programmer, sedangkan tipe data menentukan jenis nilai yang disimpan. Tinjau kembali materi tentang tipe data . Yuk, coba lagi!`;
       default:
-        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang tipe data di Bab 2 dan coba lagi.";
+        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang tipe data dan coba lagi.";
     }
   };
 

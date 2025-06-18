@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 
@@ -57,13 +56,21 @@ const Quiz8 = ({ onComplete }) => {
   const getIncorrectFeedback = (option) => {
     switch (option) {
       case "A":
-        return `Pilihan Anda <strong>${getOptionText(option)}</strong> salah. Operator <code>!</code> adalah operator negasi logika, bukan operator ketidaksetaraan. Tinjau kembali materi tentang operator perbandingan di Bab 2. Yuk, coba lagi!`;
+        return `Pilihan Anda <strong>${getOptionText(
+          option
+        )}</strong> salah. Operator <code>!</code> adalah operator negasi logika, bukan operator ketidaksetaraan. Tinjau kembali materi tentang operator perbandingan . Yuk, coba lagi!`;
       case "B":
-        return `Pilihan Anda <strong>${getOptionText(option)}</strong> tidak tepat. Operator <code>=</code> adalah operator penugasan, bukan kesetaraan. Tinjau kembali materi tentang operator perbandingan di Bab 2. Yuk, coba lagi!`;
+        return `Pilihan Anda <strong>${getOptionText(
+          option
+        )}</strong> tidak tepat. Operator <code>=</code> adalah operator penugasan, bukan kesetaraan. Tinjau kembali materi tentang operator perbandingan . Yuk, coba lagi!`;
       case "D":
-        return `Pilihan Anda <strong>${getOptionText(option)}</strong> tidak benar. Operator <code>===</code> dan <code>!==</code> tidak ada di C#, mereka digunakan di JavaScript. Tinjau kembali materi tentang operator perbandingan di Bab 2. Yuk, coba lagi!`;
+        return `Pilihan Anda <strong>${getOptionText(
+          option
+        )}</strong> tidak benar. Operator <code>===</code> dan <code>!==</code> tidak ada di C#, mereka digunakan di JavaScript. Tinjau kembali materi tentang operator perbandingan . Yuk, coba lagi!`;
       case "E":
-        return `Pilihan Anda <strong>${getOptionText(option)}</strong> salah. Operator <code>||</code> adalah operator logika OR, bukan bagian dari operator kesetaraan atau ketidaksetaraan. Tinjau kembali materi tentang operator perbandingan di Bab 2. Yuk, coba lagi!`;
+        return `Pilihan Anda <strong>${getOptionText(
+          option
+        )}</strong> salah. Operator <code>||</code> adalah operator logika OR, bukan bagian dari operator kesetaraan atau ketidaksetaraan. Tinjau kembali materi tentang operator perbandingan . Yuk, coba lagi!`;
       default:
         return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang operator perbandingan dan coba lagi.";
     }
@@ -168,7 +175,8 @@ const Quiz8 = ({ onComplete }) => {
             </svg>
             BENAR
           </div>
-          Dalam C#, operator kesetaraan dan ketidaksetaraan digunakan untuk membandingkan dua nilai.
+          Dalam C#, operator kesetaraan dan ketidaksetaraan digunakan untuk
+          membandingkan dua nilai.
         </div>
       )}
     </div>

@@ -55,21 +55,21 @@ const QuizDeklarasiVariabel = ({ onComplete }) => {
       case "A":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Variabel implisit dengan <code>var</code> tidak khusus untuk tipe data integer, melainkan untuk tipe apa pun yang ditentukan kompiler. Tinjau kembali materi tentang deklarasi variabel implisit di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Variabel implisit dengan <code>var</code> tidak khusus untuk tipe data integer, melainkan untuk tipe apa pun yang ditentukan kompiler. Tinjau kembali materi tentang deklarasi variabel implisit . Yuk, coba lagi!`;
       case "C":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak tepat. Penggunaan bilangan genap tidak berkaitan dengan deklarasi variabel implisit. Variabel implisit digunakan saat tipe data ditentukan otomatis oleh kompiler. Tinjau kembali materi tentang deklarasi variabel implisit di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak tepat. Penggunaan bilangan genap tidak berkaitan dengan deklarasi variabel implisit. Variabel implisit digunakan saat tipe data ditentukan otomatis oleh kompiler. Tinjau kembali materi tentang deklarasi variabel implisit . Yuk, coba lagi!`;
       case "D":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak benar. Variabel implisit tidak selalu untuk tipe data kompleks; mereka digunakan saat tipe data tidak diketahui atau disimpulkan kompiler. Tinjau kembali materi tentang deklarasi variabel implisit di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak benar. Variabel implisit tidak selalu untuk tipe data kompleks; mereka digunakan saat tipe data tidak diketahui atau disimpulkan kompiler. Tinjau kembali materi tentang deklarasi variabel implisit . Yuk, coba lagi!`;
       case "E":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Variabel implisit tidak terbatas pada penggunaan dalam loop; mereka dapat digunakan di mana saja selama kompiler dapat menyimpulkan tipe data. Tinjau kembali materi tentang deklarasi variabel implisit di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Variabel implisit tidak terbatas pada penggunaan dalam loop; mereka dapat digunakan di mana saja selama kompiler dapat menyimpulkan tipe data. Tinjau kembali materi tentang deklarasi variabel implisit . Yuk, coba lagi!`;
       default:
-        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang deklarasi variabel implisit di Bab 2 dan coba lagi.";
+        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang deklarasi variabel implisit dan coba lagi.";
     }
   };
 

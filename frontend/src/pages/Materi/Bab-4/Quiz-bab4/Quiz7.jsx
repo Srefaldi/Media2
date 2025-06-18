@@ -58,19 +58,19 @@ const Quiz7 = ({ onComplete }) => {
       case "A":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Tanda <code>-></code> bukan simbol untuk operator bersyarat di C#. Tinjau kembali materi tentang operator bersyarat di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Tanda <code>-></code> bukan simbol untuk operator bersyarat di C#. Tinjau kembali materi tentang operator bersyarat . Yuk, coba lagi!`;
       case "B":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak tepat. Operator bersyarat dapat digunakan dengan tipe data lain selain boolean, selama hasilnya sesuai. Tinjau kembali materi tentang operator bersyarat di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak tepat. Operator bersyarat dapat digunakan dengan tipe data lain selain boolean, selama hasilnya sesuai. Tinjau kembali materi tentang operator bersyarat . Yuk, coba lagi!`;
       case "C":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak benar. Operator bersyarat adalah operator ternary, bukan unary. Tinjau kembali materi tentang operator bersyarat di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak benar. Operator bersyarat adalah operator ternary, bukan unary. Tinjau kembali materi tentang operator bersyarat . Yuk, coba lagi!`;
       case "E":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Operator bersyarat dapat digunakan untuk penugasan variabel. Tinjau kembali materi tentang operator bersyarat di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Operator bersyarat dapat digunakan untuk penugasan variabel. Tinjau kembali materi tentang operator bersyarat . Yuk, coba lagi!`;
       default:
         return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang operator bersyarat dan coba lagi.";
     }

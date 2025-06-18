@@ -55,19 +55,19 @@ const Quiz = ({ onComplete }) => {
       case "A":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Lokasi penyimpanan variabel di memori ditentukan oleh sistem, bukan tipe data. Tinjau kembali materi tentang tipe data di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Lokasi penyimpanan variabel di memori ditentukan oleh sistem, bukan tipe data. Tinjau kembali materi tentang tipe data . Yuk, coba lagi!`;
       case "C":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak tepat. Penamaan variabel berkaitan dengan sintaksis, bukan tipe data. Tinjau kembali materi tentang tipe data di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak tepat. Penamaan variabel berkaitan dengan sintaksis, bukan tipe data. Tinjau kembali materi tentang tipe data . Yuk, coba lagi!`;
       case "D":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak benar. Ukuran layar tidak relevan dengan tipe data variabel. Tinjau kembali materi tentang tipe data di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak benar. Ukuran layar tidak relevan dengan tipe data variabel. Tinjau kembali materi tentang tipe data . Yuk, coba lagi!`;
       case "E":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Warna teks pada editor kode hanyalah fitur visual, bukan tipe data. Tinjau kembali materi tentang tipe data di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Warna teks pada editor kode hanyalah fitur visual, bukan tipe data. Tinjau kembali materi tentang tipe data . Yuk, coba lagi!`;
       default:
         return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang tipe data dan coba lagi.";
     }

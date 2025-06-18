@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Tambahkan useEffect
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { useSelector } from "react-redux"; // Tambahkan useSelector untuk akses Redux state
 import alur from "./img-bab1/alur.png";
 import logoc from "./img-bab1/logo.png";
 import Quiz from "./Quiz-bab1/Quiz1";
@@ -19,6 +20,15 @@ const PengenalanCSharp = () => {
   const navigate = useNavigate();
   const { handleLessonComplete, handleQuizComplete } = useOutletContext();
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const { completedLessons } = useSelector((state) => state.auth); // Ambil completedLessons dari Redux
+  const currentLessonPath = "/materi/bab1/pengenalan"; // Path materi saat ini
+
+  // Periksa apakah materi sudah diselesaikan saat komponen dimuat
+  useEffect(() => {
+    if (completedLessons.includes(currentLessonPath)) {
+      setQuizCompleted(true); // Set quizCompleted ke true jika materi sudah diselesaikan
+    }
+  }, [completedLessons, currentLessonPath]);
 
   const toggleSection = (section) => {
     setOpenSections((prev) => ({
@@ -29,7 +39,7 @@ const PengenalanCSharp = () => {
 
   const handleQuizCompleteLocal = () => {
     setQuizCompleted(true);
-    handleQuizComplete("/materi/bab1/struktur-kode");
+    handleQuizComplete("/materi/bab1/pengenalan"); // Panggil handleQuizComplete dengan path saat ini
   };
 
   const handleNext = () => {

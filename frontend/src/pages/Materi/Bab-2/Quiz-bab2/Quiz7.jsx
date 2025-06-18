@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 
@@ -55,15 +54,23 @@ const QuizSintaksInput = ({ onComplete }) => {
   const getIncorrectFeedback = (option) => {
     switch (option) {
       case "B":
-        return `Pilihan Anda <strong>${getOptionText(option)}</strong> salah. Fungsi <code>Write()</code> dan <code>WriteLine()</code> digunakan untuk output, bukan input. Tinjau kembali materi tentang fungsi input di Bab 2. Yuk, coba lagi!`;
+        return `Pilihan Anda <strong>${getOptionText(
+          option
+        )}</strong> salah. Fungsi <code>Write()</code> dan <code>WriteLine()</code> digunakan untuk output, bukan input. Tinjau kembali materi tentang fungsi input . Yuk, coba lagi!`;
       case "C":
-        return `Pilihan Anda <strong>${getOptionText(option)}</strong> tidak tepat. Meskipun <code>Read()</code> benar, <code>Write()</code> digunakan untuk output, bukan input. Tinjau kembali materi tentang fungsi input di Bab 2. Yuk, coba lagi!`;
+        return `Pilihan Anda <strong>${getOptionText(
+          option
+        )}</strong> tidak tepat. Meskipun <code>Read()</code> benar, <code>Write()</code> digunakan untuk output, bukan input. Tinjau kembali materi tentang fungsi input . Yuk, coba lagi!`;
       case "D":
-        return `Pilihan Anda <strong>${getOptionText(option)}</strong> tidak benar. Fungsi <code>GetInput()</code> bukanlah fungsi bawaan dalam C# untuk input. Tinjau kembali materi tentang fungsi input di Bab 2. Yuk, coba lagi!`;
+        return `Pilihan Anda <strong>${getOptionText(
+          option
+        )}</strong> tidak benar. Fungsi <code>GetInput()</code> bukanlah fungsi bawaan dalam C# untuk input. Tinjau kembali materi tentang fungsi input . Yuk, coba lagi!`;
       case "E":
-        return `Pilihan Anda <strong>${getOptionText(option)}</strong> salah. Fungsi <code>GetOutput()</code> bukanlah fungsi bawaan dalam C# dan tidak digunakan untuk input. Tinjau kembali materi tentang fungsi input di Bab 2. Yuk, coba lagi!`;
+        return `Pilihan Anda <strong>${getOptionText(
+          option
+        )}</strong> salah. Fungsi <code>GetOutput()</code> bukanlah fungsi bawaan dalam C# dan tidak digunakan untuk input. Tinjau kembali materi tentang fungsi input . Yuk, coba lagi!`;
       default:
-        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang fungsi input di Bab 2 dan coba lagi.";
+        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang fungsi input dan coba lagi.";
     }
   };
 

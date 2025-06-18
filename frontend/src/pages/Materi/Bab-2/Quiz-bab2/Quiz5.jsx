@@ -55,21 +55,21 @@ const QuizDeklarasiBanyakVariabel = ({ onComplete }) => {
       case "A":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Titik koma (<code>;</code>) digunakan untuk mengakhiri pernyataan, bukan memisahkan variabel dalam deklarasi. Tinjau kembali materi tentang deklarasi variabel di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Titik koma (<code>;</code>) digunakan untuk mengakhiri pernyataan, bukan memisahkan variabel dalam deklarasi. Tinjau kembali materi tentang deklarasi variabel . Yuk, coba lagi!`;
       case "B":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak tepat. Titik (<code>.</code>) digunakan untuk mengakses anggota kelas atau objek, bukan untuk deklarasi variabel. Tinjau kembali materi tentang deklarasi variabel di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak tepat. Titik (<code>.</code>) digunakan untuk mengakses anggota kelas atau objek, bukan untuk deklarasi variabel. Tinjau kembali materi tentang deklarasi variabel . Yuk, coba lagi!`;
       case "D":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> tidak benar. Tanda titik dua (<code>:</code>) digunakan untuk pewarisan atau inisialisasi dalam C#, bukan untuk memisahkan variabel. Tinjau kembali materi tentang deklarasi variabel di Bab 2. Yuk, coba lagi!`;
+        )}</strong> tidak benar. Tanda titik dua (<code>:</code>) digunakan untuk pewarisan atau inisialisasi dalam C#, bukan untuk memisahkan variabel. Tinjau kembali materi tentang deklarasi variabel . Yuk, coba lagi!`;
       case "E":
         return `Pilihan Anda <strong>${getOptionText(
           option
-        )}</strong> salah. Spasi saja tidak cukup untuk memisahkan variabel dalam deklarasi; diperlukan koma (<code>,</code>). Tinjau kembali materi tentang deklarasi variabel di Bab 2. Yuk, coba lagi!`;
+        )}</strong> salah. Spasi saja tidak cukup untuk memisahkan variabel dalam deklarasi; diperlukan koma (<code>,</code>). Tinjau kembali materi tentang deklarasi variabel . Yuk, coba lagi!`;
       default:
-        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang deklarasi variabel di Bab 2 dan coba lagi.";
+        return "Jawaban Anda belum tepat. Silakan baca kembali materi tentang deklarasi variabel dan coba lagi.";
     }
   };
 

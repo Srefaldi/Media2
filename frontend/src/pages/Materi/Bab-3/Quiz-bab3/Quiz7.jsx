@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 
@@ -136,7 +135,8 @@ const Quiz7 = ({ onComplete }) => {
       feedback += `<li>Untuk output <code>simbol</code>, jawaban <strong>${output3}</strong> salah. Gunakan kategori yang mencerminkan jenis karakter simbol.</li>`;
     }
 
-    feedback += "</ul>Tinjau kembali materi tentang tipe data <code>char</code> di Bab 2. Yuk, coba lagi!";
+    feedback +=
+      "</ul>Tinjau kembali materi tentang tipe data <code>char</code> . Yuk, coba lagi!";
     return feedback;
   };
 
